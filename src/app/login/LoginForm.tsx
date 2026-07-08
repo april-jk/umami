@@ -16,7 +16,7 @@ import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
 
-export function LoginForm() {
+export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
   const { t, labels, messages, getErrorMessage } = useMessages();
   const router = useRouter();
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -29,7 +29,7 @@ export function LoginForm() {
     await mutateAsync(data, {
       onSuccess: async ({ token }) => {
         setClientAuthToken(token);
-        router.replace('/dashboard');
+        router.replace(returnTo);
       },
     });
   };
