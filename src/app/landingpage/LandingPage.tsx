@@ -169,33 +169,18 @@ export default function LandingPage() {
     let frame = 0;
     let nextX = window.innerWidth / 2;
     let nextY = window.innerHeight * 0.28;
-    let lastX = nextX;
-    let lastY = nextY;
-
-    function clamp(value: number, min: number, max: number) {
-      return Math.min(Math.max(value, min), max);
-    }
 
     function syncGlow() {
-      const driftX = clamp((nextX - lastX) * 0.36, -32, 32);
-      const driftY = clamp((nextY - lastY) * 0.36, -32, 32);
-
       root.style.setProperty('--landing-cursor-x', `${nextX}px`);
       root.style.setProperty('--landing-cursor-y', `${nextY}px`);
-      root.style.setProperty('--landing-wave-x', `${driftX.toFixed(2)}px`);
-      root.style.setProperty('--landing-wave-y', `${driftY.toFixed(2)}px`);
       root.style.setProperty('--landing-glow-opacity', '1');
-      lastX = nextX;
-      lastY = nextY;
       frame = 0;
     }
 
     function syncIdleGlow() {
       root.style.setProperty('--landing-cursor-x', `${nextX}px`);
       root.style.setProperty('--landing-cursor-y', `${nextY}px`);
-      root.style.setProperty('--landing-wave-x', '0px');
-      root.style.setProperty('--landing-wave-y', '0px');
-      root.style.setProperty('--landing-glow-opacity', '0.42');
+      root.style.setProperty('--landing-glow-opacity', '0.32');
     }
 
     function handlePointerMove(event: PointerEvent) {
@@ -226,8 +211,6 @@ export default function LandingPage() {
       window.removeEventListener('blur', hideGlow);
       root.style.removeProperty('--landing-cursor-x');
       root.style.removeProperty('--landing-cursor-y');
-      root.style.removeProperty('--landing-wave-x');
-      root.style.removeProperty('--landing-wave-y');
       root.style.removeProperty('--landing-glow-opacity');
     };
   }, []);
