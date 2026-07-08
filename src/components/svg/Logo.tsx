@@ -1,20 +1,30 @@
 import type { SVGProps } from 'react';
 
 const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={20}
-    height={20}
-    fill="none"
-    viewBox="0 0 40 40"
-    {...props}
-  >
-    <rect width={40} height={40} rx={8} fill="currentColor" />
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 64 64" {...props}>
+    <rect x={5} y={5} width={54} height={54} rx={5.5} fill="#fffdf1" />
+    <circle cx={21} cy={26} r={6.4} fill="#fffdf1" stroke="#050706" strokeWidth={3.6} />
     <path
-      d="M10.5 29.5 18.9 10h2.2l8.4 19.5h-5.1l-1.5-3.9h-7.8l-1.5 3.9h-5.1Zm6.2-8.1h4.6L19 15.3l-2.3 6.1Z"
-      fill="Canvas"
+      fill="#050706"
+      d="M21 36c-7.1 0-12.8 5.7-12.8 12.8V52h25.6v-3.2C33.8 41.7 28.1 36 21 36Z"
     />
-    <path d="M14.2 31h11.6" stroke="Canvas" strokeLinecap="round" strokeWidth={2.4} />
+    <path
+      d="m29 42 8.5-9.5 8 5L54 26"
+      fill="none"
+      stroke="#050706"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4.4}
+    />
+    <path
+      d="M47 25.5 54 23v7.5"
+      fill="none"
+      stroke="#050706"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4.4}
+    />
+    <path d="M37 52h17" fill="none" stroke="#050706" strokeLinecap="round" strokeWidth={4.4} />
   </svg>
 );
 export default SvgLogo;
