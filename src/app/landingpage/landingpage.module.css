@@ -35,28 +35,63 @@
   scroll-behavior: smooth;
 }
 
-.page::before {
+.page::before,
+.page::after {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   content: "";
+  mix-blend-mode: screen;
+}
+
+.page::before {
   opacity: var(--landing-glow-opacity, 0);
   background:
     radial-gradient(
-      circle 460px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.2),
-      rgba(var(--secondary-rgb), 0.13) 34%,
-      rgba(var(--tertiary-rgb), 0.1) 52%,
-      transparent 72%
+      circle 280px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.22),
+      rgba(var(--secondary-rgb), 0.11) 36%,
+      rgba(var(--tertiary-rgb), 0.08) 54%,
+      transparent 76%
     ),
     radial-gradient(
-      circle 760px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.09),
-      transparent 68%
+      circle 480px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.07),
+      transparent 70%
     );
-  mix-blend-mode: screen;
   transition: opacity 220ms ease;
+}
+
+.page::after {
+  opacity: calc(var(--landing-glow-opacity, 0) * 0.72);
+  background:
+    repeating-radial-gradient(
+      circle at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--tertiary-rgb), 0.42) 0 1px,
+      transparent 1px 13px
+    ),
+    repeating-radial-gradient(
+      circle at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.22) 0 1px,
+      transparent 1px 29px
+    ),
+    radial-gradient(
+      circle 24px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.54),
+      transparent 72%
+    );
+  filter: saturate(1.25) contrast(1.12);
+  mask-image: radial-gradient(
+    circle 360px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+    #000 0 18%,
+    rgba(0, 0, 0, 0.68) 36%,
+    transparent 76%
+  );
+  transform: translate3d(var(--landing-wave-x, 0px), var(--landing-wave-y, 0px), 0);
+  transition:
+    opacity 180ms ease,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page::selection {
@@ -827,7 +862,8 @@
 }
 
 @media (max-width: 640px) {
-  .page::before {
+  .page::before,
+  .page::after {
     display: none;
   }
 
@@ -920,5 +956,12 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 14px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page::after {
+    transform: none;
+    transition: opacity 160ms ease;
   }
 }
