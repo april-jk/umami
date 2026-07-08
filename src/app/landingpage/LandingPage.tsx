@@ -177,8 +177,8 @@ export default function LandingPage() {
     }
 
     function syncGlow() {
-      const driftX = clamp((nextX - lastX) * 0.22, -18, 18);
-      const driftY = clamp((nextY - lastY) * 0.22, -18, 18);
+      const driftX = clamp((nextX - lastX) * 0.36, -32, 32);
+      const driftY = clamp((nextY - lastY) * 0.36, -32, 32);
 
       root.style.setProperty('--landing-cursor-x', `${nextX}px`);
       root.style.setProperty('--landing-cursor-y', `${nextY}px`);
@@ -188,6 +188,14 @@ export default function LandingPage() {
       lastX = nextX;
       lastY = nextY;
       frame = 0;
+    }
+
+    function syncIdleGlow() {
+      root.style.setProperty('--landing-cursor-x', `${nextX}px`);
+      root.style.setProperty('--landing-cursor-y', `${nextY}px`);
+      root.style.setProperty('--landing-wave-x', '0px');
+      root.style.setProperty('--landing-wave-y', '0px');
+      root.style.setProperty('--landing-glow-opacity', '0.42');
     }
 
     function handlePointerMove(event: PointerEvent) {
@@ -203,6 +211,7 @@ export default function LandingPage() {
       root.style.setProperty('--landing-glow-opacity', '0');
     }
 
+    syncIdleGlow();
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
     document.addEventListener('mouseleave', hideGlow);
     window.addEventListener('blur', hideGlow);
