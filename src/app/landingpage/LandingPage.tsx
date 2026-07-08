@@ -94,7 +94,7 @@ const trustPoints = [
   },
   {
     title: 'No dashboard changes.',
-    body: 'Your Umami instance remains untouched. Amami just reads the API.',
+    body: 'Your analytics instance remains untouched. Amami just reads the API.',
     tone: 'primary',
   },
   {
@@ -104,7 +104,7 @@ const trustPoints = [
   },
   {
     title: 'Aggregate analytics only.',
-    body: "Leverages Umami's privacy-focused metrics without exposing PII.",
+    body: 'Uses privacy-focused aggregate metrics without exposing PII.',
     tone: 'primary',
   },
 ];
@@ -293,8 +293,8 @@ export default function LandingPage() {
             <span>Ask your analytics.</span>
           </h1>
           <p>
-            &gt; Amami connects Cursor, Claude Desktop, and other MCP clients to your Umami data,
-            allowing you to query traffic metrics directly from your editor.
+            &gt; Amami connects Cursor, Claude Desktop, and other MCP clients to your analytics
+            data, allowing you to query traffic metrics directly from your editor.
           </p>
         </div>
 

@@ -12,8 +12,8 @@ export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
 export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
 export const SHARE_TOKEN_TYPE = 'share';
 export const CACHE_TOKEN_TYPE = 'cache';
-export const HOMEPAGE_URL = 'https://umami.is';
-export const DOCS_URL = 'https://umami.is/docs';
+export const HOMEPAGE_URL = 'https://amami.dev';
+export const DOCS_URL = 'https://amami.dev/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
 export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
@@ -301,10 +301,7 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.teamCreate,
     PERMISSIONS.teamUpdate,
   ],
-  [ROLES.tenantBilling]: [
-    PERMISSIONS.tenantView,
-    PERMISSIONS.tenantBillingManage,
-  ],
+  [ROLES.tenantBilling]: [PERMISSIONS.tenantView, PERMISSIONS.tenantBillingManage],
   [ROLES.tenantMember]: [
     PERMISSIONS.tenantView,
     PERMISSIONS.websiteCreate,

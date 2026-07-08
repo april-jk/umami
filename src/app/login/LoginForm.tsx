@@ -41,7 +41,7 @@ export function LoginForm() {
       <Icon size="lg">
         <Logo />
       </Icon>
-      <Heading>umami</Heading>
+      <Heading>Amami</Heading>
       <Form
         key={mode}
         onSubmit={handleSubmit}
