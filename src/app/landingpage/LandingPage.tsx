@@ -10,8 +10,17 @@ import {
   ShieldCheck,
   TerminalWindow,
 } from '@phosphor-icons/react';
-import { type FormEvent, type KeyboardEvent, useMemo, useState } from 'react';
+import { type FormEvent, type KeyboardEvent, useEffect, useMemo, useState } from 'react';
 import styles from './landingpage.module.css';
+
+const pageAnchors = [
+  { id: 'top', label: 'Hero', shortLabel: '01' },
+  { id: 'demo', label: 'Demo', shortLabel: '02' },
+  { id: 'install', label: 'Install', shortLabel: '03' },
+  { id: 'tools', label: 'Tools', shortLabel: '04' },
+  { id: 'security', label: 'Security', shortLabel: '05' },
+  { id: 'waitlist', label: 'Waitlist', shortLabel: '06' },
+];
 
 const examples = [
   {
@@ -108,6 +117,7 @@ const trustBadges = [
 ];
 
 export default function LandingPage() {
+  const [activePage, setActivePage] = useState(pageAnchors[0].id);
   const [activeInstall, setActiveInstall] = useState(0);
   const [email, setEmail] = useState('');
   const [submittedEmail, setSubmittedEmail] = useState('');
@@ -116,6 +126,7 @@ export default function LandingPage() {
   const [copiedCommand, setCopiedCommand] = useState('');
 
   const selectedInstall = installCommands[activeInstall];
+  const activePageIndex = pageAnchors.findIndex(anchor => anchor.id === activePage);
   const formLabel = useMemo(() => {
     if (submittedEmail) {
       return 'Joined';
@@ -123,6 +134,66 @@ export default function LandingPage() {
 
     return 'Submit';
   }, [submittedEmail]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    function syncViewportVars() {
+      const navHeight = 74;
+      const viewportHeight = window.innerHeight;
+      const isCompactHeight = viewportHeight < 760;
+      root.style.setProperty('--landing-vh', `${viewportHeight}px`);
+      root.style.setProperty('--landing-nav-height', `${navHeight}px`);
+      root.style.setProperty(
+        '--landing-page-min-height',
+        `${Math.max(viewportHeight - navHeight, 620)}px`,
+      );
+      root.style.setProperty('--landing-page-pad', isCompactHeight ? '64px' : '88px');
+      root.style.setProperty('--landing-scroll-margin', `${navHeight + 28}px`);
+    }
+
+    syncViewportVars();
+    window.setTimeout(() => {
+      const targetId = window.location.hash.slice(1);
+      const target = targetId ? document.getElementById(targetId) : null;
+      target?.scrollIntoView({ block: 'start' });
+    }, 0);
+    window.addEventListener('resize', syncViewportVars);
+    window.addEventListener('orientationchange', syncViewportVars);
+
+    return () => {
+      window.removeEventListener('resize', syncViewportVars);
+      window.removeEventListener('orientationchange', syncViewportVars);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sections = pageAnchors
+      .map(anchor => document.getElementById(anchor.id))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target.id) {
+          setActivePage(visible.target.id);
+        }
+      },
+      {
+        rootMargin: '-34% 0px -48% 0px',
+        threshold: [0.15, 0.3, 0.55, 0.75],
+      },
+    );
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   function selectInstall(index: number) {
     setCopiedCommand('');
@@ -206,10 +277,15 @@ export default function LandingPage() {
           Amami
         </a>
         <div className={styles.navLinks}>
-          <a href="#demo">Demo</a>
-          <a href="#install">Install</a>
-          <a href="#tools">MCP tools</a>
-          <a href="#waitlist">Waitlist</a>
+          {pageAnchors.slice(1).map(anchor => (
+            <a
+              aria-current={activePage === anchor.id ? 'page' : undefined}
+              href={`#${anchor.id}`}
+              key={anchor.id}
+            >
+              {anchor.label === 'Tools' ? 'MCP tools' : anchor.label}
+            </a>
+          ))}
         </div>
         <div className={styles.navAction}>
           <TerminalWindow size={22} weight="duotone" />
@@ -219,7 +295,32 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      <section className={styles.hero} id="top">
+      <nav className={styles.pageRail} aria-label="Page sections">
+        <span className={styles.pageRailCounter}>
+          {String(Math.max(activePageIndex + 1, 1)).padStart(2, '0')} /{' '}
+          {String(pageAnchors.length).padStart(2, '0')}
+        </span>
+        <div>
+          {pageAnchors.map(anchor => (
+            <a
+              aria-current={activePage === anchor.id ? 'page' : undefined}
+              aria-label={`Go to ${anchor.label}`}
+              href={`#${anchor.id}`}
+              key={anchor.id}
+            >
+              <span>{anchor.shortLabel}</span>
+              <strong>{anchor.label}</strong>
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      <section
+        className={`${styles.hero} ${styles.pageSection}`}
+        data-page-index="01"
+        data-page-label="Hero"
+        id="top"
+      >
         <div className={styles.heroCopy}>
           <h1>
             Stop clicking dashboards.
@@ -264,7 +365,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className={styles.section} id="demo">
+      <section
+        className={`${styles.section} ${styles.pageSection}`}
+        data-page-index="02"
+        data-page-label="Demo"
+        id="demo"
+      >
         <SectionHeader
           eyebrow="// Compact, normalized analytics data for LLMs."
           title="Ask the questions you already have."
@@ -280,7 +386,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className={styles.section} id="install">
+      <section
+        className={`${styles.section} ${styles.pageSection}`}
+        data-page-index="03"
+        data-page-label="Install"
+        id="install"
+      >
         <SectionHeader title="Quick integration." eyebrow="// Setup path for MCP clients." />
         <div className={styles.installLayout}>
           <div className={styles.installWorkbench}>
@@ -347,7 +458,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className={styles.section} id="tools">
+      <section
+        className={`${styles.section} ${styles.pageSection}`}
+        data-page-index="04"
+        data-page-label="Tools"
+        id="tools"
+      >
         <SectionHeader title="Exposed tools." eyebrow="// One analytics layer for AI." />
         <div className={styles.toolsGrid}>
           {tools.map(([name, description]) => (
@@ -359,7 +475,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className={styles.section} aria-label="Security and privacy">
+      <section
+        className={`${styles.section} ${styles.pageSection}`}
+        aria-label="Security and privacy"
+        data-page-index="05"
+        data-page-label="Security"
+        id="security"
+      >
         <SectionHeader
           title="Security & Privacy."
           eyebrow="// Read-only by design. Small enough to trust."
@@ -389,7 +511,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className={styles.waitlistSection} id="waitlist">
+      <section
+        className={`${styles.waitlistSection} ${styles.pageSection}`}
+        data-page-index="06"
+        data-page-label="Waitlist"
+        id="waitlist"
+      >
         <div className={styles.waitlistCard}>
           <h2>Join the Waitlist</h2>
           <p>Get early access to the managed Amami cloud service.</p>
