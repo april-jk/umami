@@ -1,13 +1,19 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { hash } from '@/lib/crypto';
-import { parseSecureToken } from '@/lib/jwt';
+import { parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
+import { getApiKeyAuth, touchApiKey } from '@/queries/prisma/apiKey';
 import { getUser } from '@/queries/prisma/user';
 import { checkAuth } from './auth';
 
 vi.mock('@/lib/jwt', () => ({
   parseSecureToken: vi.fn(),
   parseToken: vi.fn(() => null),
+}));
+
+vi.mock('@/queries/prisma/apiKey', () => ({
+  getApiKeyAuth: vi.fn(),
+  touchApiKey: vi.fn(),
 }));
 
 vi.mock('@/queries/prisma/user', () => ({
@@ -24,6 +30,9 @@ vi.mock('@/lib/redis', () => ({
 }));
 
 const parseSecureTokenMock = vi.mocked(parseSecureToken);
+const parseTokenMock = vi.mocked(parseToken);
+const getApiKeyAuthMock = vi.mocked(getApiKeyAuth);
+const touchApiKeyMock = vi.mocked(touchApiKey);
 const getUserMock = vi.mocked(getUser);
 const redisMock = redis as unknown as {
   enabled: boolean;
@@ -51,6 +60,9 @@ function mockUser() {
 
 beforeEach(() => {
   parseSecureTokenMock.mockReset();
+  parseTokenMock.mockReset();
+  getApiKeyAuthMock.mockReset();
+  touchApiKeyMock.mockReset();
   getUserMock.mockReset();
   redisMock.enabled = false;
   redisMock.client.get.mockReset();
@@ -118,4 +130,38 @@ describe('checkAuth password fingerprint', () => {
 
     expect(result).toBeNull();
   });
+});
+
+test('checkAuth accepts API keys as bearer tokens when no login token payload exists', async () => {
+  parseSecureTokenMock.mockReturnValue(null);
+  parseTokenMock.mockReturnValue(null);
+  getApiKeyAuthMock.mockResolvedValue({
+    id: 'key-1',
+    user: {
+      id: 'user-1',
+      username: 'user',
+      role: 'user',
+      password: 'secret',
+    },
+  } as any);
+  touchApiKeyMock.mockResolvedValue({} as any);
+
+  const auth = await checkAuth(
+    new Request('http://localhost/api/websites', {
+      headers: {
+        authorization: 'Bearer amami_live_secret',
+      },
+    }),
+  );
+
+  expect(getApiKeyAuthMock).toHaveBeenCalledWith('amami_live_secret');
+  expect(touchApiKeyMock).toHaveBeenCalledWith('key-1');
+  expect(auth?.apiKeyId).toBe('key-1');
+  expect(auth?.user).toMatchObject({
+    id: 'user-1',
+    username: 'user',
+    role: 'user',
+    isAdmin: false,
+  });
+  expect((auth?.user as any).password).toBeUndefined();
 });

@@ -26,6 +26,7 @@ model User {
   createdBy Website[]    @relation("createUser")
   links     Link[]       @relation("user")
   pixels    Pixel[]      @relation("user")
+  apiKeys   ApiKey[]
   teams     TeamUser[]
   tenants   TenantUser[]
   reports   Report[]
@@ -123,6 +124,7 @@ model Tenant {
   websites     Website[]
   links        Link[]
   pixels       Pixel[]
+  apiKeys      ApiKey[]
   boards       Board[]
   subscription TenantSubscription?
   usage        TenantUsageMonthly[]
@@ -133,6 +135,29 @@ model Tenant {
   @@index([status])
   @@index([createdAt])
   @@map("tenant")
+}
+
+model ApiKey {
+  id         String    @id() @map("api_key_id") @db.Uuid
+  tenantId   String?   @map("tenant_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  name       String    @db.VarChar(100)
+  keyHash    String    @unique @map("key_hash") @db.VarChar(128)
+  keyPrefix  String    @map("key_prefix") @db.VarChar(32)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  lastUsedAt DateTime? @map("last_used_at") @db.Timestamptz(6)
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([keyPrefix])
+  @@index([createdAt])
+  @@index([lastUsedAt])
+  @@map("api_key")
 }
 
 model TenantUser {

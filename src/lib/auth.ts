@@ -10,6 +10,7 @@ import { createAuthKey, hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
+import { getApiKeyAuth, touchApiKey } from '@/queries/prisma/apiKey';
 import { getUser } from '@/queries/prisma/user';
 
 const log = debug('umami:auth');
@@ -26,6 +27,7 @@ export async function checkAuth(request: Request) {
   const shareToken = await parseShareToken(request);
 
   let user = null;
+  let apiKey = null;
   const { userId, authKey } = payload || {};
 
   if (userId) {
@@ -47,12 +49,20 @@ export async function checkAuth(request: Request) {
         user = null;
       }
     }
+  } else if (token) {
+    apiKey = await getApiKeyAuth(token);
+
+    if (apiKey?.user) {
+      user = apiKey.user;
+      touchApiKey(apiKey.id).catch(e => log(e));
+    }
   }
 
   log({
     hasToken: !!token,
     hasPayload: !!payload,
     hasAuthKey: !!authKey,
+    hasApiKey: !!apiKey,
     hasShareToken: !!shareToken,
     userId: user?.id,
   });
@@ -78,6 +88,7 @@ export async function checkAuth(request: Request) {
   return {
     token,
     authKey,
+    apiKeyId: apiKey?.id,
     shareToken,
     user,
   };
