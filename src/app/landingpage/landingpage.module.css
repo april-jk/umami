@@ -636,6 +636,36 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+.installCodeHeader {
+  position: absolute;
+  top: 17px;
+  left: 18px;
+  right: 120px;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.installCodeHeader span {
+  color: #b9f5df;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.installCodeHeader strong {
+  overflow: hidden;
+  color: #f5faf8;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .copyButton {
   display: inline-flex;
   align-items: center;
@@ -1231,6 +1261,10 @@
 
   .installCodePanel {
     margin-top: 58px;
+  }
+
+  .installCodeHeader {
+    right: 104px;
   }
 
   .commandLines li {

@@ -16,7 +16,7 @@ import {
   Sparkle,
   TerminalWindow,
 } from '@phosphor-icons/react';
-import { type FormEvent, useMemo, useState } from 'react';
+import { type FormEvent, type KeyboardEvent, useMemo, useState } from 'react';
 import styles from './landingpage.module.css';
 
 const mcpTools = [
@@ -108,6 +108,22 @@ export default function LandingPage() {
   const selected = prompts[activePrompt];
   const selectedInstall = installCommands[activeInstall];
   const commandLines = selectedInstall.command.split('\n');
+
+  function selectInstall(index: number) {
+    setCopiedCommand('');
+    setActiveInstall(index);
+  }
+
+  function handleInstallKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+      return;
+    }
+
+    event.preventDefault();
+    const direction = event.key === 'ArrowRight' ? 1 : -1;
+    const nextIndex = (index + direction + installCommands.length) % installCommands.length;
+    selectInstall(nextIndex);
+  }
 
   const formLabel = useMemo(() => {
     if (submittedEmail) {
@@ -355,18 +371,32 @@ export default function LandingPage() {
             <div className={styles.installTabs} role="tablist" aria-label="Install method">
               {installCommands.map((item, index) => (
                 <button
+                  aria-controls="install-code-panel"
                   aria-selected={index === activeInstall}
                   className={index === activeInstall ? styles.installTabActive : styles.installTab}
+                  id={`install-tab-${item.id}`}
                   key={item.id}
-                  onClick={() => setActiveInstall(index)}
+                  onClick={() => selectInstall(index)}
+                  onKeyDown={event => handleInstallKeyDown(event, index)}
                   role="tab"
+                  tabIndex={index === activeInstall ? 0 : -1}
                   type="button"
                 >
                   {item.id === 'skill' ? 'Skill' : item.id === 'mcp' ? 'MCP' : 'Config'}
                 </button>
               ))}
             </div>
-            <div className={styles.installCodePanel}>
+            <div
+              aria-labelledby={`install-tab-${selectedInstall.id}`}
+              className={styles.installCodePanel}
+              id="install-code-panel"
+              key={selectedInstall.id}
+              role="tabpanel"
+            >
+              <div className={styles.installCodeHeader}>
+                <span>{selectedInstall.eyebrow}</span>
+                <strong>{selectedInstall.title}</strong>
+              </div>
               <button
                 aria-live="polite"
                 className={styles.copyButton}
