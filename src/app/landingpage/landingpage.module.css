@@ -46,47 +46,48 @@
 }
 
 .page::before {
-  opacity: var(--landing-glow-opacity, 0);
+  opacity: calc(var(--landing-glow-opacity, 0) * 0.86);
   background:
     radial-gradient(
-      circle 280px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.22),
-      rgba(var(--secondary-rgb), 0.11) 36%,
-      rgba(var(--tertiary-rgb), 0.08) 54%,
-      transparent 76%
+      circle 170px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.2),
+      rgba(255, 248, 231, 0.08) 42%,
+      transparent 78%
     ),
     radial-gradient(
-      circle 480px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.07),
-      transparent 70%
+      circle 260px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.055),
+      transparent 72%
     );
   transition: opacity 220ms ease;
 }
 
 .page::after {
-  opacity: calc(var(--landing-glow-opacity, 0) * 0.72);
+  opacity: calc(var(--landing-glow-opacity, 0) * 0.82);
   background:
+    radial-gradient(circle, rgba(var(--primary-rgb), 0.38) 0 1.2px, transparent 1.6px) 0 0 / 17px
+    17px,
     repeating-radial-gradient(
       circle at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--tertiary-rgb), 0.42) 0 1px,
-      transparent 1px 13px
+      rgba(var(--primary-rgb), 0.34) 0 1.2px,
+      transparent 1.8px 18px
     ),
     repeating-radial-gradient(
       circle at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.22) 0 1px,
-      transparent 1px 29px
+      rgba(255, 248, 231, 0.18) 0 1px,
+      transparent 1.8px 34px
     ),
     radial-gradient(
-      circle 24px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.54),
-      transparent 72%
+      circle 18px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(255, 248, 231, 0.46),
+      transparent 74%
     );
-  filter: saturate(1.25) contrast(1.12);
+  filter: saturate(0.88) contrast(1.24);
   mask-image: radial-gradient(
-    circle 360px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-    #000 0 18%,
-    rgba(0, 0, 0, 0.68) 36%,
-    transparent 76%
+    circle 230px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+    #000 0 24%,
+    rgba(0, 0, 0, 0.82) 42%,
+    transparent 78%
   );
   transform: translate3d(var(--landing-wave-x, 0px), var(--landing-wave-y, 0px), 0);
   transition:
@@ -244,22 +245,6 @@
 .pageSection {
   padding-top: var(--page-pad);
   padding-bottom: var(--page-pad);
-}
-
-.pageSection::before {
-  position: absolute;
-  top: 0;
-  left: 8%;
-  right: 8%;
-  height: 1px;
-  content: "";
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(var(--primary-rgb), 0.28) 18%,
-    rgba(var(--secondary-rgb), 0.36) 50%,
-    transparent
-  );
 }
 
 .hero {
