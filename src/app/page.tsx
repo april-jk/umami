@@ -1,21 +1,12 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { LAST_TEAM_CONFIG } from '@/lib/constants';
-import { getItem } from '@/lib/storage';
+import type { Metadata } from 'next';
+import LandingPage from './landingpage/LandingPage';
 
-export default function RootPage() {
-  const router = useRouter();
+export const metadata: Metadata = {
+  title: 'Amami - Ask your analytics from your AI assistant',
+  description:
+    'Amami lets Cursor, Claude Desktop, and other MCP clients answer traffic questions from your analytics data.',
+};
 
-  useEffect(() => {
-    const lastTeam = getItem(LAST_TEAM_CONFIG);
-
-    if (lastTeam) {
-      router.replace(`/teams/${lastTeam}/websites`);
-    } else {
-      router.replace(`/websites`);
-    }
-  }, [router]);
-
-  return null;
+export default function Page() {
+  return <LandingPage />;
 }
