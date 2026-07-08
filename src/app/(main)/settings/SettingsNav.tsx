@@ -41,6 +41,12 @@ export function SettingsNav({
           path: renderUrl('/settings/teams'),
           icon: <Users />,
         },
+        {
+          id: 'tenants',
+          label: 'Tenants',
+          path: renderUrl('/settings/tenants'),
+          icon: <Users />,
+        },
       ],
     },
   ];

@@ -220,11 +220,11 @@ WHERE "tenant_id" IS NOT NULL;
 INSERT INTO "tenant_user" ("tenant_user_id", "tenant_id", "user_id", "role", "created_at", "updated_at")
 SELECT DISTINCT ON ("team"."tenant_id", "team_user"."user_id")
     (
-      substr(md5('team-tenant-user:' || "team_id"::text || ':' || "user_id"::text), 1, 8) || '-' ||
-      substr(md5('team-tenant-user:' || "team_id"::text || ':' || "user_id"::text), 9, 4) || '-' ||
-      substr(md5('team-tenant-user:' || "team_id"::text || ':' || "user_id"::text), 13, 4) || '-' ||
-      substr(md5('team-tenant-user:' || "team_id"::text || ':' || "user_id"::text), 17, 4) || '-' ||
-      substr(md5('team-tenant-user:' || "team_id"::text || ':' || "user_id"::text), 21, 12)
+      substr(md5('team-tenant-user:' || "team_user"."team_id"::text || ':' || "team_user"."user_id"::text), 1, 8) || '-' ||
+      substr(md5('team-tenant-user:' || "team_user"."team_id"::text || ':' || "team_user"."user_id"::text), 9, 4) || '-' ||
+      substr(md5('team-tenant-user:' || "team_user"."team_id"::text || ':' || "team_user"."user_id"::text), 13, 4) || '-' ||
+      substr(md5('team-tenant-user:' || "team_user"."team_id"::text || ':' || "team_user"."user_id"::text), 17, 4) || '-' ||
+      substr(md5('team-tenant-user:' || "team_user"."team_id"::text || ':' || "team_user"."user_id"::text), 21, 12)
     )::uuid,
     "team"."tenant_id",
     "team_user"."user_id",
