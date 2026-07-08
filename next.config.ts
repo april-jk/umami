@@ -45,7 +45,7 @@ const connectSrc = ["'self'", 'https:', apiUrlOrigin].filter(Boolean).join(' ');
 const contentSecurityPolicy = `
   default-src 'self';
   img-src 'self' https: data: blob:;
-  script-src 'self' 'unsafe-eval' 'unsafe-inline';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://analytics.oneceo.ai;
   style-src 'self' 'unsafe-inline';
   connect-src ${connectSrc};
   frame-src 'self' http: https:;

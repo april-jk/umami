@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import Script from 'next/script';
 import { Suspense } from 'react';
 import { getBaseUrl } from '@/lib/get-base-url';
 import { Providers } from './Providers';
@@ -47,6 +48,11 @@ export default function ({ children }) {
         <Suspense>
           <Providers>{children}</Providers>
         </Suspense>
+        <Script
+          src="https://analytics.oneceo.ai/script.js"
+          data-website-id="32d81594-6f52-4502-a713-87433481bc4f"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
