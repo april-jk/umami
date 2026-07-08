@@ -1,7 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
   <title id="title">Amami analytics</title>
   <rect x="5" y="5" width="54" height="54" rx="5.5" fill="#fffdf1" />
-  <path fill="#050706" d="M10.5 5h43A5.5 5.5 0 0 1 59 10.5V18H5v-7.5A5.5 5.5 0 0 1 10.5 5Z" />
   <circle cx="21" cy="26" r="6.4" fill="#fffdf1" stroke="#050706" stroke-width="3.6" />
   <path fill="#050706" d="M21 36c-7.1 0-12.8 5.7-12.8 12.8V52h25.6v-3.2C33.8 41.7 28.1 36 21 36Z" />
   <path
