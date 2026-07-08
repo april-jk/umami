@@ -159,6 +159,56 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
+    const pointerQuery = window.matchMedia('(pointer: fine)');
+
+    if (!pointerQuery.matches) {
+      return;
+    }
+
+    const root = document.documentElement;
+    let frame = 0;
+    let nextX = window.innerWidth / 2;
+    let nextY = window.innerHeight * 0.28;
+
+    function syncGlow() {
+      root.style.setProperty('--landing-cursor-x', `${nextX}px`);
+      root.style.setProperty('--landing-cursor-y', `${nextY}px`);
+      root.style.setProperty('--landing-glow-opacity', '1');
+      frame = 0;
+    }
+
+    function handlePointerMove(event: PointerEvent) {
+      nextX = event.clientX;
+      nextY = event.clientY;
+
+      if (!frame) {
+        frame = window.requestAnimationFrame(syncGlow);
+      }
+    }
+
+    function hideGlow() {
+      root.style.setProperty('--landing-glow-opacity', '0');
+    }
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    document.addEventListener('mouseleave', hideGlow);
+    window.addEventListener('blur', hideGlow);
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      window.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('mouseleave', hideGlow);
+      window.removeEventListener('blur', hideGlow);
+      root.style.removeProperty('--landing-cursor-x');
+      root.style.removeProperty('--landing-cursor-y');
+      root.style.removeProperty('--landing-glow-opacity');
+    };
+  }, []);
+
+  useEffect(() => {
     const sections = pageAnchors
       .map(anchor => document.getElementById(anchor.id))
       .filter((section): section is HTMLElement => Boolean(section));
