@@ -4,7 +4,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
-import { createPixel, getUserPixels } from '@/queries/prisma';
+import { createPixel, getAllUserPixelsIncludingTeamAccess, getUserPixels } from '@/queries/prisma';
 import { getDefaultTenantIdForUser, getTenantIdForTeam } from '@/queries/prisma/tenant';
 
 export async function GET(request: Request) {
@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     ...pagingParams,
     ...searchParams,
     ...sortingParams,
+    includeTeams: z.string().optional(),
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -22,7 +23,9 @@ export async function GET(request: Request) {
 
   const filters = await getQueryFilters(query);
 
-  const links = await getUserPixels(auth.user.id, filters);
+  const links = query.includeTeams
+    ? await getAllUserPixelsIncludingTeamAccess(auth.user.id, filters)
+    : await getUserPixels(auth.user.id, filters);
 
   return json(links);
 }

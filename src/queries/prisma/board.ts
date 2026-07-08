@@ -45,6 +45,32 @@ export async function getUserBoards(userId: string, filters?: QueryFilters) {
   );
 }
 
+export async function getAllUserBoardsIncludingTeamAccess(userId: string, filters?: QueryFilters) {
+  return getBoards(
+    {
+      where: {
+        type: {
+          not: BOARD_TYPES.dashboard,
+        },
+        OR: [
+          { userId },
+          {
+            team: {
+              deletedAt: null,
+              members: {
+                some: {
+                  userId,
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+    sanitizeSortFilters(filters, BOARD_SORT_FIELDS, { orderBy: 'name' }),
+  );
+}
+
 export async function getTeamBoards(teamId: string, filters?: QueryFilters) {
   return getBoards(
     {

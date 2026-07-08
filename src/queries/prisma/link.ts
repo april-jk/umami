@@ -46,11 +46,36 @@ export async function getUserLinks(userId: string, filters?: QueryFilters) {
   );
 }
 
+export async function getAllUserLinksIncludingTeamAccess(userId: string, filters?: QueryFilters) {
+  return getLinks(
+    {
+      where: {
+        deletedAt: null,
+        OR: [
+          { userId },
+          {
+            team: {
+              deletedAt: null,
+              members: {
+                some: {
+                  userId,
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+    sanitizeSortFilters(filters, LINK_SORT_FIELDS, { orderBy: 'name' }),
+  );
+}
+
 export async function getTeamLinks(teamId: string, filters?: QueryFilters) {
   return getLinks(
     {
       where: {
         teamId,
+        deletedAt: null,
       },
     },
     filters,

@@ -5,7 +5,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite, canViewBoardEntities } from '@/permissions';
-import { createBoard, getUserBoards } from '@/queries/prisma';
+import { createBoard, getAllUserBoardsIncludingTeamAccess, getUserBoards } from '@/queries/prisma';
 import { getDefaultTenantIdForUser, getTenantIdForTeam } from '@/queries/prisma/tenant';
 
 export async function GET(request: Request) {
@@ -13,6 +13,7 @@ export async function GET(request: Request) {
     ...pagingParams,
     ...searchParams,
     ...sortingParams,
+    includeTeams: z.string().optional(),
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -23,7 +24,9 @@ export async function GET(request: Request) {
 
   const filters = await getQueryFilters(query);
 
-  const boards = await getUserBoards(auth.user.id, filters);
+  const boards = query.includeTeams
+    ? await getAllUserBoardsIncludingTeamAccess(auth.user.id, filters)
+    : await getUserBoards(auth.user.id, filters);
 
   return json(boards);
 }

@@ -34,9 +34,34 @@ export async function getUserPixels(userId: string, filters?: QueryFilters) {
     {
       where: {
         userId,
+        deletedAt: null,
       },
     },
     filters,
+  );
+}
+
+export async function getAllUserPixelsIncludingTeamAccess(userId: string, filters?: QueryFilters) {
+  return getPixels(
+    {
+      where: {
+        deletedAt: null,
+        OR: [
+          { userId },
+          {
+            team: {
+              deletedAt: null,
+              members: {
+                some: {
+                  userId,
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+    sanitizeSortFilters(filters, PIXEL_SORT_FIELDS, { orderBy: 'name' }),
   );
 }
 
@@ -45,6 +70,7 @@ export async function getTeamPixels(teamId: string, filters?: QueryFilters) {
     {
       where: {
         teamId,
+        deletedAt: null,
       },
     },
     filters,
