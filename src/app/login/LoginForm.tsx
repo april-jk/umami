@@ -1,4 +1,5 @@
 import {
+  Button,
   Column,
   Form,
   FormButtons,
@@ -10,15 +11,20 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
 import { setUser } from '@/store/app';
 
 export function LoginForm() {
-  const { t, labels, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const router = useRouter();
-  const { mutateAsync, error } = useUpdateQuery('/auth/login');
+  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const { mutateAsync, error, isPending } = useUpdateQuery(
+    mode === 'login' ? '/auth/login' : '/auth/register',
+  );
+  const isRegister = mode === 'register';
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -36,34 +42,56 @@ export function LoginForm() {
         <Logo />
       </Icon>
       <Heading>umami</Heading>
-      <Form onSubmit={handleSubmit} error={getErrorMessage(error)} style={{ minWidth: 300 }}>
+      <Form
+        key={mode}
+        onSubmit={handleSubmit}
+        error={getErrorMessage(error)}
+        style={{ minWidth: 300 }}
+      >
         <FormField
           label={t(labels.username)}
           data-test="input-username"
           name="username"
-          rules={{ required: t(labels.required) }}
+          rules={{
+            required: t(labels.required),
+            ...(isRegister
+              ? { minLength: { value: 3, message: 'Use at least 3 characters.' } }
+              : {}),
+          }}
         >
-          <TextField autoComplete="username" />
+          <TextField autoComplete={isRegister ? 'username' : 'username'} />
         </FormField>
 
         <FormField
           label={t(labels.password)}
           data-test="input-password"
           name="password"
-          rules={{ required: t(labels.required) }}
+          rules={{
+            required: t(labels.required),
+            ...(isRegister
+              ? { minLength: { value: 8, message: t(messages.minPasswordLength, { n: '8' }) } }
+              : {}),
+          }}
         >
-          <PasswordField autoComplete="current-password" />
+          <PasswordField autoComplete={isRegister ? 'new-password' : 'current-password'} />
         </FormField>
         <FormButtons>
           <FormSubmitButton
             data-test="button-submit"
             variant="primary"
             style={{ flex: 1 }}
-            isDisabled={false}
+            isDisabled={isPending}
           >
-            {t(labels.login)}
+            {isRegister ? 'Create account' : t(labels.login)}
           </FormSubmitButton>
         </FormButtons>
+        <Button
+          variant="quiet"
+          onPress={() => setMode(isRegister ? 'login' : 'register')}
+          style={{ width: '100%' }}
+        >
+          {isRegister ? 'Use an existing account' : 'Create a new account'}
+        </Button>
       </Form>
     </Column>
   );

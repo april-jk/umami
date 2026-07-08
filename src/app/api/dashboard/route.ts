@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { createBoard, getBoard, updateBoard } from '@/queries/prisma';
+import { getDefaultTenantIdForUser } from '@/queries/prisma/tenant';
 
 export async function GET(request: Request) {
   const { auth, error } = await parseRequest(request);
@@ -51,10 +52,12 @@ export async function POST(request: Request) {
     return json(result);
   }
 
+  const tenantId = await getDefaultTenantIdForUser(userId);
   const result = await createBoard({
     id: userId,
     type: 'dashboard',
     userId,
+    tenantId,
     ...data,
   });
 

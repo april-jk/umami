@@ -5,6 +5,7 @@ import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createPixel, getUserPixels } from '@/queries/prisma';
+import { getDefaultTenantIdForUser, getTenantIdForTeam } from '@/queries/prisma/tenant';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -55,6 +56,14 @@ export async function POST(request: Request) {
 
   if (!teamId) {
     data.userId = auth.user.id;
+  }
+
+  const tenantId = teamId
+    ? await getTenantIdForTeam(teamId)
+    : await getDefaultTenantIdForUser(auth.user.id);
+
+  if (tenantId) {
+    data.tenantId = tenantId;
   }
 
   const result = await createPixel(data);

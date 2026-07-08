@@ -6,6 +6,7 @@ import { badRequest, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite, canViewBoardEntities } from '@/permissions';
 import { createBoard, getUserBoards } from '@/queries/prisma';
+import { getDefaultTenantIdForUser, getTenantIdForTeam } from '@/queries/prisma/tenant';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -69,6 +70,14 @@ export async function POST(request: Request) {
     parameters: body.parameters ?? {},
     userId: !teamId ? auth.user.id : undefined,
   };
+
+  const tenantId = teamId
+    ? await getTenantIdForTeam(teamId)
+    : await getDefaultTenantIdForUser(auth.user.id);
+
+  if (tenantId) {
+    data.tenantId = tenantId;
+  }
 
   const result = await createBoard(data);
 

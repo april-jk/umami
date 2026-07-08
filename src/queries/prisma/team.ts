@@ -112,7 +112,10 @@ export async function getTeamOwner(teamId: string) {
   });
 }
 
-export async function createTeam(data: Prisma.TeamCreateInput, userId: string): Promise<any> {
+export async function createTeam(
+  data: Prisma.TeamUncheckedCreateInput,
+  userId: string,
+): Promise<any> {
   const { id } = data;
   const { client, transaction } = prisma;
 

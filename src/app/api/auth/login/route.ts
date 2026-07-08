@@ -1,10 +1,7 @@
 import { z } from 'zod';
-import { saveAuth } from '@/lib/auth';
+import { createAuthToken } from '@/lib/auth';
 import { ROLES } from '@/lib/constants';
-import { hash, secret } from '@/lib/crypto';
-import { createSecureToken } from '@/lib/jwt';
 import { checkPassword } from '@/lib/password';
-import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { getAllUserTeams, getUserByUsername } from '@/queries/prisma';
@@ -30,18 +27,7 @@ export async function POST(request: Request) {
   }
 
   const { id, role, createdAt } = user;
-
-  // Bind token to password hash so a password change invalidates old tokens.
-  const pwd = hash(user.password);
-
-  let token: string;
-
-  if (redis.enabled) {
-    token = await saveAuth({ userId: id, role, pwd });
-  } else {
-    token = createSecureToken({ userId: user.id, role, pwd }, secret());
-  }
-
+  const token = await createAuthToken(user);
   const teams = await getAllUserTeams(id);
 
   return json({

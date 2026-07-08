@@ -112,6 +112,47 @@ export async function getTenantUser(tenantId: string, userId: string) {
   });
 }
 
+export async function getDefaultTenantIdForUser(userId: string) {
+  const user = await prisma.client.user.findUnique({
+    where: {
+      id: userId,
+      deletedAt: null,
+    },
+    select: {
+      tenantId: true,
+      tenants: {
+        where: {
+          role: ROLES.tenantOwner,
+          tenant: {
+            deletedAt: null,
+            type: TENANT_TYPES.personal,
+          },
+        },
+        select: {
+          tenantId: true,
+        },
+        take: 1,
+      },
+    },
+  });
+
+  return user?.tenantId ?? user?.tenants[0]?.tenantId ?? null;
+}
+
+export async function getTenantIdForTeam(teamId: string) {
+  const team = await prisma.client.team.findUnique({
+    where: {
+      id: teamId,
+      deletedAt: null,
+    },
+    select: {
+      tenantId: true,
+    },
+  });
+
+  return team?.tenantId ?? null;
+}
+
 export async function createTenant(
   data: Omit<Prisma.TenantUncheckedCreateInput, 'id' | 'plan' | 'status'> & {
     id?: string;

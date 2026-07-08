@@ -8,6 +8,7 @@ import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
+import { getDefaultTenantIdForUser, getTenantIdForTeam } from '@/queries/prisma/tenant';
 import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
 
 export async function GET(request: Request) {
@@ -81,6 +82,14 @@ export async function POST(request: Request) {
 
   if (!teamId) {
     data.userId = auth.user.id;
+  }
+
+  const tenantId = teamId
+    ? await getTenantIdForTeam(teamId)
+    : await getDefaultTenantIdForUser(auth.user.id);
+
+  if (tenantId) {
+    data.tenantId = tenantId;
   }
 
   const website = await createWebsite(data);

@@ -8,6 +8,7 @@ import { json, unauthorized } from '@/lib/response';
 import { pagingParams, sortingParams } from '@/lib/schema';
 import { canCreateTeam } from '@/permissions';
 import { createTeam, getUserTeams } from '@/queries/prisma';
+import { getDefaultTenantIdForUser } from '@/queries/prisma/tenant';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -48,12 +49,14 @@ export async function POST(request: Request) {
 
   const teamId = uuid();
   const teamOwnerId = ownerId && auth.user.isAdmin ? ownerId : auth.user.id;
+  const tenantId = await getDefaultTenantIdForUser(teamOwnerId);
 
   const team = await createTeam(
     {
       id: teamId,
       name,
       accessCode: `team_${getRandomChars(16)}`,
+      tenantId,
     },
     teamOwnerId,
   );

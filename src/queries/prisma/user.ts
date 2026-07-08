@@ -1,5 +1,6 @@
 import { Prisma } from '@/generated/prisma/client';
-import { ROLES } from '@/lib/constants';
+import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
 import { getRandomChars } from '@/lib/generate';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -86,6 +87,79 @@ export async function createUser(data: {
       role: true,
     },
   });
+}
+
+function getTenantSlug(username: string) {
+  const base = username
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 72);
+
+  return `${base || 'user'}-${getRandomChars(8, '0123456789abcdefghijklmnopqrstuvwxyz')}`;
+}
+
+export async function createRegisteredUser(data: {
+  id?: string;
+  username: string;
+  password: string;
+}) {
+  const userId = data.id ?? uuid();
+  const username = data.username.toLowerCase();
+  const tenantId = uuid();
+
+  const [_, user] = await prisma.transaction([
+    prisma.client.tenant.create({
+      data: {
+        id: tenantId,
+        name: `${username}'s workspace`,
+        slug: getTenantSlug(username),
+        type: TENANT_TYPES.personal,
+        plan: TENANT_PLANS.free,
+        status: TENANT_STATUS.active,
+      },
+      select: {
+        id: true,
+      },
+    }),
+
+    prisma.client.user.create({
+      data: {
+        id: userId,
+        tenantId,
+        username,
+        password: data.password,
+        role: ROLES.user,
+      },
+      select: {
+        id: true,
+        username: true,
+        password: true,
+        role: true,
+        createdAt: true,
+      },
+    }),
+
+    prisma.client.tenantUser.create({
+      data: {
+        id: uuid(),
+        tenantId,
+        userId,
+        role: ROLES.tenantOwner,
+      },
+    }),
+
+    prisma.client.tenantSubscription.create({
+      data: {
+        id: uuid(),
+        tenantId,
+        plan: TENANT_PLANS.free,
+        status: TENANT_STATUS.active,
+      },
+    }),
+  ]);
+
+  return user;
 }
 
 export async function updateUser(userId: string, data: Prisma.UserUpdateInput) {
