@@ -141,8 +141,7 @@
   color: var(--primary);
 }
 
-.primaryButton,
-.secondaryButton {
+.primaryButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -175,7 +174,7 @@
 }
 
 .primaryButton:active,
-.secondaryButton:active {
+.primaryButton:active {
   transform: scale(0.97);
 }
 
@@ -185,21 +184,8 @@
   transform: none;
 }
 
-.secondaryButton {
-  color: var(--text);
-  background: var(--surface-high);
-  border-color: rgba(var(--primary-rgb), 0.34);
-}
-
-.secondaryButton:hover {
-  color: #050505;
-  background: var(--tertiary);
-  border-color: #050505;
-}
-
 .hero,
-.section,
-.waitlistSection {
+.section {
   position: relative;
   z-index: 1;
   width: min(1280px, calc(100% - 48px));
@@ -418,8 +404,7 @@
 .exampleCard p,
 .toolCard p,
 .trustItem p,
-.installCopy p,
-.waitlistCard p {
+.installCopy p {
   margin: 0;
   color: var(--muted);
   font-size: 16px;
@@ -654,93 +639,6 @@
   line-height: 1.4;
 }
 
-.waitlistSection {
-  display: grid;
-  align-content: center;
-  margin-bottom: 64px;
-}
-
-.waitlistCard {
-  width: min(100%, 672px);
-  margin: 0 auto;
-  padding: 40px;
-  text-align: center;
-  background: var(--surface-low);
-  border: 2px solid rgba(var(--primary-rgb), 0.5);
-  border-radius: 16px;
-  transition: border-color 220ms ease;
-}
-
-.waitlistCard:hover {
-  border-color: rgba(var(--secondary-rgb), 0.8);
-}
-
-.waitlistCard h2 {
-  margin: 0 0 12px;
-  color: var(--text);
-  font-size: 24px;
-  line-height: 1.3;
-  font-weight: 700;
-}
-
-.waitlistCard > p {
-  margin-bottom: 32px;
-}
-
-.waitlistForm {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
-  max-width: 448px;
-  margin: 0 auto;
-}
-
-.waitlistForm input {
-  min-width: 0;
-  height: 48px;
-  padding: 0 16px;
-  color: var(--text);
-  background: var(--background);
-  border: 2px solid rgba(var(--primary-rgb), 0.32);
-  border-radius: 8px;
-  outline: none;
-  font: inherit;
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.waitlistForm input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(var(--secondary-rgb), 0.7);
-}
-
-.waitlistForm input::placeholder {
-  color: color-mix(in srgb, var(--muted) 50%, transparent);
-}
-
-.formHint,
-.formSuccess,
-.formError {
-  min-height: 18px;
-  margin: 24px 0 0 !important;
-  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12px !important;
-  line-height: 1.5 !important;
-}
-
-.formHint {
-  color: color-mix(in srgb, var(--muted) 72%, transparent) !important;
-}
-
-.formSuccess {
-  color: var(--primary) !important;
-}
-
-.formError {
-  color: #ff7a00 !important;
-}
-
 .footer {
   position: relative;
   z-index: 1;
@@ -827,14 +725,12 @@
     display: none;
   }
 
-  .primaryButton,
-  .secondaryButton {
+  .primaryButton {
     padding: 0 16px;
   }
 
   .hero,
-  .section,
-  .waitlistSection {
+  .section {
     width: min(100% - 32px, 1280px);
   }
 
@@ -886,18 +782,6 @@
   .trustVisual {
     gap: 20px;
     padding: 24px;
-  }
-
-  .waitlistCard {
-    padding: 28px 18px;
-  }
-
-  .waitlistForm {
-    grid-template-columns: 1fr;
-  }
-
-  .waitlistForm .primaryButton {
-    width: 100%;
   }
 
   .footer div {

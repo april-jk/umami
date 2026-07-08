@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  ArrowRight,
   CheckCircle,
   Copy,
   EyeSlash,
@@ -10,7 +9,7 @@ import {
   ShieldCheck,
   TerminalWindow,
 } from '@phosphor-icons/react';
-import { type FormEvent, type KeyboardEvent, useEffect, useMemo, useState } from 'react';
+import { type KeyboardEvent, useEffect, useState } from 'react';
 import styles from './landingpage.module.css';
 
 const pageAnchors = [
@@ -19,7 +18,6 @@ const pageAnchors = [
   { id: 'install', label: 'Install' },
   { id: 'tools', label: 'Tools' },
   { id: 'security', label: 'Security' },
-  { id: 'waitlist', label: 'Waitlist' },
 ];
 
 const examples = [
@@ -119,20 +117,9 @@ const trustBadges = [
 export default function LandingPage() {
   const [activePage, setActivePage] = useState(pageAnchors[0].id);
   const [activeInstall, setActiveInstall] = useState(0);
-  const [email, setEmail] = useState('');
-  const [submittedEmail, setSubmittedEmail] = useState('');
-  const [formError, setFormError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [copiedCommand, setCopiedCommand] = useState('');
 
   const selectedInstall = installCommands[activeInstall];
-  const formLabel = useMemo(() => {
-    if (submittedEmail) {
-      return 'Joined';
-    }
-
-    return 'Submit';
-  }, [submittedEmail]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -284,40 +271,6 @@ export default function LandingPage() {
     }, 1800);
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const normalizedEmail = email.trim();
-
-    if (!normalizedEmail || isSubmitting) {
-      return;
-    }
-
-    setFormError('');
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch('/api/landingpage/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: normalizedEmail }),
-      });
-
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Unable to join the waitlist.');
-      }
-
-      setSubmittedEmail(normalizedEmail);
-      setEmail('');
-    } catch (error) {
-      setFormError(error instanceof Error ? error.message : 'Unable to join the waitlist.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   return (
     <main className={styles.page}>
       <nav className={styles.nav} aria-label="Primary navigation">
@@ -337,7 +290,7 @@ export default function LandingPage() {
         </div>
         <div className={styles.navAction}>
           <TerminalWindow size={22} weight="duotone" />
-          <a className={styles.primaryButton} href="#waitlist">
+          <a className={styles.primaryButton} href="/login">
             Get Started
           </a>
         </div>
@@ -463,10 +416,6 @@ export default function LandingPage() {
                 </li>
               ))}
             </ul>
-            <a className={styles.secondaryButton} href="#waitlist">
-              View Documentation
-              <ArrowRight size={18} />
-            </a>
           </div>
         </div>
       </section>
@@ -517,44 +466,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className={`${styles.waitlistSection} ${styles.pageSection}`} id="waitlist">
-        <div className={styles.waitlistCard}>
-          <h2>Join the Waitlist</h2>
-          <p>Get early access to the managed Amami cloud service.</p>
-          <form className={styles.waitlistForm} onSubmit={handleSubmit}>
-            <input
-              aria-label="Work email"
-              name="email"
-              onChange={event => setEmail(event.target.value)}
-              placeholder="Work email"
-              required
-              type="email"
-              value={email}
-            />
-            <button className={styles.primaryButton} disabled={isSubmitting} type="submit">
-              {isSubmitting ? 'Submitting...' : formLabel}
-            </button>
-          </form>
-          <p
-            className={
-              formError ? styles.formError : submittedEmail ? styles.formSuccess : styles.formHint
-            }
-          >
-            {formError
-              ? formError
-              : submittedEmail
-                ? `${submittedEmail} is queued for early access.`
-                : 'No spam. Unsubscribe anytime.'}
-          </p>
-        </div>
-      </section>
-
       <footer className={styles.footer}>
         <span>Amami</span>
         <p>© 2024 Amami AI. High-performance analytics for the modern developer.</p>
         <div>
-          <a href="#waitlist">Privacy</a>
-          <a href="#waitlist">Terms</a>
           <a href="https://github.com/amami-dev/amami-mcp" rel="noreferrer" target="_blank">
             GitHub
           </a>
