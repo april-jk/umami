@@ -14,12 +14,12 @@ import { type FormEvent, type KeyboardEvent, useEffect, useMemo, useState } from
 import styles from './landingpage.module.css';
 
 const pageAnchors = [
-  { id: 'top', label: 'Hero', shortLabel: '01' },
-  { id: 'demo', label: 'Demo', shortLabel: '02' },
-  { id: 'install', label: 'Install', shortLabel: '03' },
-  { id: 'tools', label: 'Tools', shortLabel: '04' },
-  { id: 'security', label: 'Security', shortLabel: '05' },
-  { id: 'waitlist', label: 'Waitlist', shortLabel: '06' },
+  { id: 'top', label: 'Hero' },
+  { id: 'demo', label: 'Demo' },
+  { id: 'install', label: 'Install' },
+  { id: 'tools', label: 'Tools' },
+  { id: 'security', label: 'Security' },
+  { id: 'waitlist', label: 'Waitlist' },
 ];
 
 const examples = [
@@ -139,15 +139,7 @@ export default function LandingPage() {
 
     function syncViewportVars() {
       const navHeight = 74;
-      const viewportHeight = window.innerHeight;
-      const isCompactHeight = viewportHeight < 760;
-      root.style.setProperty('--landing-vh', `${viewportHeight}px`);
       root.style.setProperty('--landing-nav-height', `${navHeight}px`);
-      root.style.setProperty(
-        '--landing-page-min-height',
-        `${Math.max(Math.round((viewportHeight - navHeight) * 0.82), 560)}px`,
-      );
-      root.style.setProperty('--landing-page-pad', isCompactHeight ? '52px' : '74px');
       root.style.setProperty('--landing-scroll-margin', `${navHeight + 28}px`);
     }
 
@@ -163,63 +155,6 @@ export default function LandingPage() {
     return () => {
       window.removeEventListener('resize', syncViewportVars);
       window.removeEventListener('orientationchange', syncViewportVars);
-    };
-  }, []);
-
-  useEffect(() => {
-    let snapTimer = 0;
-    let lastWheelAt = 0;
-    let lastWheelDelta = 0;
-
-    function snapToNearestSection() {
-      const now = window.performance.now();
-
-      if (now - lastWheelAt < 140) {
-        return;
-      }
-
-      const viewportHeight = window.innerHeight;
-      const snapLine = Number.parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue('--landing-scroll-margin'),
-      );
-      const sections = pageAnchors
-        .map(anchor => document.getElementById(anchor.id))
-        .filter((section): section is HTMLElement => Boolean(section));
-      const candidates = sections.map(section => ({
-        section,
-        top: section.getBoundingClientRect().top,
-        distance: Math.abs(section.getBoundingClientRect().top - snapLine),
-      }));
-      const directional =
-        lastWheelDelta > 0
-          ? candidates.find(
-              candidate => candidate.top > snapLine + 32 && candidate.top < viewportHeight * 0.86,
-            )
-          : candidates
-              .filter(
-                candidate => candidate.top < snapLine - 32 && candidate.top > -viewportHeight * 0.6,
-              )
-              .at(-1);
-      const nearest = directional ?? candidates.sort((a, b) => a.distance - b.distance)[0];
-
-      if (nearest && (directional || nearest.distance < viewportHeight * 0.22)) {
-        nearest.section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.history.replaceState(null, '', `#${nearest.section.id}`);
-      }
-    }
-
-    function handleWheel(event: WheelEvent) {
-      lastWheelAt = window.performance.now();
-      lastWheelDelta = event.deltaY;
-      window.clearTimeout(snapTimer);
-      snapTimer = window.setTimeout(snapToNearestSection, 180);
-    }
-
-    window.addEventListener('wheel', handleWheel, { passive: true });
-
-    return () => {
-      window.clearTimeout(snapTimer);
-      window.removeEventListener('wheel', handleWheel);
     };
   }, []);
 
@@ -351,12 +286,7 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      <section
-        className={`${styles.hero} ${styles.pageSection}`}
-        data-page-index="01"
-        data-page-label="Hero"
-        id="top"
-      >
+      <section className={`${styles.hero} ${styles.pageSection}`} id="top">
         <div className={styles.heroCopy}>
           <h1>
             Stop clicking dashboards.
@@ -401,12 +331,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section
-        className={`${styles.section} ${styles.pageSection}`}
-        data-page-index="02"
-        data-page-label="Demo"
-        id="demo"
-      >
+      <section className={`${styles.section} ${styles.pageSection}`} id="demo">
         <SectionHeader
           eyebrow="// Compact, normalized analytics data for LLMs."
           title="Ask the questions you already have."
@@ -422,12 +347,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section
-        className={`${styles.section} ${styles.pageSection}`}
-        data-page-index="03"
-        data-page-label="Install"
-        id="install"
-      >
+      <section className={`${styles.section} ${styles.pageSection}`} id="install">
         <SectionHeader title="Quick integration." eyebrow="// Setup path for MCP clients." />
         <div className={styles.installLayout}>
           <div className={styles.installWorkbench}>
@@ -494,12 +414,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section
-        className={`${styles.section} ${styles.pageSection}`}
-        data-page-index="04"
-        data-page-label="Tools"
-        id="tools"
-      >
+      <section className={`${styles.section} ${styles.pageSection}`} id="tools">
         <SectionHeader title="Exposed tools." eyebrow="// One analytics layer for AI." />
         <div className={styles.toolsGrid}>
           {tools.map(([name, description]) => (
@@ -514,8 +429,6 @@ export default function LandingPage() {
       <section
         className={`${styles.section} ${styles.pageSection}`}
         aria-label="Security and privacy"
-        data-page-index="05"
-        data-page-label="Security"
         id="security"
       >
         <SectionHeader
@@ -547,12 +460,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section
-        className={`${styles.waitlistSection} ${styles.pageSection}`}
-        data-page-index="06"
-        data-page-label="Waitlist"
-        id="waitlist"
-      >
+      <section className={`${styles.waitlistSection} ${styles.pageSection}`} id="waitlist">
         <div className={styles.waitlistCard}>
           <h2>Join the Waitlist</h2>
           <p>Get early access to the managed Amami cloud service.</p>
