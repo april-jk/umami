@@ -1,27 +1,33 @@
 .page {
   --page-pad: clamp(72px, 8vw, 118px);
   --scroll-margin: var(--landing-scroll-margin, 102px);
-  --background: #0b1326;
-  --surface: #10182a;
-  --surface-lowest: #060e20;
-  --surface-low: #131b2e;
-  --surface-mid: #171f33;
-  --surface-high: #222a3d;
-  --surface-highest: #2d3449;
-  --text: #dae2fd;
-  --muted: #c7c4d8;
-  --outline: #464556;
-  --outline-strong: #908fa1;
-  --primary: #c1c1ff;
-  --primary-strong: #5d5cff;
-  --secondary: #ddb7ff;
-  --tertiary: #4cd7f6;
+  --background: #070707;
+  --surface: #111111;
+  --surface-lowest: #030303;
+  --surface-low: #151515;
+  --surface-mid: #202020;
+  --surface-high: #2c2c2c;
+  --surface-highest: #3a3a3a;
+  --text: #fff8e7;
+  --muted: #d8d0bd;
+  --outline: #635d4b;
+  --outline-strong: #a89f82;
+  --primary: #f5ff00;
+  --primary-strong: #ff4d00;
+  --secondary: #ff2bd6;
+  --tertiary: #00e7ff;
+  --primary-rgb: 245, 255, 0;
+  --primary-strong-rgb: 255, 77, 0;
+  --secondary-rgb: 255, 43, 214;
+  --tertiary-rgb: 0, 231, 255;
   min-height: 100dvh;
   color: var(--text);
   background:
-    radial-gradient(circle at 18% 0%, rgba(93, 92, 255, 0.18), transparent 34rem),
-    radial-gradient(circle at 84% 28%, rgba(76, 215, 246, 0.1), transparent 28rem),
-    linear-gradient(180deg, #0b1326, #070f21 62%, #060e20);
+    linear-gradient(90deg, rgba(var(--primary-rgb), 0.08) 1px, transparent 1px) 0 0 / 42px 42px,
+    linear-gradient(rgba(var(--secondary-rgb), 0.06) 1px, transparent 1px) 0 0 / 42px 42px,
+    radial-gradient(circle at 14% 0%, rgba(var(--primary-rgb), 0.24), transparent 27rem),
+    radial-gradient(circle at 88% 24%, rgba(var(--secondary-rgb), 0.2), transparent 24rem),
+    linear-gradient(180deg, #070707, #101000 48%, #030303);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow-x: hidden;
@@ -29,8 +35,8 @@
 }
 
 .page::selection {
-  color: #fdf9ff;
-  background: var(--primary-strong);
+  color: #050505;
+  background: var(--primary);
 }
 
 .nav {
@@ -46,10 +52,10 @@
   width: min(1280px, 100%);
   margin: 0 auto;
   padding: 16px 24px;
-  background: rgba(11, 19, 38, 0.82);
-  border-bottom: 1px solid rgba(70, 69, 86, 0.3);
+  background: rgba(7, 7, 7, 0.86);
+  border-bottom: 2px solid rgba(var(--primary-rgb), 0.42);
   backdrop-filter: blur(18px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 14px 0 rgba(var(--primary-rgb), 0.08);
 }
 
 .brand {
@@ -92,11 +98,11 @@
 
 .navLinks a:hover,
 .navLinks a[aria-current="page"] {
-  background: rgba(45, 52, 73, 0.42);
+  background: var(--primary);
 }
 
 .navLinks a[aria-current="page"] {
-  color: var(--primary);
+  color: #050505;
 }
 
 .navAction {
@@ -132,9 +138,10 @@
 }
 
 .primaryButton {
-  color: #fdf9ff;
-  background: var(--primary-strong);
-  box-shadow: 0 0 20px rgba(93, 92, 255, 0.3);
+  color: #050505;
+  background: var(--primary);
+  border-color: #050505;
+  box-shadow: 6px 6px 0 var(--primary-strong);
 }
 
 .primaryButton:hover {
@@ -155,12 +162,13 @@
 .secondaryButton {
   color: var(--text);
   background: var(--surface-high);
-  border-color: rgba(70, 69, 86, 0.42);
+  border-color: rgba(var(--primary-rgb), 0.34);
 }
 
 .secondaryButton:hover {
-  background: var(--surface-highest);
-  border-color: rgba(193, 193, 255, 0.52);
+  color: #050505;
+  background: var(--tertiary);
+  border-color: #050505;
 }
 
 .hero,
@@ -188,8 +196,8 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(193, 193, 255, 0.12) 18%,
-    rgba(70, 69, 86, 0.38) 50%,
+    rgba(var(--primary-rgb), 0.28) 18%,
+    rgba(var(--secondary-rgb), 0.36) 50%,
     transparent
   );
 }
@@ -222,6 +230,7 @@
 .hero h1 span {
   display: block;
   color: var(--primary);
+  text-shadow: 4px 4px 0 rgba(var(--primary-strong-rgb), 0.85);
 }
 
 .heroCopy p {
@@ -236,10 +245,12 @@
 .terminal,
 .codeWindow {
   overflow: hidden;
-  background: rgba(23, 31, 51, 0.9);
-  border: 1px solid rgba(93, 92, 255, 0.32);
+  background: rgba(17, 17, 17, 0.94);
+  border: 2px solid rgba(var(--primary-rgb), 0.72);
   border-radius: 12px;
-  box-shadow: 0 0 42px rgba(93, 92, 255, 0.15);
+  box-shadow:
+    10px 10px 0 rgba(var(--primary-strong-rgb), 0.92),
+    0 0 42px rgba(var(--secondary-rgb), 0.12);
 }
 
 .terminal {
@@ -255,7 +266,7 @@
   align-items: center;
   color: var(--muted);
   background: var(--surface-highest);
-  border-bottom: 1px solid rgba(70, 69, 86, 0.52);
+  border-bottom: 2px solid rgba(var(--primary-rgb), 0.5);
 }
 
 .terminalTop {
@@ -273,7 +284,7 @@
 .windowDots span {
   width: 12px;
   height: 12px;
-  background: rgba(144, 143, 161, 0.72);
+  background: var(--primary);
   border-radius: 999px;
 }
 
@@ -297,6 +308,7 @@
 
 .terminalRow strong {
   color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.14);
 }
 
 .userRole {
@@ -304,7 +316,7 @@
 }
 
 .systemRole {
-  color: rgba(199, 196, 216, 0.54);
+  color: color-mix(in srgb, var(--muted) 54%, transparent);
 }
 
 .assistantRole {
@@ -313,7 +325,7 @@
 
 .toolTrace {
   color: var(--outline-strong) !important;
-  border-left: 2px solid rgba(144, 143, 161, 0.34);
+  border-left: 3px solid var(--tertiary);
   padding: 4px 0 4px 16px;
 }
 
@@ -326,7 +338,7 @@
 .sectionHeader {
   margin-bottom: 48px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(70, 69, 86, 0.56);
+  border-bottom: 2px solid rgba(var(--primary-rgb), 0.3);
 }
 
 .sectionHeader h2 {
@@ -355,7 +367,7 @@
 .toolCard,
 .trustItem {
   background: var(--surface-low);
-  border: 1px solid rgba(70, 69, 86, 0.26);
+  border: 2px solid rgba(var(--primary-rgb), 0.18);
   border-radius: 12px;
   transition:
     border-color 220ms ease,
@@ -370,8 +382,8 @@
 .exampleCard:hover,
 .toolCard:hover,
 .trustItem:hover {
-  border-color: rgba(93, 92, 255, 0.52);
-  box-shadow: 0 0 22px rgba(93, 92, 255, 0.08);
+  border-color: rgba(var(--primary-rgb), 0.72);
+  box-shadow: 7px 7px 0 rgba(var(--secondary-rgb), 0.28);
 }
 
 .exampleCard span {
@@ -446,19 +458,20 @@
 }
 
 .tab:hover {
+  color: var(--primary);
   background: var(--surface-mid);
 }
 
 .tabActive {
-  color: var(--text);
-  background: var(--surface-highest);
+  color: #050505;
+  background: var(--primary);
   border-bottom-color: var(--primary-strong);
 }
 
 .codeWindow {
-  border-color: rgba(70, 69, 86, 0.5);
+  border-color: rgba(var(--primary-rgb), 0.52);
   border-top-left-radius: 0;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 8px 8px 0 rgba(var(--primary-strong-rgb), 0.64);
 }
 
 .codeTop {
@@ -480,7 +493,7 @@
 }
 
 .copyButton:hover {
-  color: var(--primary);
+  color: var(--tertiary);
 }
 
 .codeBlock {
@@ -530,6 +543,7 @@
 
 .installCopy svg {
   color: var(--primary);
+  filter: drop-shadow(2px 2px 0 rgba(var(--primary-strong-rgb), 0.8));
 }
 
 .toolsGrid {
@@ -594,12 +608,12 @@
 
 .dotPrimary {
   background: var(--primary-strong);
-  box-shadow: 0 0 8px rgba(93, 92, 255, 0.8);
+  box-shadow: 0 0 8px rgba(var(--primary-strong-rgb), 0.8);
 }
 
 .dotSecondary {
   background: var(--secondary);
-  box-shadow: 0 0 8px rgba(221, 183, 255, 0.8);
+  box-shadow: 0 0 8px rgba(var(--secondary-rgb), 0.8);
 }
 
 .trustVisual {
@@ -611,10 +625,11 @@
   justify-self: center;
   place-items: center;
   padding: 32px;
-  color: rgba(199, 196, 216, 0.84);
+  color: color-mix(in srgb, var(--muted) 84%, transparent);
   background: var(--surface-low);
-  border: 1px solid rgba(70, 69, 86, 0.32);
+  border: 2px solid rgba(var(--tertiary-rgb), 0.42);
   border-radius: 16px;
+  box-shadow: 9px 9px 0 rgba(var(--primary-rgb), 0.26);
 }
 
 .trustBadge {
@@ -642,13 +657,13 @@
   padding: 40px;
   text-align: center;
   background: var(--surface-low);
-  border: 1px solid rgba(93, 92, 255, 0.36);
+  border: 2px solid rgba(var(--primary-rgb), 0.5);
   border-radius: 16px;
   transition: border-color 220ms ease;
 }
 
 .waitlistCard:hover {
-  border-color: rgba(93, 92, 255, 0.68);
+  border-color: rgba(var(--secondary-rgb), 0.8);
 }
 
 .waitlistCard h2 {
@@ -677,7 +692,7 @@
   padding: 0 16px;
   color: var(--text);
   background: var(--background);
-  border: 1px solid rgba(70, 69, 86, 0.72);
+  border: 2px solid rgba(var(--primary-rgb), 0.32);
   border-radius: 8px;
   outline: none;
   font: inherit;
@@ -687,12 +702,12 @@
 }
 
 .waitlistForm input:focus {
-  border-color: var(--primary-strong);
-  box-shadow: 0 0 0 1px var(--primary-strong);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(var(--secondary-rgb), 0.7);
 }
 
 .waitlistForm input::placeholder {
-  color: rgba(199, 196, 216, 0.5);
+  color: color-mix(in srgb, var(--muted) 50%, transparent);
 }
 
 .formHint,
@@ -706,7 +721,7 @@
 }
 
 .formHint {
-  color: rgba(199, 196, 216, 0.72) !important;
+  color: color-mix(in srgb, var(--muted) 72%, transparent) !important;
 }
 
 .formSuccess {
@@ -714,7 +729,7 @@
 }
 
 .formError {
-  color: #ffb4ab !important;
+  color: #ff7a00 !important;
 }
 
 .footer {
@@ -728,7 +743,7 @@
   margin: 0 auto;
   padding: 40px 24px;
   background: var(--surface-lowest);
-  border-top: 1px solid rgba(70, 69, 86, 0.24);
+  border-top: 2px solid rgba(var(--primary-rgb), 0.2);
 }
 
 .footer > span {
