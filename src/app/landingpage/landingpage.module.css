@@ -45,15 +45,17 @@
   opacity: calc(var(--landing-glow-opacity, 0) * 0.58);
   background:
     radial-gradient(
-      circle 118px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.2),
-      rgba(255, 248, 231, 0.08) 42%,
-      transparent 78%
+      circle 236px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.18),
+      rgba(255, 248, 231, 0.095) 34%,
+      rgba(var(--primary-rgb), 0.04) 62%,
+      transparent 90%
     ),
     radial-gradient(
-      circle 184px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
-      rgba(var(--primary-rgb), 0.055),
-      transparent 72%
+      circle 368px at var(--landing-cursor-x, 50vw) var(--landing-cursor-y, 28vh),
+      rgba(var(--primary-rgb), 0.06),
+      rgba(var(--primary-strong-rgb), 0.026) 52%,
+      transparent 88%
     );
   transition: opacity 220ms ease;
 }
