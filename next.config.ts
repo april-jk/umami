@@ -104,10 +104,65 @@ const apiHeaders = [
   },
 ];
 
+const iconHeaders = [
+  {
+    key: 'Cache-Control',
+    value: 'public, max-age=0, must-revalidate',
+  },
+];
+
 const headers = [
   {
     source: '/api/:path*',
     headers: apiHeaders,
+  },
+  {
+    source: '/favicon.ico',
+    headers: iconHeaders,
+  },
+  {
+    source: '/favicon.svg',
+    headers: iconHeaders,
+  },
+  {
+    source: '/favicon-16x16.png',
+    headers: iconHeaders,
+  },
+  {
+    source: '/favicon-32x32.png',
+    headers: iconHeaders,
+  },
+  {
+    source: '/apple-touch-icon.png',
+    headers: iconHeaders,
+  },
+  {
+    source: '/android-chrome-192x192.png',
+    headers: iconHeaders,
+  },
+  {
+    source: '/android-chrome-512x512.png',
+    headers: iconHeaders,
+  },
+  {
+    source: '/mstile-150x150.png',
+    headers: iconHeaders,
+  },
+  {
+    source: '/safari-pinned-tab.svg',
+    headers: iconHeaders,
+  },
+  {
+    source: '/site.webmanifest',
+    headers: iconHeaders,
+  },
+  {
+    source: '/icon.svg',
+    headers: iconHeaders,
+  },
+  {
+    source: '/apple-icon.png',
+    headers: iconHeaders,
   },
   {
     source: '/:path*',
