@@ -29,7 +29,7 @@ export function LoginForm() {
     await mutateAsync(data, {
       onSuccess: async ({ token }) => {
         setClientAuthToken(token);
-        router.replace('/');
+        router.replace('/dashboard');
       },
     });
   };
