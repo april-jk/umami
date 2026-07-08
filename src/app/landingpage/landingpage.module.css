@@ -382,8 +382,7 @@
 
 .sectionHeader {
   margin-bottom: 48px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid rgba(var(--primary-rgb), 0.3);
+  padding-bottom: 0;
 }
 
 .sectionHeader h2 {
