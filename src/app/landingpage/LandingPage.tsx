@@ -2,33 +2,18 @@
 
 import {
   ArrowRight,
-  CaretRight,
-  ChartLineUp,
   CheckCircle,
-  Code,
-  CursorClick,
-  Database,
-  EnvelopeSimple,
-  GitFork,
+  Copy,
+  EyeSlash,
+  Key,
   LockKey,
-  PlugsConnected,
-  Robot,
-  Sparkle,
+  ShieldCheck,
   TerminalWindow,
 } from '@phosphor-icons/react';
 import { type FormEvent, type KeyboardEvent, useMemo, useState } from 'react';
 import styles from './landingpage.module.css';
 
-const mcpTools = [
-  ['list_websites', 'Find the Umami sites your assistant can analyze.'],
-  ['get_website_stats', 'Pull pageviews, visitors, visits, bounces, and time on site.'],
-  ['get_pageviews', 'Inspect traffic trends by day or hour.'],
-  ['get_top_pages', 'Find the pages getting attention.'],
-  ['get_active_visitors', 'Check live traffic without opening a dashboard.'],
-  ['get_traffic_sources', 'See where visitors came from.'],
-];
-
-const prompts = [
+const examples = [
   {
     label: 'Traffic check',
     query: 'How was traffic last week?',
@@ -47,57 +32,82 @@ const prompts = [
   },
 ];
 
-const proof = [
-  ['5%+', 'landing page signup target'],
-  ['read-only', 'safe MCP access model'],
-  ['6 tools', 'focused analytics surface'],
-  ['npx', 'local-first install path'],
-];
-
 const installCommands = [
   {
     id: 'skill',
-    title: 'Install Amami Skill',
-    eyebrow: 'Agent skill',
-    command: `Install the Amami analytics skill in this coding agent.
+    label: 'Skill',
+    title: 'Install as a global skill',
+    command: `# Install as a global skill
+npx -y @amami/cli install
 
-Source: https://github.com/amami-dev/amami-mcp/tree/main/skills/amami
-
-Use it for:
-- Asking Umami analytics questions from Cursor, Claude Desktop, or another MCP client.
-- Keeping Amami read-only by default.
-- Installing the Amami MCP server with npx when I provide Umami credentials.`,
-    body: 'Copies an agent-ready prompt for installing Amami workflow guidance and using the MCP setup path.',
+# Or view source on GitHub
+https://github.com/amami-dev/amami-mcp/tree/main/skills/amami`,
   },
   {
     id: 'mcp',
-    title: 'Install Amami MCP',
-    eyebrow: 'MCP server',
+    label: 'MCP',
+    title: 'Add directly to Claude Desktop',
     command:
-      'claude mcp add amami \\\n  -e UMAMI_API_KEY=your_cloud_api_key \\\n  -- npx -y umami-analytics-mcp',
-    body: 'Registers the current read-only MCP package with credentials kept in your local MCP client config.',
+      'claude mcp add amami -e UMAMI_API_KEY=your_cloud_api_key -- npx -y umami-analytics-mcp',
   },
   {
     id: 'config',
+    label: 'Config',
     title: 'Cursor / Claude Desktop config',
-    eyebrow: 'JSON config',
     command: `{
   "mcpServers": {
     "amami": {
       "command": "npx",
       "args": ["-y", "umami-analytics-mcp"],
       "env": {
-        "UMAMI_API_KEY": "your_cloud_api_key"
+        "UMAMI_API_KEY": "your_api_key_here"
       }
     }
   }
 }`,
-    body: 'Copies a config block for .cursor/mcp.json or claude_desktop_config.json.',
   },
 ];
 
+const tools = [
+  ['list_websites', 'Retrieves all websites accessible to the provided API key.'],
+  ['get_website_stats', 'Gets high-level metrics (pageviews, visitors, bounces) for a site.'],
+  ['get_pageviews', 'Fetches a time-series array of pageviews over a specific date range.'],
+  ['get_top_pages', 'Lists the most visited URLs for a given period, sorted by views.'],
+  ['get_active_visitors', 'Returns the real-time count of currently active visitors on the site.'],
+  ['get_traffic_sources', 'Identifies referrers and sources driving traffic to your domain.'],
+];
+
+const trustPoints = [
+  {
+    title: '0 writes.',
+    body: 'The MCP server only implements GET requests. It cannot modify data.',
+    tone: 'secondary',
+  },
+  {
+    title: 'No dashboard changes.',
+    body: 'Your Umami instance remains untouched. Amami just reads the API.',
+    tone: 'primary',
+  },
+  {
+    title: 'Credentials stay local.',
+    body: "API keys remain in your MCP client's environment variables.",
+    tone: 'secondary',
+  },
+  {
+    title: 'Aggregate analytics only.',
+    body: "Leverages Umami's privacy-focused metrics without exposing PII.",
+    tone: 'primary',
+  },
+];
+
+const trustBadges = [
+  { label: 'Secure', Icon: LockKey },
+  { label: 'Private', Icon: EyeSlash },
+  { label: 'Read Only', Icon: ShieldCheck },
+  { label: 'Local Keys', Icon: Key },
+];
+
 export default function LandingPage() {
-  const [activePrompt, setActivePrompt] = useState(0);
   const [activeInstall, setActiveInstall] = useState(0);
   const [email, setEmail] = useState('');
   const [submittedEmail, setSubmittedEmail] = useState('');
@@ -105,9 +115,14 @@ export default function LandingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copiedCommand, setCopiedCommand] = useState('');
 
-  const selected = prompts[activePrompt];
   const selectedInstall = installCommands[activeInstall];
-  const commandLines = selectedInstall.command.split('\n');
+  const formLabel = useMemo(() => {
+    if (submittedEmail) {
+      return 'Joined';
+    }
+
+    return 'Submit';
+  }, [submittedEmail]);
 
   function selectInstall(index: number) {
     setCopiedCommand('');
@@ -125,24 +140,16 @@ export default function LandingPage() {
     selectInstall(nextIndex);
   }
 
-  const formLabel = useMemo(() => {
-    if (submittedEmail) {
-      return 'You are on the list';
-    }
-
-    return 'Get early access';
-  }, [submittedEmail]);
-
-  async function copyCommand(id: string, command: string) {
+  async function copyCommand() {
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(command);
+        await navigator.clipboard.writeText(selectedInstall.command);
       } else {
         throw new Error('Clipboard API unavailable');
       }
     } catch {
       const textarea = document.createElement('textarea');
-      textarea.value = command;
+      textarea.value = selectedInstall.command;
       textarea.setAttribute('readonly', '');
       textarea.style.position = 'fixed';
       textarea.style.top = '-9999px';
@@ -152,9 +159,9 @@ export default function LandingPage() {
       textarea.remove();
     }
 
-    setCopiedCommand(id);
+    setCopiedCommand(selectedInstall.id);
     window.setTimeout(() => {
-      setCopiedCommand(current => (current === id ? '' : current));
+      setCopiedCommand(current => (current === selectedInstall.id ? '' : current));
     }, 1800);
   }
 
@@ -196,184 +203,93 @@ export default function LandingPage() {
     <main className={styles.page}>
       <nav className={styles.nav} aria-label="Primary navigation">
         <a className={styles.brand} href="#top" aria-label="Amami home">
-          <span className={styles.brandMark}>a</span>
-          <span>Amami</span>
+          Amami
         </a>
         <div className={styles.navLinks}>
           <a href="#demo">Demo</a>
           <a href="#install">Install</a>
-          <a href="#mcp">MCP tools</a>
+          <a href="#tools">MCP tools</a>
           <a href="#waitlist">Waitlist</a>
         </div>
-        <a className={styles.navCta} href="#waitlist">
-          Get early access
-          <ArrowRight size={16} />
-        </a>
+        <div className={styles.navAction}>
+          <TerminalWindow size={22} weight="duotone" />
+          <a className={styles.primaryButton} href="#waitlist">
+            Get Started
+          </a>
+        </div>
       </nav>
 
-      <section id="top" className={styles.hero}>
+      <section className={styles.hero} id="top">
         <div className={styles.heroCopy}>
-          <div className={styles.eyebrow}>
-            <Sparkle size={16} weight="bold" />
-            AI-native analytics for Umami
-          </div>
-          <h1>Stop clicking dashboards. Ask your analytics.</h1>
-          <p className={styles.heroText}>
-            Amami lets Cursor, Claude Desktop, and other MCP clients answer traffic questions from
-            your Umami data.
-          </p>
-          <div className={styles.heroActions}>
-            <a className={styles.primaryButton} href="#waitlist">
-              Get early access
-              <ArrowRight size={18} />
-            </a>
-            <a className={styles.secondaryButton} href="#install">
-              Copy install
-              <CaretRight size={18} />
-            </a>
-          </div>
-          <div className={styles.trustRow} aria-label="Key product promises">
-            <span>
-              <LockKey size={15} weight="bold" />
-              privacy-first
-            </span>
-            <span>
-              <PlugsConnected size={15} weight="bold" />
-              stdio MCP
-            </span>
-            <span>
-              <Code size={15} weight="bold" />
-              Cursor ready
-            </span>
-          </div>
-        </div>
-
-        <div className={styles.heroVisual} aria-label="AI analytics console preview">
-          <div className={styles.consoleWindow}>
-            <div className={styles.consoleHeader}>
-              <span />
-              <span />
-              <span />
-              <strong>Cursor asks Amami</strong>
-            </div>
-            <div className={styles.chatBlock}>
-              <div className={styles.promptLine}>
-                <Robot size={18} weight="bold" />
-                Which pages performed best this month?
-              </div>
-              <div className={styles.toolCall}>
-                <TerminalWindow size={18} weight="bold" />
-                list_websites + get_top_pages
-              </div>
-              <div className={styles.answerCard}>
-                <span className={styles.answerKicker}>Answer</span>
-                /docs/mcp and /pricing drove 63.8% of pageviews. Inspect referral quality before
-                changing copy.
-              </div>
-            </div>
-            <div className={styles.metricGrid}>
-              {proof.map(([value, label]) => (
-                <div className={styles.metricTile} key={label}>
-                  <strong>{value}</strong>
-                  <span>{label}</span>
-                </div>
-              ))}
-            </div>
-            <div className={styles.chart} aria-hidden="true">
-              <span style={{ height: '36%' }} />
-              <span style={{ height: '58%' }} />
-              <span style={{ height: '42%' }} />
-              <span style={{ height: '74%' }} />
-              <span style={{ height: '64%' }} />
-              <span style={{ height: '92%' }} />
-              <span style={{ height: '69%' }} />
-              <span style={{ height: '84%' }} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.band} aria-label="Market positioning">
-        <p>
-          Built for vibecoding developers shipping with Cursor, Claude Desktop, Next.js, Vercel,
-          Supabase, and Umami.
-        </p>
-        <div className={styles.bandItems}>
-          <span>Not another GA replacement</span>
-          <span>Read-only by design</span>
-          <span>Umami data where you build</span>
-        </div>
-      </section>
-
-      <section id="demo" className={styles.demoSection}>
-        <div className={styles.sectionIntro}>
-          <span className={styles.sectionKicker}>AI query demo</span>
-          <h2>Ask the questions you already have.</h2>
+          <h1>
+            Stop clicking dashboards.
+            <span>Ask your analytics.</span>
+          </h1>
           <p>
-            Amami gives your assistant compact, normalized analytics data so it can summarize what
-            changed and suggest what to inspect next.
+            &gt; Amami connects Cursor, Claude Desktop, and other MCP clients to your Umami data,
+            allowing you to query traffic metrics directly from your editor.
           </p>
         </div>
 
-        <div className={styles.demoGrid}>
-          <div className={styles.promptPanel}>
-            {prompts.map((prompt, index) => (
-              <button
-                className={index === activePrompt ? styles.promptButtonActive : styles.promptButton}
-                key={prompt.label}
-                onClick={() => setActivePrompt(index)}
-                type="button"
-              >
-                <span>{prompt.label}</span>
-                <strong>{prompt.query}</strong>
-              </button>
-            ))}
+        <div className={styles.terminal} aria-label="MCP terminal demo">
+          <div className={styles.terminalTop}>
+            <div className={styles.windowDots} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <span>mcp-client --session=cursor</span>
           </div>
-          <div className={styles.resultPanel}>
-            <div className={styles.resultToolbar}>
-              <span>
-                <CursorClick size={16} />
-                Agent run
-              </span>
-              <span className={styles.statusPill}>ready</span>
+          <div className={styles.terminalBody}>
+            <div className={styles.terminalRow}>
+              <span className={styles.userRole}>usr:</span>
+              <p>Which pages performed best this month?</p>
             </div>
-            <p className={styles.queryText}>{selected.query}</p>
-            <div className={styles.steps}>
-              <span>
-                <CheckCircle size={16} />
-                list_websites
-              </span>
-              <span>
-                <CheckCircle size={16} />
-                get_website_stats
-              </span>
-              <span>
-                <CheckCircle size={16} />
-                get_traffic_sources
-              </span>
+            <div className={styles.terminalRow}>
+              <span className={styles.systemRole}>sys:</span>
+              <p className={styles.toolTrace}>
+                &gt; Executing tool: list_websites
+                <br />
+                &gt; Executing tool: get_top_pages
+              </p>
             </div>
-            <div className={styles.answerBox}>
-              <ChartLineUp size={22} />
-              <p>{selected.answer}</p>
+            <div className={styles.terminalRow}>
+              <span className={styles.assistantRole}>ast:</span>
+              <p>
+                /docs/mcp and /pricing drove <strong>63.8%</strong> of pageviews. Inspect referral
+                quality before changing copy.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="install" className={styles.installSection}>
-        <div className={styles.quickIntegrationShell}>
-          <div className={styles.quickIntegrationPreview}>
-            <div className={styles.integrationBackdrop} aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className={styles.installTabs} role="tablist" aria-label="Install method">
+      <section className={styles.section} id="demo">
+        <SectionHeader
+          eyebrow="// Compact, normalized analytics data for LLMs."
+          title="Ask the questions you already have."
+        />
+        <div className={styles.exampleStack}>
+          {examples.map(example => (
+            <article className={styles.exampleCard} key={example.label}>
+              <span>{example.label}</span>
+              <h3>&gt; &quot;{example.query}&quot;</h3>
+              <p>&quot;{example.answer}&quot;</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section} id="install">
+        <SectionHeader title="Quick integration." eyebrow="// Setup path for MCP clients." />
+        <div className={styles.installLayout}>
+          <div className={styles.installWorkbench}>
+            <div className={styles.tabs} role="tablist" aria-label="Install method">
               {installCommands.map((item, index) => (
                 <button
-                  aria-controls="install-code-panel"
+                  aria-controls="install-panel"
                   aria-selected={index === activeInstall}
-                  className={index === activeInstall ? styles.installTabActive : styles.installTab}
+                  className={index === activeInstall ? styles.tabActive : styles.tab}
                   id={`install-tab-${item.id}`}
                   key={item.id}
                   onClick={() => selectInstall(index)}
@@ -382,72 +298,60 @@ export default function LandingPage() {
                   tabIndex={index === activeInstall ? 0 : -1}
                   type="button"
                 >
-                  {item.id === 'skill' ? 'Skill' : item.id === 'mcp' ? 'MCP' : 'Config'}
+                  {item.label}
                 </button>
               ))}
             </div>
             <div
               aria-labelledby={`install-tab-${selectedInstall.id}`}
-              className={styles.installCodePanel}
-              id="install-code-panel"
+              className={styles.codeWindow}
+              id="install-panel"
               key={selectedInstall.id}
               role="tabpanel"
             >
-              <div className={styles.installCodeHeader}>
-                <span>{selectedInstall.eyebrow}</span>
-                <strong>{selectedInstall.title}</strong>
+              <div className={styles.codeTop}>
+                <div className={styles.windowDots} aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <button className={styles.copyButton} onClick={copyCommand} type="button">
+                  <Copy size={16} weight="bold" />
+                  {copiedCommand === selectedInstall.id ? 'Copied' : 'Copy'}
+                </button>
               </div>
-              <button
-                aria-live="polite"
-                className={styles.copyButton}
-                onClick={() => copyCommand(selectedInstall.id, selectedInstall.command)}
-                type="button"
-              >
-                <Code size={16} weight="bold" />
-                {copiedCommand === selectedInstall.id ? 'Copied' : 'Copy'}
-              </button>
-              <ol className={styles.commandLines} aria-label={`${selectedInstall.title} snippet`}>
-                {commandLines.map((line, index) => (
-                  <li key={`${selectedInstall.id}-${index}-${line}`}>
-                    <span className={styles.commandLineNumber} aria-hidden="true">
-                      {index + 1}
-                    </span>
-                    <code>{line || ' '}</code>
-                  </li>
-                ))}
-              </ol>
+              <pre className={styles.codeBlock}>
+                <code>{selectedInstall.command}</code>
+              </pre>
             </div>
           </div>
-
-          <div className={styles.quickIntegrationContent}>
-            <span className={styles.sectionKicker}>MCP/API quick integration</span>
-            <h2>Copy the right setup path. Start querying Umami in minutes.</h2>
+          <div className={styles.installCopy}>
+            <h3>Integrate anywhere.</h3>
             <p>
-              Choose a skill prompt, direct MCP command, or client config block. Amami keeps the
-              setup local-first and read-only, so your assistant can answer analytics questions
-              without changing your Umami instance.
+              Amami is built on the Model Context Protocol (MCP). It works universally across modern
+              AI assistants and editors.
             </p>
-            <a className={styles.primaryButton} href="#waitlist">
-              Get early access
+            <ul>
+              {['Cursor', 'Claude Desktop', 'Custom Scripts'].map(item => (
+                <li key={item}>
+                  <CheckCircle size={20} weight="fill" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a className={styles.secondaryButton} href="#waitlist">
+              View Documentation
               <ArrowRight size={18} />
             </a>
-            <p className={styles.integrationHint}>
-              <CheckCircle size={15} weight="bold" />
-              {selectedInstall.body}
-            </p>
           </div>
         </div>
       </section>
 
-      <section id="mcp" className={styles.toolsSection}>
-        <div className={styles.sectionIntroCompact}>
-          <span className={styles.sectionKicker}>MCP acquisition wedge</span>
-          <h2>Six focused tools. One analytics layer for AI.</h2>
-        </div>
+      <section className={styles.section} id="tools">
+        <SectionHeader title="Exposed tools." eyebrow="// One analytics layer for AI." />
         <div className={styles.toolsGrid}>
-          {mcpTools.map(([name, description]) => (
+          {tools.map(([name, description]) => (
             <article className={styles.toolCard} key={name}>
-              <Database size={22} />
               <h3>{name}</h3>
               <p>{description}</p>
             </article>
@@ -455,61 +359,54 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className={styles.pricingSection} aria-label="MVP validation hypothesis">
-        <div>
-          <span className={styles.sectionKicker}>Read-only by design</span>
-          <h2>Small enough to trust. Useful enough to keep open.</h2>
-        </div>
-        <div className={styles.priceCard}>
-          <span>Amami MCP</span>
-          <strong>0 writes</strong>
-          <p>No dashboard changes, no credential persistence, no session-level personal data.</p>
-        </div>
-        <div className={styles.validationList}>
-          <p>
-            <CheckCircle size={16} />
-            Credentials stay in local MCP config
-          </p>
-          <p>
-            <CheckCircle size={16} />
-            Aggregate analytics only in the MVP
-          </p>
-          <p>
-            <CheckCircle size={16} />
-            Keep Umami; add an AI-native read layer
-          </p>
+      <section className={styles.section} aria-label="Security and privacy">
+        <SectionHeader
+          title="Security & Privacy."
+          eyebrow="// Read-only by design. Small enough to trust."
+        />
+        <div className={styles.trustLayout}>
+          <div className={styles.trustList}>
+            {trustPoints.map(point => (
+              <article className={styles.trustItem} key={point.title}>
+                <span
+                  className={point.tone === 'primary' ? styles.dotPrimary : styles.dotSecondary}
+                />
+                <div>
+                  <h3>{point.title}</h3>
+                  <p>{point.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className={styles.trustVisual} aria-label="Security promises">
+            {trustBadges.map(({ label, Icon }) => (
+              <div className={styles.trustBadge} key={label}>
+                <Icon size={48} weight="light" />
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section id="waitlist" className={styles.waitlistSection}>
-        <div>
-          <span className={styles.sectionKicker}>Early access</span>
-          <h2>Help shape AI-native analytics.</h2>
-          <p>
-            Join the waitlist if you use Umami and want your assistant to answer traffic questions
-            for you.
-          </p>
-        </div>
-        <form className={styles.waitlistForm} onSubmit={handleSubmit}>
-          <label htmlFor="email">Work email</label>
-          <div className={styles.formRow}>
-            <div className={styles.inputWrap}>
-              <EnvelopeSimple size={18} />
-              <input
-                id="email"
-                name="email"
-                onChange={event => setEmail(event.target.value)}
-                placeholder="you@company.com"
-                required
-                type="email"
-                value={email}
-              />
-            </div>
+      <section className={styles.waitlistSection} id="waitlist">
+        <div className={styles.waitlistCard}>
+          <h2>Join the Waitlist</h2>
+          <p>Get early access to the managed Amami cloud service.</p>
+          <form className={styles.waitlistForm} onSubmit={handleSubmit}>
+            <input
+              aria-label="Work email"
+              name="email"
+              onChange={event => setEmail(event.target.value)}
+              placeholder="Work email"
+              required
+              type="email"
+              value={email}
+            />
             <button className={styles.primaryButton} disabled={isSubmitting} type="submit">
-              {isSubmitting ? 'Joining...' : formLabel}
-              <ArrowRight size={18} />
+              {isSubmitting ? 'Submitting...' : formLabel}
             </button>
-          </div>
+          </form>
           <p
             className={
               formError ? styles.formError : submittedEmail ? styles.formSuccess : styles.formHint
@@ -519,18 +416,32 @@ export default function LandingPage() {
               ? formError
               : submittedEmail
                 ? `${submittedEmail} is queued for early access.`
-                : 'No spam. Just the MCP install path and first hosted beta invite.'}
+                : 'No spam. Unsubscribe anytime.'}
           </p>
-        </form>
+        </div>
       </section>
 
       <footer className={styles.footer}>
         <span>Amami</span>
-        <a href="https://github.com/amami-dev/amami-mcp" rel="noreferrer" target="_blank">
-          <GitFork size={17} />
-          Star on GitHub
-        </a>
+        <p>© 2024 Amami AI. High-performance analytics for the modern developer.</p>
+        <div>
+          <a href="#waitlist">Privacy</a>
+          <a href="#waitlist">Terms</a>
+          <a href="https://github.com/amami-dev/amami-mcp" rel="noreferrer" target="_blank">
+            GitHub
+          </a>
+          <a href="#install">Docs</a>
+        </div>
       </footer>
     </main>
+  );
+}
+
+function SectionHeader({ title, eyebrow }: { title: string; eyebrow: string }) {
+  return (
+    <div className={styles.sectionHeader}>
+      <h2>{title}</h2>
+      <p>{eyebrow}</p>
+    </div>
   );
 }
