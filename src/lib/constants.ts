@@ -178,6 +178,11 @@ export const ROLES = {
   teamManager: 'team-manager',
   teamMember: 'team-member',
   teamViewOnly: 'team-view-only',
+  tenantOwner: 'tenant-owner',
+  tenantAdmin: 'tenant-admin',
+  tenantBilling: 'tenant-billing',
+  tenantMember: 'tenant-member',
+  tenantViewer: 'tenant-viewer',
 } as const;
 
 export const TEAM_ROLE_RANK: Record<string, number> = {
@@ -185,6 +190,38 @@ export const TEAM_ROLE_RANK: Record<string, number> = {
   [ROLES.teamMember]: 1,
   [ROLES.teamManager]: 2,
   [ROLES.teamOwner]: 3,
+} as const;
+
+export const TENANT_TYPES = {
+  personal: 'personal',
+  team: 'team',
+  organization: 'organization',
+  agency: 'agency',
+  enterprise: 'enterprise',
+} as const;
+
+export const TENANT_PLANS = {
+  free: 'free',
+  starter: 'starter',
+  pro: 'pro',
+  team: 'team',
+  enterprise: 'enterprise',
+} as const;
+
+export const TENANT_STATUS = {
+  active: 'active',
+  trialing: 'trialing',
+  pastDue: 'past-due',
+  suspended: 'suspended',
+  deleted: 'deleted',
+} as const;
+
+export const TENANT_ROLE_RANK: Record<string, number> = {
+  [ROLES.tenantViewer]: 0,
+  [ROLES.tenantMember]: 1,
+  [ROLES.tenantBilling]: 2,
+  [ROLES.tenantAdmin]: 3,
+  [ROLES.tenantOwner]: 4,
 } as const;
 
 export const PERMISSIONS = {
@@ -197,6 +234,12 @@ export const PERMISSIONS = {
   teamCreate: 'team:create',
   teamUpdate: 'team:update',
   teamDelete: 'team:delete',
+  tenantCreate: 'tenant:create',
+  tenantView: 'tenant:view',
+  tenantUpdate: 'tenant:update',
+  tenantDelete: 'tenant:delete',
+  tenantBillingManage: 'tenant:billing:manage',
+  tenantMemberManage: 'tenant:member:manage',
 } as const;
 
 export const ROLE_PERMISSIONS = {
@@ -206,6 +249,7 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteUpdate,
     PERMISSIONS.websiteDelete,
     PERMISSIONS.teamCreate,
+    PERMISSIONS.tenantCreate,
   ],
   [ROLES.viewOnly]: [],
   [ROLES.teamOwner]: [
@@ -230,6 +274,44 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteDelete,
   ],
   [ROLES.teamViewOnly]: [],
+  [ROLES.tenantOwner]: [
+    PERMISSIONS.tenantView,
+    PERMISSIONS.tenantUpdate,
+    PERMISSIONS.tenantDelete,
+    PERMISSIONS.tenantBillingManage,
+    PERMISSIONS.tenantMemberManage,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+    PERMISSIONS.websiteTransferToTeam,
+    PERMISSIONS.websiteTransferToUser,
+    PERMISSIONS.teamCreate,
+    PERMISSIONS.teamUpdate,
+    PERMISSIONS.teamDelete,
+  ],
+  [ROLES.tenantAdmin]: [
+    PERMISSIONS.tenantView,
+    PERMISSIONS.tenantUpdate,
+    PERMISSIONS.tenantMemberManage,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+    PERMISSIONS.websiteTransferToTeam,
+    PERMISSIONS.websiteTransferToUser,
+    PERMISSIONS.teamCreate,
+    PERMISSIONS.teamUpdate,
+  ],
+  [ROLES.tenantBilling]: [
+    PERMISSIONS.tenantView,
+    PERMISSIONS.tenantBillingManage,
+  ],
+  [ROLES.tenantMember]: [
+    PERMISSIONS.tenantView,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.tenantViewer]: [PERMISSIONS.tenantView],
 } as const;
 
 export const THEME_COLORS = {

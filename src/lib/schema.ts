@@ -102,6 +102,20 @@ export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
 
 export const teamRoleParam = z.enum(['team-member', 'team-view-only', 'team-manager']);
 
+export const tenantRoleParam = z.enum([
+  'tenant-owner',
+  'tenant-admin',
+  'tenant-billing',
+  'tenant-member',
+  'tenant-viewer',
+]);
+
+export const tenantTypeParam = z.enum(['personal', 'team', 'organization', 'agency', 'enterprise']);
+
+export const tenantPlanParam = z.enum(['free', 'starter', 'pro', 'team', 'enterprise']);
+
+export const tenantStatusParam = z.enum(['active', 'trialing', 'past-due', 'suspended', 'deleted']);
+
 export const anyObjectParam = z.record(z.string(), z.any());
 
 export const urlOrPathParam = z.string().refine(
