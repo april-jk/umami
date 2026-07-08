@@ -208,84 +208,6 @@
   text-transform: uppercase;
 }
 
-.pageRail {
-  position: fixed;
-  top: 50%;
-  right: max(18px, calc((100vw - 1420px) / 2));
-  z-index: 40;
-  display: grid;
-  gap: 12px;
-  width: 116px;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.pageRailCounter {
-  justify-self: end;
-  color: rgba(199, 196, 216, 0.58);
-  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
-}
-
-.pageRail div {
-  display: grid;
-  gap: 8px;
-  padding: 10px;
-  background: rgba(6, 14, 32, 0.58);
-  border: 1px solid rgba(70, 69, 86, 0.34);
-  border-radius: 12px;
-  backdrop-filter: blur(16px);
-  pointer-events: auto;
-}
-
-.pageRail a {
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  align-items: center;
-  gap: 8px;
-  min-height: 30px;
-  color: rgba(199, 196, 216, 0.62);
-  text-decoration: none;
-  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  transition:
-    color 180ms ease,
-    transform 180ms ease;
-}
-
-.pageRail a:hover,
-.pageRail a[aria-current="page"] {
-  color: var(--primary);
-}
-
-.pageRail a:hover {
-  transform: translateX(-2px);
-}
-
-.pageRail a span {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border: 1px solid rgba(144, 143, 161, 0.24);
-  border-radius: 999px;
-  font-size: 10px;
-}
-
-.pageRail a[aria-current="page"] span {
-  color: #fdf9ff;
-  background: var(--primary-strong);
-  border-color: var(--primary-strong);
-  box-shadow: 0 0 14px rgba(93, 92, 255, 0.38);
-}
-
-.pageRail a strong {
-  overflow: hidden;
-  font-size: 11px;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .hero {
   display: flex;
   flex-direction: column;
@@ -852,40 +774,6 @@
     --page-pad: 72px;
   }
 
-  .pageRail {
-    top: auto;
-    right: 12px;
-    bottom: 12px;
-    left: 12px;
-    width: auto;
-    transform: none;
-  }
-
-  .pageRailCounter {
-    display: none;
-  }
-
-  .pageRail div {
-    display: flex;
-    justify-content: center;
-    gap: 7px;
-    padding: 8px;
-    border-radius: 999px;
-  }
-
-  .pageRail a {
-    display: block;
-    min-height: 0;
-  }
-
-  .pageRail a strong {
-    display: none;
-  }
-
-  .pageRail a:hover {
-    transform: none;
-  }
-
   .hero {
     padding-top: 132px;
   }
@@ -1005,21 +893,5 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 14px 20px;
-  }
-}
-
-@media (min-width: 901px) and (max-width: 1500px) {
-  .pageRail {
-    width: 44px;
-    right: 14px;
-  }
-
-  .pageRailCounter,
-  .pageRail a strong {
-    display: none;
-  }
-
-  .pageRail a {
-    grid-template-columns: 1fr;
   }
 }

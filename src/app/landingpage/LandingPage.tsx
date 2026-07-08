@@ -126,7 +126,6 @@ export default function LandingPage() {
   const [copiedCommand, setCopiedCommand] = useState('');
 
   const selectedInstall = installCommands[activeInstall];
-  const activePageIndex = pageAnchors.findIndex(anchor => anchor.id === activePage);
   const formLabel = useMemo(() => {
     if (submittedEmail) {
       return 'Joined';
@@ -146,9 +145,9 @@ export default function LandingPage() {
       root.style.setProperty('--landing-nav-height', `${navHeight}px`);
       root.style.setProperty(
         '--landing-page-min-height',
-        `${Math.max(viewportHeight - navHeight, 620)}px`,
+        `${Math.max(Math.round((viewportHeight - navHeight) * 0.82), 560)}px`,
       );
-      root.style.setProperty('--landing-page-pad', isCompactHeight ? '64px' : '88px');
+      root.style.setProperty('--landing-page-pad', isCompactHeight ? '52px' : '74px');
       root.style.setProperty('--landing-scroll-margin', `${navHeight + 28}px`);
     }
 
@@ -164,6 +163,63 @@ export default function LandingPage() {
     return () => {
       window.removeEventListener('resize', syncViewportVars);
       window.removeEventListener('orientationchange', syncViewportVars);
+    };
+  }, []);
+
+  useEffect(() => {
+    let snapTimer = 0;
+    let lastWheelAt = 0;
+    let lastWheelDelta = 0;
+
+    function snapToNearestSection() {
+      const now = window.performance.now();
+
+      if (now - lastWheelAt < 140) {
+        return;
+      }
+
+      const viewportHeight = window.innerHeight;
+      const snapLine = Number.parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--landing-scroll-margin'),
+      );
+      const sections = pageAnchors
+        .map(anchor => document.getElementById(anchor.id))
+        .filter((section): section is HTMLElement => Boolean(section));
+      const candidates = sections.map(section => ({
+        section,
+        top: section.getBoundingClientRect().top,
+        distance: Math.abs(section.getBoundingClientRect().top - snapLine),
+      }));
+      const directional =
+        lastWheelDelta > 0
+          ? candidates.find(
+              candidate => candidate.top > snapLine + 32 && candidate.top < viewportHeight * 0.86,
+            )
+          : candidates
+              .filter(
+                candidate => candidate.top < snapLine - 32 && candidate.top > -viewportHeight * 0.6,
+              )
+              .at(-1);
+      const nearest = directional ?? candidates.sort((a, b) => a.distance - b.distance)[0];
+
+      if (nearest && (directional || nearest.distance < viewportHeight * 0.22)) {
+        nearest.section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.history.replaceState(null, '', `#${nearest.section.id}`);
+      }
+    }
+
+    function handleWheel(event: WheelEvent) {
+      lastWheelAt = window.performance.now();
+      lastWheelDelta = event.deltaY;
+      window.clearTimeout(snapTimer);
+      snapTimer = window.setTimeout(snapToNearestSection, 180);
+    }
+
+    window.addEventListener('wheel', handleWheel, { passive: true });
+
+    return () => {
+      window.clearTimeout(snapTimer);
+      window.removeEventListener('wheel', handleWheel);
     };
   }, []);
 
@@ -292,26 +348,6 @@ export default function LandingPage() {
           <a className={styles.primaryButton} href="#waitlist">
             Get Started
           </a>
-        </div>
-      </nav>
-
-      <nav className={styles.pageRail} aria-label="Page sections">
-        <span className={styles.pageRailCounter}>
-          {String(Math.max(activePageIndex + 1, 1)).padStart(2, '0')} /{' '}
-          {String(pageAnchors.length).padStart(2, '0')}
-        </span>
-        <div>
-          {pageAnchors.map(anchor => (
-            <a
-              aria-current={activePage === anchor.id ? 'page' : undefined}
-              aria-label={`Go to ${anchor.label}`}
-              href={`#${anchor.id}`}
-              key={anchor.id}
-            >
-              <span>{anchor.shortLabel}</span>
-              <strong>{anchor.label}</strong>
-            </a>
-          ))}
         </div>
       </nav>
 
