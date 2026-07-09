@@ -1,7 +1,12 @@
 import { z } from 'zod';
-import { badRedirectUri, createMcpAuthorizationCode, isLoopbackRedirectUri } from '@/lib/mcp-auth';
+import {
+  badRedirectUri,
+  createMcpAuthorizationCode,
+  isLoopbackRedirectUri,
+  verifyMcpConsentToken,
+} from '@/lib/mcp-auth';
 import { parseRequest } from '@/lib/request';
-import { json } from '@/lib/response';
+import { forbidden, json } from '@/lib/response';
 
 export async function POST(request: Request) {
   const schema = z.object({
@@ -10,6 +15,7 @@ export async function POST(request: Request) {
     codeChallenge: z.string().min(32).max(256),
     codeChallengeMethod: z.literal('S256').default('S256'),
     write: z.boolean().optional().default(true),
+    consentToken: z.string().min(1),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -20,6 +26,21 @@ export async function POST(request: Request) {
 
   if (!isLoopbackRedirectUri(body.redirectUri)) {
     return badRedirectUri();
+  }
+
+  const consentOk = verifyMcpConsentToken(body.consentToken, {
+    redirectUri: body.redirectUri,
+    state: body.state,
+    codeChallenge: body.codeChallenge,
+    codeChallengeMethod: body.codeChallengeMethod,
+    write: body.write,
+  });
+
+  if (!consentOk) {
+    return forbidden({
+      message: 'MCP authorization must be started from the browser consent page',
+      code: 'missing-browser-consent',
+    });
   }
 
   const code = await createMcpAuthorizationCode({

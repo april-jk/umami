@@ -4,12 +4,18 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useApi, useLoginQuery } from '@/components/hooks';
 
-export function McpConnectPage() {
+export function McpConnectPage({
+  consentToken,
+  errorMessage,
+}: {
+  consentToken?: string;
+  errorMessage?: string;
+}) {
   const router = useRouter();
   const search = useSearchParams();
   const { post } = useApi();
   const { user, isLoading } = useLoginQuery();
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | undefined>(errorMessage);
   const [isPending, setIsPending] = useState(false);
   const currentPath = useMemo(() => {
     const query = search.toString();
@@ -28,6 +34,11 @@ export function McpConnectPage() {
   }, [currentPath, isLoading, router, user]);
 
   const handleAuthorize = async () => {
+    if (!consentToken) {
+      setError(errorMessage || 'The MCP authorization link is invalid. Please run setup again.');
+      return;
+    }
+
     setError(undefined);
     setIsPending(true);
 
@@ -38,6 +49,7 @@ export function McpConnectPage() {
         codeChallenge,
         codeChallengeMethod: 'S256',
         write,
+        consentToken,
       });
 
       window.location.assign(result.redirectUrl);
@@ -69,7 +81,7 @@ export function McpConnectPage() {
           <Text color="muted">Write tools will be enabled for website setup and events.</Text>
         )}
         {error && <Text color="red">{error}</Text>}
-        <Button variant="primary" onPress={handleAuthorize} isDisabled={isPending}>
+        <Button variant="primary" onPress={handleAuthorize} isDisabled={isPending || !consentToken}>
           Authorize MCP
         </Button>
       </Column>

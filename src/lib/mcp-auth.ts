@@ -5,12 +5,24 @@ import { badRequest } from '@/lib/response';
 import { secret } from './crypto';
 
 const CODE_TTL_SECONDS = 300;
+const CONSENT_TTL_SECONDS = 300;
 const CODE_PREFIX = 'mcp-auth:';
 const CODE_TYPE = 'mcp-auth-code';
+const CONSENT_TYPE = 'mcp-consent';
 
 export interface McpAuthorizationCode {
   type: typeof CODE_TYPE;
   userId: string;
+  codeChallenge: string;
+  codeChallengeMethod: 'S256';
+  write: boolean;
+  createdAt: number;
+}
+
+export interface McpConsentToken {
+  type: typeof CONSENT_TYPE;
+  redirectUri: string;
+  state: string;
   codeChallenge: string;
   codeChallengeMethod: 'S256';
   write: boolean;
@@ -55,6 +67,39 @@ export async function createMcpAuthorizationCode(
   return createSecureToken(payload, secret(), { expiresIn: CODE_TTL_SECONDS });
 }
 
+export function createMcpConsentToken(data: Omit<McpConsentToken, 'type' | 'createdAt'>) {
+  return createSecureToken(
+    {
+      ...data,
+      type: CONSENT_TYPE,
+      createdAt: Date.now(),
+    } satisfies McpConsentToken,
+    secret(),
+    { expiresIn: CONSENT_TTL_SECONDS },
+  );
+}
+
+export function parseMcpConsentToken(value: string): McpConsentToken | null {
+  const payload = parseSecureToken(value, secret());
+  return isMcpConsentToken(payload) ? payload : null;
+}
+
+export function verifyMcpConsentToken(
+  token: string,
+  data: Omit<McpConsentToken, 'type' | 'createdAt'>,
+): boolean {
+  const payload = parseMcpConsentToken(token);
+
+  return (
+    !!payload &&
+    payload.redirectUri === data.redirectUri &&
+    payload.state === data.state &&
+    payload.codeChallenge === data.codeChallenge &&
+    payload.codeChallengeMethod === data.codeChallengeMethod &&
+    payload.write === data.write
+  );
+}
+
 export async function consumeMcpAuthorizationCode(
   code: string,
 ): Promise<McpAuthorizationCode | null> {
@@ -80,6 +125,17 @@ function isMcpAuthorizationCode(value: any): value is McpAuthorizationCode {
   return (
     value?.type === CODE_TYPE &&
     typeof value.userId === 'string' &&
+    typeof value.codeChallenge === 'string' &&
+    value.codeChallengeMethod === 'S256' &&
+    typeof value.write === 'boolean'
+  );
+}
+
+function isMcpConsentToken(value: any): value is McpConsentToken {
+  return (
+    value?.type === CONSENT_TYPE &&
+    typeof value.redirectUri === 'string' &&
+    typeof value.state === 'string' &&
     typeof value.codeChallenge === 'string' &&
     value.codeChallengeMethod === 'S256' &&
     typeof value.write === 'boolean'
