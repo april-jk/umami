@@ -63,11 +63,18 @@ ${installDocUrl}#codex-skills`,
   {
     id: 'config',
     label: 'Config',
-    title: 'Ask your agent to configure MCP clients',
-    command: `请复制下面的指令，然后发送给您的代理，以便配置 MCP 客户端：
-
-请按照说明配置 Amami MCP 到我的 AI 客户端，并验证 get_me 和 list_websites 可用。
-${installDocUrl}#mcp-client-configuration`,
+    title: 'MCP client config',
+    command: `{
+  "mcpServers": {
+    "amami": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "amami-analytics-mcp@latest"
+      ]
+    }
+  }
+}`,
   },
 ];
 
