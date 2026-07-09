@@ -22,22 +22,22 @@ const pageAnchors = [
 
 const examples = [
   {
-    label: 'One-step analytics setup',
+    label: 'One-step setup',
     query: 'Add analytics to this project.',
     answer:
-      'Amami MCP created a website, generated the tracking script, and helped wire it into your app.',
+      'Created a tracked website, generated the script, and wired it into your app. Tracking starts now.',
   },
   {
-    label: 'Traffic insight',
-    query: 'What is driving visitors this week?',
+    label: 'Traffic diagnosis',
+    query: 'What drove visitors this week?',
     answer:
-      'GitHub, docs, and X are the top sources. GitHub visitors spend 42% longer than average.',
+      'GitHub, docs, and X are your top sources. GitHub visitors stay 42% longer. Double down there.',
   },
   {
-    label: 'Conversion recommendation',
-    query: 'What should we improve next?',
+    label: 'Conversion optimization',
+    query: 'What should we fix next?',
     answer:
-      'Move the signup CTA higher on the install page, track pricing clicks, and create a clearer path for GitHub visitors.',
+      'Move the signup CTA above the fold on /install. Track pricing clicks. Create a clearer path for GitHub traffic.',
   },
 ];
 
@@ -48,9 +48,9 @@ const installCommands = [
     id: 'mcp',
     label: 'MCP',
     title: 'Ask your agent to install Amami MCP',
-    command: `Copy the instruction below and send it to your agent for automatic installation:
+    command: `Copy this prompt and send it to your AI:
 
-Please follow the guide to install Amami MCP, then walk me through browser login, registration, and authorization.
+Install the Amami MCP server, then guide me through browser login and authorization.
 ${installDocUrl}`,
   },
   {
@@ -59,7 +59,7 @@ ${installDocUrl}`,
     title: 'Ask Codex to install Amami skills',
     command: `Copy the instruction below and send it to Codex to install Amami Skills:
 
-Please follow the guide to install Amami Codex Skills, including amami-mcp-setup and amami-analytics.
+Install Amami Skills (amami-mcp-setup and amami-analytics), then connect my website.
 ${installDocUrl}#codex-skills`,
   },
   {
@@ -96,36 +96,33 @@ ${installDocUrl}#codex-skills`,
 ];
 
 const tools = [
-  ['list_websites', 'Let the agent find the analytics projects your account can access.'],
-  ['create_website', 'Let the agent create a tracked website for the app you are building.'],
-  ['get_stats', 'Ask for visitors, pageviews, visits, bounce rate, and total time.'],
-  ['get_pageviews', 'Inspect traffic trends by minute, hour, day, or month.'],
-  ['get_metrics', 'Analyze pages, referrers, countries, devices, events, and UTM performance.'],
-  [
-    'send_event',
-    'Send test or server-side events so your agent can verify tracking and measure growth actions.',
-  ],
+  ['Discover sites', 'Find every analytics project your account can access.'],
+  ['Create tracking', 'Spin up a new tracked website for any app you are building.'],
+  ['Get stats', 'Pull visitors, pageviews, bounce rate, and session time for any date range.'],
+  ['Inspect trends', 'View traffic patterns by minute, hour, day, or month.'],
+  ['Analyze performance', 'Rank pages, referrers, countries, devices, events, and UTM campaigns.'],
+  ['Verify tracking', 'Send test or server-side events to confirm your data pipeline is healthy.'],
 ];
 
 const trustPoints = [
   {
-    title: 'Browser consent required.',
-    body: 'Login, registration, and MCP authorization happen in the browser, operated by the user.',
+    title: 'Browser consent required',
+    body: 'Login, registration, and MCP authorization happen in your browser. You operate them, not your AI.',
     tone: 'secondary',
   },
   {
-    title: 'Local credentials.',
-    body: 'Generated API keys are stored locally for the MCP client, not pasted into chat.',
+    title: 'Credentials stay local',
+    body: 'Your API key is stored in your local environment, never pasted into chat.',
     tone: 'primary',
   },
   {
-    title: 'Read-first analytics.',
-    body: 'Agents can inspect analytics safely, with write access enabled only when setup requests it.',
+    title: 'Read-only by default',
+    body: 'Your AI can inspect data safely. Write access is only enabled when you explicitly request setup.',
     tone: 'secondary',
   },
   {
-    title: 'Recommendations from your data.',
-    body: 'Recommendations are based on your site traffic, pages, referrers, and events.',
+    title: 'Recommendations from your data',
+    body: 'Every insight is based on your actual traffic, pages, referrers, and events. No generic advice.',
     tone: 'primary',
   },
 ];
@@ -322,12 +319,16 @@ export default function LandingPage() {
       <section className={`${styles.hero} ${styles.pageSection}`} id="top">
         <div className={styles.heroCopy}>
           <h1>
-            Connect your agent to Amami.
-            <span>Find and analyze any website.</span>
+            Your AI can now see
+            <span>your website data.</span>
           </h1>
           <p>
-            &gt; Amami lets coding agents connect website analytics in one step, then analyze
-            traffic, referrers, pages, conversions, and the recommendations that can improve them.
+            Ask Cursor, Claude, or your coding agent about traffic, referrers, pages, and
+            conversions. Get answers and recommendations without opening a dashboard.
+            <br />
+            <br />
+            &gt; Amami connects your AI assistant to website analytics in one step. Natural
+            questions. Instant insights. No context switching.
           </p>
         </div>
 
@@ -342,24 +343,27 @@ export default function LandingPage() {
           </div>
           <div className={styles.terminalBody}>
             <div className={styles.terminalRow}>
-              <span className={styles.userRole}>usr:</span>
+              <span className={styles.userRole}>user:</span>
               <p>Connect this website to Amami and analyze what is happening.</p>
             </div>
             <div className={styles.terminalRow}>
-              <span className={styles.systemRole}>sys:</span>
+              <span className={styles.systemRole}>system:</span>
               <p className={styles.toolTrace}>
                 &gt; Installing Amami MCP
                 <br />
-                &gt; Creating tracking website
+                &gt; Creating tracked website
                 <br />
                 &gt; Reading traffic and referrer data
               </p>
             </div>
             <div className={styles.terminalRow}>
-              <span className={styles.assistantRole}>ast:</span>
+              <span className={styles.assistantRole}>assistant:</span>
               <p>
-                Amami is connected. I found the site, analyzed traffic and referrers, and surfaced
-                recommendations to improve the docs CTA, GitHub landing path, and signup events.
+                Amami connected. I found your site, analyzed traffic and referrers, and surfaced
+                three recommendations:
+                <br />- Improve the docs CTA placement
+                <br />- Optimize the GitHub landing path
+                <br />- Track signup events on the install page
               </p>
             </div>
           </div>
@@ -368,8 +372,8 @@ export default function LandingPage() {
 
       <section className={`${styles.section} ${styles.pageSection}`} id="demo">
         <SectionHeader
-          eyebrow="// Your agent can connect analytics, find websites, analyze behavior, and recommend what to improve."
-          title="From one-click connection to website analysis."
+          eyebrow="// Your AI discovers your sites, reads the data, and tells you what to fix."
+          title="Ask. Analyze. Improve."
         />
         <div className={styles.exampleStack}>
           {examples.map(example => (
@@ -384,8 +388,8 @@ export default function LandingPage() {
 
       <section className={`${styles.section} ${styles.pageSection}`} id="install">
         <SectionHeader
-          title="Install once. Let your agent handle analytics."
-          eyebrow="// Copy one prompt to set up MCP, browser authorization, and agent tools."
+          title="One prompt. Zero config."
+          eyebrow="// Copy one sentence. Your AI handles installation, browser auth, and setup."
         />
         <div className={styles.installLayout}>
           <div className={styles.installWorkbench}>
@@ -431,17 +435,17 @@ export default function LandingPage() {
             </div>
           </div>
           <div className={styles.installCopy}>
-            <h3>One prompt. Amami connected to your agent.</h3>
+            <h3>One sentence. Your AI does the rest.</h3>
             <p>
-              Amami MCP lets your coding agent create analytics projects, connect your current app,
-              find websites, analyze traffic and conversions, and request AI recommendations while
-              login and authorization stay in your browser.
+              Your AI assistant can create analytics projects, inject tracking, analyze traffic, and
+              suggest improvements. Sensitive steps like login, registration, and authorization stay
+              in your browser, under your control.
             </p>
             <ul>
               {[
-                'One-click connection to Amami',
-                'Website discovery and analysis',
-                'User-controlled browser authorization',
+                'Single-prompt installation',
+                'Automatic site discovery and tracking setup',
+                'Browser-based user authorization',
               ].map(item => (
                 <li key={item}>
                   <CheckCircle size={20} weight="fill" />
@@ -455,8 +459,8 @@ export default function LandingPage() {
 
       <section className={`${styles.section} ${styles.pageSection}`} id="tools">
         <SectionHeader
-          title="Website analysis tools for agents."
-          eyebrow="// Connect Amami, inspect traffic, and understand what is working."
+          title="What your AI can do once connected."
+          eyebrow="// Turn your AI assistant into a website data analyst."
         />
         <div className={styles.toolsGrid}>
           {tools.map(([name, description]) => (
@@ -474,8 +478,8 @@ export default function LandingPage() {
         id="security"
       >
         <SectionHeader
-          title="Built for human-approved agent workflows."
-          eyebrow="// Your agent can act, but you stay in control."
+          title="Your AI works. You approve."
+          eyebrow="// Agents can analyze, but you control the keys."
         />
         <div className={styles.trustLayout}>
           <div className={styles.trustList}>
@@ -504,7 +508,7 @@ export default function LandingPage() {
 
       <footer className={styles.footer}>
         <span>Amami</span>
-        <p>© 2024 Amami AI. High-performance analytics for the modern developer.</p>
+        <p>© 2024 Amami AI. Analytics for the agent era.</p>
         <div>
           <a
             href="https://github.com/april-jk/umami-analytics-mcp"
