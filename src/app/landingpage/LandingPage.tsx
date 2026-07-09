@@ -63,8 +63,9 @@ ${installDocUrl}#codex-skills`,
   {
     id: 'config',
     label: 'Config',
-    title: 'MCP client config',
-    command: `{
+    title: 'MCP client config options',
+    command: `// Recommended after running: amami-analytics-mcp setup --write
+{
   "mcpServers": {
     "amami": {
       "command": "npx",
@@ -72,6 +73,20 @@ ${installDocUrl}#codex-skills`,
         "-y",
         "amami-analytics-mcp@latest"
       ]
+    }
+  }
+}
+
+// Manual API key configuration, if you already have a key
+{
+  "mcpServers": {
+    "amami": {
+      "command": "npx",
+      "args": ["-y", "amami-analytics-mcp@latest"],
+      "env": {
+        "AMAMI_API_KEY": "your_api_key_here",
+        "AMAMI_ENABLE_WRITE": "1"
+      }
     }
   }
 }`,

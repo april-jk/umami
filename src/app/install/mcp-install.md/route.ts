@@ -5,10 +5,11 @@ Amami MCP connects AI agents and editors to Amami Analytics. Use this guide when
 ## What You Should Do
 
 1. Install the published npm package.
-2. Start the browser login/register authorization flow.
-3. Wait for the user to complete login/register and click **Authorize MCP** in the browser.
-4. Configure the user's MCP client.
-5. Verify the MCP server works with read tools, then verify write tools if setup used \`--write\`.
+2. Choose the right auth path:
+   - Recommended: browser setup creates and stores the API key automatically.
+   - Manual: use an existing API key in the MCP client env.
+3. Configure the user's MCP client.
+4. Verify the MCP server works with read tools, then verify write tools if setup used \`--write\` or \`AMAMI_ENABLE_WRITE=1\`.
 
 Do not ask the user to paste passwords, API keys, or auth tokens into chat. Do not bypass the browser authorization page with background login or register API calls.
 
@@ -40,7 +41,16 @@ amami-analytics-mcp --version
 amami-analytics-mcp --help
 \`\`\`
 
-## Authorize The User
+## Choose An Auth Path
+
+Most users should use browser setup. Manual API key config is useful for users who already have an API key, want a fully declarative MCP config, or run in an environment where local browser callbacks are not practical.
+
+| Path | Best for | Credential location |
+| --- | --- | --- |
+| Browser setup | First-time users, login/register, automatic API key creation | \`~/.amami-analytics-mcp/.env\` |
+| Manual API key | Existing API key, managed client config, CI/devcontainer | MCP client env |
+
+## Path A: Browser Setup
 
 Run setup with write tools enabled so the user can create websites and send test events later:
 
@@ -58,9 +68,67 @@ Expected behavior:
 
 After setup, the MCP package auto-loads \`~/.amami-analytics-mcp/.env\`, so ordinary users do not need to pass \`--env-file\`.
 
+If the user only wants read-only analytics, run setup without \`--write\`:
+
+\`\`\`bash
+amami-analytics-mcp setup
+\`\`\`
+
+## Path B: Manual API Key
+
+Use this path when the user already has an API key and wants to configure the MCP client directly.
+
+Create or copy an API key from the Amami dashboard, then configure it in the MCP client environment. Do not put the key in command arguments and do not ask the user to paste it into chat.
+
+Manual config for Amami Cloud:
+
+\`\`\`json
+{
+  "mcpServers": {
+    "amami": {
+      "command": "npx",
+      "args": ["-y", "amami-analytics-mcp@latest"],
+      "env": {
+        "AMAMI_API_KEY": "your_api_key_here",
+        "AMAMI_ENABLE_WRITE": "1"
+      }
+    }
+  }
+}
+\`\`\`
+
+For read-only access, omit \`AMAMI_ENABLE_WRITE\`.
+
+For a self-hosted Amami-compatible instance with API key auth:
+
+\`\`\`json
+{
+  "mcpServers": {
+    "amami": {
+      "command": "npx",
+      "args": ["-y", "amami-analytics-mcp@latest"],
+      "env": {
+        "AMAMI_API_URL": "https://your-amami.example.com",
+        "AMAMI_API_KEY": "your_api_key_here",
+        "AMAMI_ENABLE_WRITE": "1"
+      }
+    }
+  }
+}
+\`\`\`
+
+For self-hosted username/password auth, prefer an env file or secret store rather than inline chat:
+
+\`\`\`env
+AMAMI_API_URL=https://your-amami.example.com
+AMAMI_USERNAME=your_username
+AMAMI_PASSWORD=your_password
+AMAMI_ENABLE_WRITE=1
+\`\`\`
+
 ## MCP Client Configuration
 
-Use this stdio configuration for MCP clients that accept JSON config:
+After browser setup, use this stdio configuration for MCP clients that accept JSON config:
 
 \`\`\`json
 {
@@ -73,7 +141,7 @@ Use this stdio configuration for MCP clients that accept JSON config:
 }
 \`\`\`
 
-If the user installed globally and prefers the global binary:
+If the user installed globally and prefers the global binary after browser setup:
 
 \`\`\`json
 {
@@ -102,12 +170,6 @@ After the MCP client loads the server, call these tools:
 2. \`list_websites\` — confirms read access.
 3. \`create_website\` should be visible when setup used \`--write\`.
 4. \`send_event\` should be visible when setup used \`--write\`.
-
-If the user only wants read-only analytics, run setup without \`--write\`:
-
-\`\`\`bash
-amami-analytics-mcp setup
-\`\`\`
 
 ## Basic Usage
 
