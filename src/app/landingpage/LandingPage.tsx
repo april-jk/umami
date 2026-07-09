@@ -34,8 +34,8 @@ const examples = [
       'GitHub, docs, and X are the top sources. GitHub visitors spend 42% longer than average.',
   },
   {
-    label: 'Growth recommendation',
-    query: 'How can we improve conversions?',
+    label: 'Conversion recommendation',
+    query: 'What should we improve next?',
     answer:
       'Move the signup CTA higher on the install page, track pricing clicks, and create a clearer path for GitHub visitors.',
   },
@@ -124,7 +124,7 @@ const trustPoints = [
     tone: 'secondary',
   },
   {
-    title: 'Growth advice from your data.',
+    title: 'Recommendations from your data.',
     body: 'Recommendations are based on your site traffic, pages, referrers, and events.',
     tone: 'primary',
   },
@@ -322,12 +322,12 @@ export default function LandingPage() {
       <section className={`${styles.hero} ${styles.pageSection}`} id="top">
         <div className={styles.heroCopy}>
           <h1>
-            Let your agent connect analytics.
-            <span>Then find growth opportunities.</span>
+            Connect your agent to Amami.
+            <span>Find and analyze any website.</span>
           </h1>
           <p>
-            &gt; Amami helps coding agents add website analytics in one step, then turns traffic,
-            referrers, pages, and events into actionable growth recommendations.
+            &gt; Amami lets coding agents connect website analytics in one step, then analyze
+            traffic, referrers, pages, conversions, and the recommendations that can improve them.
           </p>
         </div>
 
@@ -343,7 +343,7 @@ export default function LandingPage() {
           <div className={styles.terminalBody}>
             <div className={styles.terminalRow}>
               <span className={styles.userRole}>usr:</span>
-              <p>Add analytics to this website and tell me how to improve growth.</p>
+              <p>Connect this website to Amami and analyze what is happening.</p>
             </div>
             <div className={styles.terminalRow}>
               <span className={styles.systemRole}>sys:</span>
@@ -358,8 +358,8 @@ export default function LandingPage() {
             <div className={styles.terminalRow}>
               <span className={styles.assistantRole}>ast:</span>
               <p>
-                Amami is connected. I added tracking and found three growth opportunities: improve
-                the docs CTA, double down on GitHub referrals, and track signup intent events.
+                Amami is connected. I found the site, analyzed traffic and referrers, and surfaced
+                recommendations to improve the docs CTA, GitHub landing path, and signup events.
               </p>
             </div>
           </div>
@@ -368,8 +368,8 @@ export default function LandingPage() {
 
       <section className={`${styles.section} ${styles.pageSection}`} id="demo">
         <SectionHeader
-          eyebrow="// Your agent can install analytics, read the data, and recommend what to do next."
-          title="From analytics setup to growth decisions."
+          eyebrow="// Your agent can connect analytics, find websites, analyze behavior, and recommend what to improve."
+          title="From one-click connection to website analysis."
         />
         <div className={styles.exampleStack}>
           {examples.map(example => (
@@ -431,16 +431,16 @@ export default function LandingPage() {
             </div>
           </div>
           <div className={styles.installCopy}>
-            <h3>One prompt. Analytics and growth setup.</h3>
+            <h3>One prompt. Amami connected to your agent.</h3>
             <p>
               Amami MCP lets your coding agent create analytics projects, connect your current app,
-              query website data, and request AI growth recommendations while login and
-              authorization stay in your browser.
+              find websites, analyze traffic and conversions, and request AI recommendations while
+              login and authorization stay in your browser.
             </p>
             <ul>
               {[
-                'One-step website analytics',
-                'Data-backed growth recommendations',
+                'One-click connection to Amami',
+                'Website discovery and analysis',
                 'User-controlled browser authorization',
               ].map(item => (
                 <li key={item}>
@@ -455,8 +455,8 @@ export default function LandingPage() {
 
       <section className={`${styles.section} ${styles.pageSection}`} id="tools">
         <SectionHeader
-          title="Analytics and growth tools for agents."
-          eyebrow="// Connect data, understand behavior, and decide what to improve next."
+          title="Website analysis tools for agents."
+          eyebrow="// Connect Amami, inspect traffic, and understand what is working."
         />
         <div className={styles.toolsGrid}>
           {tools.map(([name, description]) => (
