@@ -39,48 +39,35 @@ const examples = [
   },
 ];
 
+const installDocUrl = 'https://dashboard.amami.dev/install/mcp-install.md';
+
 const installCommands = [
   {
     id: 'mcp',
     label: 'MCP',
-    title: 'Install Amami MCP globally',
-    command: `# 1. Install the MCP package
-npm install -g amami-analytics-mcp
+    title: 'Ask your agent to install Amami MCP',
+    command: `请复制下面的指令，然后发送给您的代理，以便进行自动安装：
 
-# 2. Open browser login/register and authorize
-amami-analytics-mcp setup --write
-
-# 3. Use after setup
-amami-analytics-mcp`,
+请按照说明来安装 Amami MCP，并引导我完成浏览器登录、注册和授权。
+${installDocUrl}`,
   },
   {
     id: 'skill',
     label: 'Skill',
-    title: 'Install Amami skills in Codex',
-    command: `Paste this into Codex:
+    title: 'Ask Codex to install Amami skills',
+    command: `请复制下面的指令，然后发送给 Codex，以便安装 Amami Skills：
 
-Install the Amami Codex skills from GitHub:
-repo: april-jk/amami-skills
-paths: amami-mcp-setup, amami-analytics
-
-Then restart Codex and use $amami-mcp-setup.`,
+请按照说明来安装 Amami Codex Skills，并安装 amami-mcp-setup 和 amami-analytics。
+${installDocUrl}#codex-skills`,
   },
   {
     id: 'config',
     label: 'Config',
-    title: 'MCP client config after setup',
-    command: `// After setup, Amami MCP auto-loads its local config
-{
-  "mcpServers": {
-    "amami": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "amami-analytics-mcp@latest"
-      ]
-    }
-  }
-}`,
+    title: 'Ask your agent to configure MCP clients',
+    command: `请复制下面的指令，然后发送给您的代理，以便配置 MCP 客户端：
+
+请按照说明配置 Amami MCP 到我的 AI 客户端，并验证 get_me 和 list_websites 可用。
+${installDocUrl}#mcp-client-configuration`,
   },
 ];
 
@@ -370,7 +357,7 @@ export default function LandingPage() {
       </section>
 
       <section className={`${styles.section} ${styles.pageSection}`} id="install">
-        <SectionHeader title="Quick integration." eyebrow="// Install first. Configure after." />
+        <SectionHeader title="Quick integration." eyebrow="// Copy this prompt to your agent." />
         <div className={styles.installLayout}>
           <div className={styles.installWorkbench}>
             <div className={styles.tabs} role="tablist" aria-label="Install method">
@@ -415,18 +402,20 @@ export default function LandingPage() {
             </div>
           </div>
           <div className={styles.installCopy}>
-            <h3>Install, authorize, then connect.</h3>
+            <h3>One prompt. Agent-led setup.</h3>
             <p>
-              Start with the npm package or the Codex skills. Setup opens the browser so the user
-              can log in, register, and authorize the local MCP key.
+              The install guide lives at a stable markdown URL. Agents can read it, install the npm
+              package, configure MCP clients, and pause for your browser authorization.
             </p>
             <ul>
-              {['Global npm package', 'Codex skills', 'MCP client config'].map(item => (
-                <li key={item}>
-                  <CheckCircle size={20} weight="fill" />
-                  {item}
-                </li>
-              ))}
+              {['Agent-readable install URL', 'Browser authorization', 'MCP + Skills config'].map(
+                item => (
+                  <li key={item}>
+                    <CheckCircle size={20} weight="fill" />
+                    {item}
+                  </li>
+                ),
+              )}
             </ul>
           </div>
         </div>
