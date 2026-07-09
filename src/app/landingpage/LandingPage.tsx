@@ -41,21 +41,25 @@ const examples = [
 
 const installCommands = [
   {
-    id: 'skill',
-    label: 'Skill',
-    title: 'Install as a global skill',
-    command: `# Install as a global skill
-npx -y @amami/cli install
-
-# Or view source on GitHub
-https://github.com/amami-dev/amami-mcp/tree/main/skills/amami`,
-  },
-  {
     id: 'mcp',
     label: 'MCP',
-    title: 'Add directly to Claude Desktop',
-    command:
-      'claude mcp add amami -e UMAMI_API_KEY=your_cloud_api_key -- npx -y umami-analytics-mcp',
+    title: 'Install and authorize Amami MCP',
+    command: `# Opens browser login/register, then writes a local env file
+npx -y amami-analytics-mcp setup --write
+
+# MCP command after setup
+npx -y amami-analytics-mcp --env-file ~/.amami-analytics-mcp/.env`,
+  },
+  {
+    id: 'skill',
+    label: 'Skill',
+    title: 'Install Amami agent skills',
+    command: `# Install Amami setup + analytics skills
+python ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \\
+  --repo april-jk/amami-skills \\
+  --path amami-mcp-setup amami-analytics
+
+# Then restart Codex and use $amami-mcp-setup`,
   },
   {
     id: 'config',
@@ -65,10 +69,12 @@ https://github.com/amami-dev/amami-mcp/tree/main/skills/amami`,
   "mcpServers": {
     "amami": {
       "command": "npx",
-      "args": ["-y", "umami-analytics-mcp"],
-      "env": {
-        "UMAMI_API_KEY": "your_api_key_here"
-      }
+      "args": [
+        "-y",
+        "amami-analytics-mcp",
+        "--env-file",
+        "~/.amami-analytics-mcp/.env"
+      ]
     }
   }
 }`,
@@ -76,33 +82,36 @@ https://github.com/amami-dev/amami-mcp/tree/main/skills/amami`,
 ];
 
 const tools = [
-  ['list_websites', 'Retrieves all websites accessible to the provided API key.'],
-  ['get_website_stats', 'Gets high-level metrics (pageviews, visitors, bounces) for a site.'],
-  ['get_pageviews', 'Fetches a time-series array of pageviews over a specific date range.'],
-  ['get_top_pages', 'Lists the most visited URLs for a given period, sorted by views.'],
-  ['get_active_visitors', 'Returns the real-time count of currently active visitors on the site.'],
-  ['get_traffic_sources', 'Identifies referrers and sources driving traffic to your domain.'],
+  ['list_websites', 'Finds every website the authorized Amami account can access.'],
+  ['create_website', 'Creates a tracked website when setup was authorized with write access.'],
+  ['get_stats', 'Returns pageviews, visitors, visits, bounces, and total time for a date range.'],
+  [
+    'get_pageviews',
+    'Fetches pageview and session time series grouped by minute, hour, day, or month.',
+  ],
+  ['get_metrics', 'Ranks paths, referrers, browsers, countries, events, UTM fields, and more.'],
+  ['send_event', 'Sends a test or server-side event so agents can verify tracking end to end.'],
 ];
 
 const trustPoints = [
   {
-    title: '0 writes.',
-    body: 'The MCP server only implements GET requests. It cannot modify data.',
+    title: 'Read-only by default.',
+    body: 'Write tools are hidden unless the user authorizes setup with --write.',
     tone: 'secondary',
   },
   {
-    title: 'No dashboard changes.',
-    body: 'Your analytics instance remains untouched. Amami just reads the API.',
+    title: 'Browser consent required.',
+    body: 'Login, registration, and MCP authorization happen in the browser, operated by the user.',
     tone: 'primary',
   },
   {
     title: 'Credentials stay local.',
-    body: "API keys remain in your MCP client's environment variables.",
+    body: 'Setup stores the generated API key in a local env file for the MCP client.',
     tone: 'secondary',
   },
   {
-    title: 'Aggregate analytics only.',
-    body: 'Uses privacy-focused aggregate metrics without exposing PII.',
+    title: 'Scoped escalation.',
+    body: 'Destructive tools require a separate explicit environment flag and are not part of normal setup.',
     tone: 'primary',
   },
 ];
@@ -110,7 +119,7 @@ const trustPoints = [
 const trustBadges = [
   { label: 'Secure', Icon: LockKey },
   { label: 'Private', Icon: EyeSlash },
-  { label: 'Read Only', Icon: ShieldCheck },
+  { label: 'Scoped', Icon: ShieldCheck },
   { label: 'Local Keys', Icon: Key },
 ];
 
@@ -327,7 +336,7 @@ export default function LandingPage() {
               <p className={styles.toolTrace}>
                 &gt; Executing tool: list_websites
                 <br />
-                &gt; Executing tool: get_top_pages
+                &gt; Executing tool: get_metrics
               </p>
             </div>
             <div className={styles.terminalRow}>
@@ -439,7 +448,7 @@ export default function LandingPage() {
       >
         <SectionHeader
           title="Security & Privacy."
-          eyebrow="// Read-only by design. Small enough to trust."
+          eyebrow="// User-authorized keys. Scoped MCP tools."
         />
         <div className={styles.trustLayout}>
           <div className={styles.trustList}>
@@ -470,10 +479,16 @@ export default function LandingPage() {
         <span>Amami</span>
         <p>© 2024 Amami AI. High-performance analytics for the modern developer.</p>
         <div>
-          <a href="https://github.com/amami-dev/amami-mcp" rel="noreferrer" target="_blank">
-            GitHub
+          <a
+            href="https://github.com/april-jk/umami-analytics-mcp"
+            rel="noreferrer"
+            target="_blank"
+          >
+            MCP GitHub
           </a>
-          <a href="#install">Docs</a>
+          <a href="https://github.com/april-jk/amami-skills" rel="noreferrer" target="_blank">
+            Skills
+          </a>
         </div>
       </footer>
     </main>
