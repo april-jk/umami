@@ -43,35 +43,40 @@ const installCommands = [
   {
     id: 'mcp',
     label: 'MCP',
-    title: 'Install and authorize Amami MCP',
-    command: `# Opens browser login/register, then writes a local env file
-npx -y amami-analytics-mcp setup --write
+    title: 'Install Amami MCP globally',
+    command: `# 1. Install the MCP package
+npm install -g amami-analytics-mcp
 
-# MCP command after setup
-npx -y amami-analytics-mcp --env-file ~/.amami-analytics-mcp/.env`,
+# 2. Open browser login/register and authorize
+amami-analytics-mcp setup --write
+
+# 3. Use after setup
+amami-analytics-mcp --env-file ~/.amami-analytics-mcp/.env`,
   },
   {
     id: 'skill',
     label: 'Skill',
-    title: 'Install Amami agent skills',
-    command: `# Install Amami setup + analytics skills
-python ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \\
-  --repo april-jk/amami-skills \\
-  --path amami-mcp-setup amami-analytics
+    title: 'Install Amami skills in Codex',
+    command: `Paste this into Codex:
 
-# Then restart Codex and use $amami-mcp-setup`,
+Install the Amami Codex skills from GitHub:
+repo: april-jk/amami-skills
+paths: amami-mcp-setup, amami-analytics
+
+Then restart Codex and use $amami-mcp-setup.`,
   },
   {
     id: 'config',
     label: 'Config',
-    title: 'Cursor / Claude Desktop config',
-    command: `{
+    title: 'MCP client config after setup',
+    command: `// After setup, point your MCP client at the local env file
+{
   "mcpServers": {
     "amami": {
       "command": "npx",
       "args": [
         "-y",
-        "amami-analytics-mcp",
+        "amami-analytics-mcp@latest",
         "--env-file",
         "~/.amami-analytics-mcp/.env"
       ]
@@ -367,7 +372,7 @@ export default function LandingPage() {
       </section>
 
       <section className={`${styles.section} ${styles.pageSection}`} id="install">
-        <SectionHeader title="Quick integration." eyebrow="// Setup path for MCP clients." />
+        <SectionHeader title="Quick integration." eyebrow="// Install first. Configure after." />
         <div className={styles.installLayout}>
           <div className={styles.installWorkbench}>
             <div className={styles.tabs} role="tablist" aria-label="Install method">
@@ -412,13 +417,13 @@ export default function LandingPage() {
             </div>
           </div>
           <div className={styles.installCopy}>
-            <h3>Integrate anywhere.</h3>
+            <h3>Install, authorize, then connect.</h3>
             <p>
-              Amami is built on the Model Context Protocol (MCP). It works universally across modern
-              AI assistants and editors.
+              Start with the npm package or the Codex skills. Setup opens the browser so the user
+              can log in, register, and authorize the local MCP key.
             </p>
             <ul>
-              {['Cursor', 'Claude Desktop', 'Custom Scripts'].map(item => (
+              {['Global npm package', 'Codex skills', 'MCP client config'].map(item => (
                 <li key={item}>
                   <CheckCircle size={20} weight="fill" />
                   {item}
