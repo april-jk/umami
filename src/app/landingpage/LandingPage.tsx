@@ -51,7 +51,7 @@ npm install -g amami-analytics-mcp
 amami-analytics-mcp setup --write
 
 # 3. Use after setup
-amami-analytics-mcp --env-file ~/.amami-analytics-mcp/.env`,
+amami-analytics-mcp`,
   },
   {
     id: 'skill',
@@ -69,16 +69,14 @@ Then restart Codex and use $amami-mcp-setup.`,
     id: 'config',
     label: 'Config',
     title: 'MCP client config after setup',
-    command: `// After setup, point your MCP client at the local env file
+    command: `// After setup, Amami MCP auto-loads its local config
 {
   "mcpServers": {
     "amami": {
       "command": "npx",
       "args": [
         "-y",
-        "amami-analytics-mcp@latest",
-        "--env-file",
-        "~/.amami-analytics-mcp/.env"
+        "amami-analytics-mcp@latest"
       ]
     }
   }
