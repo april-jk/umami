@@ -22,20 +22,22 @@ const pageAnchors = [
 
 const examples = [
   {
-    label: 'Traffic check',
-    query: 'How was traffic last week?',
-    answer: 'Traffic rose 27.4%. The docs install page and pricing page created most of the lift.',
-  },
-  {
-    label: 'Top pages',
-    query: 'Which pages performed best this month?',
-    answer: '/docs/mcp, /pricing, and /blog/launch carried 63.8% of pageviews this month.',
-  },
-  {
-    label: 'Live traffic',
-    query: 'How many people are active right now?',
+    label: 'One-step analytics setup',
+    query: 'Add analytics to this project.',
     answer:
-      '12 visitors are active. Most are reading install docs from Cursor and Claude Desktop referrals.',
+      'Amami MCP created a website, generated the tracking script, and helped wire it into your app.',
+  },
+  {
+    label: 'Traffic insight',
+    query: 'What is driving visitors this week?',
+    answer:
+      'GitHub, docs, and X are the top sources. GitHub visitors spend 42% longer than average.',
+  },
+  {
+    label: 'Growth recommendation',
+    query: 'How can we improve conversions?',
+    answer:
+      'Move the signup CTA higher on the install page, track pricing clicks, and create a clearer path for GitHub visitors.',
   },
 ];
 
@@ -94,36 +96,36 @@ ${installDocUrl}#codex-skills`,
 ];
 
 const tools = [
-  ['list_websites', 'Finds every website the authorized Amami account can access.'],
-  ['create_website', 'Creates a tracked website when setup was authorized with write access.'],
-  ['get_stats', 'Returns pageviews, visitors, visits, bounces, and total time for a date range.'],
+  ['list_websites', 'Let the agent find the analytics projects your account can access.'],
+  ['create_website', 'Let the agent create a tracked website for the app you are building.'],
+  ['get_stats', 'Ask for visitors, pageviews, visits, bounce rate, and total time.'],
+  ['get_pageviews', 'Inspect traffic trends by minute, hour, day, or month.'],
+  ['get_metrics', 'Analyze pages, referrers, countries, devices, events, and UTM performance.'],
   [
-    'get_pageviews',
-    'Fetches pageview and session time series grouped by minute, hour, day, or month.',
+    'send_event',
+    'Send test or server-side events so your agent can verify tracking and measure growth actions.',
   ],
-  ['get_metrics', 'Ranks paths, referrers, browsers, countries, events, UTM fields, and more.'],
-  ['send_event', 'Sends a test or server-side event so agents can verify tracking end to end.'],
 ];
 
 const trustPoints = [
   {
-    title: 'Read-only by default.',
-    body: 'Write tools are hidden unless the user authorizes setup with --write.',
+    title: 'Browser consent required.',
+    body: 'Login, registration, and MCP authorization happen in the browser, operated by the user.',
     tone: 'secondary',
   },
   {
-    title: 'Browser consent required.',
-    body: 'Login, registration, and MCP authorization happen in the browser, operated by the user.',
+    title: 'Local credentials.',
+    body: 'Generated API keys are stored locally for the MCP client, not pasted into chat.',
     tone: 'primary',
   },
   {
-    title: 'Credentials stay local.',
-    body: 'Setup stores the generated API key in a local env file for the MCP client.',
+    title: 'Read-first analytics.',
+    body: 'Agents can inspect analytics safely, with write access enabled only when setup requests it.',
     tone: 'secondary',
   },
   {
-    title: 'Scoped escalation.',
-    body: 'Destructive tools require a separate explicit environment flag and are not part of normal setup.',
+    title: 'Growth advice from your data.',
+    body: 'Recommendations are based on your site traffic, pages, referrers, and events.',
     tone: 'primary',
   },
 ];
@@ -320,12 +322,12 @@ export default function LandingPage() {
       <section className={`${styles.hero} ${styles.pageSection}`} id="top">
         <div className={styles.heroCopy}>
           <h1>
-            Stop clicking dashboards.
-            <span>Ask your analytics.</span>
+            Let your agent connect analytics.
+            <span>Then find growth opportunities.</span>
           </h1>
           <p>
-            &gt; Amami connects Cursor, Claude Desktop, and other MCP clients to your analytics
-            data, allowing you to query traffic metrics directly from your editor.
+            &gt; Amami helps coding agents add website analytics in one step, then turns traffic,
+            referrers, pages, and events into actionable growth recommendations.
           </p>
         </div>
 
@@ -341,21 +343,23 @@ export default function LandingPage() {
           <div className={styles.terminalBody}>
             <div className={styles.terminalRow}>
               <span className={styles.userRole}>usr:</span>
-              <p>Which pages performed best this month?</p>
+              <p>Add analytics to this website and tell me how to improve growth.</p>
             </div>
             <div className={styles.terminalRow}>
               <span className={styles.systemRole}>sys:</span>
               <p className={styles.toolTrace}>
-                &gt; Executing tool: list_websites
+                &gt; Installing Amami MCP
                 <br />
-                &gt; Executing tool: get_metrics
+                &gt; Creating tracking website
+                <br />
+                &gt; Reading traffic and referrer data
               </p>
             </div>
             <div className={styles.terminalRow}>
               <span className={styles.assistantRole}>ast:</span>
               <p>
-                /docs/mcp and /pricing drove <strong>63.8%</strong> of pageviews. Inspect referral
-                quality before changing copy.
+                Amami is connected. I added tracking and found three growth opportunities: improve
+                the docs CTA, double down on GitHub referrals, and track signup intent events.
               </p>
             </div>
           </div>
@@ -364,8 +368,8 @@ export default function LandingPage() {
 
       <section className={`${styles.section} ${styles.pageSection}`} id="demo">
         <SectionHeader
-          eyebrow="// Compact, normalized analytics data for LLMs."
-          title="Ask the questions you already have."
+          eyebrow="// Your agent can install analytics, read the data, and recommend what to do next."
+          title="From analytics setup to growth decisions."
         />
         <div className={styles.exampleStack}>
           {examples.map(example => (
@@ -379,7 +383,10 @@ export default function LandingPage() {
       </section>
 
       <section className={`${styles.section} ${styles.pageSection}`} id="install">
-        <SectionHeader title="Quick integration." eyebrow="// Copy this prompt to your agent." />
+        <SectionHeader
+          title="Install once. Let your agent handle analytics."
+          eyebrow="// Copy one prompt to set up MCP, browser authorization, and agent tools."
+        />
         <div className={styles.installLayout}>
           <div className={styles.installWorkbench}>
             <div className={styles.tabs} role="tablist" aria-label="Install method">
@@ -424,27 +431,33 @@ export default function LandingPage() {
             </div>
           </div>
           <div className={styles.installCopy}>
-            <h3>One prompt. Agent-led setup.</h3>
+            <h3>One prompt. Analytics and growth setup.</h3>
             <p>
-              The install guide lives at a stable markdown URL. Agents can read it, install the npm
-              package, configure MCP clients, and pause for your browser authorization.
+              Amami MCP lets your coding agent create analytics projects, connect your current app,
+              query website data, and request AI growth recommendations while login and
+              authorization stay in your browser.
             </p>
             <ul>
-              {['Agent-readable install URL', 'Browser authorization', 'MCP + Skills config'].map(
-                item => (
-                  <li key={item}>
-                    <CheckCircle size={20} weight="fill" />
-                    {item}
-                  </li>
-                ),
-              )}
+              {[
+                'One-step website analytics',
+                'Data-backed growth recommendations',
+                'User-controlled browser authorization',
+              ].map(item => (
+                <li key={item}>
+                  <CheckCircle size={20} weight="fill" />
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </section>
 
       <section className={`${styles.section} ${styles.pageSection}`} id="tools">
-        <SectionHeader title="Exposed tools." eyebrow="// One analytics layer for AI." />
+        <SectionHeader
+          title="Analytics and growth tools for agents."
+          eyebrow="// Connect data, understand behavior, and decide what to improve next."
+        />
         <div className={styles.toolsGrid}>
           {tools.map(([name, description]) => (
             <article className={styles.toolCard} key={name}>
@@ -461,8 +474,8 @@ export default function LandingPage() {
         id="security"
       >
         <SectionHeader
-          title="Security & Privacy."
-          eyebrow="// User-authorized keys. Scoped MCP tools."
+          title="Built for human-approved agent workflows."
+          eyebrow="// Your agent can act, but you stay in control."
         />
         <div className={styles.trustLayout}>
           <div className={styles.trustList}>

@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import LandingPage from './LandingPage';
 
 export const metadata: Metadata = {
-  title: 'Amami - Ask your analytics from your AI assistant',
+  title: 'Amami - Analytics setup and growth advice for coding agents',
   description:
-    'Amami lets Cursor, Claude Desktop, and other MCP clients answer traffic questions from your analytics data.',
+    'Amami helps coding agents add website analytics in one step, then turn traffic, referrers, pages, and events into growth recommendations.',
 };
 
 export default function Page() {
