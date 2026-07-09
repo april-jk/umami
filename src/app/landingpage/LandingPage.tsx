@@ -46,18 +46,18 @@ const installCommands = [
     id: 'mcp',
     label: 'MCP',
     title: 'Ask your agent to install Amami MCP',
-    command: `请复制下面的指令，然后发送给您的代理，以便进行自动安装：
+    command: `Copy the instruction below and send it to your agent for automatic installation:
 
-请按照说明来安装 Amami MCP，并引导我完成浏览器登录、注册和授权。
+Please follow the guide to install Amami MCP, then walk me through browser login, registration, and authorization.
 ${installDocUrl}`,
   },
   {
     id: 'skill',
     label: 'Skill',
     title: 'Ask Codex to install Amami skills',
-    command: `请复制下面的指令，然后发送给 Codex，以便安装 Amami Skills：
+    command: `Copy the instruction below and send it to Codex to install Amami Skills:
 
-请按照说明来安装 Amami Codex Skills，并安装 amami-mcp-setup 和 amami-analytics。
+Please follow the guide to install Amami Codex Skills, including amami-mcp-setup and amami-analytics.
 ${installDocUrl}#codex-skills`,
   },
   {
