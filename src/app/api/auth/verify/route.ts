@@ -2,6 +2,7 @@ import { fetchAccount, fetchTeam } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
 import { getAllUserTeams } from '@/queries/prisma';
+import { getTenant } from '@/queries/prisma/tenant';
 
 export async function POST(request: Request) {
   const { auth, error } = await parseRequest(request);
@@ -45,6 +46,14 @@ export async function POST(request: Request) {
     );
 
     return json({ ...user, teams: teamsWithSubscription });
+  }
+
+  // Include tenant info for non-cloud mode
+  if (user.tenantId) {
+    const tenant = await getTenant(user.tenantId);
+    if (tenant) {
+      user.plan = tenant.plan;
+    }
   }
 
   return json({ ...user, teams });

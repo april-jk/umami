@@ -278,6 +278,7 @@ if (isProd && cloudMode) {
 /** @type {import('next').NextConfig} */
 export default withNextIntl({
   reactStrictMode: false,
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
   env: {
     apiUrl,
     basePath,

@@ -365,6 +365,7 @@ export const labels: Record<string, string> = {
   support: 'label.support',
   documentation: 'label.documentation',
   switchAccount: 'label.switch-account',
+  membership: 'label.membership',
   switchToTableView: 'label.switch-to-table-view',
   switchToCardView: 'label.switch-to-card-view',
   performance: 'label.performance',
