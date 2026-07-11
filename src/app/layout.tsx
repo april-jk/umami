@@ -17,7 +17,7 @@ export default function ({ children }) {
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className="notranslate" translate="no">
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=amami-20260708" />
         <link
