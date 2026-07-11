@@ -3,6 +3,7 @@ import {
   Icon,
   Menu,
   MenuItem,
+  MenuSection,
   MenuSeparator,
   MenuTrigger,
   Popover,
@@ -17,7 +18,7 @@ import {
 import { useConfig, useLocale, useLoginQuery, useMessages, useMobile } from '@/components/hooks';
 import {
   BookText,
-  ExternalLink,
+  Crown,
   Globe,
   LifeBuoy,
   LockKeyhole,
@@ -113,90 +114,68 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
       <Popover placement="top start">
         <Column minWidth="200px">
           <Menu autoFocus="last" onAction={onClose}>
-            <MenuItem id="settings" href={getUrl('/settings')}>
-              <Row alignItems="center" gap>
-                <Icon>
-                  <Settings />
-                </Icon>
-                <Text>{t(labels.settings)}</Text>
-              </Row>
-            </MenuItem>
-            <SubmenuTrigger>
-              <MenuItem id="language" showSubMenuIcon>
-                <Row alignItems="center" gap>
-                  <Icon>
-                    <Globe />
-                  </Icon>
-                  <Text>{t(labels.language)}</Text>
-                </Row>
-              </MenuItem>
-              <Popover placement={isMobile ? 'bottom start' : 'right bottom'} isNonModal>
-                <Menu
-                  selectionMode="single"
-                  selectedKeys={new Set([locale])}
-                  onAction={key => saveLocale(key as string)}
-                  style={{ maxHeight: 300, overflow: 'auto' }}
-                >
-                  {languageItems.map(({ value, label }) => (
-                    <MenuItem key={value} id={value}>
-                      <Text weight={value === locale ? 'bold' : undefined}>{label}</Text>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Popover>
-            </SubmenuTrigger>
-            <SubmenuTrigger>
-              <MenuItem id="theme" showSubMenuIcon>
-                <Row alignItems="center" gap>
-                  <Icon>
-                    <SunMoon />
-                  </Icon>
-                  <Text>{t(labels.theme)}</Text>
-                </Row>
-              </MenuItem>
-              <Popover placement={isMobile ? 'bottom start' : 'right bottom'} isNonModal>
-                <Menu
-                  selectionMode="single"
-                  selectedKeys={new Set([theme])}
-                  onAction={key => setTheme(key as 'light' | 'dark')}
-                >
-                  <MenuItem id="light">
-                    <Row alignItems="center" gap>
-                      <Icon>
-                        <Sun />
-                      </Icon>
-                      <Text>Light</Text>
-                    </Row>
-                  </MenuItem>
-                  <MenuItem id="dark">
-                    <Row alignItems="center" gap>
-                      <Icon>
-                        <Moon />
-                      </Icon>
-                      <Text>Dark</Text>
-                    </Row>
-                  </MenuItem>
-                </Menu>
-              </Popover>
-            </SubmenuTrigger>
-            {items.map(({ id, path, label, icon, separator, target, external }: any) => {
-              if (separator) {
-                return <MenuSeparator key={id} />;
-              }
-              return (
-                <MenuItem key={id} id={id} href={path} target={target}>
-                  <Row alignItems="center" gap>
-                    <Icon>{icon}</Icon>
-                    <Text>{label}</Text>
-                    {external && (
-                      <Icon color="muted" size="sm">
-                        <ExternalLink />
-                      </Icon>
-                    )}
-                  </Row>
-                </MenuItem>
-              );
-            })}
+            <MenuSection>
+              <MenuItem
+                id="settings"
+                href={getUrl('/settings')}
+                icon={<Settings />}
+                label={t(labels.settings)}
+              />
+              <MenuItem
+                id="membership"
+                href={getUrl('/membership')}
+                icon={<Crown />}
+                label={t(labels.membership)}
+              />
+              <SubmenuTrigger>
+                <MenuItem
+                  id="language"
+                  showSubMenuIcon
+                  icon={<Globe />}
+                  label={t(labels.language)}
+                />
+                <Popover placement={isMobile ? 'bottom start' : 'right bottom'} isNonModal>
+                  <Menu
+                    selectionMode="single"
+                    selectedKeys={new Set([locale])}
+                    onAction={key => saveLocale(key as string)}
+                    style={{ maxHeight: 300, overflow: 'auto' }}
+                  >
+                    {languageItems.map(({ value, label }) => (
+                      <MenuItem key={value} id={value} label={label} />
+                    ))}
+                  </Menu>
+                </Popover>
+              </SubmenuTrigger>
+              <SubmenuTrigger>
+                <MenuItem id="theme" showSubMenuIcon icon={<SunMoon />} label={t(labels.theme)} />
+                <Popover placement={isMobile ? 'bottom start' : 'right bottom'} isNonModal>
+                  <Menu
+                    selectionMode="single"
+                    selectedKeys={new Set([theme])}
+                    onAction={key => setTheme(key as 'light' | 'dark')}
+                  >
+                    <MenuItem id="light" icon={<Sun />} label="Light" />
+                    <MenuItem id="dark" icon={<Moon />} label="Dark" />
+                  </Menu>
+                </Popover>
+              </SubmenuTrigger>
+              {items.map(({ id, path, label, icon, separator, target }: any) => {
+                if (separator) {
+                  return <MenuSeparator key={id} />;
+                }
+                return (
+                  <MenuItem
+                    key={id}
+                    id={id}
+                    href={path}
+                    target={target}
+                    icon={icon}
+                    label={label}
+                  />
+                );
+              })}
+            </MenuSection>
           </Menu>
         </Column>
       </Popover>
