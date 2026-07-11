@@ -310,7 +310,7 @@ export default function LandingPage() {
         </div>
         <div className={styles.navAction}>
           <TerminalWindow size={22} weight="duotone" />
-          <a className={styles.primaryButton} href="/dashboard">
+          <a className={styles.primaryButton} href="/login">
             Get Started
           </a>
         </div>
