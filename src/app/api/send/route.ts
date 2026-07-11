@@ -6,12 +6,14 @@ import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { getSalt, hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
+import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
 import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { getTenantPlan, reserveWebsiteEvent } from '@/queries/prisma/tenant';
 
 interface Cache {
   websiteId: string;
@@ -106,6 +108,7 @@ export async function POST(request: Request) {
 
     // Cache check
     let cache: Cache | null = null;
+    let website: any = null;
 
     if (websiteId) {
       const cacheHeader = request.headers.get('x-umami-cache');
@@ -120,7 +123,7 @@ export async function POST(request: Request) {
 
       // Find website
       if (!cache?.websiteId) {
-        const website = await fetchWebsite(websiteId);
+        website = await fetchWebsite(websiteId);
 
         if (!website) {
           return badRequest({ message: 'Website not found.' });
@@ -182,6 +185,27 @@ export async function POST(request: Request) {
     }
 
     if (type === COLLECTION_TYPE.event) {
+      if (process.env.CLOUD_MODE && websiteId) {
+        const quota = await reserveWebsiteEvent(websiteId, createdAt);
+        if (!quota.allowed) {
+          const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;
+          const limits = getTenantPlanLimits(tenant?.plan);
+          const payload = getLimitErrorPayload(
+            tenant?.plan,
+            'event',
+            quota.used ?? 0,
+            limits.eventLimit,
+          );
+          return forbidden({
+            message: payload.message,
+            code: payload.code,
+            current: payload.current,
+            limit: payload.limit,
+            upgradeMessage: payload.upgradeMessage,
+          });
+        }
+      }
+
       const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
 
@@ -287,6 +311,27 @@ export async function POST(request: Request) {
         });
       }
     } else if (type === COLLECTION_TYPE.performance) {
+      if (process.env.CLOUD_MODE && websiteId) {
+        const quota = await reserveWebsiteEvent(websiteId, createdAt);
+        if (!quota.allowed) {
+          const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;
+          const limits = getTenantPlanLimits(tenant?.plan);
+          const payload = getLimitErrorPayload(
+            tenant?.plan,
+            'event',
+            quota.used ?? 0,
+            limits.eventLimit,
+          );
+          return forbidden({
+            message: payload.message,
+            code: payload.code,
+            current: payload.current,
+            limit: payload.limit,
+            upgradeMessage: payload.upgradeMessage,
+          });
+        }
+      }
+
       const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
       const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;

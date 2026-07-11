@@ -3,12 +3,19 @@ import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { fetchAccount, fetchTeam } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
-import { getDefaultTenantIdForUser, getTenantIdForTeam } from '@/queries/prisma/tenant';
+import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
+import {
+  canCreateTenantWebsite,
+  getDefaultTenantIdForUser,
+  getTenantIdForTeam,
+  getTenantPlan,
+  getTenantWebsiteCount,
+} from '@/queries/prisma/tenant';
 import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
 
 export async function GET(request: Request) {
@@ -53,7 +60,25 @@ export async function POST(request: Request) {
 
   const { id, name, domain, shareId, teamId } = body;
 
-  if (process.env.CLOUD_MODE) {
+  const tenantId = teamId
+    ? await getTenantIdForTeam(teamId)
+    : await getDefaultTenantIdForUser(auth.user.id);
+
+  if (process.env.CLOUD_MODE && tenantId) {
+    if (!(await canCreateTenantWebsite(tenantId))) {
+      const tenant = await getTenantPlan(tenantId);
+      const count = await getTenantWebsiteCount(tenantId);
+      const limits = getTenantPlanLimits(tenant?.plan);
+      const payload = getLimitErrorPayload(tenant?.plan, 'website', count, limits.websiteLimit);
+      return forbidden({
+        message: payload.message,
+        code: payload.code,
+        current: payload.current,
+        limit: payload.limit,
+        upgradeMessage: payload.upgradeMessage,
+      });
+    }
+  } else if (process.env.CLOUD_MODE) {
     const account = teamId ? await fetchTeam(teamId) : await fetchAccount(auth.user.id);
     const websiteLimit = getCloudWebsiteLimit(account);
 
@@ -83,10 +108,6 @@ export async function POST(request: Request) {
   if (!teamId) {
     data.userId = auth.user.id;
   }
-
-  const tenantId = teamId
-    ? await getTenantIdForTeam(teamId)
-    : await getDefaultTenantIdForUser(auth.user.id);
 
   if (tenantId) {
     data.tenantId = tenantId;

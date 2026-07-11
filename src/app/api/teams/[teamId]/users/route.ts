@@ -1,9 +1,11 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { badRequest, json, unauthorized } from '@/lib/response';
+import { badRequest, forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, teamRoleParam } from '@/lib/schema';
 import { canUpdateTeam, canViewTeam } from '@/permissions';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries/prisma';
+import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
+import { canAddTeamMember, getTeamMemberCount, getTenantIdForTeam, getTenantPlan } from '@/queries/prisma/tenant';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
@@ -75,6 +77,21 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
 
   if (teamUser) {
     return badRequest({ message: 'User is already a member of the Team.' });
+  }
+
+  if (process.env.CLOUD_MODE && !(await canAddTeamMember(teamId))) {
+    const tenantId = await getTenantIdForTeam(teamId);
+    const tenant = tenantId ? await getTenantPlan(tenantId) : null;
+    const count = tenantId ? await getTeamMemberCount(teamId) : 0;
+    const limits = getTenantPlanLimits(tenant?.plan);
+    const payload = getLimitErrorPayload(tenant?.plan, 'member', count, limits.memberLimit);
+    return forbidden({
+      message: payload.message,
+      code: payload.code,
+      current: payload.current,
+      limit: payload.limit,
+      upgradeMessage: payload.upgradeMessage,
+    });
   }
 
   const users = await createTeamUser(userId, teamId, role);
