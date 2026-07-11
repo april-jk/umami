@@ -42,7 +42,6 @@ export default function ({ children }) {
         <meta name="msapplication-TileColor" content="#fffdf1" />
         <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />
-        <meta name="robots" content="noindex,nofollow" />
       </head>
       <body>
         <Suspense>
@@ -66,6 +65,10 @@ export async function generateMetadata(): Promise<Metadata> {
     title: {
       template: '%s | Amami',
       default: 'Amami',
+    },
+    robots: {
+      index: false,
+      follow: false,
     },
   };
 }
