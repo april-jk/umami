@@ -69,11 +69,12 @@ model Session {
 }
 
 model Website {
-  id        String    @id() @map("website_id") @db.Uuid
-  tenantId  String?   @map("tenant_id") @db.Uuid
-  name      String    @db.VarChar(100)
-  domain    String?   @db.VarChar(500)
-  resetAt   DateTime? @map("reset_at") @db.Timestamptz(6)
+  id                 String    @id() @map("website_id") @db.Uuid
+  tenantId           String?   @map("tenant_id") @db.Uuid
+  name               String    @db.VarChar(100)
+  domain             String?   @db.VarChar(500)
+  resetAt            DateTime? @map("reset_at") @db.Timestamptz(6)
+  retentionCutoffAt  DateTime? @map("retention_cutoff_at") @db.Timestamptz(6)
   userId    String?   @map("user_id") @db.Uuid
   teamId    String?   @map("team_id") @db.Uuid
   createdBy String?   @map("created_by") @db.Uuid
@@ -99,6 +100,7 @@ model Website {
 
   @@index([userId])
   @@index([tenantId])
+  @@index([retentionCutoffAt])
   @@index([teamId])
   @@index([createdAt])
   @@index([createdBy])

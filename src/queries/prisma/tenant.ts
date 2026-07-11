@@ -1,6 +1,7 @@
 import { Prisma, type Tenant } from '@/generated/prisma/client';
 import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
+import { getTenantPlanLimits, isWithinLimit } from '@/lib/tenant-plan';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
@@ -151,6 +152,122 @@ export async function getTenantIdForTeam(teamId: string) {
   });
 
   return team?.tenantId ?? null;
+}
+
+export async function getTenantPlan(tenantId: string) {
+  return prisma.client.tenant.findUnique({
+    where: { id: tenantId, deletedAt: null },
+    select: { plan: true },
+  });
+}
+
+export async function getTenantWebsiteCount(tenantId: string) {
+  return prisma.client.website.count({ where: { tenantId, deletedAt: null } });
+}
+
+export async function getTeamMemberCount(teamId: string) {
+  return prisma.client.teamUser.count({ where: { teamId, user: { deletedAt: null } } });
+}
+
+export async function canCreateTenantWebsite(tenantId: string) {
+  const tenant = await getTenantPlan(tenantId);
+  const count = await getTenantWebsiteCount(tenantId);
+  return isWithinLimit(count, getTenantPlanLimits(tenant?.plan).websiteLimit);
+}
+
+export async function canAddTeamMember(teamId: string) {
+  const tenantId = await getTenantIdForTeam(teamId);
+  if (!tenantId) return true;
+
+  const tenant = await getTenantPlan(tenantId);
+  const count = await getTeamMemberCount(teamId);
+  return isWithinLimit(count, getTenantPlanLimits(tenant?.plan).memberLimit);
+}
+
+export async function reserveTenantEvent(tenantId: string, now = new Date()) {
+  const tenant = await getTenantPlan(tenantId);
+  const { eventLimit } = getTenantPlanLimits(tenant?.plan);
+
+  if (eventLimit === null) return { allowed: true, limit: null, used: null, remaining: null };
+
+  const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const result = await prisma.transaction(async tx => {
+    await tx.tenantUsageMonthly.upsert({
+      where: { tenantId_month: { tenantId, month } },
+      create: { id: uuid(), tenantId, month },
+      update: {},
+    });
+
+    // Get current count before increment
+    const usage = await tx.tenantUsageMonthly.findUnique({
+      where: { tenantId_month: { tenantId, month } },
+      select: { eventCount: true },
+    });
+    const currentCount = Number(usage?.eventCount ?? 0);
+
+    const updated = await tx.tenantUsageMonthly.updateMany({
+      where: { tenantId, month, eventCount: { lt: eventLimit } },
+      data: { eventCount: { increment: 1 } },
+    });
+
+    const allowed = updated.count === 1;
+    return { allowed, currentCount };
+  });
+
+  return {
+    allowed: result.allowed,
+    limit: eventLimit,
+    used: result.allowed ? result.currentCount + 1 : result.currentCount,
+    remaining: result.allowed ? eventLimit - result.currentCount - 1 : 0,
+  };
+}
+
+export async function reserveWebsiteEvent(websiteId: string, now = new Date()) {
+  const website = await prisma.client.website.findUnique({
+    where: { id: websiteId },
+    select: { tenantId: true },
+  });
+
+  if (!website?.tenantId) return { allowed: true, limit: null, used: null, remaining: null };
+  return reserveTenantEvent(website.tenantId, now);
+}
+
+/** Get current usage statistics for a tenant */
+export async function getTenantUsage(tenantId: string, now = new Date()) {
+  const tenant = await getTenantPlan(tenantId);
+  const limits = getTenantPlanLimits(tenant?.plan);
+
+  const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const usage = await prisma.client.tenantUsageMonthly.findUnique({
+    where: { tenantId_month: { tenantId, month } },
+    select: { eventCount: true, websiteCount: true, memberCount: true },
+  });
+
+  const eventUsed = Number(usage?.eventCount ?? 0);
+  const websiteUsed = await getTenantWebsiteCount(tenantId);
+  const memberUsed = await getTotalTenantMemberCount(tenantId);
+
+  return {
+    plan: tenant?.plan ?? 'free',
+    month: month.toISOString().slice(0, 7),
+    events: { used: eventUsed, limit: limits.eventLimit },
+    websites: { used: websiteUsed, limit: limits.websiteLimit },
+    members: { used: memberUsed, limit: limits.memberLimit },
+  };
+}
+
+/** Get total member count across all teams in a tenant */
+async function getTotalTenantMemberCount(tenantId: string): Promise<number> {
+  const teams = await prisma.client.team.findMany({
+    where: { tenantId, deletedAt: null },
+    select: { id: true },
+  });
+
+  let total = 0;
+  for (const team of teams) {
+    total += await getTeamMemberCount(team.id);
+  }
+  return total;
 }
 
 export async function createTenant(
