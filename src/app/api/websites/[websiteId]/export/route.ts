@@ -1,9 +1,11 @@
 import JSZip from 'jszip';
 import Papa from 'papaparse';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, withDateRange } from '@/lib/schema';
+import { getEntitlementErrorPayload } from '@/lib/tenant-entitlements';
 import { canViewAuthenticatedWebsite } from '@/permissions';
+import { getWebsiteEntitlement } from '@/queries/prisma/tenant-entitlement';
 import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries/sql';
 
 export async function GET(
@@ -24,6 +26,13 @@ export async function GET(
 
   if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
+  }
+
+  if (process.env.CLOUD_MODE) {
+    const entitlement = await getWebsiteEntitlement(websiteId, 'csvExport');
+    if (!entitlement.allowed) {
+      return forbidden(getEntitlementErrorPayload(entitlement.plan, 'csvExport'));
+    }
   }
 
   const filters = await getQueryFilters(query, websiteId);
