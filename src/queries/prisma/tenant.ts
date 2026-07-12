@@ -1,9 +1,9 @@
 import { Prisma, type Tenant } from '@/generated/prisma/client';
 import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
-import { getTenantPlanLimits, isWithinLimit } from '@/lib/tenant-plan';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
+import { getTenantPlanLimits, isWithinLimit } from '@/lib/tenant-plan';
 import type { PageResult, QueryFilters } from '@/lib/types';
 
 import TenantFindManyArgs = Prisma.TenantFindManyArgs;
@@ -323,6 +323,10 @@ export async function updateTenant(tenantId: string, data: Prisma.TenantUpdateIn
       updatedAt: new Date(),
     },
   });
+}
+
+export function getTenantSubscription(tenantId: string) {
+  return prisma.client.tenantSubscription.findUnique({ where: { tenantId } });
 }
 
 export async function deleteTenant(tenantId: string) {

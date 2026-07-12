@@ -1,15 +1,16 @@
 'use client';
 
-import { Column, Grid, Heading, Icon, Row, Text, Button } from '@umami/react-zen';
+import { Button, Column, Grid, Heading, Icon, Row, Text } from '@umami/react-zen';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useLoginQuery, useTenantQuery, useUpdateTenantPlanQuery, useMessages } from '@/components/hooks';
-import { Check, Crown, ArrowLeft, AlertTriangle } from '@/components/icons';
+import { useApi, useLoginQuery, useTenantQuery } from '@/components/hooks';
+import { AlertTriangle, ArrowLeft, Check } from '@/components/icons';
 import { TENANT_PLAN_LIMITS, type TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
-import Link from 'next/link';
-import { useState } from 'react';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 
@@ -24,8 +25,22 @@ const planPrices: Record<TenantPlanId, string> = {
 const planFeatures: Record<TenantPlanId, string[]> = {
   free: ['100K events/month', '5 websites', '1 member', '7 days retention'],
   starter: ['500K events/month', '10 websites', '1 member', '180 days retention', 'API access'],
-  pro: ['2M events/month', '25 websites', '5 members', '2 years retention', 'API access', 'Email reports'],
-  team: ['10M events/month', '50 websites', '20 members', 'Unlimited retention', 'White-label', 'SSO ready'],
+  pro: [
+    '2M events/month',
+    '25 websites',
+    '5 members',
+    '2 years retention',
+    'API access',
+    'Email reports',
+  ],
+  team: [
+    '10M events/month',
+    '50 websites',
+    '20 members',
+    'Unlimited retention',
+    'White-label',
+    'SSO ready',
+  ],
   enterprise: [
     'Unlimited events',
     'Unlimited websites',
@@ -39,19 +54,62 @@ const planFeatures: Record<TenantPlanId, string[]> = {
 
 export function UpgradePage() {
   const { user } = useLoginQuery();
-  const { t, labels } = useMessages();
   const tenantId = user?.tenantId || user?.tenants?.[0]?.id;
   const { data: tenant } = useTenantQuery(tenantId);
-  const updatePlan = useUpdateTenantPlanQuery(tenantId);
+  const { post, useMutation } = useApi();
+  const searchParams = useSearchParams();
   const [selectedPlan, setSelectedPlan] = useState<TenantPlanId | null>(null);
+  const [billingInterval, setBillingInterval] = useState<'month' | 'year'>('year');
+  const [error, setError] = useState('');
+  const paypalSubscription = useMutation({
+    mutationFn: ({
+      plan,
+      interval,
+    }: {
+      plan: Exclude<TenantPlanId, 'free' | 'enterprise'>;
+      interval: 'month' | 'year';
+    }) => post(`/tenants/${tenantId}/billing/paypal/subscription`, { plan, interval }),
+  });
+  const paypalConfirmation = useMutation({
+    mutationFn: (subscriptionId: string) =>
+      post(`/tenants/${tenantId}/billing/paypal/confirm`, { subscriptionId }),
+  });
 
   const currentPlan = (tenant?.plan || user?.plan || 'free') as TenantPlanId;
   const currentIndex = planOrder.indexOf(currentPlan);
 
+  useEffect(() => {
+    const subscriptionId = searchParams.get('subscription_id');
+    if (searchParams.get('paypal') !== 'success' || !subscriptionId || !user?.isAdmin || !tenantId)
+      return;
+
+    paypalConfirmation.mutate(subscriptionId, {
+      onSuccess: () => window.history.replaceState({}, '', '/membership/upgrade'),
+      onError: () =>
+        setError(
+          'PayPal approved the subscription, but verification did not complete. Please try again.',
+        ),
+    });
+  }, [paypalConfirmation, searchParams, tenantId, user?.isAdmin]);
+
   const handleUpgrade = async (plan: TenantPlanId) => {
     if (plan === currentPlan) return;
-    await updatePlan.mutateAsync({ plan });
-    setSelectedPlan(null);
+    if (!user?.isAdmin) {
+      setError('Only global administrators can manage subscriptions.');
+      return;
+    }
+    if (plan === 'free' || plan === 'enterprise') return;
+
+    setError('');
+    try {
+      const { approveUrl } = await paypalSubscription.mutateAsync({
+        plan,
+        interval: billingInterval,
+      });
+      window.location.assign(approveUrl);
+    } catch {
+      setError('Unable to start the PayPal subscription. Please try again.');
+    }
   };
 
   return (
@@ -75,21 +133,48 @@ export function UpgradePage() {
           description="Choose the plan that fits your needs. Upgrade anytime to unlock more features."
         />
 
-        {selectedPlan && selectedPlan !== currentPlan && planOrder.indexOf(selectedPlan) < currentIndex && (
-          <Panel style={{ backgroundColor: '#fefce8', border: '1px solid #fde047' }}>
-            <Row gap="3" alignItems="center">
-              <Icon size="sm" style={{ color: '#f97316' }}>
-                <AlertTriangle />
-              </Icon>
-              <Column>
-                <Text weight="bold" style={{ color: '#f97316' }}>Downgrade Warning</Text>
-                <Text size="sm" color="muted">
-                  Downgrading may reduce your available resources. Existing data will be preserved but you may not be able to add new websites or members until you are within the new plan limits.
-                </Text>
-              </Column>
-            </Row>
+        {error && (
+          <Panel style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}>
+            <Text style={{ color: '#ef4444' }}>{error}</Text>
           </Panel>
         )}
+
+        <Row gap="2" alignItems="center">
+          <Button
+            variant={billingInterval === 'year' ? 'primary' : 'quiet'}
+            onPress={() => setBillingInterval('year')}
+          >
+            Annual (2 months free)
+          </Button>
+          <Button
+            variant={billingInterval === 'month' ? 'primary' : 'quiet'}
+            onPress={() => setBillingInterval('month')}
+          >
+            Monthly
+          </Button>
+        </Row>
+
+        {selectedPlan &&
+          selectedPlan !== currentPlan &&
+          planOrder.indexOf(selectedPlan) < currentIndex && (
+            <Panel style={{ backgroundColor: '#fefce8', border: '1px solid #fde047' }}>
+              <Row gap="3" alignItems="center">
+                <Icon size="sm" style={{ color: '#f97316' }}>
+                  <AlertTriangle />
+                </Icon>
+                <Column>
+                  <Text weight="bold" style={{ color: '#f97316' }}>
+                    Downgrade Warning
+                  </Text>
+                  <Text size="sm" color="muted">
+                    Downgrading may reduce your available resources. Existing data will be preserved
+                    but you may not be able to add new websites or members until you are within the
+                    new plan limits.
+                  </Text>
+                </Column>
+              </Row>
+            </Panel>
+          )}
 
         <Grid columns={{ base: '1fr', md: '1fr 1fr', xl: 'repeat(5, 1fr)' }} gap="4">
           {planOrder.map((plan, index) => {
@@ -108,11 +193,13 @@ export function UpgradePage() {
                 <Column gap="4" padding="2">
                   <Column gap="2" alignItems="center">
                     <PlanBadge plan={plan} />
-                    <Heading size="sm">
-                      {plan.charAt(0).toUpperCase() + plan.slice(1)}
-                    </Heading>
+                    <Heading size="sm">{plan.charAt(0).toUpperCase() + plan.slice(1)}</Heading>
                     <Text weight="bold" size="lg">
-                      {planPrices[plan]}
+                      {plan === 'enterprise' || plan === 'free'
+                        ? planPrices[plan]
+                        : billingInterval === 'year'
+                          ? `$${({ starter: 90, pro: 290, team: 990 } as const)[plan]}/yr`
+                          : planPrices[plan]}
                     </Text>
                     {isCurrent && (
                       <Text
@@ -146,27 +233,41 @@ export function UpgradePage() {
 
                   <Column gap="2">
                     <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">Events:</Text>
+                      <Text size="sm" weight="bold">
+                        Events:
+                      </Text>
                       <Text size="sm" color="muted">
-                        {limits.eventLimit === null ? 'Unlimited' : limits.eventLimit.toLocaleString() + '/mo'}
+                        {limits.eventLimit === null
+                          ? 'Unlimited'
+                          : `${limits.eventLimit.toLocaleString()}/mo`}
                       </Text>
                     </Row>
                     <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">Websites:</Text>
+                      <Text size="sm" weight="bold">
+                        Websites:
+                      </Text>
                       <Text size="sm" color="muted">
-                        {limits.websiteLimit === null ? 'Unlimited' : limits.websiteLimit.toString()}
+                        {limits.websiteLimit === null
+                          ? 'Unlimited'
+                          : limits.websiteLimit.toString()}
                       </Text>
                     </Row>
                     <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">Members:</Text>
+                      <Text size="sm" weight="bold">
+                        Members:
+                      </Text>
                       <Text size="sm" color="muted">
                         {limits.memberLimit === null ? 'Unlimited' : limits.memberLimit.toString()}
                       </Text>
                     </Row>
                     <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">Retention:</Text>
+                      <Text size="sm" weight="bold">
+                        Retention:
+                      </Text>
                       <Text size="sm" color="muted">
-                        {limits.retentionDays === null ? 'Unlimited' : limits.retentionDays + ' days'}
+                        {limits.retentionDays === null
+                          ? 'Unlimited'
+                          : `${limits.retentionDays} days`}
                       </Text>
                     </Row>
                   </Column>
@@ -184,7 +285,12 @@ export function UpgradePage() {
 
                   <Button
                     variant={isCurrent ? 'quiet' : 'primary'}
-                    isDisabled={isCurrent || updatePlan.isPending}
+                    isDisabled={
+                      isCurrent ||
+                      paypalSubscription.isPending ||
+                      paypalConfirmation.isPending ||
+                      plan === 'enterprise'
+                    }
                     onPress={() => {
                       if (!isCurrent) {
                         setSelectedPlan(plan);
@@ -192,7 +298,15 @@ export function UpgradePage() {
                       }
                     }}
                   >
-                    {isCurrent ? 'Current Plan' : updatePlan.isPending && selectedPlan === plan ? 'Upgrading...' : 'Upgrade'}
+                    {isCurrent
+                      ? 'Current Plan'
+                      : plan === 'enterprise'
+                        ? 'Contact sales'
+                        : paypalSubscription.isPending && selectedPlan === plan
+                          ? 'Redirecting to PayPal...'
+                          : user?.isAdmin
+                            ? 'Subscribe with PayPal'
+                            : 'Admin required'}
                   </Button>
                 </Column>
               </Panel>

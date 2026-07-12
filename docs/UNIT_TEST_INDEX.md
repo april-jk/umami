@@ -13,6 +13,7 @@
 | 1 | `feat/member-tier-core-enforcement` | 会员分级核心功能（后端限制） | [iter-1-member-tier-core-uncovered.md](iter-1-member-tier-core-uncovered.md) | ⬜ 待补充 |
 | 2 | `feat/member-tier-frontend-ui` | 前端会员页面和用量展示 | [iter-2-member-frontend-uncovered.md](iter-2-member-frontend-uncovered.md) | ⬜ 待补充 |
 | 3 | 当前分支 | 用户菜单集合构建修复 | [iter-3-user-menu-collection-uncovered.md](iter-3-user-menu-collection-uncovered.md) | ⬜ 待补充 |
+| 4 | 当前分支 | PayPal 自动续费 | [iter-4-paypal-billing-uncovered.md](iter-4-paypal-billing-uncovered.md) | ⬜ 待补充 |
 
 ---
 
@@ -86,6 +87,7 @@ pnpm vitest run \
 - **2026-07-11**: 创建本文档，收录迭代 1（会员分级核心功能）未覆盖场景
 - **2026-07-12**: 收录迭代 2（前端会员页面和用量展示）未覆盖场景
 - **2026-07-12**: 收录迭代 3（用户菜单集合构建修复）未覆盖场景
+- **2026-07-12**: 收录迭代 4（PayPal 自动续费）未覆盖场景
 
 ---
 

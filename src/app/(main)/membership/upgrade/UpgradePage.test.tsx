@@ -1,35 +1,34 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { UpgradePage } from './UpgradePage';
 
 vi.mock('@/components/hooks', () => ({
   useLoginQuery: vi.fn(),
   useTenantQuery: vi.fn(),
-  useUpdateTenantPlanQuery: vi.fn(),
+  useApi: vi.fn(),
   useMessages: vi.fn(),
 }));
+
+vi.mock('next/navigation', () => ({ useSearchParams: () => new URLSearchParams() }));
 
 vi.mock('next/link', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-import { useLoginQuery, useTenantQuery, useUpdateTenantPlanQuery, useMessages } from '@/components/hooks';
+import { useApi, useLoginQuery, useMessages, useTenantQuery } from '@/components/hooks';
 
 const useLoginQueryMock = vi.mocked(useLoginQuery);
 const useTenantQueryMock = vi.mocked(useTenantQuery);
-const useUpdateTenantPlanQueryMock = vi.mocked(useUpdateTenantPlanQuery);
+const useApiMock = vi.mocked(useApi);
 const useMessagesMock = vi.mocked(useMessages);
+const postMock = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
-  useMessagesMock.mockReturnValue({
-    t: (key: string) => key,
-    labels: { membership: 'label.membership' },
-    messages: {},
-  } as any);
-  useUpdateTenantPlanQueryMock.mockReturnValue({
-    mutateAsync: vi.fn(),
-    isPending: false,
+  useMessagesMock.mockReturnValue({ t: (key: string) => key, labels: {}, messages: {} } as any);
+  useApiMock.mockReturnValue({
+    post: postMock,
+    useMutation: () => ({ mutate: vi.fn(), mutateAsync: vi.fn(), isPending: false }),
   } as any);
 });
 
@@ -83,9 +82,9 @@ describe('UpgradePage', () => {
     render(<UpgradePage />);
 
     // Use exact text matching for prices to avoid conflicts with feature text
-    expect(screen.getByText('$9/mo')).toBeInTheDocument();
-    expect(screen.getByText('$29/mo')).toBeInTheDocument();
-    expect(screen.getByText('$99/mo')).toBeInTheDocument();
+    expect(screen.getByText('$90/yr')).toBeInTheDocument();
+    expect(screen.getByText('$290/yr')).toBeInTheDocument();
+    expect(screen.getByText('$990/yr')).toBeInTheDocument();
     expect(screen.getByText('Custom')).toBeInTheDocument();
   });
 
@@ -222,14 +221,14 @@ describe('UpgradePage', () => {
     expect(screen.getAllByText('730 days').length).toBeGreaterThanOrEqual(1);
   });
 
-  test('calls mutateAsync when upgrade button is clicked', async () => {
-    const mutateAsyncMock = vi.fn().mockResolvedValue(undefined);
-    useUpdateTenantPlanQueryMock.mockReturnValue({
-      mutateAsync: mutateAsyncMock,
-      isPending: false,
+  test('creates a PayPal subscription when an admin selects a paid plan', async () => {
+    const mutateAsyncMock = vi.fn().mockRejectedValue(new Error('PayPal unavailable'));
+    useApiMock.mockReturnValue({
+      post: postMock,
+      useMutation: () => ({ mutate: vi.fn(), mutateAsync: mutateAsyncMock, isPending: false }),
     } as any);
     useLoginQueryMock.mockReturnValue({
-      user: { tenantId: 'tenant-1', plan: 'free' },
+      user: { tenantId: 'tenant-1', plan: 'free', isAdmin: true },
     } as any);
     useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
 
@@ -237,22 +236,26 @@ describe('UpgradePage', () => {
 
     // Find and click an upgrade button (not the current plan one)
     const buttons = screen.getAllByRole('button');
-    const upgradeButton = buttons.find(b =>
-      b.textContent?.toLowerCase().includes('upgrade'),
-    );
+    const upgradeButton = buttons.find(b => b.textContent?.includes('Subscribe with PayPal'));
     expect(upgradeButton).toBeDefined();
     if (upgradeButton) {
       fireEvent.click(upgradeButton);
       await waitFor(() => {
-        expect(mutateAsyncMock).toHaveBeenCalledWith({ plan: expect.any(String) });
+        expect(mutateAsyncMock).toHaveBeenCalledWith({
+          plan: expect.any(String),
+          interval: 'year',
+        });
       });
+      expect(
+        screen.getByText('Unable to start the PayPal subscription. Please try again.'),
+      ).toBeInTheDocument();
     }
   });
 
   test('shows upgrading state when mutation is pending', () => {
-    useUpdateTenantPlanQueryMock.mockReturnValue({
-      mutateAsync: vi.fn(),
-      isPending: true,
+    useApiMock.mockReturnValue({
+      post: postMock,
+      useMutation: () => ({ mutate: vi.fn(), mutateAsync: vi.fn(), isPending: true }),
     } as any);
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },
@@ -269,9 +272,9 @@ describe('UpgradePage', () => {
 
   test('does not call mutateAsync for current plan button', async () => {
     const mutateAsyncMock = vi.fn().mockResolvedValue(undefined);
-    useUpdateTenantPlanQueryMock.mockReturnValue({
-      mutateAsync: mutateAsyncMock,
-      isPending: false,
+    useApiMock.mockReturnValue({
+      post: postMock,
+      useMutation: () => ({ mutate: vi.fn(), mutateAsync: mutateAsyncMock, isPending: false }),
     } as any);
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },
