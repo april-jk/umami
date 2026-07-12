@@ -53,6 +53,8 @@ const { transactionMock, prismaMock } = vi.hoisted(() => ({
       },
       tenantSubscription: {
         create: vi.fn(),
+        findUnique: vi.fn(),
+        update: vi.fn(),
       },
     },
   },
@@ -68,6 +70,7 @@ vi.mock('@/lib/crypto', () => ({
 
 beforeEach(() => {
   vi.clearAllMocks();
+  prismaMock.client.tenantSubscription.findUnique.mockResolvedValue(null);
 });
 
 describe('getTenantPlan', () => {
@@ -384,7 +387,10 @@ describe('deleteTenant', () => {
     expect(prismaMock.client.tenant.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: 'tenant-1' },
-        data: expect.objectContaining({ deletedAt: expect.any(Date), status: TENANT_STATUS.deleted }),
+        data: expect.objectContaining({
+          deletedAt: expect.any(Date),
+          status: TENANT_STATUS.deleted,
+        }),
       }),
     );
   });

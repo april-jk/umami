@@ -1,4 +1,5 @@
 import { Prisma, type Tenant } from '@/generated/prisma/client';
+import { updateRetentionCutoffForTenant } from '@/jobs/apply-retention';
 import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
@@ -155,10 +156,40 @@ export async function getTenantIdForTeam(teamId: string) {
 }
 
 export async function getTenantPlan(tenantId: string) {
-  return prisma.client.tenant.findUnique({
+  const tenant = await prisma.client.tenant.findUnique({
     where: { id: tenantId, deletedAt: null },
     select: { plan: true },
   });
+
+  const subscription = await prisma.client.tenantSubscription.findUnique({
+    where: { tenantId },
+    select: {
+      billingProvider: true,
+      cancelAtPeriodEnd: true,
+      currentPeriodEnd: true,
+      plan: true,
+    },
+  });
+
+  if (
+    subscription?.billingProvider === 'paypal' &&
+    subscription.cancelAtPeriodEnd &&
+    subscription.currentPeriodEnd &&
+    subscription.currentPeriodEnd <= new Date() &&
+    subscription.plan !== TENANT_PLANS.free
+  ) {
+    await prisma.transaction(async tx => {
+      await tx.tenant.update({ where: { id: tenantId }, data: { plan: TENANT_PLANS.free } });
+      await tx.tenantSubscription.update({
+        where: { tenantId },
+        data: { plan: TENANT_PLANS.free, status: 'cancelled', updatedAt: new Date() },
+      });
+    });
+    await updateRetentionCutoffForTenant(tenantId, TENANT_PLANS.free);
+    return { plan: TENANT_PLANS.free };
+  }
+
+  return tenant;
 }
 
 export async function getTenantWebsiteCount(tenantId: string) {
