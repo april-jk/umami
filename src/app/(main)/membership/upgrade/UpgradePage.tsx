@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Column, Grid, Heading, Icon, Row, Text } from '@umami/react-zen';
+import { Button, Column, Grid, Icon, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -175,7 +175,6 @@ export function UpgradePage() {
                 <Column gap="4" padding="2" style={{ height: '100%' }}>
                   <Column gap="2" alignItems="center">
                     <PlanBadge plan={plan} label={planName} />
-                    <Heading size="sm">{planName}</Heading>
                     <Text weight="bold" size="lg">
                       {getDisplayedPrice(plan, billingInterval, t)}
                     </Text>

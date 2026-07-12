@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import enUS from '../../../../../public/intl/messages/en-US.json';
 import zhCN from '../../../../../public/intl/messages/zh-CN.json';
@@ -59,20 +59,30 @@ beforeEach(() => {
 });
 
 describe('UpgradePage', () => {
-  test('renders all 5 plan cards', () => {
+  test('renders one plan-name label per card without a duplicate heading', () => {
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },
     } as any);
     useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+    useMessagesMock.mockReturnValue({
+      t: createTranslator(zhCN),
+      labels: {},
+      messages: {},
+    } as any);
 
     render(<UpgradePage />);
 
-    // Plan badges should all be present
-    expect(screen.getAllByText('Free').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Starter').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Pro').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Team').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Enterprise').length).toBeGreaterThanOrEqual(1);
+    for (const [plan, name] of [
+      ['free', '免费版'],
+      ['starter', '入门版'],
+      ['pro', '专业版'],
+      ['team', '团队版'],
+      ['enterprise', '企业版'],
+    ] as const) {
+      const card = within(screen.getByTestId(`plan-card-${plan}`));
+      expect(card.getAllByText(name)).toHaveLength(1);
+      expect(card.queryByRole('heading', { name })).not.toBeInTheDocument();
+    }
   });
 
   test('updates plan cards when the active language changes', () => {
