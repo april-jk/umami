@@ -9,6 +9,7 @@ import {
   getUsagePercentage,
   isWithinLimit,
   TENANT_PLAN_LIMITS,
+  TENANT_PLAN_PRICES,
 } from './tenant-plan';
 
 describe('tenant plan limits', () => {
@@ -31,6 +32,14 @@ describe('tenant plan limits', () => {
     const now = new Date('2026-07-11T15:42:00.000Z');
     expect(getRetentionCutoff(7, now)).toEqual(new Date('2026-07-04T00:00:00.000Z'));
     expect(getRetentionCutoff(null, now)).toBeNull();
+  });
+});
+
+describe('tenant plan prices', () => {
+  test('charges ten monthly payments for annual paid plans', () => {
+    expect(TENANT_PLAN_PRICES.starter).toEqual({ monthly: 9, annual: 90 });
+    expect(TENANT_PLAN_PRICES.pro).toEqual({ monthly: 29, annual: 290 });
+    expect(TENANT_PLAN_PRICES.team).toEqual({ monthly: 99, annual: 990 });
   });
 });
 
@@ -134,7 +143,8 @@ describe('getLimitErrorPayload', () => {
     expect(payload.code).toBe('event-limit-reached');
     expect(payload.current).toBe(100_000);
     expect(payload.limit).toBe(100_000);
-    expect(payload.message).toBe('Event limit reached.');
+    expect(payload.message).toContain('Event limit reached.');
+    expect(payload.message).toContain('Upgrade to Starter');
     expect(payload.upgradeMessage).toContain('Starter');
   });
 

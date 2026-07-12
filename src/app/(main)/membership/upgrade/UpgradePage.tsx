@@ -8,55 +8,21 @@ import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 import { useApi, useLoginQuery, useTenantQuery } from '@/components/hooks';
-import { AlertTriangle, ArrowLeft, Check } from '@/components/icons';
-import { TENANT_PLAN_LIMITS, type TenantPlanId } from '@/lib/tenant-plan';
+import { AlertTriangle, ArrowLeft } from '@/components/icons';
+import { TENANT_PLAN_LIMITS, TENANT_PLAN_PRICES, type TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 
-const planPrices: Record<TenantPlanId, string> = {
-  free: 'Free',
-  starter: '$9/mo',
-  pro: '$29/mo',
-  team: '$99/mo',
-  enterprise: 'Custom',
-};
+function getDisplayedPrice(plan: TenantPlanId, interval: 'month' | 'year') {
+  if (plan === 'free') return 'Free';
 
-const annualMonthlyPrices: Record<Exclude<TenantPlanId, 'free' | 'enterprise'>, string> = {
-  starter: '$7.50/mo',
-  pro: '$24.17/mo',
-  team: '$82.50/mo',
-};
+  const price = TENANT_PLAN_PRICES[plan];
+  if (price.monthly === null || price.annual === null) return 'Custom';
 
-const planFeatures: Record<TenantPlanId, string[]> = {
-  free: ['100K events/month', '5 websites', '1 member', '7 days retention'],
-  starter: ['500K events/month', '10 websites', '1 member', '180 days retention', 'API access'],
-  pro: [
-    '2M events/month',
-    '25 websites',
-    '5 members',
-    '2 years retention',
-    'API access',
-    'Email reports',
-  ],
-  team: [
-    '10M events/month',
-    '50 websites',
-    '20 members',
-    'Unlimited retention',
-    'White-label',
-    'SSO ready',
-  ],
-  enterprise: [
-    'Unlimited events',
-    'Unlimited websites',
-    'Unlimited members',
-    'Unlimited retention',
-    'Custom branding',
-    'SSO / SAML',
-    'Dedicated support',
-  ],
-};
+  const monthlyPrice = interval === 'year' ? price.annual / 12 : price.monthly;
+  return `$${monthlyPrice.toFixed(interval === 'year' ? 2 : 0)}/mo`;
+}
 
 export function UpgradePage() {
   const { user } = useLoginQuery();
@@ -95,10 +61,7 @@ export function UpgradePage() {
     });
   }, [paypalConfirmation, searchParams, tenantId]);
 
-  const handleUpgrade = async (plan: TenantPlanId) => {
-    if (plan === currentPlan) return;
-    if (plan === 'free' || plan === 'enterprise') return;
-
+  const handleUpgrade = async (plan: Exclude<TenantPlanId, 'free' | 'enterprise'>) => {
     setError('');
     try {
       const { approveUrl } = await paypalSubscription.mutateAsync({
@@ -129,7 +92,7 @@ export function UpgradePage() {
 
         <PageHeader
           title="Upgrade Membership"
-          description="Choose the plan that fits your needs. Upgrade anytime to unlock more features."
+          description="Every plan includes privacy-first analytics. Upgrade for more events, websites, members, and data retention."
         />
 
         {error && (
@@ -205,11 +168,7 @@ export function UpgradePage() {
                     <PlanBadge plan={plan} />
                     <Heading size="sm">{plan.charAt(0).toUpperCase() + plan.slice(1)}</Heading>
                     <Text weight="bold" size="lg">
-                      {plan === 'enterprise' || plan === 'free'
-                        ? planPrices[plan]
-                        : billingInterval === 'year'
-                          ? annualMonthlyPrices[plan]
-                          : planPrices[plan]}
+                      {getDisplayedPrice(plan, billingInterval)}
                     </Text>
                     {isCurrent && (
                       <Text
@@ -282,17 +241,6 @@ export function UpgradePage() {
                     </Row>
                   </Column>
 
-                  <Column gap="2">
-                    {planFeatures[plan].map(feature => (
-                      <Row key={feature} gap="2" alignItems="center">
-                        <Icon size="sm" style={{ color: '#22c55e' }}>
-                          <Check />
-                        </Icon>
-                        <Text size="sm">{feature}</Text>
-                      </Row>
-                    ))}
-                  </Column>
-
                   <Button
                     variant={isCurrent ? 'quiet' : 'primary'}
                     style={{ width: '100%', marginTop: 'auto' }}
@@ -313,7 +261,7 @@ export function UpgradePage() {
                       isCurrent || paypalSubscription.isPending || paypalConfirmation.isPending
                     }
                     onPress={() => {
-                      if (!isCurrent && plan !== 'enterprise') {
+                      if (!isCurrent && plan !== 'free' && plan !== 'enterprise') {
                         setSelectedPlan(plan);
                         handleUpgrade(plan);
                       }

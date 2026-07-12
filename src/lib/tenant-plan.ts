@@ -6,6 +6,14 @@ export const TENANT_PLAN_LIMITS = {
   enterprise: { eventLimit: null, websiteLimit: null, memberLimit: null, retentionDays: null },
 } as const;
 
+export const TENANT_PLAN_PRICES = {
+  free: { monthly: 0, annual: 0 },
+  starter: { monthly: 9, annual: 90 },
+  pro: { monthly: 29, annual: 290 },
+  team: { monthly: 99, annual: 990 },
+  enterprise: { monthly: null, annual: null },
+} as const;
+
 export type TenantPlanId = keyof typeof TENANT_PLAN_LIMITS;
 export type TenantPlanLimits = (typeof TENANT_PLAN_LIMITS)[TenantPlanId];
 
@@ -73,7 +81,9 @@ export function getPlanUpgradeMessage(
 }
 
 /** Get alert level based on usage percentage */
-export function getUsageAlertLevel(percentage: number | null): 'none' | 'warning' | 'critical' | 'exceeded' {
+export function getUsageAlertLevel(
+  percentage: number | null,
+): 'none' | 'warning' | 'critical' | 'exceeded' {
   if (percentage === null) return 'none';
   if (percentage >= 100) return 'exceeded';
   if (percentage >= 95) return 'critical';
@@ -87,18 +97,26 @@ export function getLimitErrorPayload(
   limitType: 'event' | 'website' | 'member',
   current: number | bigint,
   limit: number | null,
-): { message: string; code: string; current: number; limit: number | null; upgradeMessage: string } {
+): {
+  message: string;
+  code: string;
+  current: number;
+  limit: number | null;
+  upgradeMessage: string;
+} {
   const codeMap = {
     event: 'event-limit-reached',
     website: 'website-limit-reached',
     member: 'member-limit-reached',
   };
 
+  const upgradeMessage = getPlanUpgradeMessage(planId, limitType);
+
   return {
-    message: `${limitType.charAt(0).toUpperCase() + limitType.slice(1)} limit reached.`,
+    message: `${limitType.charAt(0).toUpperCase() + limitType.slice(1)} limit reached. ${upgradeMessage}`,
     code: codeMap[limitType],
     current: Number(current),
     limit,
-    upgradeMessage: getPlanUpgradeMessage(planId, limitType),
+    upgradeMessage,
   };
 }

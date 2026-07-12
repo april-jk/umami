@@ -2,6 +2,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { UpgradePage } from './UpgradePage';
 
+const { getSearchParamMock } = vi.hoisted(() => ({ getSearchParamMock: vi.fn() }));
+
 vi.mock('@/components/hooks', () => ({
   useLoginQuery: vi.fn(),
   useTenantQuery: vi.fn(),
@@ -9,7 +11,9 @@ vi.mock('@/components/hooks', () => ({
   useMessages: vi.fn(),
 }));
 
-vi.mock('next/navigation', () => ({ useSearchParams: () => new URLSearchParams() }));
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => ({ get: getSearchParamMock }),
+}));
 
 vi.mock('next/link', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
@@ -25,6 +29,7 @@ const postMock = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
+  getSearchParamMock.mockReturnValue(null);
   useMessagesMock.mockReturnValue({ t: (key: string) => key, labels: {}, messages: {} } as any);
   useApiMock.mockReturnValue({
     post: postMock,
@@ -98,6 +103,9 @@ describe('UpgradePage', () => {
     expect(screen.getByText('$9/mo')).toBeInTheDocument();
     expect(screen.getByText('$29/mo')).toBeInTheDocument();
     expect(screen.getByText('$99/mo')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Annual (2 months free)'));
+    expect(screen.getByText('$7.50/mo')).toBeInTheDocument();
   });
 
   test('keeps plan cards from expanding for button copy', () => {
@@ -199,7 +207,7 @@ describe('UpgradePage', () => {
     expect(screen.getByText('Current Plan')).toBeInTheDocument();
   });
 
-  test('shows features across plans', () => {
+  test('only advertises benefits enforced by the membership system', () => {
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },
     } as any);
@@ -207,12 +215,11 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    // These feature texts should be present somewhere in the page
-    // Use getAllByText for texts that appear in multiple plans
-    expect(screen.getByText('100K events/month')).toBeInTheDocument();
-    expect(screen.getAllByText('API access').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText('White-label')).toBeInTheDocument();
-    expect(screen.getByText('Dedicated support')).toBeInTheDocument();
+    expect(screen.getByText('100,000/mo')).toBeInTheDocument();
+    expect(screen.queryByText('API access')).not.toBeInTheDocument();
+    expect(screen.queryByText('Email reports')).not.toBeInTheDocument();
+    expect(screen.queryByText('White-label')).not.toBeInTheDocument();
+    expect(screen.queryByText('SSO ready')).not.toBeInTheDocument();
   });
 
   test('disables upgrade button for current plan', () => {
@@ -293,6 +300,76 @@ describe('UpgradePage', () => {
       });
       expect(screen.getByText('Unable to start checkout. Please try again.')).toBeInTheDocument();
     }
+  });
+
+  test('redirects to the approval URL after checkout starts', async () => {
+    const mutateAsyncMock = vi
+      .fn()
+      .mockResolvedValue({ approveUrl: 'https://paypal.example/approve' });
+    useApiMock.mockReturnValue({
+      post: postMock,
+      useMutation: () => ({ mutate: vi.fn(), mutateAsync: mutateAsyncMock, isPending: false }),
+    } as any);
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+    fireEvent.click(screen.getAllByRole('button', { name: 'Subscribe' })[0]);
+
+    await waitFor(() => expect(mutateAsyncMock).toHaveBeenCalled());
+  });
+
+  test('wires PayPal mutation functions to the tenant billing endpoints', async () => {
+    const mutationOptions: any[] = [];
+    const mutationResult = { mutate: vi.fn(), mutateAsync: vi.fn(), isPending: false };
+    useApiMock.mockReturnValue({
+      post: postMock,
+      useMutation: (options: any) => {
+        mutationOptions.push(options);
+        return mutationResult;
+      },
+    } as any);
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+    await mutationOptions[0].mutationFn({ plan: 'pro', interval: 'year' });
+    await mutationOptions[1].mutationFn('subscription-1');
+
+    expect(postMock).toHaveBeenNthCalledWith(1, '/tenants/tenant-1/billing/paypal/subscription', {
+      plan: 'pro',
+      interval: 'year',
+    });
+    expect(postMock).toHaveBeenNthCalledWith(2, '/tenants/tenant-1/billing/paypal/confirm', {
+      subscriptionId: 'subscription-1',
+    });
+  });
+
+  test('shows an error when a returned PayPal subscription cannot be confirmed', async () => {
+    getSearchParamMock.mockImplementation(key =>
+      key === 'paypal' ? 'success' : key === 'subscription_id' ? 'subscription-1' : null,
+    );
+    const subscriptionMutation = { mutate: vi.fn(), mutateAsync: vi.fn(), isPending: false };
+    const confirmationMutation = {
+      mutate: vi.fn((_id, callbacks) => callbacks.onError()),
+      mutateAsync: vi.fn(),
+      isPending: false,
+    };
+    let mutationIndex = 0;
+    useApiMock.mockReturnValue({
+      post: postMock,
+      useMutation: () => [subscriptionMutation, confirmationMutation][mutationIndex++ % 2],
+    } as any);
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+
+    expect(
+      await screen.findByText(
+        'Your subscription approval could not be verified. Please try again.',
+      ),
+    ).toBeInTheDocument();
   });
 
   test('shows upgrading state when mutation is pending', () => {

@@ -2,7 +2,12 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { parseRequest } from '@/lib/request';
 import { canUpdateTeam, canViewTeam } from '@/permissions';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries/prisma';
-import { canAddTeamMember, getTeamMemberCount, getTenantIdForTeam, getTenantPlan } from '@/queries/prisma/tenant';
+import {
+  canAddTeamMember,
+  getTenantIdForTeam,
+  getTenantPlan,
+  getTotalTenantMemberCount,
+} from '@/queries/prisma/tenant';
 import { GET, POST } from './route';
 
 vi.mock('@/lib/request', () => ({
@@ -23,7 +28,7 @@ vi.mock('@/queries/prisma', () => ({
 
 vi.mock('@/queries/prisma/tenant', () => ({
   canAddTeamMember: vi.fn(),
-  getTeamMemberCount: vi.fn(),
+  getTotalTenantMemberCount: vi.fn(),
   getTenantIdForTeam: vi.fn(),
   getTenantPlan: vi.fn(),
 }));
@@ -37,7 +42,7 @@ const getTeamUserMock = vi.mocked(getTeamUser);
 const canAddTeamMemberMock = vi.mocked(canAddTeamMember);
 const getTenantIdForTeamMock = vi.mocked(getTenantIdForTeam);
 const getTenantPlanMock = vi.mocked(getTenantPlan);
-const getTeamMemberCountMock = vi.mocked(getTeamMemberCount);
+const getTotalTenantMemberCountMock = vi.mocked(getTotalTenantMemberCount);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
@@ -45,6 +50,16 @@ beforeEach(() => {
 });
 
 describe('GET', () => {
+  test('returns a request parsing error', async () => {
+    parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+    const response = await GET(new Request('http://localhost/api/teams/team-1/users'), {
+      params: Promise.resolve({ teamId: 'team-1' }),
+    });
+
+    expect(response.status).toBe(400);
+  });
+
   test('returns team users for authorized viewer', async () => {
     parseRequestMock.mockResolvedValue({
       auth: { user: { id: 'user-1' } },
@@ -52,12 +67,14 @@ describe('GET', () => {
       error: undefined,
     } as any);
     canViewTeamMock.mockResolvedValue(true);
-    getTeamUsersMock.mockResolvedValue({ data: [{ id: 'tu-1', user: { id: 'u-1', username: 'alice' } }], count: 1 } as any);
+    getTeamUsersMock.mockResolvedValue({
+      data: [{ id: 'tu-1', user: { id: 'u-1', username: 'alice' } }],
+      count: 1,
+    } as any);
 
-    const response = await GET(
-      new Request('http://localhost/api/teams/team-1/users'),
-      { params: Promise.resolve({ teamId: 'team-1' }) },
-    );
+    const response = await GET(new Request('http://localhost/api/teams/team-1/users'), {
+      params: Promise.resolve({ teamId: 'team-1' }),
+    });
     const body = await response.json();
 
     expect(response.status).toBe(200);
@@ -73,10 +90,9 @@ describe('GET', () => {
     } as any);
     canViewTeamMock.mockResolvedValue(false);
 
-    const response = await GET(
-      new Request('http://localhost/api/teams/team-1/users'),
-      { params: Promise.resolve({ teamId: 'team-1' }) },
-    );
+    const response = await GET(new Request('http://localhost/api/teams/team-1/users'), {
+      params: Promise.resolve({ teamId: 'team-1' }),
+    });
     const body = await response.json();
 
     expect(response.status).toBe(401);
@@ -85,6 +101,17 @@ describe('GET', () => {
 });
 
 describe('POST', () => {
+  test('returns a request parsing error', async () => {
+    parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+    const response = await POST(
+      new Request('http://localhost/api/teams/team-1/users', { method: 'POST' }),
+      { params: Promise.resolve({ teamId: 'team-1' }) },
+    );
+
+    expect(response.status).toBe(400);
+  });
+
   test('adds a team member successfully', async () => {
     parseRequestMock.mockResolvedValue({
       auth: { user: { id: 'user-1' } },
@@ -156,7 +183,7 @@ describe('POST', () => {
     canAddTeamMemberMock.mockResolvedValue(false);
     getTenantIdForTeamMock.mockResolvedValue('tenant-1');
     getTenantPlanMock.mockResolvedValue({ plan: 'pro' });
-    getTeamMemberCountMock.mockResolvedValue(5);
+    getTotalTenantMemberCountMock.mockResolvedValue(5);
 
     const response = await POST(
       new Request('http://localhost/api/teams/team-1/users', { method: 'POST' }),
@@ -187,7 +214,6 @@ describe('POST', () => {
       new Request('http://localhost/api/teams/team-1/users', { method: 'POST' }),
       { params: Promise.resolve({ teamId: 'team-1' }) },
     );
-    const body = await response.json();
 
     expect(response.status).toBe(200);
     expect(canAddTeamMemberMock).not.toHaveBeenCalled();
@@ -205,7 +231,7 @@ describe('POST', () => {
     canAddTeamMemberMock.mockResolvedValue(false);
     getTenantIdForTeamMock.mockResolvedValue('tenant-1');
     getTenantPlanMock.mockResolvedValue({ plan: 'free' });
-    getTeamMemberCountMock.mockResolvedValue(1);
+    getTotalTenantMemberCountMock.mockResolvedValue(1);
 
     const response = await POST(
       new Request('http://localhost/api/teams/team-1/users', { method: 'POST' }),
@@ -234,7 +260,7 @@ describe('POST', () => {
     canAddTeamMemberMock.mockResolvedValue(false);
     getTenantIdForTeamMock.mockResolvedValue('tenant-1');
     getTenantPlanMock.mockResolvedValue({ plan: 'team' });
-    getTeamMemberCountMock.mockResolvedValue(20);
+    getTotalTenantMemberCountMock.mockResolvedValue(20);
 
     const response = await POST(
       new Request('http://localhost/api/teams/team-1/users', { method: 'POST' }),
@@ -261,7 +287,7 @@ describe('POST', () => {
     canAddTeamMemberMock.mockResolvedValue(false);
     getTenantIdForTeamMock.mockResolvedValue('tenant-1');
     getTenantPlanMock.mockResolvedValue({ plan: 'enterprise' });
-    getTeamMemberCountMock.mockResolvedValue(100);
+    getTotalTenantMemberCountMock.mockResolvedValue(100);
 
     const response = await POST(
       new Request('http://localhost/api/teams/team-1/users', { method: 'POST' }),

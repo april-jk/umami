@@ -1,17 +1,22 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
-import { uuid } from '@/lib/crypto';
+import { TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
 import {
   canAddTeamMember,
   canCreateTenantWebsite,
   createTenant,
   deleteTenant,
+  findTenant,
   getDefaultTenantIdForUser,
+  getTenant,
   getTenantIdForTeam,
   getTenantPlan,
+  getTenantSubscription,
+  getTenants,
   getTenantUsage,
+  getTenantUser,
   getTenantWebsiteCount,
   getTotalTenantMemberCount,
+  getUserTenants,
   reserveTenantEvent,
   reserveWebsiteEvent,
   updateTenant,
@@ -57,6 +62,8 @@ const { transactionMock, prismaMock } = vi.hoisted(() => ({
         update: vi.fn(),
       },
     },
+    getSearchParameters: vi.fn(),
+    pagedQuery: vi.fn(),
   },
 }));
 
@@ -68,9 +75,106 @@ vi.mock('@/lib/crypto', () => ({
   uuid: vi.fn().mockReturnValue('mock-uuid'),
 }));
 
+vi.mock('@/jobs/apply-retention', () => ({
+  updateRetentionCutoffForTenant: vi.fn(),
+}));
+
 beforeEach(() => {
   vi.clearAllMocks();
   prismaMock.client.tenantSubscription.findUnique.mockResolvedValue(null);
+});
+
+describe('tenant queries', () => {
+  test('finds a tenant with the supplied criteria', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ id: 'tenant-1' });
+
+    const result = await findTenant({ where: { id: 'tenant-1' } });
+
+    expect(result).toEqual({ id: 'tenant-1' });
+  });
+
+  test('loads optional tenant relations', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ id: 'tenant-1' });
+
+    await getTenant('tenant-1', {
+      includeMembers: true,
+      includeSubscription: true,
+      includeUsage: true,
+    });
+
+    expect(prismaMock.client.tenant.findUnique).toHaveBeenCalledWith({
+      where: { id: 'tenant-1' },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                displayName: true,
+                logoUrl: true,
+              },
+            },
+          },
+        },
+        subscription: true,
+        usage: { orderBy: { month: 'desc' }, take: 12 },
+      },
+    });
+  });
+
+  test('paginates tenants with sanitized search filters', async () => {
+    prismaMock.getSearchParameters.mockReturnValue({ OR: [{ name: { contains: 'acme' } }] });
+    prismaMock.pagedQuery.mockResolvedValue({ data: [], count: 0 });
+
+    const result = await getTenants({ where: { deletedAt: null } }, { search: 'acme' });
+
+    expect(result).toEqual({ data: [], count: 0 });
+    expect(prismaMock.pagedQuery).toHaveBeenCalledWith(
+      'tenant',
+      expect.objectContaining({
+        where: { deletedAt: null, OR: [{ name: { contains: 'acme' } }] },
+      }),
+      expect.objectContaining({ search: 'acme' }),
+    );
+  });
+
+  test('loads tenants available to a user', async () => {
+    prismaMock.getSearchParameters.mockReturnValue({});
+    prismaMock.pagedQuery.mockResolvedValue({ data: [], count: 0 });
+
+    await getUserTenants('user-1');
+
+    expect(prismaMock.pagedQuery).toHaveBeenCalledWith(
+      'tenant',
+      expect.objectContaining({
+        where: expect.objectContaining({
+          deletedAt: null,
+          members: { some: { userId: 'user-1' } },
+        }),
+      }),
+      expect.any(Object),
+    );
+  });
+
+  test('finds a tenant user membership', async () => {
+    prismaMock.client.tenantUser.findFirst.mockResolvedValue({ id: 'membership-1' });
+
+    const result = await getTenantUser('tenant-1', 'user-1');
+
+    expect(result).toEqual({ id: 'membership-1' });
+    expect(prismaMock.client.tenantUser.findFirst).toHaveBeenCalledWith({
+      where: { tenantId: 'tenant-1', userId: 'user-1' },
+    });
+  });
+
+  test('loads a tenant subscription', async () => {
+    prismaMock.client.tenantSubscription.findUnique.mockResolvedValue({ plan: 'pro' });
+
+    const result = await getTenantSubscription('tenant-1');
+
+    expect(result).toEqual({ plan: 'pro' });
+  });
 });
 
 describe('getTenantPlan', () => {
@@ -84,6 +188,31 @@ describe('getTenantPlan', () => {
       where: { id: 'tenant-1', deletedAt: null },
       select: { plan: true },
     });
+  });
+
+  test('downgrades an expired cancelled PayPal subscription to free', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'pro' });
+    prismaMock.client.tenantSubscription.findUnique.mockResolvedValue({
+      billingProvider: 'paypal',
+      cancelAtPeriodEnd: true,
+      currentPeriodEnd: new Date('2020-01-01T00:00:00.000Z'),
+      plan: 'pro',
+    });
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
+
+    const result = await getTenantPlan('tenant-1');
+
+    expect(result).toEqual({ plan: TENANT_PLANS.free });
+    expect(prismaMock.client.tenant.update).toHaveBeenCalledWith({
+      where: { id: 'tenant-1' },
+      data: { plan: TENANT_PLANS.free },
+    });
+    expect(prismaMock.client.tenantSubscription.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { tenantId: 'tenant-1' },
+        data: expect.objectContaining({ plan: TENANT_PLANS.free, status: 'cancelled' }),
+      }),
+    );
   });
 });
 
@@ -142,7 +271,8 @@ describe('canAddTeamMember', () => {
   test('allows when under member limit', async () => {
     prismaMock.client.team.findUnique.mockResolvedValue({ tenantId: 'tenant-1' });
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'pro' });
-    prismaMock.client.teamUser.count.mockResolvedValue(4);
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }, { id: 'team-2' }]);
+    prismaMock.client.teamUser.count.mockResolvedValueOnce(2).mockResolvedValueOnce(2);
 
     const result = await canAddTeamMember('team-1');
 
@@ -152,7 +282,8 @@ describe('canAddTeamMember', () => {
   test('blocks when at member limit', async () => {
     prismaMock.client.team.findUnique.mockResolvedValue({ tenantId: 'tenant-1' });
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'pro' });
-    prismaMock.client.teamUser.count.mockResolvedValue(5);
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }, { id: 'team-2' }]);
+    prismaMock.client.teamUser.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2);
 
     const result = await canAddTeamMember('team-1');
 
@@ -162,11 +293,29 @@ describe('canAddTeamMember', () => {
   test('allows large but finite member limits for team plan', async () => {
     prismaMock.client.team.findUnique.mockResolvedValue({ tenantId: 'tenant-1' });
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'team' });
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }]);
     prismaMock.client.teamUser.count.mockResolvedValue(19);
 
     const result = await canAddTeamMember('team-1');
 
     expect(result).toBe(true);
+  });
+
+  test('blocks additions when members across multiple teams exhaust the tenant limit', async () => {
+    prismaMock.client.team.findUnique.mockResolvedValue({ tenantId: 'tenant-1' });
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'pro' });
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }, { id: 'team-2' }]);
+    prismaMock.client.teamUser.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2);
+
+    const result = await canAddTeamMember('team-1');
+
+    expect(result).toBe(false);
+    expect(prismaMock.client.teamUser.count).toHaveBeenNthCalledWith(1, {
+      where: { teamId: 'team-1', user: { deletedAt: null } },
+    });
+    expect(prismaMock.client.teamUser.count).toHaveBeenNthCalledWith(2, {
+      where: { teamId: 'team-2', user: { deletedAt: null } },
+    });
   });
 
   test('allows when team has no tenant (non-cloud)', async () => {
@@ -179,7 +328,31 @@ describe('canAddTeamMember', () => {
   });
 });
 
+describe('getTotalTenantMemberCount', () => {
+  test('sums active members across every active team in the tenant', async () => {
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }, { id: 'team-2' }]);
+    prismaMock.client.teamUser.count.mockResolvedValueOnce(2).mockResolvedValueOnce(3);
+
+    const result = await getTotalTenantMemberCount('tenant-1');
+
+    expect(result).toBe(5);
+    expect(prismaMock.client.team.findMany).toHaveBeenCalledWith({
+      where: { tenantId: 'tenant-1', deletedAt: null },
+      select: { id: true },
+    });
+  });
+});
+
 describe('reserveTenantEvent', () => {
+  test('does not reserve a counter for unlimited plans', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'enterprise' });
+
+    const result = await reserveTenantEvent('tenant-1');
+
+    expect(result).toEqual({ allowed: true, limit: null, used: null, remaining: null });
+    expect(transactionMock).not.toHaveBeenCalled();
+  });
+
   test('allows event when under limit and returns usage info', async () => {
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'free' });
     prismaMock.client.tenantUsageMonthly.upsert.mockResolvedValue({});
@@ -346,7 +519,10 @@ describe('createTenant', () => {
     prismaMock.client.tenantSubscription.create.mockResolvedValue({});
     transactionMock.mockImplementation(async fn => fn(prismaMock.client));
 
-    const result = await createTenant({ name: 'Test', slug: 'test' }, 'user-1');
+    const result = await createTenant(
+      { name: 'Test', slug: 'test', type: TENANT_TYPES.organization },
+      'user-1',
+    );
 
     expect(result).toEqual(mockTenant);
     expect(prismaMock.client.tenant.create).toHaveBeenCalledWith(
@@ -382,7 +558,7 @@ describe('deleteTenant', () => {
   test('soft deletes tenant', async () => {
     prismaMock.client.tenant.update.mockResolvedValue({ id: 'tenant-1', deletedAt: new Date() });
 
-    const result = await deleteTenant('tenant-1');
+    await deleteTenant('tenant-1');
 
     expect(prismaMock.client.tenant.update).toHaveBeenCalledWith(
       expect.objectContaining({
