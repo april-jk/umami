@@ -10,11 +10,7 @@ import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
-import {
-  getLimitErrorPayload,
-  getTenantPlanLimits,
-  isTenantPlanEnforcementEnabled,
-} from '@/lib/tenant-plan';
+import { getLimitErrorPayload, isTenantPlanEnforcementEnabled } from '@/lib/tenant-plan';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { getTenantPlan, reserveWebsiteEvent } from '@/queries/prisma/tenant';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
@@ -193,13 +189,7 @@ export async function POST(request: Request) {
         const quota = await reserveWebsiteEvent(websiteId, createdAt);
         if (!quota.allowed) {
           const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;
-          const limits = getTenantPlanLimits(tenant?.plan);
-          const payload = getLimitErrorPayload(
-            tenant?.plan,
-            'event',
-            quota.used ?? 0,
-            limits.eventLimit,
-          );
+          const payload = getLimitErrorPayload(tenant?.plan, 'event', quota.used ?? 0, quota.limit);
           return forbidden({
             message: payload.message,
             code: payload.code,
@@ -319,13 +309,7 @@ export async function POST(request: Request) {
         const quota = await reserveWebsiteEvent(websiteId, createdAt);
         if (!quota.allowed) {
           const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;
-          const limits = getTenantPlanLimits(tenant?.plan);
-          const payload = getLimitErrorPayload(
-            tenant?.plan,
-            'event',
-            quota.used ?? 0,
-            limits.eventLimit,
-          );
+          const payload = getLimitErrorPayload(tenant?.plan, 'event', quota.used ?? 0, quota.limit);
           return forbidden({
             message: payload.message,
             code: payload.code,

@@ -15,6 +15,7 @@
 | 3 | 当前分支 | 用户菜单集合构建修复 | [iter-3-user-menu-collection-uncovered.md](iter-3-user-menu-collection-uncovered.md) | ⬜ 待补充 |
 | 4 | 当前分支 | PayPal 自动续费 | [iter-4-paypal-billing-uncovered.md](iter-4-paypal-billing-uncovered.md) | ⬜ 待补充 |
 | 5 | 当前分支 | 定价 v2.1、配额和多语言对齐 | [iter-5-pricing-v21-uncovered.md](iter-5-pricing-v21-uncovered.md) | ⬜ 待补充 |
+| 6 | 当前分支 | 管理员会员、配额和权益管理 | [iter-6-admin-membership-uncovered.md](iter-6-admin-membership-uncovered.md) | ✅ 已完成 |
 
 ---
 
@@ -90,6 +91,7 @@ pnpm vitest run \
 - **2026-07-12**: 收录迭代 3（用户菜单集合构建修复）未覆盖场景
 - **2026-07-12**: 收录迭代 4（PayPal 自动续费）未覆盖场景
 - **2026-07-12**: 收录迭代 5（定价 v2.1、配额和多语言对齐）未覆盖场景
+- **2026-07-12**: 收录迭代 6（管理员会员、配额和权益管理）未覆盖场景
 
 ---
 

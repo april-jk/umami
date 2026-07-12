@@ -5,8 +5,10 @@ import {
   getPlanUpgradeMessage,
   getRecommendedPlanId,
   getRetentionCutoff,
+  getTenantEffectiveLimits,
   getTenantPlanId,
   getTenantPlanLimits,
+  getTenantQuotaOverrides,
   getUsageAlertLevel,
   getUsagePercentage,
   isTenantPlanEnforcementEnabled,
@@ -60,6 +62,46 @@ describe('tenant plan limits', () => {
     const now = new Date('2026-07-11T15:42:00.000Z');
     expect(getRetentionCutoff(7, now)).toEqual(new Date('2026-07-04T00:00:00.000Z'));
     expect(getRetentionCutoff(null, now)).toBeNull();
+  });
+});
+
+describe('tenant quota overrides', () => {
+  test('reads valid custom and unlimited values from tenant metadata', () => {
+    expect(
+      getTenantQuotaOverrides({
+        quotaOverrides: { eventLimit: 250_000, websiteLimit: null, memberLimit: 7 },
+      }),
+    ).toEqual({ eventLimit: 250_000, websiteLimit: null, memberLimit: 7 });
+  });
+
+  test('ignores malformed metadata and invalid quota values', () => {
+    expect(getTenantQuotaOverrides(null)).toEqual({});
+    expect(getTenantQuotaOverrides([])).toEqual({});
+    expect(getTenantQuotaOverrides({ quotaOverrides: 'invalid' })).toEqual({});
+    expect(
+      getTenantQuotaOverrides({
+        quotaOverrides: {
+          eventLimit: -1,
+          websiteLimit: 1.5,
+          memberLimit: '10',
+          unrelated: 20,
+        },
+      }),
+    ).toEqual({});
+  });
+
+  test('merges overrides over plan defaults without changing retention', () => {
+    expect(
+      getTenantEffectiveLimits('pro', {
+        quotaOverrides: { eventLimit: 2_000_000, websiteLimit: null, memberLimit: 3 },
+      }),
+    ).toEqual({
+      eventLimit: 2_000_000,
+      websiteLimit: null,
+      memberLimit: 3,
+      retentionDays: 730,
+    });
+    expect(getTenantEffectiveLimits('starter')).toEqual(TENANT_PLAN_LIMITS.starter);
   });
 });
 

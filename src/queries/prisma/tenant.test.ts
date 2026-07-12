@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { updateRetentionCutoffForTenant } from '@/jobs/apply-retention';
 import { TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
+import { TENANT_PLAN_LIMITS } from '@/lib/tenant-plan';
 import {
   canAddTeamMember,
   canCreateTenantWebsite,
@@ -20,6 +22,7 @@ import {
   reserveTenantEvent,
   reserveWebsiteEvent,
   updateTenant,
+  updateTenantAdminMembership,
 } from './tenant';
 
 const { transactionMock, prismaMock } = vi.hoisted(() => ({
@@ -60,6 +63,7 @@ const { transactionMock, prismaMock } = vi.hoisted(() => ({
         create: vi.fn(),
         findUnique: vi.fn(),
         update: vi.fn(),
+        upsert: vi.fn(),
       },
     },
     getSearchParameters: vi.fn(),
@@ -186,7 +190,7 @@ describe('getTenantPlan', () => {
     expect(result).toEqual({ plan: 'pro' });
     expect(prismaMock.client.tenant.findUnique).toHaveBeenCalledWith({
       where: { id: 'tenant-1', deletedAt: null },
-      select: { plan: true },
+      select: { plan: true, metadata: true },
     });
   });
 
@@ -202,7 +206,7 @@ describe('getTenantPlan', () => {
 
     const result = await getTenantPlan('tenant-1');
 
-    expect(result).toEqual({ plan: TENANT_PLANS.free });
+    expect(result).toEqual({ plan: TENANT_PLANS.free, metadata: null });
     expect(prismaMock.client.tenant.update).toHaveBeenCalledWith({
       where: { id: 'tenant-1' },
       data: { plan: TENANT_PLANS.free },
@@ -278,6 +282,26 @@ describe('canCreateTenantWebsite', () => {
     const result = await canCreateTenantWebsite('tenant-1');
 
     expect(result).toBe(true); // free limit is 5
+  });
+
+  test('uses a custom website quota from tenant metadata', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({
+      plan: 'free',
+      metadata: { quotaOverrides: { websiteLimit: 2 } },
+    });
+    prismaMock.client.website.count.mockResolvedValue(2);
+
+    expect(await canCreateTenantWebsite('tenant-1')).toBe(false);
+  });
+
+  test('allows websites when the tenant override is unlimited', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({
+      plan: 'free',
+      metadata: { quotaOverrides: { websiteLimit: null } },
+    });
+    prismaMock.client.website.count.mockResolvedValue(1000);
+
+    expect(await canCreateTenantWebsite('tenant-1')).toBe(true);
   });
 });
 
@@ -357,6 +381,18 @@ describe('canAddTeamMember', () => {
 
     expect(result).toBe(true);
     expect(prismaMock.client.tenant.findUnique).not.toHaveBeenCalled();
+  });
+
+  test('enforces a custom tenant-wide member override', async () => {
+    prismaMock.client.team.findUnique.mockResolvedValue({ tenantId: 'tenant-1' });
+    prismaMock.client.tenant.findUnique.mockResolvedValue({
+      plan: 'enterprise',
+      metadata: { quotaOverrides: { memberLimit: 2 } },
+    });
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }]);
+    prismaMock.client.teamUser.count.mockResolvedValue(2);
+
+    expect(await canAddTeamMember('team-1')).toBe(false);
   });
 });
 
@@ -471,6 +507,39 @@ describe('reserveTenantEvent', () => {
     expect(result.allowed).toBe(true);
     expect(result.limit).toBe(100_000);
   });
+
+  test('enforces a custom event quota from tenant metadata', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({
+      plan: 'enterprise',
+      metadata: { quotaOverrides: { eventLimit: 3 } },
+    });
+    prismaMock.client.tenantUsageMonthly.upsert.mockResolvedValue({});
+    prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue({ eventCount: 3n });
+    prismaMock.client.tenantUsageMonthly.updateMany.mockResolvedValue({ count: 0 });
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
+
+    expect(await reserveTenantEvent('tenant-1')).toEqual({
+      allowed: false,
+      limit: 3,
+      used: 3,
+      remaining: 0,
+    });
+  });
+
+  test('allows events when the tenant override is unlimited', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({
+      plan: 'free',
+      metadata: { quotaOverrides: { eventLimit: null } },
+    });
+
+    expect(await reserveTenantEvent('tenant-1')).toEqual({
+      allowed: true,
+      limit: null,
+      used: null,
+      remaining: null,
+    });
+    expect(transactionMock).not.toHaveBeenCalled();
+  });
 });
 
 describe('reserveWebsiteEvent', () => {
@@ -524,7 +593,7 @@ describe('getTenantUsage', () => {
 
     const result = await getTenantUsage('tenant-1', new Date('2026-07-11'));
 
-    expect(result.plan).toBe('pro');
+    expect((result as any).plan).toBe('pro');
     expect(result.month).toBe('2026-07');
     expect(result.events).toEqual({ used: 1_000_000, limit: 1_000_000 });
     expect(result.websites).toEqual({ used: 15, limit: 25 });
@@ -555,6 +624,24 @@ describe('getTenantUsage', () => {
     expect(result.events.limit).toBe(5_000_000);
     expect(result.websites.limit).toBe(50);
     expect(result.members.limit).toBe(20);
+  });
+
+  test('returns defaults, overrides, and effective quota values', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({
+      plan: 'starter',
+      metadata: { quotaOverrides: { eventLimit: 750_000, websiteLimit: null } },
+    });
+    prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue({ eventCount: 400_000n });
+    prismaMock.client.website.count.mockResolvedValue(12);
+    prismaMock.client.team.findMany.mockResolvedValue([]);
+
+    const result = await getTenantUsage('tenant-1', new Date('2026-07-11'));
+
+    expect(result.defaults).toEqual(TENANT_PLAN_LIMITS.starter);
+    expect(result.quotaOverrides).toEqual({ eventLimit: 750_000, websiteLimit: null });
+    expect(result.events).toEqual({ used: 400_000, limit: 750_000 });
+    expect(result.websites).toEqual({ used: 12, limit: null });
+    expect(result.members).toEqual({ used: 0, limit: 1 });
   });
 });
 
@@ -598,6 +685,65 @@ describe('updateTenant', () => {
         data: expect.objectContaining({ name: 'Updated', updatedAt: expect.any(Date) }),
       }),
     );
+  });
+});
+
+describe('updateTenantAdminMembership', () => {
+  test('updates tenant, synchronizes subscription, and applies retention for a plan change', async () => {
+    prismaMock.client.tenant.update.mockResolvedValue({
+      id: 'tenant-1',
+      plan: 'pro',
+      status: 'active',
+    });
+    prismaMock.client.tenantSubscription.upsert.mockResolvedValue({});
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
+
+    const result = await updateTenantAdminMembership('tenant-1', {
+      plan: 'pro',
+      status: 'suspended',
+      metadata: { owner: 'kept', quotaOverrides: { websiteLimit: 12 } },
+    });
+
+    expect((result as any).plan).toBe('pro');
+    expect(prismaMock.client.tenant.update).toHaveBeenCalledWith({
+      where: { id: 'tenant-1' },
+      data: expect.objectContaining({
+        plan: 'pro',
+        status: 'suspended',
+        metadata: { owner: 'kept', quotaOverrides: { websiteLimit: 12 } },
+        updatedAt: expect.any(Date),
+      }),
+    });
+    expect(prismaMock.client.tenantSubscription.upsert).toHaveBeenCalledWith({
+      where: { tenantId: 'tenant-1' },
+      create: expect.objectContaining({
+        tenantId: 'tenant-1',
+        plan: 'pro',
+        status: 'suspended',
+      }),
+      update: expect.objectContaining({
+        plan: 'pro',
+        status: 'suspended',
+        updatedAt: expect.any(Date),
+      }),
+    });
+    expect(updateRetentionCutoffForTenant).toHaveBeenCalledWith('tenant-1', 'pro');
+  });
+
+  test('updates metadata without touching subscription or retention', async () => {
+    prismaMock.client.tenant.update.mockResolvedValue({
+      id: 'tenant-1',
+      plan: 'free',
+      status: 'active',
+    });
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
+
+    await updateTenantAdminMembership('tenant-1', {
+      metadata: { quotaOverrides: { memberLimit: null } },
+    });
+
+    expect(prismaMock.client.tenantSubscription.upsert).not.toHaveBeenCalled();
+    expect(updateRetentionCutoffForTenant).not.toHaveBeenCalled();
   });
 });
 

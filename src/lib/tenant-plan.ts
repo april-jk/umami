@@ -21,6 +21,16 @@ export const TENANT_PLAN_PRICES = {
 
 export type TenantPlanId = keyof typeof TENANT_PLAN_LIMITS;
 export type TenantPlanLimits = (typeof TENANT_PLAN_LIMITS)[TenantPlanId];
+export type TenantQuotaKey = 'eventLimit' | 'websiteLimit' | 'memberLimit';
+export type TenantQuotaOverrides = Partial<Record<TenantQuotaKey, number | null>>;
+export type EffectiveTenantPlanLimits = {
+  eventLimit: number | null;
+  websiteLimit: number | null;
+  memberLimit: number | null;
+  retentionDays: number | null;
+};
+
+const TENANT_QUOTA_KEYS: TenantQuotaKey[] = ['eventLimit', 'websiteLimit', 'memberLimit'];
 
 const DEFAULT_PLAN: TenantPlanId = 'free';
 
@@ -38,6 +48,33 @@ export function getTenantPlanId(plan?: string | null): TenantPlanId {
 
 export function getTenantPlanLimits(plan?: string | null): TenantPlanLimits {
   return TENANT_PLAN_LIMITS[getTenantPlanId(plan)];
+}
+
+export function getTenantQuotaOverrides(metadata: unknown): TenantQuotaOverrides {
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) return {};
+
+  const quotaOverrides = (metadata as Record<string, unknown>).quotaOverrides;
+  if (!quotaOverrides || typeof quotaOverrides !== 'object' || Array.isArray(quotaOverrides)) {
+    return {};
+  }
+
+  return TENANT_QUOTA_KEYS.reduce<TenantQuotaOverrides>((result, key) => {
+    const value = (quotaOverrides as Record<string, unknown>)[key];
+    if (value === null || (typeof value === 'number' && Number.isInteger(value) && value >= 0)) {
+      result[key] = value as number | null;
+    }
+    return result;
+  }, {});
+}
+
+export function getTenantEffectiveLimits(
+  plan?: string | null,
+  metadata?: unknown,
+): EffectiveTenantPlanLimits {
+  return {
+    ...getTenantPlanLimits(plan),
+    ...getTenantQuotaOverrides(metadata),
+  };
 }
 
 export function isWithinLimit(current: number | bigint, limit: number | null): boolean {

@@ -4,7 +4,13 @@ import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constant
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
-import { getTenantPlanLimits, isWithinLimit } from '@/lib/tenant-plan';
+import {
+  getTenantEffectiveLimits,
+  getTenantPlanLimits,
+  getTenantQuotaOverrides,
+  isWithinLimit,
+  type TenantQuotaOverrides,
+} from '@/lib/tenant-plan';
 import type { PageResult, QueryFilters } from '@/lib/types';
 
 import TenantFindManyArgs = Prisma.TenantFindManyArgs;
@@ -155,10 +161,12 @@ export async function getTenantIdForTeam(teamId: string) {
   return team?.tenantId ?? null;
 }
 
-export async function getTenantPlan(tenantId: string) {
+export async function getTenantPlan(
+  tenantId: string,
+): Promise<{ plan: string; metadata?: Prisma.JsonValue } | null> {
   const tenant = await prisma.client.tenant.findUnique({
     where: { id: tenantId, deletedAt: null },
-    select: { plan: true },
+    select: { plan: true, metadata: true },
   });
 
   const subscription = await prisma.client.tenantSubscription.findUnique({
@@ -186,7 +194,7 @@ export async function getTenantPlan(tenantId: string) {
       });
     });
     await updateRetentionCutoffForTenant(tenantId, TENANT_PLANS.free);
-    return { plan: TENANT_PLANS.free };
+    return { plan: TENANT_PLANS.free, metadata: tenant?.metadata ?? null };
   }
 
   return tenant;
@@ -203,7 +211,10 @@ export async function getTeamMemberCount(teamId: string) {
 export async function canCreateTenantWebsite(tenantId: string) {
   const tenant = await getTenantPlan(tenantId);
   const count = await getTenantWebsiteCount(tenantId);
-  return isWithinLimit(count, getTenantPlanLimits(tenant?.plan).websiteLimit);
+  return isWithinLimit(
+    count,
+    getTenantEffectiveLimits(tenant?.plan, tenant?.metadata).websiteLimit,
+  );
 }
 
 export async function canAddTeamMember(teamId: string) {
@@ -212,12 +223,12 @@ export async function canAddTeamMember(teamId: string) {
 
   const tenant = await getTenantPlan(tenantId);
   const count = await getTotalTenantMemberCount(tenantId);
-  return isWithinLimit(count, getTenantPlanLimits(tenant?.plan).memberLimit);
+  return isWithinLimit(count, getTenantEffectiveLimits(tenant?.plan, tenant?.metadata).memberLimit);
 }
 
 export async function reserveTenantEvent(tenantId: string, now = new Date()) {
   const tenant = await getTenantPlan(tenantId);
-  const { eventLimit } = getTenantPlanLimits(tenant?.plan);
+  const { eventLimit } = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata);
 
   if (eventLimit === null) return { allowed: true, limit: null, used: null, remaining: null };
 
@@ -264,9 +275,21 @@ export async function reserveWebsiteEvent(websiteId: string, now = new Date()) {
 }
 
 /** Get current usage statistics for a tenant */
-export async function getTenantUsage(tenantId: string, now = new Date()) {
+export type TenantUsage = {
+  plan: string;
+  month: string;
+  defaults?: ReturnType<typeof getTenantPlanLimits>;
+  quotaOverrides?: TenantQuotaOverrides;
+  events: { used: number; limit: number | null };
+  websites: { used: number; limit: number | null };
+  members: { used: number; limit: number | null };
+};
+
+export async function getTenantUsage(tenantId: string, now = new Date()): Promise<TenantUsage> {
   const tenant = await getTenantPlan(tenantId);
-  const limits = getTenantPlanLimits(tenant?.plan);
+  const defaults = getTenantPlanLimits(tenant?.plan);
+  const quotaOverrides = getTenantQuotaOverrides(tenant?.metadata);
+  const limits = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata);
 
   const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
   const usage = await prisma.client.tenantUsageMonthly.findUnique({
@@ -281,6 +304,8 @@ export async function getTenantUsage(tenantId: string, now = new Date()) {
   return {
     plan: tenant?.plan ?? 'free',
     month: month.toISOString().slice(0, 7),
+    defaults,
+    quotaOverrides,
     events: { used: eventUsed, limit: limits.eventLimit },
     websites: { used: websiteUsed, limit: limits.websiteLimit },
     members: { used: memberUsed, limit: limits.memberLimit },
@@ -354,6 +379,53 @@ export async function updateTenant(tenantId: string, data: Prisma.TenantUpdateIn
       updatedAt: new Date(),
     },
   });
+}
+
+export async function updateTenantAdminMembership(
+  tenantId: string,
+  data: {
+    plan?: string;
+    status?: string;
+    metadata: Record<string, unknown>;
+  },
+) {
+  const { plan, status, metadata } = data;
+  const tenant = await prisma.transaction(async tx => {
+    const updated = await tx.tenant.update({
+      where: { id: tenantId },
+      data: {
+        ...(plan && { plan }),
+        ...(status && { status }),
+        metadata: metadata as Prisma.InputJsonValue,
+        updatedAt: new Date(),
+      },
+    });
+
+    if (plan || status) {
+      await tx.tenantSubscription.upsert({
+        where: { tenantId },
+        create: {
+          id: uuid(),
+          tenantId,
+          plan: plan ?? updated.plan,
+          status: status ?? updated.status,
+        },
+        update: {
+          ...(plan && { plan }),
+          ...(status && { status }),
+          updatedAt: new Date(),
+        },
+      });
+    }
+
+    return updated;
+  });
+
+  if (plan) {
+    await updateRetentionCutoffForTenant(tenantId, plan);
+  }
+
+  return tenant;
 }
 
 export function getTenantSubscription(tenantId: string) {
