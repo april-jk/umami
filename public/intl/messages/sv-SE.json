@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP-anrop/dag",
+      "apiRequestsPerMinute": "API-förfrågningar/minut",
+      "aiAnalysesPerMonth": "AI-analyser/månad",
+      "aiReportsPerMonth": "AI-rapporter/månad",
+      "alertRules": "Varningsregler",
+      "webhooks": "Webhooks",
+      "csvExportRows": "CSV-exportrader",
+      "jsonExport": "JSON-export",
+      "emailReports": "E-postrapporter",
+      "slackAlerts": "Slack-varningar",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "White label-kontroller"
+    },
     "loading": "Läser in...",
     "unavailable": "Inte tillgängligt",
     "manageDescription": "Hantera din prenumeration och granska användningen för din nuvarande plan.",

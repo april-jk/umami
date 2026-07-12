@@ -4,10 +4,11 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, notFound } from '@/lib/response';
 import {
   getLimitErrorPayload,
-  getTenantPlanLimits,
+  getTenantEffectiveLimits,
   isTenantPlanEnforcementEnabled,
 } from '@/lib/tenant-plan';
 import { createTeamUser, findTeam, getTeamUser } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   canAddTeamMember,
   getTenantIdForTeam,
@@ -48,9 +49,10 @@ export async function POST(request: Request) {
     const tenantId = await getTenantIdForTeam(team.id);
     const tenant = tenantId ? await getTenantPlan(tenantId) : null;
     const current = tenantId ? await getTotalTenantMemberCount(tenantId) : 0;
-    const limit = getTenantPlanLimits(tenant?.plan).memberLimit;
+    const config = await getMembershipConfig();
+    const limit = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config).memberLimit;
 
-    return forbidden(getLimitErrorPayload(tenant?.plan, 'member', current, limit));
+    return forbidden(getLimitErrorPayload(tenant?.plan, 'member', current, limit, config));
   }
 
   const user = await createTeamUser(auth.user.id, team.id, ROLES.teamMember);

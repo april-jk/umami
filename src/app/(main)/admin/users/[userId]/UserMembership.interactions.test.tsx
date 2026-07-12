@@ -1,6 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { expect, test, vi } from 'vitest';
-import { useAdminUserMembershipQuery, useUpdateAdminUserMembershipQuery } from '@/components/hooks';
+import {
+  useAdminUserMembershipQuery,
+  useMembershipConfigQuery,
+  useUpdateAdminUserMembershipQuery,
+} from '@/components/hooks';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { UserMembership } from './UserMembership';
 
 vi.mock('@umami/react-zen', () => ({
@@ -27,6 +32,7 @@ vi.mock('@/components/common/LoadingPanel', () => ({
 }));
 vi.mock('@/components/hooks', () => ({
   useAdminUserMembershipQuery: vi.fn(),
+  useMembershipConfigQuery: vi.fn(),
   useUpdateAdminUserMembershipQuery: vi.fn(),
 }));
 
@@ -45,6 +51,9 @@ test('changes the plan and tenant status before saving', async () => {
   vi.mocked(useUpdateAdminUserMembershipQuery).mockReturnValue({
     mutateAsync,
     isPending: false,
+  } as any);
+  vi.mocked(useMembershipConfigQuery).mockReturnValue({
+    data: { config: createDefaultMembershipConfig() },
   } as any);
 
   render(<UserMembership userId="user-1" />);

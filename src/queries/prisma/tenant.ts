@@ -12,6 +12,7 @@ import {
   type TenantQuotaOverrides,
 } from '@/lib/tenant-plan';
 import type { PageResult, QueryFilters } from '@/lib/types';
+import { getMembershipConfig } from './membership-config';
 
 import TenantFindManyArgs = Prisma.TenantFindManyArgs;
 
@@ -209,11 +210,14 @@ export async function getTeamMemberCount(teamId: string) {
 }
 
 export async function canCreateTenantWebsite(tenantId: string) {
-  const tenant = await getTenantPlan(tenantId);
-  const count = await getTenantWebsiteCount(tenantId);
+  const [tenant, count, config] = await Promise.all([
+    getTenantPlan(tenantId),
+    getTenantWebsiteCount(tenantId),
+    getMembershipConfig(),
+  ]);
   return isWithinLimit(
     count,
-    getTenantEffectiveLimits(tenant?.plan, tenant?.metadata).websiteLimit,
+    getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config).websiteLimit,
   );
 }
 
@@ -221,14 +225,20 @@ export async function canAddTeamMember(teamId: string) {
   const tenantId = await getTenantIdForTeam(teamId);
   if (!tenantId) return true;
 
-  const tenant = await getTenantPlan(tenantId);
-  const count = await getTotalTenantMemberCount(tenantId);
-  return isWithinLimit(count, getTenantEffectiveLimits(tenant?.plan, tenant?.metadata).memberLimit);
+  const [tenant, count, config] = await Promise.all([
+    getTenantPlan(tenantId),
+    getTotalTenantMemberCount(tenantId),
+    getMembershipConfig(),
+  ]);
+  return isWithinLimit(
+    count,
+    getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config).memberLimit,
+  );
 }
 
 export async function reserveTenantEvent(tenantId: string, now = new Date()) {
-  const tenant = await getTenantPlan(tenantId);
-  const { eventLimit } = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata);
+  const [tenant, config] = await Promise.all([getTenantPlan(tenantId), getMembershipConfig()]);
+  const { eventLimit } = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config);
 
   if (eventLimit === null) return { allowed: true, limit: null, used: null, remaining: null };
 
@@ -286,10 +296,10 @@ export type TenantUsage = {
 };
 
 export async function getTenantUsage(tenantId: string, now = new Date()): Promise<TenantUsage> {
-  const tenant = await getTenantPlan(tenantId);
-  const defaults = getTenantPlanLimits(tenant?.plan);
+  const [tenant, config] = await Promise.all([getTenantPlan(tenantId), getMembershipConfig()]);
+  const defaults = getTenantPlanLimits(tenant?.plan, config);
   const quotaOverrides = getTenantQuotaOverrides(tenant?.metadata);
-  const limits = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata);
+  const limits = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config);
 
   const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
   const usage = await prisma.client.tenantUsageMonthly.findUnique({

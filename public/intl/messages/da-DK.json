@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP-kald/dag",
+      "apiRequestsPerMinute": "API-anmodninger/minut",
+      "aiAnalysesPerMonth": "AI-analyser/måned",
+      "aiReportsPerMonth": "AI-rapporter/måned",
+      "alertRules": "Advarselsregler",
+      "webhooks": "Webhooks",
+      "csvExportRows": "CSV-eksportlinjer",
+      "jsonExport": "JSON-eksport",
+      "emailReports": "E-mailrapporter",
+      "slackAlerts": "Slack-advarsler",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "White label-styring"
+    },
     "loading": "Indlæser...",
     "unavailable": "Ikke tilgængelig",
     "manageDescription": "Administrer dit abonnement, og gennemgå forbruget på din nuværende plan.",

@@ -534,6 +534,20 @@
           "Виділений CSM та варіанти 99.99% SLA"
         ]
       }
+    },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP-виклики/день",
+      "apiRequestsPerMinute": "API-запити/хвилину",
+      "aiAnalysesPerMonth": "AI-аналізи/місяць",
+      "aiReportsPerMonth": "AI-звіти/місяць",
+      "alertRules": "Правила сповіщень",
+      "webhooks": "Вебхуки",
+      "csvExportRows": "Рядки експорту CSV",
+      "jsonExport": "Експорт JSON",
+      "emailReports": "Email-звіти",
+      "slackAlerts": "Сповіщення в Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Керування white-label"
     }
   }
 }

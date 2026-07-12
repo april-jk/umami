@@ -545,6 +545,20 @@
           "Vyhrazený CSM a možnosti 99.99% SLA"
         ]
       }
+    },
+    "featureLabels": {
+      "mcpCallsPerDay": "Volání MCP/den",
+      "apiRequestsPerMinute": "Požadavky API/minutu",
+      "aiAnalysesPerMonth": "Analýzy AI/měsíc",
+      "aiReportsPerMonth": "Reporty AI/měsíc",
+      "alertRules": "Pravidla upozornění",
+      "webhooks": "Webhooky",
+      "csvExportRows": "Řádky exportu CSV",
+      "jsonExport": "Export JSON",
+      "emailReports": "E-mailové reporty",
+      "slackAlerts": "Upozornění ve Slacku",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Vlastní branding"
     }
   }
 }

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import enUS from '../../../../../public/intl/messages/en-US.json';
 import zhCN from '../../../../../public/intl/messages/zh-CN.json';
 import { UpgradePage } from './UpgradePage';
@@ -11,6 +12,7 @@ vi.mock('@/components/hooks', () => ({
   useTenantQuery: vi.fn(),
   useApi: vi.fn(),
   useMessages: vi.fn(),
+  useMembershipConfigQuery: vi.fn(),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -21,12 +23,19 @@ vi.mock('next/link', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-import { useApi, useLoginQuery, useMessages, useTenantQuery } from '@/components/hooks';
+import {
+  useApi,
+  useLoginQuery,
+  useMembershipConfigQuery,
+  useMessages,
+  useTenantQuery,
+} from '@/components/hooks';
 
 const useLoginQueryMock = vi.mocked(useLoginQuery);
 const useTenantQueryMock = vi.mocked(useTenantQuery);
 const useApiMock = vi.mocked(useApi);
 const useMessagesMock = vi.mocked(useMessages);
+const useMembershipConfigQueryMock = vi.mocked(useMembershipConfigQuery);
 const postMock = vi.fn();
 
 function createTranslator(messages: any) {
@@ -51,7 +60,14 @@ const translate = createTranslator(enUS);
 beforeEach(() => {
   vi.clearAllMocks();
   getSearchParamMock.mockReturnValue(null);
-  useMessagesMock.mockReturnValue({ t: translate, labels: {}, messages: {} } as any);
+  useMessagesMock.mockReturnValue({
+    t: translate,
+    labels: { goals: 'label.goals', replays: 'label.replays' },
+    messages: {},
+  } as any);
+  useMembershipConfigQueryMock.mockReturnValue({
+    data: { config: createDefaultMembershipConfig() },
+  } as any);
   useApiMock.mockReturnValue({
     post: postMock,
     useMutation: () => ({ mutate: vi.fn(), mutateAsync: vi.fn(), isPending: false }),
@@ -66,7 +82,7 @@ describe('UpgradePage', () => {
     useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
     useMessagesMock.mockReturnValue({
       t: createTranslator(zhCN),
-      labels: {},
+      labels: { goals: 'label.goals', replays: 'label.replays' },
       messages: {},
     } as any);
 
@@ -94,13 +110,14 @@ describe('UpgradePage', () => {
 
     useMessagesMock.mockReturnValue({
       t: createTranslator(zhCN),
-      labels: {},
+      labels: { goals: 'label.goals', replays: 'label.replays' },
       messages: {},
     } as any);
     rerender(<UpgradePage />);
 
     expect(screen.getByText('升级会员')).toBeInTheDocument();
-    expect(screen.getByText('核心分析、API 只读访问和每天 50 次 MCP 调用')).toBeInTheDocument();
+    expect(screen.getByText('事件: 100K')).toBeInTheDocument();
+    expect(screen.getByText('每天 MCP 调用次数: 50')).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: '订阅' })).toHaveLength(3);
   });
 
@@ -191,8 +208,8 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    expect(screen.getByText('100K events/month')).toBeInTheDocument();
-    expect(screen.getByText('7-day data retention')).toBeInTheDocument();
+    expect(screen.getByText('Events: 100K')).toBeInTheDocument();
+    expect(screen.getByText('Data retention: 7 days')).toBeInTheDocument();
   });
 
   test('shows the Enterprise base event allowance', () => {
@@ -203,11 +220,9 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    expect(screen.getByText('20M+ events/month')).toBeInTheDocument();
-    expect(
-      screen.getByText('Unlimited websites, members, goals, and session replays'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Dedicated CSM and 99.99% SLA')).toBeInTheDocument();
+    expect(screen.getByText('Events: 20M')).toBeInTheDocument();
+    expect(screen.getAllByText('Websites: Unlimited').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Goals: Unlimited').length).toBeGreaterThan(0);
   });
 
   test('opens an email draft for enterprise sales', () => {
@@ -262,27 +277,54 @@ describe('UpgradePage', () => {
     expect(screen.getByText('Current Plan')).toBeInTheDocument();
   });
 
-  test('matches the public pricing page feature catalog', () => {
+  test('loads prices and entitlement quantities from dynamic configuration', () => {
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },
     } as any);
     useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
 
+    const config = createDefaultMembershipConfig();
+    config.plans.starter.prices.monthly = 12;
+    config.plans.starter.prices.annual = 100;
+    config.plans.starter.limits.eventLimit = 650_000;
+    config.plans.starter.entitlements.mcpCallsPerDay = 750;
+    useMembershipConfigQueryMock.mockReturnValue({ data: { config } } as any);
+
     render(<UpgradePage />);
 
+    expect(screen.getByText('$8.33/mo')).toBeInTheDocument();
+    expect(screen.getByText('Events: 650K')).toBeInTheDocument();
+    expect(screen.getByText('MCP calls/day: 750')).toBeInTheDocument();
+  });
+
+  test('hides plans that operations marks unavailable', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+    const config = createDefaultMembershipConfig();
+    config.plans.starter.available = false;
+    useMembershipConfigQueryMock.mockReturnValue({ data: { config } } as any);
+
+    render(<UpgradePage />);
+
+    expect(screen.queryByTestId('plan-card-starter')).not.toBeInTheDocument();
+    expect(screen.getByTestId('plan-card-pro')).toBeInTheDocument();
     expect(
-      screen.getByText('Core analytics, API read access, and 50 MCP calls/day'),
+      within(screen.getByTestId('plan-card-pro')).getByText('Recommended'),
     ).toBeInTheDocument();
+  });
+
+  test('keeps the current plan visible when operations marks it unavailable', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'starter' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'starter' } } as any);
+    const config = createDefaultMembershipConfig();
+    config.plans.starter.available = false;
+    useMembershipConfigQueryMock.mockReturnValue({ data: { config } } as any);
+
+    render(<UpgradePage />);
+
+    expect(screen.getByTestId('plan-card-starter')).toBeInTheDocument();
     expect(
-      screen.getByText('CSV (10K) export and daily or weekly email reports'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('CSV (100K) and JSON export, 5 webhooks, and Slack alerts'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('CSV (500K)')).toBeInTheDocument();
-    expect(screen.getByText('CSV (∞)')).toBeInTheDocument();
-    expect(
-      screen.getByText('SSO/SAML, white-label controls, and AI forecasting'),
+      within(screen.getByTestId('plan-card-pro')).getByText('Recommended'),
     ).toBeInTheDocument();
   });
 
@@ -317,11 +359,11 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    expect(screen.getByText('100K events/month')).toBeInTheDocument();
-    expect(screen.getByText('500K events/month')).toBeInTheDocument();
-    expect(screen.getByText('1M events/month')).toBeInTheDocument();
-    expect(screen.getByText('5M events/month and 50 websites')).toBeInTheDocument();
-    expect(screen.getByText('20M+ events/month')).toBeInTheDocument();
+    expect(screen.getByText('Events: 100K')).toBeInTheDocument();
+    expect(screen.getByText('Events: 500K')).toBeInTheDocument();
+    expect(screen.getByText('Events: 1M')).toBeInTheDocument();
+    expect(screen.getByText('Events: 5M')).toBeInTheDocument();
+    expect(screen.getByText('Events: 20M')).toBeInTheDocument();
   });
 
   test('shows correct retention periods', () => {
@@ -332,12 +374,10 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    expect(screen.getByText('7-day data retention')).toBeInTheDocument();
-    expect(screen.getByText('6 months data retention')).toBeInTheDocument();
-    expect(screen.getByText('24 months data retention')).toBeInTheDocument();
-    expect(
-      screen.getByText('20 members, unlimited goals, and unlimited data retention'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Data retention: 7 days')).toBeInTheDocument();
+    expect(screen.getByText('Data retention: 180 days')).toBeInTheDocument();
+    expect(screen.getByText('Data retention: 730 days')).toBeInTheDocument();
+    expect(screen.getAllByText('Data retention: Unlimited')).toHaveLength(2);
   });
 
   test('creates a PayPal subscription when a tenant user selects a paid plan', async () => {

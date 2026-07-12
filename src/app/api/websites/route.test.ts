@@ -1,8 +1,10 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { fetchAccount } from '@/lib/load';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getWebsiteCount } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   canCreateTenantWebsite,
   getDefaultTenantIdForUser,
@@ -47,6 +49,7 @@ vi.mock('@/queries/prisma/website', () => ({
   getAllUserWebsitesIncludingTeamAccess: vi.fn(),
   getUserWebsites: vi.fn(),
 }));
+vi.mock('@/queries/prisma/membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 const parseRequestMock = vi.mocked(parseRequest);
 const getQueryFiltersMock = vi.mocked(getQueryFilters);
@@ -81,6 +84,7 @@ beforeEach(() => {
   getTenantWebsiteCountMock.mockReset();
   getAllUserWebsitesIncludingTeamAccessMock.mockReset();
   getUserWebsitesMock.mockReset();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
 });
 
 test('GET returns request parsing errors', async () => {

@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP-kutsua/päivä",
+      "apiRequestsPerMinute": "API-pyyntöä/minuutti",
+      "aiAnalysesPerMonth": "Tekoälyanalyysiä/kuukausi",
+      "aiReportsPerMonth": "Tekoälyraporttia/kuukausi",
+      "alertRules": "Hälytyssäännöt",
+      "webhooks": "Webhookit",
+      "csvExportRows": "CSV-vientirivit",
+      "jsonExport": "JSON-vienti",
+      "emailReports": "Sähköpostiraportit",
+      "slackAlerts": "Slack-hälytykset",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "White label -hallinta"
+    },
     "loading": "Ladataan...",
     "unavailable": "Ei saatavilla",
     "manageDescription": "Hallinnoi tilaustasi ja tarkista nykyisen tilauksen käyttö.",

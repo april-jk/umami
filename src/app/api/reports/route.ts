@@ -3,7 +3,7 @@ import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, reportSchema, reportTypeParam } from '@/lib/schema';
-import { getEntitlementErrorPayload, getTenantPlanEntitlements } from '@/lib/tenant-entitlements';
+import { getEntitlementErrorPayload } from '@/lib/tenant-entitlements';
 import { isTenantPlanEnforcementEnabled } from '@/lib/tenant-plan';
 import type { ShareSection } from '@/permissions';
 import {
@@ -94,11 +94,19 @@ export async function POST(request: Request) {
 
   if (isTenantPlanEnforcementEnabled() && type === 'goal') {
     const entitlement = await getWebsiteEntitlement(websiteId, 'goalLimit');
-    const limit = getTenantPlanEntitlements(entitlement.plan).goalLimit;
+    const limit = entitlement.value as number | null;
     const current = entitlement.tenantId ? await getTenantGoalCount(entitlement.tenantId) : 0;
 
     if (!entitlement.allowed || (limit !== null && current >= limit)) {
-      return forbidden(getEntitlementErrorPayload(entitlement.plan, 'goalLimit', current, limit));
+      return forbidden(
+        getEntitlementErrorPayload(
+          entitlement.plan,
+          'goalLimit',
+          current,
+          limit,
+          entitlement.config,
+        ),
+      );
     }
   }
 

@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { parseRequest } from '@/lib/request';
 import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/permissions';
 import { getWebsite, updateWebsite } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   canCreateTenantWebsite,
   getDefaultTenantIdForUser,
@@ -24,6 +26,7 @@ vi.mock('@/queries/prisma/tenant', () => ({
   getTenantPlan: vi.fn(),
   getTenantWebsiteCount: vi.fn(),
 }));
+vi.mock('@/queries/prisma/membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 const parseRequestMock = vi.mocked(parseRequest);
 const getWebsiteMock = vi.mocked(getWebsite);
@@ -38,6 +41,7 @@ beforeEach(() => {
   delete process.env.CLOUD_MODE;
   delete process.env.MEMBERSHIP_ENABLED;
   vi.clearAllMocks();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
   vi.mocked(canTransferWebsiteToUser).mockResolvedValue(true);
   vi.mocked(canTransferWebsiteToTeam).mockResolvedValue(true);
   getWebsiteMock.mockResolvedValue({ id: 'website-1', tenantId: 'tenant-1' } as any);

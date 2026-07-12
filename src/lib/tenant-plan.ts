@@ -20,7 +20,12 @@ export const TENANT_PLAN_PRICES = {
 } as const;
 
 export type TenantPlanId = keyof typeof TENANT_PLAN_LIMITS;
-export type TenantPlanLimits = (typeof TENANT_PLAN_LIMITS)[TenantPlanId];
+export type TenantPlanLimits = {
+  eventLimit: number | null;
+  websiteLimit: number | null;
+  memberLimit: number | null;
+  retentionDays: number | null;
+};
 export type TenantQuotaKey = 'eventLimit' | 'websiteLimit' | 'memberLimit';
 export type TenantQuotaOverrides = Partial<Record<TenantQuotaKey, number | null>>;
 export type EffectiveTenantPlanLimits = {
@@ -46,8 +51,12 @@ export function getTenantPlanId(plan?: string | null): TenantPlanId {
   return plan in TENANT_PLAN_LIMITS ? (plan as TenantPlanId) : DEFAULT_PLAN;
 }
 
-export function getTenantPlanLimits(plan?: string | null): TenantPlanLimits {
-  return TENANT_PLAN_LIMITS[getTenantPlanId(plan)];
+export function getTenantPlanLimits(
+  plan?: string | null,
+  config?: MembershipConfig,
+): TenantPlanLimits {
+  const planId = getTenantPlanId(plan);
+  return (config?.plans[planId].limits ?? TENANT_PLAN_LIMITS[planId]) as TenantPlanLimits;
 }
 
 export function getTenantQuotaOverrides(metadata: unknown): TenantQuotaOverrides {
@@ -70,9 +79,10 @@ export function getTenantQuotaOverrides(metadata: unknown): TenantQuotaOverrides
 export function getTenantEffectiveLimits(
   plan?: string | null,
   metadata?: unknown,
+  config?: MembershipConfig,
 ): EffectiveTenantPlanLimits {
   return {
-    ...getTenantPlanLimits(plan),
+    ...getTenantPlanLimits(plan, config),
     ...getTenantQuotaOverrides(metadata),
   };
 }
@@ -107,14 +117,19 @@ export function getNextPlanId(planId?: string | null): TenantPlanId | null {
 export function getRecommendedPlanId(
   planId: string | null | undefined,
   limitType: 'event' | 'website' | 'member',
+  config?: MembershipConfig,
 ): TenantPlanId | null {
   const currentPlan = getTenantPlanId(planId);
   const limitKey = `${limitType}Limit` as 'eventLimit' | 'websiteLimit' | 'memberLimit';
-  const currentLimit = TENANT_PLAN_LIMITS[currentPlan][limitKey];
+  const currentLimit = getTenantPlanLimits(currentPlan, config)[limitKey];
   let nextPlan = getNextPlanId(currentPlan);
 
   while (nextPlan) {
-    const nextLimit = TENANT_PLAN_LIMITS[nextPlan][limitKey];
+    if (config && !config.plans[nextPlan].available) {
+      nextPlan = getNextPlanId(nextPlan);
+      continue;
+    }
+    const nextLimit = getTenantPlanLimits(nextPlan, config)[limitKey];
     if (nextLimit === null || (currentLimit !== null && nextLimit > currentLimit)) {
       return nextPlan;
     }
@@ -128,13 +143,14 @@ export function getRecommendedPlanId(
 export function getPlanUpgradeMessage(
   planId: string | null | undefined,
   limitType: 'event' | 'website' | 'member',
+  config?: MembershipConfig,
 ): string {
-  const nextPlan = getRecommendedPlanId(planId, limitType);
+  const nextPlan = getRecommendedPlanId(planId, limitType, config);
   if (!nextPlan) {
     return 'Contact sales for custom limits.';
   }
 
-  const nextLimits = TENANT_PLAN_LIMITS[nextPlan];
+  const nextLimits = getTenantPlanLimits(nextPlan, config);
   const limitMap = {
     event: nextLimits.eventLimit,
     website: nextLimits.websiteLimit,
@@ -171,6 +187,7 @@ export function getLimitErrorPayload(
   limitType: 'event' | 'website' | 'member',
   current: number | bigint,
   limit: number | null,
+  config?: MembershipConfig,
 ): {
   message: string;
   code: string;
@@ -190,8 +207,8 @@ export function getLimitErrorPayload(
   };
 
   const currentPlan = getTenantPlanId(planId);
-  const recommendedPlan = getRecommendedPlanId(currentPlan, limitType);
-  const upgradeMessage = getPlanUpgradeMessage(currentPlan, limitType);
+  const recommendedPlan = getRecommendedPlanId(currentPlan, limitType, config);
+  const upgradeMessage = getPlanUpgradeMessage(currentPlan, limitType, config);
 
   return {
     type: 'plan-limit' as const,
@@ -206,3 +223,5 @@ export function getLimitErrorPayload(
     upgradeMessage,
   };
 }
+
+import type { MembershipConfig } from './membership-config';

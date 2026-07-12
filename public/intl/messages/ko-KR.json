@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "일일 MCP 호출",
+      "apiRequestsPerMinute": "분당 API 요청",
+      "aiAnalysesPerMonth": "월간 AI 분석",
+      "aiReportsPerMonth": "월간 AI 보고서",
+      "alertRules": "알림 규칙",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV 내보내기 행",
+      "jsonExport": "JSON 내보내기",
+      "emailReports": "이메일 보고서",
+      "slackAlerts": "Slack 알림",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "화이트 라벨 제어"
+    },
     "loading": "불러오는 중...",
     "unavailable": "멤버십 정보를 불러올 수 없습니다.",
     "manageDescription": "요금제, 사용량 및 결제 상태를 관리합니다.",

@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Glaonna MCP sa lá",
+      "apiRequestsPerMinute": "Iarratais API sa nóiméad",
+      "aiAnalysesPerMonth": "Anailísí AI sa mhí",
+      "aiReportsPerMonth": "Tuairiscí AI sa mhí",
+      "alertRules": "Rialacha foláirimh",
+      "webhooks": "Webhooks",
+      "csvExportRows": "Rónna easpórtála CSV",
+      "jsonExport": "Easpórtáil JSON",
+      "emailReports": "Tuairiscí ríomhphoist",
+      "slackAlerts": "Foláirimh Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Rialuithe lipéid bháin"
+    },
     "loading": "Á lódáil...",
     "unavailable": "Níl eolas ballraíochta ar fáil.",
     "manageDescription": "Bainistigh do phlean, féach ar úsáid agus uasghrádaigh nuair is gá.",

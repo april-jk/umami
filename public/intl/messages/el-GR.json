@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Κλήσεις MCP/ημέρα",
+      "apiRequestsPerMinute": "Αιτήματα API/λεπτό",
+      "aiAnalysesPerMonth": "Αναλύσεις AI/μήνα",
+      "aiReportsPerMonth": "Αναφορές AI/μήνα",
+      "alertRules": "Κανόνες ειδοποιήσεων",
+      "webhooks": "Webhook",
+      "csvExportRows": "Γραμμές εξαγωγής CSV",
+      "jsonExport": "Εξαγωγή JSON",
+      "emailReports": "Αναφορές μέσω email",
+      "slackAlerts": "Ειδοποιήσεις Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Έλεγχοι ιδιωτικής ετικέτας"
+    },
     "loading": "Φόρτωση...",
     "unavailable": "Δεν υπάρχουν διαθέσιμες πληροφορίες συνδρομής.",
     "manageDescription": "Διαχειριστείτε το πρόγραμμά σας, δείτε τη χρήση και αναβαθμίστε όταν χρειάζεται.",

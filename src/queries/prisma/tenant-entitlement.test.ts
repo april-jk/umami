@@ -1,4 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
+import { getMembershipConfig } from './membership-config';
 import { getTenantGoalCount, getWebsiteEntitlement } from './tenant-entitlement';
 
 const { prismaMock } = vi.hoisted(() => ({
@@ -11,8 +13,12 @@ const { prismaMock } = vi.hoisted(() => ({
 }));
 
 vi.mock('@/lib/prisma', () => ({ default: prismaMock }));
+vi.mock('./membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
+});
 
 describe('getWebsiteEntitlement', () => {
   test('returns the tenant plan feature state', async () => {
@@ -21,7 +27,7 @@ describe('getWebsiteEntitlement', () => {
       tenant: { plan: 'starter' },
     });
 
-    expect(await getWebsiteEntitlement('website-1', 'csvExport')).toEqual({
+    expect(await getWebsiteEntitlement('website-1', 'csvExport')).toMatchObject({
       tenantId: 'tenant-1',
       plan: 'starter',
       allowed: true,

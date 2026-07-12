@@ -535,6 +535,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Kunlik MCP chaqiruvlari",
+      "apiRequestsPerMinute": "Daqiqalik API soʻrovlari",
+      "aiAnalysesPerMonth": "Oylik AI tahlillari",
+      "aiReportsPerMonth": "Oylik AI hisobotlari",
+      "alertRules": "Ogohlantirish qoidalari",
+      "webhooks": "Webhooklar",
+      "csvExportRows": "CSV eksport qatorlari",
+      "jsonExport": "JSON eksporti",
+      "emailReports": "E-pochta hisobotlari",
+      "slackAlerts": "Slack ogohlantirishlari",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Oq yorliq boshqaruvi"
+    },
     "loading": "Yuklanmoqda...",
     "unavailable": "Aʼzolik maʼlumotini yuklab boʻlmadi.",
     "manageDescription": "Tarif, foydalanish va hisob-kitob holatini boshqaring.",

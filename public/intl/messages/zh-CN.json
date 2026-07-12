@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "每天 MCP 调用次数",
+      "apiRequestsPerMinute": "每分钟 API 请求数",
+      "aiAnalysesPerMonth": "每月 AI 分析次数",
+      "aiReportsPerMonth": "每月 AI 报告数",
+      "alertRules": "告警规则",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV 导出行数",
+      "jsonExport": "JSON 导出",
+      "emailReports": "邮件报告",
+      "slackAlerts": "Slack 告警",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "白标控制"
+    },
     "loading": "加载中...",
     "unavailable": "暂无会员信息。",
     "manageDescription": "管理套餐、查看用量，并在需要时升级。",

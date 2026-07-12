@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP pozivi/dan",
+      "apiRequestsPerMinute": "API zahtjevi/minutu",
+      "aiAnalysesPerMonth": "AI analize/mjesec",
+      "aiReportsPerMonth": "AI izvješća/mjesec",
+      "alertRules": "Pravila upozorenja",
+      "webhooks": "Webhookovi",
+      "csvExportRows": "Redovi CSV izvoza",
+      "jsonExport": "JSON izvoz",
+      "emailReports": "Izvješća e-poštom",
+      "slackAlerts": "Slack upozorenja",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Kontrole bijele oznake"
+    },
     "loading": "Učitavanje...",
     "unavailable": "Nije dostupno",
     "manageDescription": "Upravljajte pretplatom i pregledajte upotrebu trenutačnog plana.",

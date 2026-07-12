@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Appels MCP/jour",
+      "apiRequestsPerMinute": "Requêtes API/minute",
+      "aiAnalysesPerMonth": "Analyses d’IA/mois",
+      "aiReportsPerMonth": "Rapports d’IA/mois",
+      "alertRules": "Règles d’alerte",
+      "webhooks": "Webhooks",
+      "csvExportRows": "Lignes d’export CSV",
+      "jsonExport": "Export JSON",
+      "emailReports": "Rapports par e-mail",
+      "slackAlerts": "Alertes Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Contrôles en marque blanche"
+    },
     "loading": "Chargement…",
     "unavailable": "Indisponible",
     "manageDescription": "Gérez votre abonnement et consultez l’utilisation de votre offre actuelle.",

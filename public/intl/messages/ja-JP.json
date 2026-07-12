@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "1日あたりのMCP呼び出し",
+      "apiRequestsPerMinute": "1分あたりのAPIリクエスト",
+      "aiAnalysesPerMonth": "月あたりのAI分析",
+      "aiReportsPerMonth": "月あたりのAIレポート",
+      "alertRules": "アラートルール",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSVエクスポート行数",
+      "jsonExport": "JSONエクスポート",
+      "emailReports": "メールレポート",
+      "slackAlerts": "Slackアラート",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "ホワイトラベル管理"
+    },
     "loading": "読み込み中...",
     "unavailable": "メンバーシップ情報を取得できません。",
     "manageDescription": "プラン、使用量、請求状況を管理します。",

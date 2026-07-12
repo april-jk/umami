@@ -4,11 +4,12 @@ import { badRequest, forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, teamRoleParam } from '@/lib/schema';
 import {
   getLimitErrorPayload,
-  getTenantPlanLimits,
+  getTenantEffectiveLimits,
   isTenantPlanEnforcementEnabled,
 } from '@/lib/tenant-plan';
 import { canUpdateTeam, canViewTeam } from '@/permissions';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   canAddTeamMember,
   getTenantIdForTeam,
@@ -92,8 +93,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
     const tenantId = await getTenantIdForTeam(teamId);
     const tenant = tenantId ? await getTenantPlan(tenantId) : null;
     const count = tenantId ? await getTotalTenantMemberCount(tenantId) : 0;
-    const limits = getTenantPlanLimits(tenant?.plan);
-    const payload = getLimitErrorPayload(tenant?.plan, 'member', count, limits.memberLimit);
+    const config = await getMembershipConfig();
+    const limit = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config).memberLimit;
+    const payload = getLimitErrorPayload(tenant?.plan, 'member', count, limit, config);
     return forbidden(payload);
   }
 

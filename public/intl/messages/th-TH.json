@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "การเรียก MCP ต่อวัน",
+      "apiRequestsPerMinute": "คำขอ API ต่อนาที",
+      "aiAnalysesPerMonth": "การวิเคราะห์ AI ต่อเดือน",
+      "aiReportsPerMonth": "รายงาน AI ต่อเดือน",
+      "alertRules": "กฎแจ้งเตือน",
+      "webhooks": "Webhook",
+      "csvExportRows": "แถวส่งออก CSV",
+      "jsonExport": "ส่งออก JSON",
+      "emailReports": "รายงานอีเมล",
+      "slackAlerts": "การแจ้งเตือน Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "การควบคุมไวต์เลเบล"
+    },
     "loading": "กำลังโหลด...",
     "unavailable": "ไม่สามารถโหลดข้อมูลสมาชิกได้",
     "manageDescription": "จัดการแผน การใช้งาน และสถานะการเรียกเก็บเงิน",

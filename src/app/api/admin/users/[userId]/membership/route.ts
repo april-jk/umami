@@ -3,6 +3,7 @@ import { parseRequest } from '@/lib/request';
 import { json, notFound, unauthorized } from '@/lib/response';
 import { tenantPlanParam, tenantStatusParam } from '@/lib/schema';
 import { getTenantEffectiveLimits, getTenantQuotaOverrides } from '@/lib/tenant-plan';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   getDefaultTenantIdForUser,
   getTenant,
@@ -38,9 +39,10 @@ async function loadMembership(userId: string) {
   const tenantId = user.tenantId ?? (await getDefaultTenantIdForUser(userId));
   if (!tenantId) return { user, tenant: null, usage: null };
 
-  const [tenant, usage] = await Promise.all([
+  const [tenant, usage, config] = await Promise.all([
     getTenant(tenantId, { includeSubscription: true }),
     getTenantUsage(tenantId),
+    getMembershipConfig(),
   ]);
 
   if (!tenant) return { user, tenant: null, usage: null };
@@ -50,7 +52,7 @@ async function loadMembership(userId: string) {
     tenant: {
       ...tenant,
       quotaOverrides: getTenantQuotaOverrides(tenant.metadata),
-      effectiveLimits: getTenantEffectiveLimits(tenant.plan, tenant.metadata),
+      effectiveLimits: getTenantEffectiveLimits(tenant.plan, tenant.metadata, config),
     },
     usage,
   };

@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "দিনে MCP কল",
+      "apiRequestsPerMinute": "মিনিটে API অনুরোধ",
+      "aiAnalysesPerMonth": "মাসে AI বিশ্লেষণ",
+      "aiReportsPerMonth": "মাসে AI প্রতিবেদন",
+      "alertRules": "সতর্কতা নিয়ম",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV রপ্তানি সারি",
+      "jsonExport": "JSON রপ্তানি",
+      "emailReports": "ইমেইল প্রতিবেদন",
+      "slackAlerts": "Slack সতর্কতা",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "হোয়াইট-লেবেল নিয়ন্ত্রণ"
+    },
     "loading": "লোড হচ্ছে...",
     "unavailable": "সদস্যতার তথ্য লোড করা যায়নি।",
     "manageDescription": "পরিকল্পনা, ব্যবহার ও বিলের অবস্থা পরিচালনা করুন।",

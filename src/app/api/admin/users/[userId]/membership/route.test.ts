@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { parseRequest } from '@/lib/request';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   getDefaultTenantIdForUser,
   getTenant,
@@ -17,6 +19,7 @@ vi.mock('@/queries/prisma/tenant', () => ({
   updateTenantAdminMembership: vi.fn(),
 }));
 vi.mock('@/queries/prisma/user', () => ({ getUser: vi.fn() }));
+vi.mock('@/queries/prisma/membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 const parseRequestMock = vi.mocked(parseRequest);
 const getDefaultTenantIdForUserMock = vi.mocked(getDefaultTenantIdForUser);
@@ -56,6 +59,7 @@ function mockMembershipData(metadata: unknown = { source: 'existing' }) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
 });
 
 describe('admin user membership API', () => {

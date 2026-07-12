@@ -8,12 +8,13 @@ import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, sortingParams } from '@/lib/schema';
 import {
   getLimitErrorPayload,
-  getTenantPlanLimits,
+  getTenantEffectiveLimits,
   isTenantPlanEnforcementEnabled,
   isWithinLimit,
 } from '@/lib/tenant-plan';
 import { canCreateTeam } from '@/permissions';
 import { createTeam, getUserTeams } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   getDefaultTenantIdForUser,
   getTenantPlan,
@@ -64,10 +65,11 @@ export async function POST(request: Request) {
   if (isTenantPlanEnforcementEnabled() && tenantId) {
     const tenant = await getTenantPlan(tenantId);
     const current = await getTotalTenantMemberCount(tenantId);
-    const limit = getTenantPlanLimits(tenant?.plan).memberLimit;
+    const config = await getMembershipConfig();
+    const limit = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config).memberLimit;
 
     if (!isWithinLimit(current, limit)) {
-      return forbidden(getLimitErrorPayload(tenant?.plan, 'member', current, limit));
+      return forbidden(getLimitErrorPayload(tenant?.plan, 'member', current, limit, config));
     }
   }
 

@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP-hívások/nap",
+      "apiRequestsPerMinute": "API-kérések/perc",
+      "aiAnalysesPerMonth": "AI-elemzések/hónap",
+      "aiReportsPerMonth": "AI-jelentések/hónap",
+      "alertRules": "Riasztási szabályok",
+      "webhooks": "Webhookok",
+      "csvExportRows": "CSV-export sorai",
+      "jsonExport": "JSON-export",
+      "emailReports": "E-mailes jelentések",
+      "slackAlerts": "Slack-riasztások",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Saját márkás vezérlők"
+    },
     "loading": "Betöltés...",
     "unavailable": "Nem érhető el tagsági információ.",
     "manageDescription": "Kezelje csomagját, tekintse meg a használatot, és szükség esetén váltson magasabb csomagra.",

@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP-Aufrufe/Tag",
+      "apiRequestsPerMinute": "API-Anfragen/Minute",
+      "aiAnalysesPerMonth": "KI-Analysen/Monat",
+      "aiReportsPerMonth": "KI-Berichte/Monat",
+      "alertRules": "Alarmregeln",
+      "webhooks": "Webhooks",
+      "csvExportRows": "CSV-Exportzeilen",
+      "jsonExport": "JSON-Export",
+      "emailReports": "E-Mail-Berichte",
+      "slackAlerts": "Slack-Benachrichtigungen",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "White-Label-Steuerung"
+    },
     "loading": "Wird geladen…",
     "unavailable": "Nicht verfügbar",
     "manageDescription": "Verwalten Sie Ihr Abonnement und prüfen Sie die Nutzung Ihres aktuellen Tarifs.",

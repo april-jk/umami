@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { createDefaultMembershipConfig } from './membership-config';
 import {
   getLimitErrorPayload,
   getNextPlanId,
@@ -102,6 +103,36 @@ describe('tenant quota overrides', () => {
       retentionDays: 730,
     });
     expect(getTenantEffectiveLimits('starter')).toEqual(TENANT_PLAN_LIMITS.starter);
+  });
+});
+
+describe('dynamic membership configuration', () => {
+  test('uses configured limits and recommendations', () => {
+    const config = createDefaultMembershipConfig();
+    config.plans.free.limits.websiteLimit = 8;
+    config.plans.starter.limits.websiteLimit = 8;
+    config.plans.pro.limits.websiteLimit = 40;
+
+    expect(getTenantPlanLimits('free', config).websiteLimit).toBe(8);
+    expect(getTenantEffectiveLimits('free', undefined, config).websiteLimit).toBe(8);
+    expect(getRecommendedPlanId('free', 'website', config)).toBe('pro');
+    expect(getPlanUpgradeMessage('free', 'website', config)).toContain('40 websites');
+    expect(getLimitErrorPayload('free', 'website', 8, 8, config)).toMatchObject({
+      recommendedPlan: 'pro',
+      limit: 8,
+    });
+
+    config.plans.pro.available = false;
+    expect(getRecommendedPlanId('free', 'website', config)).toBe('team');
+  });
+
+  test('keeps tenant-specific overrides above configured plan defaults', () => {
+    const config = createDefaultMembershipConfig();
+    config.plans.pro.limits.memberLimit = 10;
+
+    expect(
+      getTenantEffectiveLimits('pro', { quotaOverrides: { memberLimit: 15 } }, config).memberLimit,
+    ).toBe(15);
   });
 });
 

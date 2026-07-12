@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { createDefaultMembershipConfig } from './membership-config';
 import {
   getEntitlementErrorPayload,
   getEntitlementRecommendedPlan,
@@ -61,5 +62,27 @@ describe('tenant entitlements', () => {
       limit: 5,
       upgradeMessage: 'Upgrade to Starter to use this feature.',
     });
+  });
+});
+
+describe('dynamic tenant entitlements', () => {
+  test('uses configured feature values and upgrade recommendations', () => {
+    const config = createDefaultMembershipConfig();
+    config.plans.free.entitlements.goalLimit = 0;
+    config.plans.starter.entitlements.goalLimit = 0;
+    config.plans.pro.entitlements.goalLimit = 250;
+
+    expect(getTenantPlanEntitlements('pro', config).goalLimit).toBe(250);
+    expect(hasTenantFeature('free', 'goalLimit', config)).toBe(false);
+    expect(getEntitlementRecommendedPlan('free', 'goalLimit', config)).toBe('pro');
+    expect(getEntitlementUpgradeMessage('free', 'goalLimit', config)).toContain('Pro');
+    expect(getEntitlementErrorPayload('free', 'goalLimit', 0, 0, config)).toMatchObject({
+      recommendedPlan: 'pro',
+      limit: 0,
+    });
+
+    config.plans.pro.available = false;
+    expect(getEntitlementRecommendedPlan('free', 'goalLimit', config)).toBe('team');
+    expect(getEntitlementUpgradeMessage('free', 'goalLimit', config)).toContain('Team');
   });
 });

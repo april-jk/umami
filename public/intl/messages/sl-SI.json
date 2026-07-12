@@ -533,6 +533,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Klici MCP/dan",
+      "apiRequestsPerMinute": "Zahteve API/minuto",
+      "aiAnalysesPerMonth": "Analize z UI/mesec",
+      "aiReportsPerMonth": "Poročila UI/mesec",
+      "alertRules": "Pravila opozoril",
+      "webhooks": "Webhooki",
+      "csvExportRows": "Vrstice izvoza CSV",
+      "jsonExport": "Izvoz JSON",
+      "emailReports": "E-poštna poročila",
+      "slackAlerts": "Opozorila Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Upravljanje bele znamke"
+    },
     "loading": "Nalaganje ...",
     "unavailable": "Ni na voljo",
     "manageDescription": "Upravljajte naročnino in preglejte uporabo trenutnega paketa.",

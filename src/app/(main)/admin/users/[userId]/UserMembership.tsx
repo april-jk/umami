@@ -1,8 +1,13 @@
 import { Button, Column, Grid, Label, ListItem, Row, Select, Text } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useAdminUserMembershipQuery, useUpdateAdminUserMembershipQuery } from '@/components/hooks';
-import { TENANT_PLAN_PRICES, type TenantPlanId } from '@/lib/tenant-plan';
+import {
+  useAdminUserMembershipQuery,
+  useMembershipConfigQuery,
+  useUpdateAdminUserMembershipQuery,
+} from '@/components/hooks';
+import { DEFAULT_MEMBERSHIP_CONFIG } from '@/lib/membership-config';
+import type { TenantPlanId } from '@/lib/tenant-plan';
 
 const plans: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 const statuses = ['active', 'trialing', 'past-due', 'suspended'] as const;
@@ -15,6 +20,7 @@ function formatDate(value?: string | null) {
 
 export function UserMembership({ userId }: { userId: string }) {
   const query = useAdminUserMembershipQuery(userId);
+  const configQuery = useMembershipConfigQuery();
   const update = useUpdateAdminUserMembershipQuery(userId);
   const [plan, setPlan] = useState<TenantPlanId>('free');
   const [status, setStatus] = useState<(typeof statuses)[number]>('active');
@@ -28,6 +34,7 @@ export function UserMembership({ userId }: { userId: string }) {
 
   const handleSave = async () => update.mutateAsync({ plan, status });
   const subscription = query.data?.tenant?.subscription;
+  const membershipConfig = configQuery.data?.config ?? DEFAULT_MEMBERSHIP_CONFIG;
 
   return (
     <LoadingPanel
@@ -81,7 +88,11 @@ export function UserMembership({ userId }: { userId: string }) {
               <Text size="sm" color="muted">
                 Annual list price
               </Text>
-              <Text weight="bold">${TENANT_PLAN_PRICES[plan].annual}</Text>
+              <Text weight="bold">
+                {membershipConfig.plans[plan].prices.annual === null
+                  ? 'Custom'
+                  : `$${membershipConfig.plans[plan].prices.annual}`}
+              </Text>
             </Column>
           </Grid>
 

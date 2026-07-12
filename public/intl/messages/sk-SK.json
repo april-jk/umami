@@ -545,6 +545,20 @@
           "Vyhradený CSM a možnosti 99.99% SLA"
         ]
       }
+    },
+    "featureLabels": {
+      "mcpCallsPerDay": "Volania MCP/deň",
+      "apiRequestsPerMinute": "Požiadavky API/minútu",
+      "aiAnalysesPerMonth": "Analýzy AI/mesiac",
+      "aiReportsPerMonth": "Reporty AI/mesiac",
+      "alertRules": "Pravidlá upozornení",
+      "webhooks": "Webhooky",
+      "csvExportRows": "Riadky exportu CSV",
+      "jsonExport": "Export JSON",
+      "emailReports": "E-mailové reporty",
+      "slackAlerts": "Upozornenia v Slacku",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Vlastný branding"
     }
   }
 }

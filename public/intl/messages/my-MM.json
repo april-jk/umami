@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "တစ်ရက် MCP ခေါ်ဆိုမှု",
+      "apiRequestsPerMinute": "တစ်မိနစ် API တောင်းဆိုမှု",
+      "aiAnalysesPerMonth": "တစ်လ AI ခွဲခြမ်းစိတ်ဖြာမှု",
+      "aiReportsPerMonth": "တစ်လ AI အစီရင်ခံစာ",
+      "alertRules": "သတိပေးစည်းမျဉ်းများ",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV တင်ပို့မှု အတန်းများ",
+      "jsonExport": "JSON တင်ပို့မှု",
+      "emailReports": "အီးမေးလ်အစီရင်ခံစာများ",
+      "slackAlerts": "Slack သတိပေးချက်များ",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "အဖြူရောင်တံဆိပ်ထိန်းချုပ်မှု"
+    },
     "loading": "ဖွင့်နေသည်...",
     "unavailable": "အသင်းဝင်အချက်အလက်ကို မရယူနိုင်ပါ။",
     "manageDescription": "အစီအစဉ်၊ အသုံးပြုမှုနှင့် ငွေတောင်းခံမှုအခြေအနေကို စီမံပါ။",

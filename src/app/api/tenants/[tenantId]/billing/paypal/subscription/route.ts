@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { createPaypalSubscription } from '@/lib/paypal';
 import { parseRequest } from '@/lib/request';
-import { forbidden, json, notFound } from '@/lib/response';
+import { badRequest, forbidden, json, notFound } from '@/lib/response';
 import { canManageTenantBilling } from '@/permissions/tenant';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import { getTenant } from '@/queries/prisma/tenant';
 
 export async function POST(
@@ -20,6 +21,11 @@ export async function POST(
     return forbidden({ message: 'You do not have permission to manage this tenant billing.' });
   }
   if (!(await getTenant(tenantId))) return notFound();
+
+  const config = await getMembershipConfig();
+  if (!config.plans[body.plan].available) {
+    return badRequest({ message: 'This membership plan is not currently available.' });
+  }
 
   const origin = new URL(request.url).origin;
   const query = new URLSearchParams({ paypal: 'success', tenantId });

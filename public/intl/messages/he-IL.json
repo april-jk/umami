@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "קריאות MCP ביום",
+      "apiRequestsPerMinute": "בקשות API בדקה",
+      "aiAnalysesPerMonth": "ניתוחי AI בחודש",
+      "aiReportsPerMonth": "דוחות AI בחודש",
+      "alertRules": "כללי התראה",
+      "webhooks": "Webhooks",
+      "csvExportRows": "שורות ייצוא CSV",
+      "jsonExport": "ייצוא JSON",
+      "emailReports": "דוחות דוא״ל",
+      "slackAlerts": "התראות Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "בקרות מותג לבן"
+    },
     "loading": "טוען...",
     "unavailable": "אין מידע על חברות.",
     "manageDescription": "נהלו את התוכנית, צפו בשימוש ושדרגו לפי הצורך.",

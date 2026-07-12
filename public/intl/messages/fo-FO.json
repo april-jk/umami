@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP-kall/dag",
+      "apiRequestsPerMinute": "API-fyrispurningar/minutt",
+      "aiAnalysesPerMonth": "AI-greiningar/mánað",
+      "aiReportsPerMonth": "AI-frágreiðingar/mánað",
+      "alertRules": "Ávaringarreglur",
+      "webhooks": "Webhooks",
+      "csvExportRows": "CSV-útflutningsrøðir",
+      "jsonExport": "JSON-útflutningur",
+      "emailReports": "Teldupostfrágreiðingar",
+      "slackAlerts": "Slack-ávaringar",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "White label-stýring"
+    },
     "loading": "Lesur inn...",
     "unavailable": "Ikki tøkt",
     "manageDescription": "Umsit haldið og kanna nýtsluna í núverandi ætlan.",

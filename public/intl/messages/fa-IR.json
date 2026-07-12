@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "فراخوانی MCP در روز",
+      "apiRequestsPerMinute": "درخواست API در دقیقه",
+      "aiAnalysesPerMonth": "تحلیل AI در ماه",
+      "aiReportsPerMonth": "گزارش AI در ماه",
+      "alertRules": "قوانین هشدار",
+      "webhooks": "Webhookها",
+      "csvExportRows": "ردیف‌های خروجی CSV",
+      "jsonExport": "خروجی JSON",
+      "emailReports": "گزارش‌های ایمیلی",
+      "slackAlerts": "هشدارهای Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "کنترل برچسب سفید"
+    },
     "loading": "در حال بارگذاری...",
     "unavailable": "اطلاعات عضویت در دسترس نیست.",
     "manageDescription": "طرح خود را مدیریت کنید، مصرف را ببینید و در صورت نیاز ارتقا دهید.",

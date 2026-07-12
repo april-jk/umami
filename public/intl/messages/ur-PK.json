@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "روزانہ MCP کالز",
+      "apiRequestsPerMinute": "فی منٹ API درخواستیں",
+      "aiAnalysesPerMonth": "ماہانہ AI تجزیے",
+      "aiReportsPerMonth": "ماہانہ AI رپورٹس",
+      "alertRules": "الرٹ قواعد",
+      "webhooks": "Webhooks",
+      "csvExportRows": "CSV ایکسپورٹ قطاریں",
+      "jsonExport": "JSON ایکسپورٹ",
+      "emailReports": "ای میل رپورٹس",
+      "slackAlerts": "Slack الرٹس",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "وائٹ لیبل کنٹرولز"
+    },
     "loading": "لوڈ ہو رہا ہے...",
     "unavailable": "رکنیت کی معلومات دستیاب نہیں۔",
     "manageDescription": "اپنا پلان منظم کریں، استعمال دیکھیں اور ضرورت پر اپ گریڈ کریں۔",

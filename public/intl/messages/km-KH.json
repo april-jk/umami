@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "ការហៅ MCP/ថ្ងៃ",
+      "apiRequestsPerMinute": "សំណើ API/នាទី",
+      "aiAnalysesPerMonth": "វិភាគ AI/ខែ",
+      "aiReportsPerMonth": "របាយការណ៍ AI/ខែ",
+      "alertRules": "ច្បាប់ជូនដំណឹង",
+      "webhooks": "Webhook",
+      "csvExportRows": "ជួរដេកនាំចេញ CSV",
+      "jsonExport": "នាំចេញ JSON",
+      "emailReports": "របាយការណ៍អ៊ីមែល",
+      "slackAlerts": "ការជូនដំណឹង Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "ការគ្រប់គ្រងស្លាកស"
+    },
     "loading": "កំពុងផ្ទុក...",
     "unavailable": "មិនអាចផ្ទុកព័ត៌មានសមាជិកភាពបានទេ។",
     "manageDescription": "គ្រប់គ្រងគម្រោង ការប្រើប្រាស់ និងស្ថានភាពវិក្កយបត្រ។",

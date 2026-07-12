@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Panggilan MCP/hari",
+      "apiRequestsPerMinute": "Permintaan API/menit",
+      "aiAnalysesPerMonth": "Analisis AI/bulan",
+      "aiReportsPerMonth": "Laporan AI/bulan",
+      "alertRules": "Aturan peringatan",
+      "webhooks": "Webhook",
+      "csvExportRows": "Baris ekspor CSV",
+      "jsonExport": "Ekspor JSON",
+      "emailReports": "Laporan email",
+      "slackAlerts": "Peringatan Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Kontrol label putih"
+    },
     "loading": "Memuat...",
     "unavailable": "Tidak dapat memuat informasi keanggotaan.",
     "manageDescription": "Kelola paket, penggunaan, dan status penagihan.",

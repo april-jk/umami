@@ -46,7 +46,7 @@ export function MembershipPage() {
 
   const plan = usage?.plan || user?.plan || 'free';
   const planName = t(`membership.plans.${plan}.name`);
-  const limits = getTenantPlanLimits(plan);
+  const limits = usage?.defaults ?? getTenantPlanLimits(plan);
 
   const eventPct = getUsagePercentage(
     usage?.events?.used || 0,

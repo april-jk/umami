@@ -1,9 +1,11 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { fetchAccount } from '@/lib/load';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import redis from '@/lib/redis';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { canCreateTeam } from '@/permissions';
 import { createTeam, getUserTeams } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   getDefaultTenantIdForUser,
   getTenantPlan,
@@ -43,6 +45,7 @@ vi.mock('@/queries/prisma/tenant', () => ({
   getTenantPlan: vi.fn(),
   getTotalTenantMemberCount: vi.fn(),
 }));
+vi.mock('@/queries/prisma/membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 const parseRequestMock = vi.mocked(parseRequest);
 const getQueryFiltersMock = vi.mocked(getQueryFilters);
@@ -66,6 +69,7 @@ beforeEach(() => {
   getDefaultTenantIdForUserMock.mockReset();
   getTenantPlanMock.mockReset();
   getTotalTenantMemberCountMock.mockReset();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
   redis.enabled = false;
 });
 

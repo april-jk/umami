@@ -12,6 +12,7 @@ import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { getLimitErrorPayload, isTenantPlanEnforcementEnabled } from '@/lib/tenant-plan';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import { getTenantPlan, reserveWebsiteEvent } from '@/queries/prisma/tenant';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
 
@@ -189,7 +190,14 @@ export async function POST(request: Request) {
         const quota = await reserveWebsiteEvent(websiteId, createdAt);
         if (!quota.allowed) {
           const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;
-          const payload = getLimitErrorPayload(tenant?.plan, 'event', quota.used ?? 0, quota.limit);
+          const config = await getMembershipConfig();
+          const payload = getLimitErrorPayload(
+            tenant?.plan,
+            'event',
+            quota.used ?? 0,
+            quota.limit,
+            config,
+          );
           return forbidden({
             message: payload.message,
             code: payload.code,
@@ -309,7 +317,14 @@ export async function POST(request: Request) {
         const quota = await reserveWebsiteEvent(websiteId, createdAt);
         if (!quota.allowed) {
           const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;
-          const payload = getLimitErrorPayload(tenant?.plan, 'event', quota.used ?? 0, quota.limit);
+          const config = await getMembershipConfig();
+          const payload = getLimitErrorPayload(
+            tenant?.plan,
+            'event',
+            quota.used ?? 0,
+            quota.limit,
+            config,
+          );
           return forbidden({
             message: payload.message,
             code: payload.code,

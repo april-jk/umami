@@ -2,7 +2,9 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { parseRequest } from '@/lib/request';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import { getTenantPlan, reserveWebsiteEvent } from '@/queries/prisma/tenant';
 import { createSession, saveEvent } from '@/queries/sql';
 import { POST, sendSchema } from './route';
@@ -49,6 +51,7 @@ vi.mock('@/queries/prisma/tenant', () => ({
   getTenantPlan: vi.fn(),
   reserveWebsiteEvent: vi.fn(),
 }));
+vi.mock('@/queries/prisma/membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 vi.mock('@/queries/sql', () => ({
   saveEvent: vi.fn().mockResolvedValue(undefined),
@@ -72,6 +75,7 @@ beforeEach(() => {
   delete process.env.REMOVE_TRAILING_SLASH;
   process.env.DISABLE_BOT_CHECK = '1';
   vi.clearAllMocks();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
   hasBlockedIpMock.mockReturnValue(false);
   parseTokenMock.mockResolvedValue(null);
 });

@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { updateRetentionCutoffForTenant } from '@/jobs/apply-retention';
 import { TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { TENANT_PLAN_LIMITS } from '@/lib/tenant-plan';
+import { getMembershipConfig } from './membership-config';
 import {
   canAddTeamMember,
   canCreateTenantWebsite,
@@ -82,9 +84,11 @@ vi.mock('@/lib/crypto', () => ({
 vi.mock('@/jobs/apply-retention', () => ({
   updateRetentionCutoffForTenant: vi.fn(),
 }));
+vi.mock('./membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
   prismaMock.client.tenantSubscription.findUnique.mockResolvedValue(null);
 });
 
@@ -289,6 +293,16 @@ describe('canCreateTenantWebsite', () => {
       plan: 'free',
       metadata: { quotaOverrides: { websiteLimit: 2 } },
     });
+    prismaMock.client.website.count.mockResolvedValue(2);
+
+    expect(await canCreateTenantWebsite('tenant-1')).toBe(false);
+  });
+
+  test('enforces a website quota changed in global membership configuration', async () => {
+    const config = createDefaultMembershipConfig();
+    config.plans.free.limits.websiteLimit = 2;
+    vi.mocked(getMembershipConfig).mockResolvedValue(config);
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'free', metadata: null });
     prismaMock.client.website.count.mockResolvedValue(2);
 
     expect(await canCreateTenantWebsite('tenant-1')).toBe(false);

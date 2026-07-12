@@ -8,11 +8,12 @@ import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
 import {
   getLimitErrorPayload,
-  getTenantPlanLimits,
+  getTenantEffectiveLimits,
   isTenantPlanEnforcementEnabled,
 } from '@/lib/tenant-plan';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   canCreateTenantWebsite,
   getDefaultTenantIdForUser,
@@ -72,8 +73,9 @@ export async function POST(request: Request) {
     if (!(await canCreateTenantWebsite(tenantId))) {
       const tenant = await getTenantPlan(tenantId);
       const count = await getTenantWebsiteCount(tenantId);
-      const limits = getTenantPlanLimits(tenant?.plan);
-      const payload = getLimitErrorPayload(tenant?.plan, 'website', count, limits.websiteLimit);
+      const config = await getMembershipConfig();
+      const limit = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config).websiteLimit;
+      const payload = getLimitErrorPayload(tenant?.plan, 'website', count, limit, config);
       return forbidden(payload);
     }
   } else if (process.env.CLOUD_MODE) {

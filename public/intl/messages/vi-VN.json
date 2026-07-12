@@ -524,6 +524,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Lượt gọi MCP/ngày",
+      "apiRequestsPerMinute": "Yêu cầu API/phút",
+      "aiAnalysesPerMonth": "Lượt phân tích AI/tháng",
+      "aiReportsPerMonth": "Báo cáo AI/tháng",
+      "alertRules": "Quy tắc cảnh báo",
+      "webhooks": "Webhook",
+      "csvExportRows": "Hàng xuất CSV",
+      "jsonExport": "Xuất JSON",
+      "emailReports": "Báo cáo email",
+      "slackAlerts": "Cảnh báo Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Kiểm soát nhãn trắng"
+    },
     "loading": "Đang tải...",
     "unavailable": "Không thể tải thông tin thành viên.",
     "manageDescription": "Quản lý gói, mức sử dụng và trạng thái thanh toán.",

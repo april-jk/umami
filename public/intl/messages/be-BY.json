@@ -534,6 +534,20 @@
           "Вылучаны CSM і варыянты 99.99% SLA"
         ]
       }
+    },
+    "featureLabels": {
+      "mcpCallsPerDay": "Выклікі MCP/дзень",
+      "apiRequestsPerMinute": "API-запыты/хвіліну",
+      "aiAnalysesPerMonth": "AI-аналізы/месяц",
+      "aiReportsPerMonth": "AI-справаздачы/месяц",
+      "alertRules": "Правілы апавяшчэнняў",
+      "webhooks": "Вебхукі",
+      "csvExportRows": "Радкі экспарту CSV",
+      "jsonExport": "Экспарт JSON",
+      "emailReports": "Email-справаздачы",
+      "slackAlerts": "Апавяшчэнні ў Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Кіраванне white-label"
     }
   }
 }

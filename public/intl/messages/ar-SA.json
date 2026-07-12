@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "استدعاءات MCP يومياً",
+      "apiRequestsPerMinute": "طلبات API في الدقيقة",
+      "aiAnalysesPerMonth": "تحليلات AI شهرياً",
+      "aiReportsPerMonth": "تقارير AI شهرياً",
+      "alertRules": "قواعد التنبيه",
+      "webhooks": "webhooks",
+      "csvExportRows": "صفوف تصدير CSV",
+      "jsonExport": "تصدير JSON",
+      "emailReports": "تقارير البريد الإلكتروني",
+      "slackAlerts": "تنبيهات Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "العلامة البيضاء"
+    },
     "loading": "جارٍ التحميل...",
     "unavailable": "لا تتوفر معلومات عضوية.",
     "manageDescription": "أدر خطتك واعرض الاستخدام وقم بالترقية عند الحاجة.",

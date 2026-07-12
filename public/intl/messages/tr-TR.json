@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Günlük MCP çağrıları",
+      "apiRequestsPerMinute": "Dakikalık API istekleri",
+      "aiAnalysesPerMonth": "Aylık AI analizleri",
+      "aiReportsPerMonth": "Aylık AI raporları",
+      "alertRules": "Uyarı kuralları",
+      "webhooks": "Webhooklar",
+      "csvExportRows": "CSV dışa aktarma satırları",
+      "jsonExport": "JSON dışa aktarma",
+      "emailReports": "E-posta raporları",
+      "slackAlerts": "Slack uyarıları",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Özel marka kontrolleri"
+    },
     "loading": "Yükleniyor...",
     "unavailable": "Üyelik bilgisi bulunmuyor.",
     "manageDescription": "Planınızı yönetin, kullanımınızı görüntüleyin ve gerektiğinde yükseltin.",

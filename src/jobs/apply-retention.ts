@@ -1,8 +1,10 @@
 import prisma from '@/lib/prisma';
 import { getRetentionCutoff, getTenantPlanLimits } from '@/lib/tenant-plan';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 
 /** Advance each cloud website's logical-deletion boundary. Run once per day. */
 export async function applyRetentionSweep(now = new Date()) {
+  const config = await getMembershipConfig();
   const websites = await prisma.client.website.findMany({
     where: { deletedAt: null, tenantId: { not: null } },
     select: { id: true, retentionCutoffAt: true, tenant: { select: { plan: true } } },
@@ -10,9 +12,18 @@ export async function applyRetentionSweep(now = new Date()) {
 
   let updated = 0;
   for (const website of websites) {
-    const cutoff = getRetentionCutoff(getTenantPlanLimits(website.tenant?.plan).retentionDays, now);
-    if (cutoff && (!website.retentionCutoffAt || website.retentionCutoffAt < cutoff)) {
-      await prisma.client.website.update({ where: { id: website.id }, data: { retentionCutoffAt: cutoff } });
+    const cutoff = getRetentionCutoff(
+      getTenantPlanLimits(website.tenant?.plan, config).retentionDays,
+      now,
+    );
+    const changed =
+      cutoff?.getTime() !== website.retentionCutoffAt?.getTime() ||
+      (cutoff === null && website.retentionCutoffAt !== null);
+    if (changed) {
+      await prisma.client.website.update({
+        where: { id: website.id },
+        data: { retentionCutoffAt: cutoff },
+      });
       updated += 1;
     }
   }
@@ -21,8 +32,13 @@ export async function applyRetentionSweep(now = new Date()) {
 }
 
 /** Update retention cutoff for all websites belonging to a tenant when plan changes. */
-export async function updateRetentionCutoffForTenant(tenantId: string, plan: string, now = new Date()) {
-  const retentionDays = getTenantPlanLimits(plan).retentionDays;
+export async function updateRetentionCutoffForTenant(
+  tenantId: string,
+  plan: string,
+  now = new Date(),
+) {
+  const config = await getMembershipConfig();
+  const retentionDays = getTenantPlanLimits(plan, config).retentionDays;
   const newCutoff = getRetentionCutoff(retentionDays, now);
 
   const websites = await prisma.client.website.findMany({
@@ -70,7 +86,9 @@ export async function getWebsiteRetentionCutoff(websiteId: string): Promise<Date
 
   // resetAt takes precedence if it exists and is later than retentionCutoffAt
   if (website.resetAt && website.retentionCutoffAt) {
-    return website.resetAt > website.retentionCutoffAt ? website.resetAt : website.retentionCutoffAt;
+    return website.resetAt > website.retentionCutoffAt
+      ? website.resetAt
+      : website.retentionCutoffAt;
   }
 
   return website.retentionCutoffAt || website.resetAt || null;

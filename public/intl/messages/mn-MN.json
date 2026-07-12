@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Өдөр тутмын MCP дуудлага",
+      "apiRequestsPerMinute": "Минутын API хүсэлт",
+      "aiAnalysesPerMonth": "Сарын AI шинжилгээ",
+      "aiReportsPerMonth": "Сарын AI тайлан",
+      "alertRules": "Дохиоллын дүрэм",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV экспортын мөр",
+      "jsonExport": "JSON экспорт",
+      "emailReports": "Имэйл тайлан",
+      "slackAlerts": "Slack дохиолол",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Цагаан шошгоны удирдлага"
+    },
     "loading": "Уншиж байна...",
     "unavailable": "Гишүүнчлэлийн мэдээллийг ачаалж чадсангүй.",
     "manageDescription": "Багц, хэрэглээ, төлбөрийн төлөвийг удирдана.",

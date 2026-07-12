@@ -1,4 +1,5 @@
-import { getNextPlanId, getTenantPlanId, type TenantPlanId } from './tenant-plan';
+import type { MembershipConfig } from './membership-config';
+import { getNextPlanId, getTenantPlanId } from './tenant-plan';
 
 export const TENANT_PLAN_ENTITLEMENTS = {
   free: {
@@ -84,6 +85,7 @@ export const TENANT_PLAN_ENTITLEMENTS = {
 } as const;
 
 export type TenantEntitlement = keyof (typeof TENANT_PLAN_ENTITLEMENTS)['free'];
+export type TenantPlanEntitlements = Record<TenantEntitlement, boolean | number | null>;
 
 export const TENANT_ENTITLEMENT_STATUS: Record<
   TenantEntitlement,
@@ -105,23 +107,34 @@ export const TENANT_ENTITLEMENT_STATUS: Record<
   whiteLabel: 'legacy',
 };
 
-export function getTenantPlanEntitlements(plan?: string | null) {
-  return TENANT_PLAN_ENTITLEMENTS[plan as TenantPlanId] ?? TENANT_PLAN_ENTITLEMENTS.free;
+export function getTenantPlanEntitlements(plan?: string | null, config?: MembershipConfig) {
+  const planId = getTenantPlanId(plan);
+  return (config?.plans[planId].entitlements ??
+    TENANT_PLAN_ENTITLEMENTS[planId]) as TenantPlanEntitlements;
 }
 
-export function hasTenantFeature(plan: string | null | undefined, feature: TenantEntitlement) {
-  const value = getTenantPlanEntitlements(plan)[feature];
+export function hasTenantFeature(
+  plan: string | null | undefined,
+  feature: TenantEntitlement,
+  config?: MembershipConfig,
+) {
+  const value = getTenantPlanEntitlements(plan, config)[feature];
   return value === true || (typeof value === 'number' && value > 0) || value === null;
 }
 
 export function getEntitlementUpgradeMessage(
   plan: string | null | undefined,
   feature: TenantEntitlement,
+  config?: MembershipConfig,
 ) {
   let nextPlan = getNextPlanId(plan);
 
   while (nextPlan) {
-    if (hasTenantFeature(nextPlan, feature)) {
+    if (config && !config.plans[nextPlan].available) {
+      nextPlan = getNextPlanId(nextPlan);
+      continue;
+    }
+    if (hasTenantFeature(nextPlan, feature, config)) {
       return `Upgrade to ${nextPlan.charAt(0).toUpperCase() + nextPlan.slice(1)} to use this feature.`;
     }
     nextPlan = getNextPlanId(nextPlan);
@@ -133,11 +146,16 @@ export function getEntitlementUpgradeMessage(
 export function getEntitlementRecommendedPlan(
   plan: string | null | undefined,
   feature: TenantEntitlement,
+  config?: MembershipConfig,
 ) {
   let nextPlan = getNextPlanId(getTenantPlanId(plan));
 
   while (nextPlan) {
-    if (hasTenantFeature(nextPlan, feature)) {
+    if (config && !config.plans[nextPlan].available) {
+      nextPlan = getNextPlanId(nextPlan);
+      continue;
+    }
+    if (hasTenantFeature(nextPlan, feature, config)) {
       return nextPlan;
     }
     nextPlan = getNextPlanId(nextPlan);
@@ -151,10 +169,11 @@ export function getEntitlementErrorPayload(
   feature: TenantEntitlement,
   current?: number,
   limit?: number | null,
+  config?: MembershipConfig,
 ) {
   const currentPlan = getTenantPlanId(plan);
-  const recommendedPlan = getEntitlementRecommendedPlan(currentPlan, feature);
-  const upgradeMessage = getEntitlementUpgradeMessage(currentPlan, feature);
+  const recommendedPlan = getEntitlementRecommendedPlan(currentPlan, feature, config);
+  const upgradeMessage = getEntitlementUpgradeMessage(currentPlan, feature, config);
   const codeName = feature
     .replace(/Limit$/, '')
     .replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);

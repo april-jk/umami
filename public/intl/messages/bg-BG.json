@@ -534,6 +534,20 @@
           "Специален CSM и 99.99% SLA опции"
         ]
       }
+    },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP обаждания/ден",
+      "apiRequestsPerMinute": "API заявки/минута",
+      "aiAnalysesPerMonth": "AI анализи/месец",
+      "aiReportsPerMonth": "AI отчети/месец",
+      "alertRules": "Правила за предупреждения",
+      "webhooks": "Уебкуки",
+      "csvExportRows": "Редове за CSV експорт",
+      "jsonExport": "JSON експорт",
+      "emailReports": "Email отчети",
+      "slackAlerts": "Slack известия",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "White-label контроли"
     }
   }
 }

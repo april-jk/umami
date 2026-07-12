@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "දිනකට MCP ඇමතුම්",
+      "apiRequestsPerMinute": "මිනිත්තුවකට API ඉල්ලීම්",
+      "aiAnalysesPerMonth": "මසකට AI විශ්ලේෂණ",
+      "aiReportsPerMonth": "මසකට AI වාර්තා",
+      "alertRules": "ඇඟවීම් නීති",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV නිර්යාත පේළි",
+      "jsonExport": "JSON නිර්යාතය",
+      "emailReports": "ඊමේල් වාර්තා",
+      "slackAlerts": "Slack ඇඟවීම්",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "සුදු ලේබල් පාලන"
+    },
     "loading": "පූරණය වෙමින්...",
     "unavailable": "සාමාජිකත්ව තොරතුරු පූරණය කළ නොහැක.",
     "manageDescription": "සැලැස්ම, භාවිතය සහ බිල්පත් තත්ත්වය කළමනාකරණය කරන්න.",

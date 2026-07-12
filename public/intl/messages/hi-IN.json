@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "MCP कॉल/दिन",
+      "apiRequestsPerMinute": "API अनुरोध/मिनट",
+      "aiAnalysesPerMonth": "AI विश्लेषण/माह",
+      "aiReportsPerMonth": "AI रिपोर्ट/माह",
+      "alertRules": "अलर्ट नियम",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV निर्यात पंक्तियां",
+      "jsonExport": "JSON निर्यात",
+      "emailReports": "ईमेल रिपोर्ट",
+      "slackAlerts": "Slack अलर्ट",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "व्हाइट-लेबल नियंत्रण"
+    },
     "loading": "लोड हो रहा है...",
     "unavailable": "सदस्यता की जानकारी लोड नहीं हो सकी।",
     "manageDescription": "योजना, उपयोग और बिलिंग स्थिति प्रबंधित करें।",

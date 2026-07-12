@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Crides MCP/dia",
+      "apiRequestsPerMinute": "Sol·licituds API/minut",
+      "aiAnalysesPerMonth": "Anàlisis d’IA/mes",
+      "aiReportsPerMonth": "Informes d’IA/mes",
+      "alertRules": "Regles d’alerta",
+      "webhooks": "Webhooks",
+      "csvExportRows": "Files d’exportació CSV",
+      "jsonExport": "Exportació JSON",
+      "emailReports": "Informes per correu electrònic",
+      "slackAlerts": "Alertes de Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Controls de marca blanca"
+    },
     "loading": "S’està carregant…",
     "unavailable": "No disponible",
     "manageDescription": "Gestiona la subscripció i consulta l’ús del pla actual.",

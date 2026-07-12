@@ -518,6 +518,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "நாளுக்கு MCP அழைப்புகள்",
+      "apiRequestsPerMinute": "நிமிடத்திற்கு API கோரிக்கைகள்",
+      "aiAnalysesPerMonth": "மாதத்திற்கு AI பகுப்பாய்வுகள்",
+      "aiReportsPerMonth": "மாதத்திற்கு AI அறிக்கைகள்",
+      "alertRules": "எச்சரிக்கை விதிகள்",
+      "webhooks": "Webhook",
+      "csvExportRows": "CSV ஏற்றுமதி வரிசைகள்",
+      "jsonExport": "JSON ஏற்றுமதி",
+      "emailReports": "மின்னஞ்சல் அறிக்கைகள்",
+      "slackAlerts": "Slack எச்சரிக்கைகள்",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "வெள்ளை-முத்திரை கட்டுப்பாடுகள்"
+    },
     "loading": "ஏற்றுகிறது...",
     "unavailable": "உறுப்பினர் தகவலை ஏற்ற முடியவில்லை.",
     "manageDescription": "திட்டம், பயன்பாடு மற்றும் கட்டண நிலையை நிர்வகிக்கவும்.",

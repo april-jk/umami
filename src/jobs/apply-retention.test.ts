@@ -1,4 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   applyRetentionSweep,
   getWebsiteRetentionCutoff,
@@ -20,9 +22,11 @@ const { prismaMock } = vi.hoisted(() => ({
 vi.mock('@/lib/prisma', () => ({
   default: prismaMock,
 }));
+vi.mock('@/queries/prisma/membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
 });
 
 describe('applyRetentionSweep', () => {
@@ -67,16 +71,23 @@ describe('applyRetentionSweep', () => {
     expect(prismaMock.client.website.update).not.toHaveBeenCalled();
   });
 
-  test('handles unlimited retention (team/enterprise) by not setting cutoff', async () => {
+  test('clears stale cutoffs for plans with unlimited retention', async () => {
     prismaMock.client.website.findMany.mockResolvedValue([
       { id: 'ws-1', retentionCutoffAt: null, tenant: { plan: 'team' } },
-      { id: 'ws-2', retentionCutoffAt: new Date('2026-01-01T00:00:00Z'), tenant: { plan: 'enterprise' } },
+      {
+        id: 'ws-2',
+        retentionCutoffAt: new Date('2026-01-01T00:00:00Z'),
+        tenant: { plan: 'enterprise' },
+      },
     ]);
 
     const result = await applyRetentionSweep(new Date('2026-07-11T00:00:00Z'));
 
-    expect(result.updated).toBe(0);
-    expect(prismaMock.client.website.update).not.toHaveBeenCalled();
+    expect(result.updated).toBe(1);
+    expect(prismaMock.client.website.update).toHaveBeenCalledWith({
+      where: { id: 'ws-2' },
+      data: { retentionCutoffAt: null },
+    });
   });
 
   test('handles multiple plans in one sweep', async () => {
@@ -141,7 +152,11 @@ describe('updateRetentionCutoffForTenant', () => {
     ]);
     prismaMock.client.website.update.mockResolvedValue({});
 
-    const result = await updateRetentionCutoffForTenant('tenant-1', 'starter', new Date('2026-07-11T00:00:00Z'));
+    const result = await updateRetentionCutoffForTenant(
+      'tenant-1',
+      'starter',
+      new Date('2026-07-11T00:00:00Z'),
+    );
 
     expect(result.updated).toBe(2);
     expect(result.newCutoff).toEqual(new Date('2026-01-12T00:00:00Z'));
@@ -155,7 +170,11 @@ describe('updateRetentionCutoffForTenant', () => {
     ]);
     prismaMock.client.website.update.mockResolvedValue({});
 
-    const result = await updateRetentionCutoffForTenant('tenant-1', 'team', new Date('2026-07-11T00:00:00Z'));
+    const result = await updateRetentionCutoffForTenant(
+      'tenant-1',
+      'team',
+      new Date('2026-07-11T00:00:00Z'),
+    );
 
     expect(result.updated).toBe(1); // only ws-1 needs update
     expect(result.newCutoff).toBeNull();
@@ -171,7 +190,11 @@ describe('updateRetentionCutoffForTenant', () => {
     ]);
     prismaMock.client.website.update.mockResolvedValue({});
 
-    const result = await updateRetentionCutoffForTenant('tenant-1', 'free', new Date('2026-07-11T00:00:00Z'));
+    const result = await updateRetentionCutoffForTenant(
+      'tenant-1',
+      'free',
+      new Date('2026-07-11T00:00:00Z'),
+    );
 
     expect(result.updated).toBe(1);
     expect(result.newCutoff).toEqual(new Date('2026-07-04T00:00:00Z'));
@@ -182,7 +205,11 @@ describe('updateRetentionCutoffForTenant', () => {
       { id: 'ws-1', retentionCutoffAt: new Date('2026-07-04T00:00:00Z') },
     ]);
 
-    const result = await updateRetentionCutoffForTenant('tenant-1', 'free', new Date('2026-07-11T00:00:00Z'));
+    const result = await updateRetentionCutoffForTenant(
+      'tenant-1',
+      'free',
+      new Date('2026-07-11T00:00:00Z'),
+    );
 
     expect(result.updated).toBe(0);
     expect(prismaMock.client.website.update).not.toHaveBeenCalled();
@@ -191,7 +218,11 @@ describe('updateRetentionCutoffForTenant', () => {
   test('handles empty website list for tenant', async () => {
     prismaMock.client.website.findMany.mockResolvedValue([]);
 
-    const result = await updateRetentionCutoffForTenant('tenant-1', 'pro', new Date('2026-07-11T00:00:00Z'));
+    const result = await updateRetentionCutoffForTenant(
+      'tenant-1',
+      'pro',
+      new Date('2026-07-11T00:00:00Z'),
+    );
 
     expect(result.updated).toBe(0);
     expect(result.newCutoff).toEqual(new Date('2024-07-11T00:00:00Z'));

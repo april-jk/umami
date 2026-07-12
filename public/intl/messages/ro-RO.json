@@ -529,6 +529,20 @@
         ]
       }
     },
+    "featureLabels": {
+      "mcpCallsPerDay": "Apeluri MCP/zi",
+      "apiRequestsPerMinute": "Solicitări API/minut",
+      "aiAnalysesPerMonth": "Analize AI/lună",
+      "aiReportsPerMonth": "Rapoarte AI/lună",
+      "alertRules": "Reguli de alertă",
+      "webhooks": "Webhook-uri",
+      "csvExportRows": "Rânduri de export CSV",
+      "jsonExport": "Export JSON",
+      "emailReports": "Rapoarte prin e-mail",
+      "slackAlerts": "Alerte Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Opțiuni de marcă proprie"
+    },
     "loading": "Se încarcă...",
     "unavailable": "Nu sunt disponibile informații despre abonament.",
     "manageDescription": "Gestionează planul, consultă utilizarea și fă upgrade când este necesar.",

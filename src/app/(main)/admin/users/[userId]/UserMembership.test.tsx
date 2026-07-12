@@ -1,10 +1,16 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { useAdminUserMembershipQuery, useUpdateAdminUserMembershipQuery } from '@/components/hooks';
+import {
+  useAdminUserMembershipQuery,
+  useMembershipConfigQuery,
+  useUpdateAdminUserMembershipQuery,
+} from '@/components/hooks';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { UserMembership } from './UserMembership';
 
 vi.mock('@/components/hooks', () => ({
   useAdminUserMembershipQuery: vi.fn(),
+  useMembershipConfigQuery: vi.fn(),
   useUpdateAdminUserMembershipQuery: vi.fn(),
 }));
 
@@ -14,6 +20,9 @@ const mutateAsync = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(useMembershipConfigQuery).mockReturnValue({
+    data: { config: createDefaultMembershipConfig() },
+  } as any);
   useUpdateMock.mockReturnValue({ mutateAsync, isPending: false } as any);
 });
 

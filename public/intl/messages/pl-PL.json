@@ -545,6 +545,20 @@
           "Dedykowany CSM i opcje 99.99% SLA"
         ]
       }
+    },
+    "featureLabels": {
+      "mcpCallsPerDay": "Wywołania MCP/dzień",
+      "apiRequestsPerMinute": "Zapytania API/minutę",
+      "aiAnalysesPerMonth": "Analizy AI/miesiąc",
+      "aiReportsPerMonth": "Raporty AI/miesiąc",
+      "alertRules": "Reguły alertów",
+      "webhooks": "Webhooki",
+      "csvExportRows": "Wiersze eksportu CSV",
+      "jsonExport": "Eksport JSON",
+      "emailReports": "Raporty e-mail",
+      "slackAlerts": "Alerty Slack",
+      "ssoSaml": "SSO/SAML",
+      "whiteLabel": "Kontrola white-label"
     }
   }
 }

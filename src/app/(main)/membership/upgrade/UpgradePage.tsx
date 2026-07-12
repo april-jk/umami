@@ -7,21 +7,38 @@ import { useEffect, useState } from 'react';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useApi, useLoginQuery, useMessages, useTenantQuery } from '@/components/hooks';
+import {
+  useApi,
+  useLoginQuery,
+  useMembershipConfigQuery,
+  useMessages,
+  useTenantQuery,
+} from '@/components/hooks';
 import { AlertTriangle, ArrowLeft, Check } from '@/components/icons';
-import { TENANT_PLAN_PRICES, type TenantPlanId } from '@/lib/tenant-plan';
+import {
+  DEFAULT_MEMBERSHIP_CONFIG,
+  type MembershipConfig,
+  type MembershipPlanConfig,
+} from '@/lib/membership-config';
+import type { TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
+
+function getRecommendedPlan(currentPlan: TenantPlanId, config: MembershipConfig) {
+  const currentIndex = planOrder.indexOf(currentPlan);
+  return planOrder.slice(currentIndex + 1).find(plan => config.plans[plan].available) ?? null;
+}
 
 function getDisplayedPrice(
   plan: TenantPlanId,
   interval: 'month' | 'year',
   translate: (key: string, values?: Record<string, string | number>) => string,
+  config: MembershipConfig,
 ) {
   if (plan === 'free') return translate('membership.freePrice');
 
-  const price = TENANT_PLAN_PRICES[plan];
+  const price = config.plans[plan].prices;
   if (price.monthly === null || price.annual === null) {
     return translate('membership.customPrice');
   }
@@ -32,11 +49,72 @@ function getDisplayedPrice(
   });
 }
 
+function formatFeatureValue(value: number | null, unlimited: string) {
+  return value === null
+    ? unlimited
+    : Intl.NumberFormat('en-US', { notation: 'compact' }).format(value);
+}
+
+function getDynamicFeatures(
+  plan: MembershipPlanConfig,
+  translate: (key: string, values?: Record<string, string | number>) => string,
+  labels: Record<string, string>,
+) {
+  const unlimited = translate('membership.unlimited');
+  const numericFeatures: Array<[string, number | null]> = [
+    [translate('membership.events'), plan.limits.eventLimit],
+    [translate('membership.websites'), plan.limits.websiteLimit],
+    [translate('membership.members'), plan.limits.memberLimit],
+    [translate(labels.goals), plan.entitlements.goalLimit],
+    [translate(labels.replays), plan.entitlements.replayLimit],
+    [translate('membership.featureLabels.mcpCallsPerDay'), plan.entitlements.mcpCallsPerDay],
+    [
+      translate('membership.featureLabels.apiRequestsPerMinute'),
+      plan.entitlements.apiRequestsPerMinute,
+    ],
+    [
+      translate('membership.featureLabels.aiAnalysesPerMonth'),
+      plan.entitlements.aiAnalysesPerMonth,
+    ],
+    [translate('membership.featureLabels.aiReportsPerMonth'), plan.entitlements.aiReportLimit],
+    [translate('membership.featureLabels.alertRules'), plan.entitlements.alertRuleLimit],
+    [translate('membership.featureLabels.webhooks'), plan.entitlements.webhookLimit],
+    [translate('membership.featureLabels.csvExportRows'), plan.entitlements.csvExport],
+  ];
+  const features = numericFeatures
+    .filter(([, value]) => value === null || value > 0)
+    .map(([label, value]) => `${label}: ${formatFeatureValue(value, unlimited)}`);
+
+  if (plan.limits.retentionDays === null) {
+    features.push(`${translate('membership.dataRetention')}: ${unlimited}`);
+  } else {
+    features.push(
+      `${translate('membership.dataRetention')}: ${translate('membership.retentionDays', {
+        count: plan.limits.retentionDays,
+      })}`,
+    );
+  }
+
+  for (const [label, included] of [
+    [translate('membership.featureLabels.jsonExport'), plan.entitlements.jsonExport],
+    [translate('membership.featureLabels.emailReports'), plan.entitlements.emailReports],
+    [translate('membership.featureLabels.slackAlerts'), plan.entitlements.slackAlerts],
+    [translate('membership.featureLabels.ssoSaml'), plan.entitlements.ssoSaml],
+    [translate('membership.featureLabels.whiteLabel'), plan.entitlements.whiteLabel],
+  ] as const) {
+    if (included) features.push(label);
+  }
+
+  return features;
+}
+
 export function UpgradePage() {
   const { user } = useLoginQuery();
   const tenantId = user?.tenantId || user?.tenants?.[0]?.id;
   const { data: tenant } = useTenantQuery(tenantId);
-  const { t } = useMessages();
+  const { t, labels } = useMessages();
+  const membershipConfigQuery = useMembershipConfigQuery();
+  const membershipConfig = membershipConfigQuery.data?.config ?? DEFAULT_MEMBERSHIP_CONFIG;
   const { post, useMutation } = useApi();
   const searchParams = useSearchParams();
   const [selectedPlan, setSelectedPlan] = useState<TenantPlanId | null>(null);
@@ -58,6 +136,7 @@ export function UpgradePage() {
 
   const currentPlan = (tenant?.plan || user?.plan || 'free') as TenantPlanId;
   const currentIndex = planOrder.indexOf(currentPlan);
+  const recommendedPlan = getRecommendedPlan(currentPlan, membershipConfig);
 
   useEffect(() => {
     const subscriptionId = searchParams.get('subscription_id');
@@ -149,125 +228,128 @@ export function UpgradePage() {
           }}
           gap="4"
         >
-          {planOrder.map((plan, index) => {
-            const isCurrent = plan === currentPlan;
-            const isRecommended = index === currentIndex + 1;
-            const planKey = `membership.plans.${plan}`;
-            const planName = t(`${planKey}.name`);
-            const content = {
-              description: t(`${planKey}.description`),
-              features: t.raw(`${planKey}.features`) as string[],
-            };
-            const pricing = TENANT_PLAN_PRICES[plan];
+          {planOrder
+            .filter(plan => membershipConfig.plans[plan].available || plan === currentPlan)
+            .map(plan => {
+              const isCurrent = plan === currentPlan;
+              const isRecommended = plan === recommendedPlan;
+              const planKey = `membership.plans.${plan}`;
+              const planName = t(`${planKey}.name`);
+              const description = t(`${planKey}.description`);
+              const planConfig = membershipConfig.plans[plan];
+              const features = getDynamicFeatures(planConfig, t, labels);
+              const pricing = planConfig.prices;
 
-            const cardStyle = isCurrent
-              ? { border: '2px solid #8b5cf6', backgroundColor: '#faf5ff' }
-              : isRecommended
-                ? { border: '2px solid #3b82f6' }
-                : {};
+              const cardStyle = isCurrent
+                ? { border: '2px solid #8b5cf6', backgroundColor: '#faf5ff' }
+                : isRecommended
+                  ? { border: '2px solid #3b82f6' }
+                  : {};
 
-            return (
-              <Panel
-                key={plan}
-                data-test={`plan-card-${plan}`}
-                style={{ ...cardStyle, minWidth: 0, height: '100%' }}
-              >
-                <Column gap="4" padding="2" style={{ height: '100%' }}>
-                  <Column gap="2" alignItems="center">
-                    <PlanBadge plan={plan} label={planName} />
-                    <Text weight="bold" size="lg">
-                      {getDisplayedPrice(plan, billingInterval, t)}
+              return (
+                <Panel
+                  key={plan}
+                  data-test={`plan-card-${plan}`}
+                  style={{ ...cardStyle, minWidth: 0, height: '100%' }}
+                >
+                  <Column gap="4" padding="2" style={{ height: '100%' }}>
+                    <Column gap="2" alignItems="center">
+                      <PlanBadge plan={plan} label={planName} />
+                      <Text weight="bold" size="lg">
+                        {getDisplayedPrice(plan, billingInterval, t, membershipConfig)}
+                      </Text>
+                      {pricing.annual !== null &&
+                        pricing.monthly !== null &&
+                        pricing.monthly > 0 && (
+                          <Text size="sm" color="muted">
+                            {billingInterval === 'year'
+                              ? t('membership.billedYear', { price: pricing.annual })
+                              : t('membership.yearAvailable', { price: pricing.annual })}
+                          </Text>
+                        )}
+                      {isCurrent && (
+                        <Text
+                          size="sm"
+                          weight="bold"
+                          style={{
+                            color: '#8b5cf6',
+                            border: '1px solid #8b5cf6',
+                            borderRadius: 999,
+                            padding: '2px 8px',
+                          }}
+                        >
+                          {t('membership.current')}
+                        </Text>
+                      )}
+                      {isRecommended && !isCurrent && (
+                        <Text
+                          size="sm"
+                          weight="bold"
+                          style={{
+                            color: '#3b82f6',
+                            border: '1px solid #3b82f6',
+                            borderRadius: 999,
+                            padding: '2px 8px',
+                          }}
+                        >
+                          {t('membership.recommended')}
+                        </Text>
+                      )}
+                    </Column>
+
+                    <Text size="sm" color="muted">
+                      {description}
                     </Text>
-                    {pricing.annual !== null && pricing.monthly !== null && pricing.monthly > 0 && (
-                      <Text size="sm" color="muted">
-                        {billingInterval === 'year'
-                          ? t('membership.billedYear', { price: pricing.annual })
-                          : t('membership.yearAvailable', { price: pricing.annual })}
-                      </Text>
-                    )}
-                    {isCurrent && (
-                      <Text
-                        size="sm"
-                        weight="bold"
-                        style={{
-                          color: '#8b5cf6',
-                          border: '1px solid #8b5cf6',
-                          borderRadius: 999,
-                          padding: '2px 8px',
-                        }}
-                      >
-                        {t('membership.current')}
-                      </Text>
-                    )}
-                    {isRecommended && !isCurrent && (
-                      <Text
-                        size="sm"
-                        weight="bold"
-                        style={{
-                          color: '#3b82f6',
-                          border: '1px solid #3b82f6',
-                          borderRadius: 999,
-                          padding: '2px 8px',
-                        }}
-                      >
-                        {t('membership.recommended')}
-                      </Text>
-                    )}
-                  </Column>
 
-                  <Text size="sm" color="muted">
-                    {content.description}
-                  </Text>
+                    <Column gap="2">
+                      {features.map(feature => (
+                        <Row key={feature} gap="2" alignItems="center">
+                          <Icon size="sm" style={{ color: '#22c55e', flexShrink: 0 }}>
+                            <Check />
+                          </Icon>
+                          <Text size="sm">{feature}</Text>
+                        </Row>
+                      ))}
+                    </Column>
 
-                  <Column gap="2">
-                    {content.features.map(feature => (
-                      <Row key={feature} gap="2" alignItems="center">
-                        <Icon size="sm" style={{ color: '#22c55e', flexShrink: 0 }}>
-                          <Check />
-                        </Icon>
-                        <Text size="sm">{feature}</Text>
-                      </Row>
-                    ))}
-                  </Column>
-
-                  <Button
-                    variant={isCurrent ? 'quiet' : 'primary'}
-                    style={{ width: '100%', marginTop: 'auto' }}
-                    render={
-                      plan === 'enterprise'
-                        ? ({ className, children }) => (
-                            <a
-                              href="mailto:watson_zang@foxmail.com"
-                              className={className}
-                              style={{ width: '100%', marginTop: 'auto' }}
-                            >
-                              {children}
-                            </a>
-                          )
-                        : undefined
-                    }
-                    isDisabled={
-                      isCurrent || paypalSubscription.isPending || paypalConfirmation.isPending
-                    }
-                    onPress={() => {
-                      if (!isCurrent && plan !== 'free' && plan !== 'enterprise') {
-                        setSelectedPlan(plan);
-                        handleUpgrade(plan);
+                    <Button
+                      variant={isCurrent ? 'quiet' : 'primary'}
+                      style={{ width: '100%', marginTop: 'auto' }}
+                      render={
+                        plan === 'enterprise'
+                          ? ({ className, children }) => (
+                              <a
+                                href="mailto:watson_zang@foxmail.com"
+                                className={className}
+                                style={{ width: '100%', marginTop: 'auto' }}
+                              >
+                                {children}
+                              </a>
+                            )
+                          : undefined
                       }
-                    }}
-                  >
-                    {isCurrent
-                      ? t('membership.currentPlan')
-                      : plan === 'enterprise'
-                        ? t('membership.contactSales')
-                        : paypalSubscription.isPending && selectedPlan === plan
-                          ? t('membership.redirecting')
-                          : t('membership.subscribe')}
-                  </Button>
-                </Column>
-              </Panel>
-            );
-          })}
+                      isDisabled={
+                        isCurrent || paypalSubscription.isPending || paypalConfirmation.isPending
+                      }
+                      onPress={() => {
+                        if (!isCurrent && plan !== 'free' && plan !== 'enterprise') {
+                          setSelectedPlan(plan);
+                          handleUpgrade(plan);
+                        }
+                      }}
+                    >
+                      {isCurrent
+                        ? t('membership.currentPlan')
+                        : plan === 'enterprise'
+                          ? t('membership.contactSales')
+                          : paypalSubscription.isPending && selectedPlan === plan
+                            ? t('membership.redirecting')
+                            : t('membership.subscribe')}
+                    </Button>
+                  </Column>
+                </Panel>
+              );
+            })}
         </Grid>
       </Column>
     </PageBody>

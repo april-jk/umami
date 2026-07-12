@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { createDefaultMembershipConfig } from '@/lib/membership-config';
 import { parseRequest } from '@/lib/request';
 import { createTeamUser, findTeam, getTeamUser } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   canAddTeamMember,
   getTenantIdForTeam,
@@ -21,6 +23,7 @@ vi.mock('@/queries/prisma/tenant', () => ({
   getTenantPlan: vi.fn(),
   getTotalTenantMemberCount: vi.fn(),
 }));
+vi.mock('@/queries/prisma/membership-config', () => ({ getMembershipConfig: vi.fn() }));
 
 const parseRequestMock = vi.mocked(parseRequest);
 const findTeamMock = vi.mocked(findTeam);
@@ -32,6 +35,7 @@ beforeEach(() => {
   delete process.env.CLOUD_MODE;
   delete process.env.MEMBERSHIP_ENABLED;
   vi.clearAllMocks();
+  vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
   parseRequestMock.mockResolvedValue({
     auth: { user: { id: 'user-1' } },
     body: { accessCode: 'team_code' },

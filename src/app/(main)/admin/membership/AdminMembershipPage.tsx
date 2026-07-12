@@ -1,55 +1,77 @@
 'use client';
 
-import { Column, Grid, Heading, Row, Text } from '@umami/react-zen';
+import { Button, Checkbox, Column, Grid, Heading, Row, Text, TextField } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useMessages } from '@/components/hooks';
-import { TENANT_ENTITLEMENT_STATUS, TENANT_PLAN_ENTITLEMENTS } from '@/lib/tenant-entitlements';
-import { TENANT_PLAN_LIMITS, TENANT_PLAN_PRICES, type TenantPlanId } from '@/lib/tenant-plan';
+import {
+  useAdminMembershipConfigQuery,
+  useMessages,
+  useUpdateMembershipConfigQuery,
+} from '@/components/hooks';
+import {
+  createDefaultMembershipConfig,
+  MEMBERSHIP_PLAN_IDS,
+  type MembershipConfig,
+  membershipConfigSchema,
+} from '@/lib/membership-config';
+import { TENANT_ENTITLEMENT_STATUS, type TenantEntitlement } from '@/lib/tenant-entitlements';
 
-const plans: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
+type PriceKey = 'monthly' | 'annual';
+type LimitKey = 'eventLimit' | 'websiteLimit' | 'memberLimit' | 'retentionDays';
+type BooleanEntitlement = 'jsonExport' | 'emailReports' | 'slackAlerts' | 'ssoSaml' | 'whiteLabel';
+type NumericEntitlement = Exclude<TenantEntitlement, BooleanEntitlement>;
 
-function formatNumber(value: number | null, suffix = '') {
-  if (value === null) return 'Unlimited';
-  return `${Intl.NumberFormat('en-US', { notation: value >= 100_000 ? 'compact' : 'standard' }).format(value)}${suffix}`;
-}
+type ConfigRow =
+  | { label: string; section: 'availability'; kind: 'boolean'; status: 'billing' }
+  | { label: string; section: 'prices'; key: PriceKey; kind: 'price'; status: 'billing' }
+  | { label: string; section: 'limits'; key: LimitKey; kind: 'integer'; status: 'enforced' }
+  | {
+      label: string;
+      section: 'entitlements';
+      key: NumericEntitlement;
+      kind: 'integer';
+      status: 'enforced' | 'legacy' | 'planned';
+    }
+  | {
+      label: string;
+      section: 'entitlements';
+      key: BooleanEntitlement;
+      kind: 'boolean';
+      status: 'enforced' | 'legacy' | 'planned';
+    };
 
-function formatValue(value: boolean | number | null) {
-  if (value === true) return 'Included';
-  if (value === false || value === 0) return 'Not included';
-  return formatNumber(value);
-}
-
-const rows = [
+const rows: ConfigRow[] = [
   {
-    label: 'Monthly price',
+    label: 'Available for subscription',
+    section: 'availability',
+    kind: 'boolean',
     status: 'billing',
-    values: plans.map(plan => `$${TENANT_PLAN_PRICES[plan].monthly ?? 0}`),
   },
-  {
-    label: 'Annual price',
-    status: 'billing',
-    values: plans.map(plan => `$${TENANT_PLAN_PRICES[plan].annual ?? 0}`),
-  },
+  { label: 'Monthly price', section: 'prices', key: 'monthly', kind: 'price', status: 'billing' },
+  { label: 'Annual price', section: 'prices', key: 'annual', kind: 'price', status: 'billing' },
   {
     label: 'Events / month',
+    section: 'limits',
+    key: 'eventLimit',
+    kind: 'integer',
     status: 'enforced',
-    values: plans.map(plan => formatNumber(TENANT_PLAN_LIMITS[plan].eventLimit)),
   },
   {
     label: 'Websites',
+    section: 'limits',
+    key: 'websiteLimit',
+    kind: 'integer',
     status: 'enforced',
-    values: plans.map(plan => formatNumber(TENANT_PLAN_LIMITS[plan].websiteLimit)),
   },
+  { label: 'Members', section: 'limits', key: 'memberLimit', kind: 'integer', status: 'enforced' },
   {
-    label: 'Members',
+    label: 'Retention days',
+    section: 'limits',
+    key: 'retentionDays',
+    kind: 'integer',
     status: 'enforced',
-    values: plans.map(plan => formatNumber(TENANT_PLAN_LIMITS[plan].memberLimit)),
-  },
-  {
-    label: 'Retention',
-    status: 'enforced',
-    values: plans.map(plan => formatNumber(TENANT_PLAN_LIMITS[plan].retentionDays, ' days')),
   },
   ...(
     [
@@ -58,9 +80,20 @@ const rows = [
       ['CSV rows', 'csvExport'],
       ['MCP calls / day', 'mcpCallsPerDay'],
       ['API requests / minute', 'apiRequestsPerMinute'],
+      ['AI analyses / month', 'aiAnalysesPerMonth'],
       ['AI reports / month', 'aiReportLimit'],
       ['Alert rules', 'alertRuleLimit'],
       ['Webhooks', 'webhookLimit'],
+    ] as const
+  ).map(([label, key]) => ({
+    label,
+    section: 'entitlements' as const,
+    key,
+    kind: 'integer' as const,
+    status: TENANT_ENTITLEMENT_STATUS[key],
+  })),
+  ...(
+    [
       ['JSON export', 'jsonExport'],
       ['Email reports', 'emailReports'],
       ['Slack alerts', 'slackAlerts'],
@@ -69,12 +102,49 @@ const rows = [
     ] as const
   ).map(([label, key]) => ({
     label,
+    section: 'entitlements' as const,
+    key,
+    kind: 'boolean' as const,
     status: TENANT_ENTITLEMENT_STATUS[key],
-    values: plans.map(plan => formatValue(TENANT_PLAN_ENTITLEMENTS[plan][key])),
   })),
 ];
 
-function StatusText({ status }: { status: string }) {
+function cloneConfig(config: MembershipConfig) {
+  return structuredClone(config);
+}
+
+function getRowValue(
+  config: MembershipConfig,
+  plan: (typeof MEMBERSHIP_PLAN_IDS)[number],
+  row: ConfigRow,
+) {
+  const planConfig = config.plans[plan];
+  if (row.section === 'availability') return planConfig.available;
+  return planConfig[row.section][row.key];
+}
+
+function setRowValue(
+  config: MembershipConfig,
+  plan: (typeof MEMBERSHIP_PLAN_IDS)[number],
+  row: ConfigRow,
+  value: boolean | number | null,
+) {
+  const next = cloneConfig(config);
+  if (row.section === 'availability') {
+    next.plans[plan].available = value as boolean;
+  } else if (row.section === 'prices') {
+    next.plans[plan].prices[row.key] = value as number | null;
+  } else if (row.section === 'limits') {
+    next.plans[plan].limits[row.key] = value as number | null;
+  } else if (row.kind === 'boolean') {
+    next.plans[plan].entitlements[row.key] = value as boolean;
+  } else {
+    next.plans[plan].entitlements[row.key] = value as number | null;
+  }
+  return next;
+}
+
+function StatusText({ status }: { status: ConfigRow['status'] }) {
   const labels = {
     billing: 'Billing',
     enforced: 'Enforced',
@@ -84,70 +154,162 @@ function StatusText({ status }: { status: string }) {
 
   return (
     <Text size="sm" color="muted">
-      {labels[status] ?? status}
+      {labels[status]}
     </Text>
   );
 }
 
 export function AdminMembershipPage() {
   const { t } = useMessages();
+  const query = useAdminMembershipConfigQuery();
+  const update = useUpdateMembershipConfigQuery();
+  const [draft, setDraft] = useState<MembershipConfig | null>(null);
+
+  useEffect(() => {
+    if (query.data?.config) setDraft(cloneConfig(query.data.config));
+  }, [query.data]);
+
+  const original = query.data?.config;
+  const dirty = Boolean(draft && original && JSON.stringify(draft) !== JSON.stringify(original));
+  const valid = Boolean(draft && membershipConfigSchema.safeParse(draft).success);
+
+  const handleSave = async () => {
+    if (draft) await update.mutateAsync({ config: draft, version: query.data?.version ?? 0 });
+  };
 
   return (
     <Column gap="6">
-      <PageHeader
-        title="Membership management"
-        description="Authoritative prices, tenant quotas, feature values, and enforcement state."
-      />
+      <PageHeader title="Membership management" description="Edit membership pricing and limits." />
 
       <Panel>
-        <Column gap="4">
-          <Row justifyContent="space-between" alignItems="flex-end" gap="4" wrap="wrap">
-            <Column gap="1">
-              <Heading>Plan configuration</Heading>
-              <Text color="muted">
-                Values come from the same constants used by checkout and tenant enforcement.
-              </Text>
-            </Column>
-            <Text size="sm" color="muted">
-              Annual prices equal ten monthly payments.
-            </Text>
-          </Row>
-
-          <div style={{ overflowX: 'auto' }}>
-            <Column border borderRadius overflow="hidden" style={{ minWidth: 1040 }}>
-              <Grid
-                columns="220px 130px repeat(5, minmax(130px, 1fr))"
-                backgroundColor="surface-sunken"
-                padding="3"
-                gap="3"
-              >
-                <Text weight="bold">Configuration</Text>
-                <Text weight="bold">State</Text>
-                {plans.map(plan => (
-                  <Text key={plan} weight="bold">
-                    {t(`membership.plans.${plan}.name`)}
+        <LoadingPanel
+          data={query.data}
+          isLoading={query.isLoading}
+          isFetching={query.isFetching}
+          error={query.error}
+        >
+          {draft && (
+            <Column gap="5">
+              <Row justifyContent="space-between" alignItems="flex-end" gap="4" wrap="wrap">
+                <Column gap="1">
+                  <Heading>Plan configuration</Heading>
+                  <Text color="muted">
+                    Blank numeric fields mean Unlimited. Zero means the entitlement is not included.
                   </Text>
-                ))}
-              </Grid>
-              {rows.map((row, index) => (
-                <Grid
-                  key={row.label}
-                  columns="220px 130px repeat(5, minmax(130px, 1fr))"
-                  padding="3"
-                  gap="3"
-                  border={index === 0 ? undefined : 'top'}
-                  alignItems="center"
-                >
-                  <Text weight="bold">{row.label}</Text>
-                  <StatusText status={row.status} />
-                  {row.values.map((value, valueIndex) => (
-                    <Text key={`${row.label}-${plans[valueIndex]}`}>{value}</Text>
+                  <Text size="sm" color="muted">
+                    Displayed prices update immediately. Payment providers keep their externally
+                    configured billing amounts.
+                  </Text>
+                </Column>
+                <Text size="sm" color="muted">
+                  Version {query.data?.version ?? 0} ·{' '}
+                  {query.data?.source === 'database' ? 'Saved configuration' : 'Code defaults'}
+                </Text>
+              </Row>
+
+              <div style={{ overflowX: 'auto' }}>
+                <Column border borderRadius overflow="hidden" style={{ minWidth: 940 }}>
+                  <Grid
+                    columns="180px 110px repeat(5, minmax(110px, 1fr))"
+                    backgroundColor="surface-sunken"
+                    padding="3"
+                    gap="3"
+                  >
+                    <Text weight="bold">Configuration</Text>
+                    <Text weight="bold">State</Text>
+                    {MEMBERSHIP_PLAN_IDS.map(plan => (
+                      <Text key={plan} weight="bold">
+                        {t(`membership.plans.${plan}.name`)}
+                      </Text>
+                    ))}
+                  </Grid>
+                  {rows.map((row, index) => (
+                    <Grid
+                      key={`${row.section}-${'key' in row ? row.key : 'available'}`}
+                      columns="180px 110px repeat(5, minmax(110px, 1fr))"
+                      padding="3"
+                      gap="3"
+                      border={index === 0 ? undefined : 'top'}
+                      alignItems="center"
+                    >
+                      <Text weight="bold">{row.label}</Text>
+                      <StatusText status={row.status} />
+                      {MEMBERSHIP_PLAN_IDS.map(plan => {
+                        const value = getRowValue(draft, plan, row);
+                        const label = `${t(`membership.plans.${plan}.name`)} ${row.label}`;
+                        return row.kind === 'boolean' ? (
+                          <Checkbox
+                            key={plan}
+                            aria-label={label}
+                            value={value ? 'selected' : ''}
+                            onChange={selected =>
+                              setDraft(
+                                current => current && setRowValue(current, plan, row, selected),
+                              )
+                            }
+                          />
+                        ) : (
+                          <TextField
+                            key={plan}
+                            aria-label={label}
+                            type="number"
+                            value={value === null ? '' : String(value)}
+                            onChange={text =>
+                              setDraft(
+                                current =>
+                                  current &&
+                                  setRowValue(
+                                    current,
+                                    plan,
+                                    row,
+                                    text === '' ? null : Number(text),
+                                  ),
+                              )
+                            }
+                          />
+                        );
+                      })}
+                    </Grid>
                   ))}
-                </Grid>
-              ))}
+                </Column>
+              </div>
+
+              {!valid && dirty && (
+                <Text style={{ color: '#dc2626' }}>
+                  Check prices and entitlement values. Available paid plans require positive monthly
+                  and annual prices.
+                </Text>
+              )}
+              {update.error && (
+                <div role="alert">
+                  <Text style={{ color: '#dc2626' }}>{update.error.message}</Text>
+                </div>
+              )}
+
+              <Row justifyContent="space-between" gap="3" wrap="wrap">
+                <Button variant="quiet" onPress={() => setDraft(createDefaultMembershipConfig())}>
+                  Use code defaults
+                </Button>
+                <Row gap="3">
+                  <Button
+                    variant="quiet"
+                    isDisabled={!dirty || update.isPending}
+                    onPress={() => original && setDraft(cloneConfig(original))}
+                  >
+                    Discard changes
+                  </Button>
+                  <Button
+                    variant="primary"
+                    isDisabled={!dirty || !valid || update.isPending}
+                    onPress={handleSave}
+                  >
+                    {update.isPending ? 'Saving...' : 'Save configuration'}
+                  </Button>
+                </Row>
+              </Row>
             </Column>
-          </div>
-        </Column>
+          )}
+        </LoadingPanel>
       </Panel>
     </Column>
   );

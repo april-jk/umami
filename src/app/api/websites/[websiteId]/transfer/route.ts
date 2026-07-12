@@ -3,11 +3,12 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, unauthorized } from '@/lib/response';
 import {
   getLimitErrorPayload,
-  getTenantPlanLimits,
+  getTenantEffectiveLimits,
   isTenantPlanEnforcementEnabled,
 } from '@/lib/tenant-plan';
 import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/permissions';
 import { getWebsite, updateWebsite } from '@/queries/prisma';
+import { getMembershipConfig } from '@/queries/prisma/membership-config';
 import {
   canCreateTenantWebsite,
   getDefaultTenantIdForUser,
@@ -28,9 +29,10 @@ async function getTransferLimitError(sourceTenantId: string | null, targetTenant
 
   const tenant = await getTenantPlan(targetTenantId);
   const current = await getTenantWebsiteCount(targetTenantId);
-  const limit = getTenantPlanLimits(tenant?.plan).websiteLimit;
+  const config = await getMembershipConfig();
+  const limit = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config).websiteLimit;
 
-  return getLimitErrorPayload(tenant?.plan, 'website', current, limit);
+  return getLimitErrorPayload(tenant?.plan, 'website', current, limit, config);
 }
 
 export async function POST(
