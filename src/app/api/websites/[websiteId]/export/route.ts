@@ -24,6 +24,8 @@ export async function GET(
   }
 
   const { websiteId } = await params;
+  let csvRowLimit: number | null = null;
+  let entitlementPlan: string | null = null;
 
   if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
@@ -31,9 +33,11 @@ export async function GET(
 
   if (isTenantPlanEnforcementEnabled()) {
     const entitlement = await getWebsiteEntitlement(websiteId, 'csvExport');
+    entitlementPlan = entitlement.plan;
     if (!entitlement.allowed) {
       return forbidden(getEntitlementErrorPayload(entitlement.plan, 'csvExport'));
     }
+    csvRowLimit = typeof entitlement.value === 'number' ? entitlement.value : null;
   }
 
   const filters = await getQueryFilters(query, websiteId);
@@ -47,6 +51,17 @@ export async function GET(
     getSessionMetrics(websiteId, { type: 'device' }, filters),
     getSessionMetrics(websiteId, { type: 'country' }, filters),
   ]);
+
+  const csvRows = [events, pages, referrers, browsers, os, devices, countries].reduce(
+    (total, data) => total + (Array.isArray(data) ? data.length : 0),
+    0,
+  );
+
+  if (csvRowLimit !== null && csvRows > csvRowLimit) {
+    return forbidden(
+      getEntitlementErrorPayload(entitlementPlan, 'csvExport', csvRows, csvRowLimit),
+    );
+  }
 
   const zip = new JSZip();
 

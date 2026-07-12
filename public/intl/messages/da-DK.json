@@ -465,6 +465,7 @@
         "features": [
           "100K hændelser/måned",
           "5 websteder",
+          "1 medlem, 5 mål og 50 sessionsafspilninger/måned",
           "Grundlæggende analyser, læseadgang til API og 50 MCP-kald/dag",
           "Dashboard i realtid",
           "Overholder GDPR som standard",
@@ -481,7 +482,7 @@
           "10 websteder",
           "1 medlem, 20 mål og 500 sessionsafspilninger/måned",
           "500 MCP-kald/dag og 60 API-anmodninger/minut",
-          "CSV-eksport og daglige eller ugentlige e-mailrapporter",
+          "CSV (10K)-eksport og daglige eller ugentlige e-mailrapporter",
           "3 grundlæggende advarselsregler og ubegrænsede AI-analyser",
           "Dataopbevaring i 6 måneder",
           "5 AI-rapporter/måned"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Til teams, der har brug for samarbejde, mere omfattende automatisering og avancerede analyser.",
         "features": [
-          "2M hændelser/måned",
+          "1M hændelser/måned",
           "25 websteder",
           "Alt i Starter",
           "5 teammedlemmer, 100 mål og 5K afspilninger/måned",
           "Ubegrænsede MCP-kald og 300 API-anmodninger/minut",
-          "CSV- og JSON-eksport, 5 webhooks og Slack-advarsler",
+          "CSV (100K)- og JSON-eksport, 5 webhooks og Slack-advarsler",
           "AI-baseret registrering af afvigelser, avancerede tragte og prioriteret support",
           "Dataopbevaring i 24 måneder",
           "50 AI-rapporter/måned"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Til teams med flere produkter og bureauer, der har brug for skala, styring og levering under eget brand.",
         "features": [
-          "10M hændelser/måned og 50 websites",
+          "5M hændelser/måned og 50 websites",
           "20 medlemmer, ubegrænsede mål og ubegrænset dataopbevaring",
           "Ubegrænsede MCP-kald og 600 API-anmodninger/minut",
           "20 webhooks, 100 advarselsregler og 200 AI-rapporter/måned",
+          "CSV (500K)",
           "SSO/SAML, white label-styring og AI-prognoser",
           "Mål om svar fra support inden for 24 timer"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Til organisationer med tilpassede krav til volumen, sikkerhed, support og implementering.",
         "features": [
-          "Tilpasset kapacitet til hændelser, API, MCP, websites og medlemmer",
-          "Tilpasset konfiguration af dataopbevaring og rapportering",
+          "20M+ hændelser/måned",
+          "Ubegrænsede websites, medlemmer, mål og sessionsoptagelser",
+          "CSV (∞)",
+          "∞ medlem, ∞ mål og ∞ sessionsafspilninger/måned",
           "Avancerede krav til identitet, branding og integration",
-          "Mulighed for dedikeret CSM og SLA"
+          "Mulighed for dedikeret CSM og 99.99% SLA"
         ]
       }
     },

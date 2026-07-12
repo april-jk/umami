@@ -25,7 +25,7 @@ describe('getWebsiteEntitlement', () => {
       tenantId: 'tenant-1',
       plan: 'starter',
       allowed: true,
-      value: true,
+      value: 10_000,
     });
   });
 

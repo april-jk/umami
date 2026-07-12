@@ -34,7 +34,7 @@ describe('GET /api/tenants/[tenantId]/usage', () => {
     getTenantUsageMock.mockResolvedValue({
       plan: 'pro',
       month: '2026-07',
-      events: { used: 500_000, limit: 2_000_000 },
+      events: { used: 500_000, limit: 1_000_000 },
       websites: { used: 15, limit: 25 },
       members: { used: 3, limit: 5 },
     });
@@ -47,7 +47,7 @@ describe('GET /api/tenants/[tenantId]/usage', () => {
 
     expect(response.status).toBe(200);
     expect(body.plan).toBe('pro');
-    expect(body.events).toEqual({ used: 500_000, limit: 2_000_000 });
+    expect(body.events).toEqual({ used: 500_000, limit: 1_000_000 });
     expect(body.websites).toEqual({ used: 15, limit: 25 });
     expect(body.members).toEqual({ used: 3, limit: 5 });
     expect(canViewTenantMock).toHaveBeenCalledWith(expect.anything(), 'tenant-1');

@@ -465,6 +465,7 @@
         "features": [
           "100K hendingar/mánað",
           "5 heimasíður",
+          "1 limur, 5 mál og 50 setuavspælingar/mánað",
           "Grundleggjandi greining, lesiatgongd til API og 50 MCP-kall/dag",
           "Stjórnborð í rauntíð",
           "Samsvarar GDPR sum standard",
@@ -481,7 +482,7 @@
           "10 heimasíður",
           "1 limur, 20 mál og 500 setuavspælingar/mánað",
           "500 MCP-kall/dag og 60 API-fyrispurningar/minutt",
-          "CSV-útflutningur og dagligar ella vikuligar teldupostfrágreiðingar",
+          "CSV (10K)-útflutningur og dagligar ella vikuligar teldupostfrágreiðingar",
           "3 grundleggjandi ávaringarreglur og óavmarkaðar AI-greiningar",
           "Dátugoymsla í 6 mánaðir",
           "5 AI-frágreiðingar/mánað"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Til toymi, ið hava tørv á samstarvi, meiri víðfevndari sjálvvirkan og framkomnari greining.",
         "features": [
-          "2M hendingar/mánað",
+          "1M hendingar/mánað",
           "25 heimasíður",
           "Alt í Starter",
           "5 toymislimir, 100 mál og 5K avspælingar/mánað",
           "Óavmarkað MCP-kall og 300 API-fyrispurningar/minutt",
-          "CSV- og JSON-útflutningur, 5 webhooks og Slack-ávaringar",
+          "CSV (100K)- og JSON-útflutningur, 5 webhooks og Slack-ávaringar",
           "AI-fráviksgreining, framkomnar trektar og raðfestur stuðul",
           "Dátugoymsla í 24 mánaðir",
           "50 AI-frágreiðingar/mánað"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Til toymi við fleiri vørum og fyritøkur, ið hava tørv á skala, stýring og veiting undir egnum merki.",
         "features": [
-          "10M hendingar/mánað og 50 heimasíður",
+          "5M hendingar/mánað og 50 heimasíður",
           "20 limir, óavmarkað mál og óavmarkað dátugoymsla",
           "Óavmarkað MCP-kall og 600 API-fyrispurningar/minutt",
           "20 webhooks, 100 ávaringarreglur og 200 AI-frágreiðingar/mánað",
+          "CSV (500K)",
           "SSO/SAML, white label-stýring og AI-framsagnir",
           "Mál um svar frá stuðli innan 24 tímar"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Til felagsskapir við serligum krøvum til nøgd, trygd, stuðul og útbreiðslu.",
         "features": [
-          "Sersniðin orka til hendingar, API, MCP, heimasíður og limir",
-          "Sersniðin uppseting av dátugoymslu og frágreiðingum",
+          "20M+ hendingar/mánað",
+          "Óavmarkaðar heimasíður, limir, mál og sessjónsupptøkur",
+          "CSV (∞)",
+          "∞ limur, ∞ mál og ∞ setuavspælingar/mánað",
           "Framkomin krøv til samleika, merking og integratión",
-          "Møguleikar fyri fastan CSM og SLA"
+          "Møguleikar fyri fastan CSM og 99.99% SLA"
         ]
       }
     },

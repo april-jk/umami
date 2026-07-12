@@ -465,6 +465,7 @@
         "features": [
           "100K evenimente/lună",
           "5 site-uri",
+          "1 membru, 5 de obiective și 50 de reluări de sesiuni/lună",
           "Analize de bază, acces de citire API și 50 de apeluri MCP/zi",
           "Tablou de bord în timp real",
           "Conformitate GDPR în mod implicit",
@@ -481,7 +482,7 @@
           "10 site-uri",
           "1 membru, 20 de obiective și 500 de reluări de sesiuni/lună",
           "500 de apeluri MCP/zi și 60 de solicitări API/minut",
-          "Export CSV și rapoarte zilnice sau săptămânale prin e-mail",
+          "Export CSV (10K) și rapoarte zilnice sau săptămânale prin e-mail",
           "3 reguli de alertă de bază și analize AI nelimitate",
           "Păstrarea datelor timp de 6 luni",
           "5 rapoarte AI/lună"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Pentru echipe care au nevoie de colaborare, automatizare mai complexă și analize avansate.",
         "features": [
-          "2M evenimente/lună",
+          "1M evenimente/lună",
           "25 de site-uri",
           "Tot ce include planul Începător",
           "5 membri ai echipei, 100 de obiective și 5K reluări/lună",
           "Apeluri MCP nelimitate și 300 de solicitări API/minut",
-          "Export CSV și JSON, 5 webhook-uri și alerte Slack",
+          "Export CSV (100K) și JSON, 5 webhook-uri și alerte Slack",
           "Detectarea anomaliilor cu AI, pâlnii avansate și asistență prioritară",
           "Păstrarea datelor timp de 24 de luni",
           "50 de rapoarte AI/lună"
@@ -506,10 +507,11 @@
         "name": "Echipă",
         "description": "Pentru echipe cu mai multe produse și agenții care au nevoie de scalare, guvernanță și livrare sub marcă proprie.",
         "features": [
-          "10M evenimente/lună și 50 de site-uri",
+          "5M evenimente/lună și 50 de site-uri",
           "20 de membri, obiective nelimitate și păstrarea nelimitată a datelor",
           "Apeluri MCP nelimitate și 600 de solicitări API/minut",
           "20 de webhook-uri, 100 de reguli de alertă și 200 de rapoarte AI/lună",
+          "CSV (500K)",
           "SSO/SAML, opțiuni de marcă proprie și prognoze AI",
           "Țintă de răspuns din partea asistenței în 24 de ore"
         ]
@@ -518,10 +520,12 @@
         "name": "Companii",
         "description": "Pentru organizații cu cerințe personalizate privind volumul, securitatea, asistența și implementarea.",
         "features": [
-          "Capacitate personalizată pentru evenimente, API, MCP, site-uri și membri",
-          "Configurare personalizată pentru păstrarea datelor și raportare",
+          "20M+ evenimente/lună",
+          "Site-uri, membri, obiective și reluări de sesiune nelimitate",
+          "CSV (∞)",
+          "∞ membru, ∞ de obiective și ∞ de reluări de sesiuni/lună",
           "Cerințe avansate de identitate, marcă și integrare",
-          "Manager dedicat pentru succesul clienților și opțiuni SLA"
+          "Manager dedicat pentru succesul clienților și opțiuni 99.99% SLA"
         ]
       }
     },

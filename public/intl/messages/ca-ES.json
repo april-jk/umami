@@ -465,6 +465,7 @@
         "features": [
           "100K esdeveniments/mes",
           "5 llocs web",
+          "1 membre, 5 objectius i 50 reproduccions de sessió/mes",
           "Analítica essencial, accés de lectura a l’API i 50 crides MCP/dia",
           "Tauler en temps real",
           "Compatible amb el GDPR per defecte",
@@ -481,7 +482,7 @@
           "10 llocs web",
           "1 membre, 20 objectius i 500 reproduccions de sessió/mes",
           "500 crides MCP/dia i 60 sol·licituds API/minut",
-          "Exportació CSV i informes diaris o setmanals per correu electrònic",
+          "Exportació CSV (10K) i informes diaris o setmanals per correu electrònic",
           "3 regles d’alerta bàsiques i anàlisis d’IA il·limitades",
           "Conservació de dades durant 6 mesos",
           "5 informes d’IA/mes"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Per a equips que necessiten col·laboració, una automatització més completa i analítica avançada.",
         "features": [
-          "2M esdeveniments/mes",
+          "1M esdeveniments/mes",
           "25 llocs web",
           "Tot el que inclou Starter",
           "5 membres de l’equip, 100 objectius i 5K reproduccions/mes",
           "Crides MCP il·limitades i 300 sol·licituds API/minut",
-          "Exportació CSV i JSON, 5 webhooks i alertes de Slack",
+          "Exportació CSV (100K) i JSON, 5 webhooks i alertes de Slack",
           "Detecció d’anomalies amb IA, embuts avançats i suport prioritari",
           "Conservació de dades durant 24 mesos",
           "50 informes d’IA/mes"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Per a equips multiproducte i agències que necessiten escala, governança i lliuraments amb marca pròpia.",
         "features": [
-          "10M esdeveniments/mes i 50 llocs web",
+          "5M esdeveniments/mes i 50 llocs web",
           "20 membres, objectius il·limitats i conservació de dades il·limitada",
           "Crides MCP il·limitades i 600 sol·licituds API/minut",
           "20 webhooks, 100 regles d’alerta i 200 informes d’IA/mes",
+          "CSV (500K)",
           "SSO/SAML, controls de marca blanca i prediccions amb IA",
           "Objectiu de resposta del suport en 24 hores"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Per a organitzacions amb requisits personalitzats de volum, seguretat, suport i desplegament.",
         "features": [
-          "Capacitat personalitzada d’esdeveniments, API, MCP, llocs web i membres",
+          "20M+ esdeveniments/mes",
+          "Llocs web, membres, objectius i reproduccions de sessió il·limitats",
+          "CSV (∞)",
           "Configuració personalitzada de conservació i informes",
           "Requisits avançats d’identitat, marca i integració",
-          "Opcions de CSM dedicat i SLA"
+          "Opcions de CSM dedicat i 99.99% SLA"
         ]
       }
     },

@@ -465,6 +465,7 @@
         "features": [
           "100K événements/mois",
           "5 sites web",
+          "1 membre, 5 objectifs et 50 relectures de session/mois",
           "Analyses essentielles, accès en lecture à l’API et 50 appels MCP/jour",
           "Tableau de bord en temps réel",
           "Conforme au GDPR par défaut",
@@ -481,7 +482,7 @@
           "10 sites web",
           "1 membre, 20 objectifs et 500 relectures de session/mois",
           "500 appels MCP/jour et 60 requêtes API/minute",
-          "Export CSV et rapports quotidiens ou hebdomadaires par e-mail",
+          "Export CSV (10K) et rapports quotidiens ou hebdomadaires par e-mail",
           "3 règles d’alerte de base et analyses d’IA illimitées",
           "Conservation des données pendant 6 mois",
           "5 rapports d’IA/mois"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Pour les équipes qui ont besoin de collaboration, d’une automatisation plus riche et d’analyses avancées.",
         "features": [
-          "2M événements/mois",
+          "1M événements/mois",
           "25 sites web",
           "Tout ce qui est inclus dans Starter",
           "5 membres d’équipe, 100 objectifs et 5K relectures/mois",
           "Appels MCP illimités et 300 requêtes API/minute",
-          "Exports CSV et JSON, 5 webhooks et alertes Slack",
+          "Exports CSV (100K) et JSON, 5 webhooks et alertes Slack",
           "Détection d’anomalies par IA, entonnoirs avancés et assistance prioritaire",
           "Conservation des données pendant 24 mois",
           "50 rapports d’IA/mois"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Pour les équipes multiproduits et les agences qui ont besoin d’évolutivité, de gouvernance et de livrables à leur marque.",
         "features": [
-          "10M événements/mois et 50 sites web",
+          "5M événements/mois et 50 sites web",
           "20 membres, objectifs illimités et conservation des données illimitée",
           "Appels MCP illimités et 600 requêtes API/minute",
           "20 webhooks, 100 règles d’alerte et 200 rapports d’IA/mois",
+          "CSV (500K)",
           "SSO/SAML, contrôles en marque blanche et prévisions par IA",
           "Objectif de réponse de l’assistance sous 24 heures"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Pour les organisations ayant des exigences spécifiques en matière de volume, sécurité, assistance et déploiement.",
         "features": [
-          "Capacité personnalisée pour les événements, l’API, MCP, les sites web et les membres",
+          "20M+ événements/mois",
+          "Sites web, membres, objectifs et relectures de session illimités",
+          "CSV (∞)",
           "Configuration personnalisée de la conservation et des rapports",
           "Exigences avancées en matière d’identité, de marque et d’intégration",
-          "Options de CSM dédié et de SLA"
+          "Options de CSM dédié et de 99.99% SLA"
         ]
       }
     },

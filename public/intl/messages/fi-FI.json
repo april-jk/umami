@@ -465,6 +465,7 @@
         "features": [
           "100K tapahtumaa/kuukausi",
           "5 verkkosivustoa",
+          "1 jäsen, 5 tavoitetta ja 50 istuntotoistoa/kuukausi",
           "Perusanalytiikka, API-lukuoikeus ja 50 MCP-kutsua/päivä",
           "Reaaliaikainen koontinäyttö",
           "Oletuksena GDPR-yhteensopiva",
@@ -481,7 +482,7 @@
           "10 verkkosivustoa",
           "1 jäsen, 20 tavoitetta ja 500 istuntotoistoa/kuukausi",
           "500 MCP-kutsua/päivä ja 60 API-pyyntöä/minuutti",
-          "CSV-vienti ja päivittäiset tai viikoittaiset sähköpostiraportit",
+          "CSV (10K)-vienti ja päivittäiset tai viikoittaiset sähköpostiraportit",
           "3 perushälytyssääntöä ja rajattomat tekoälyanalyysit",
           "Tietojen säilytys 6 kuukautta",
           "5 tekoälyraporttia/kuukausi"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Tiimeille, jotka tarvitsevat yhteistyötä, monipuolisempaa automaatiota ja edistynyttä analytiikkaa.",
         "features": [
-          "2M tapahtumaa/kuukausi",
+          "1M tapahtumaa/kuukausi",
           "25 verkkosivustoa",
           "Kaikki Starter-tilauksen ominaisuudet",
           "5 tiimin jäsentä, 100 tavoitetta ja 5K toistoa/kuukausi",
           "Rajattomat MCP-kutsut ja 300 API-pyyntöä/minuutti",
-          "CSV- ja JSON-vienti, 5 webhookia ja Slack-hälytykset",
+          "CSV (100K)- ja JSON-vienti, 5 webhookia ja Slack-hälytykset",
           "Tekoälypohjainen poikkeamien tunnistus, edistyneet suppilot ja ensisijainen tuki",
           "Tietojen säilytys 24 kuukautta",
           "50 tekoälyraporttia/kuukausi"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Usean tuotteen tiimeille ja toimistoille, jotka tarvitsevat skaalautuvuutta, hallintaa ja oman brändin mukaista toimitusta.",
         "features": [
-          "10M tapahtumaa/kuukausi ja 50 verkkosivustoa",
+          "5M tapahtumaa/kuukausi ja 50 verkkosivustoa",
           "20 jäsentä, rajattomat tavoitteet ja rajaton tietojen säilytys",
           "Rajattomat MCP-kutsut ja 600 API-pyyntöä/minuutti",
           "20 webhookia, 100 hälytyssääntöä ja 200 tekoälyraporttia/kuukausi",
+          "CSV (500K)",
           "SSO/SAML, white label -hallinta ja tekoälyennusteet",
           "Tuen tavoitevastausaika 24 tuntia"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Organisaatioille, joilla on mukautettuja volyymi-, turvallisuus-, tuki- ja käyttöönottovaatimuksia.",
         "features": [
-          "Mukautettu kapasiteetti tapahtumille, API:lle, MCP:lle, verkkosivustoille ja jäsenille",
-          "Mukautettu tietojen säilytys- ja raportointikokoonpano",
+          "20M+ tapahtumaa/kuukausi",
+          "Rajattomasti verkkosivustoja, jäseniä, tavoitteita ja istuntotallenteita",
+          "CSV (∞)",
+          "∞ jäsen, ∞ tavoitetta ja ∞ istuntotoistoa/kuukausi",
           "Edistyneet identiteetti-, brändi- ja integraatiovaatimukset",
-          "Oma CSM ja SLA-vaihtoehdot"
+          "Oma CSM ja 99.99% SLA-vaihtoehdot"
         ]
       }
     },

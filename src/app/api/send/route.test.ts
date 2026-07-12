@@ -344,7 +344,7 @@ describe('POST event tracking', () => {
 
     expect(response.status).toBe(403);
     expect(body.error.upgradeMessage).toContain('Pro');
-    expect(body.error.upgradeMessage).toContain('2,000,000');
+    expect(body.error.upgradeMessage).toContain('1,000,000');
     delete process.env.CLOUD_MODE;
   });
 
@@ -364,8 +364,8 @@ describe('POST event tracking', () => {
     fetchWebsiteMock.mockResolvedValue({ id: 'website-1', tenantId: 'tenant-1' } as any);
     reserveWebsiteEventMock.mockResolvedValue({
       allowed: false,
-      limit: 2_000_000,
-      used: 2_000_000,
+      limit: 1_000_000,
+      used: 1_000_000,
       remaining: 0,
     });
     getTenantPlanMock.mockResolvedValue({ plan: 'pro' });
@@ -375,7 +375,7 @@ describe('POST event tracking', () => {
 
     expect(response.status).toBe(403);
     expect(body.error.upgradeMessage).toContain('Team');
-    expect(body.error.upgradeMessage).toContain('10,000,000');
+    expect(body.error.upgradeMessage).toContain('5,000,000');
     delete process.env.CLOUD_MODE;
   });
 
@@ -395,8 +395,8 @@ describe('POST event tracking', () => {
     fetchWebsiteMock.mockResolvedValue({ id: 'website-1', tenantId: 'tenant-1' } as any);
     reserveWebsiteEventMock.mockResolvedValue({
       allowed: false,
-      limit: 10_000_000,
-      used: 10_000_000,
+      limit: 5_000_000,
+      used: 5_000_000,
       remaining: 0,
     });
     getTenantPlanMock.mockResolvedValue({ plan: 'team' });
@@ -406,7 +406,7 @@ describe('POST event tracking', () => {
 
     expect(response.status).toBe(403);
     expect(body.error.upgradeMessage).toContain('Enterprise');
-    expect(body.error.upgradeMessage).toContain('unlimited');
+    expect(body.error.upgradeMessage).toContain('20,000,000');
     delete process.env.CLOUD_MODE;
   });
 

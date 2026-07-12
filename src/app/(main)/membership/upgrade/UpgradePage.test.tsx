@@ -138,11 +138,12 @@ describe('UpgradePage', () => {
 
     // Use exact text matching for prices to avoid conflicts with feature text
     expect(screen.getByText('$7.50/mo')).toBeInTheDocument();
-    expect(screen.getByText('$15.83/mo')).toBeInTheDocument();
-    expect(screen.getByText('$32.50/mo')).toBeInTheDocument();
-    expect(screen.getByText('Billed $190/year (save 2 months)')).toBeInTheDocument();
-    expect(screen.getByText('Billed $390/year (save 2 months)')).toBeInTheDocument();
-    expect(screen.getByText('Custom')).toBeInTheDocument();
+    expect(screen.getByText('$24.17/mo')).toBeInTheDocument();
+    expect(screen.getByText('$65.83/mo')).toBeInTheDocument();
+    expect(screen.getByText('$165.83/mo')).toBeInTheDocument();
+    expect(screen.getByText('Billed $290/year (save 2 months)')).toBeInTheDocument();
+    expect(screen.getByText('Billed $790/year (save 2 months)')).toBeInTheDocument();
+    expect(screen.getByText('Billed $1990/year (save 2 months)')).toBeInTheDocument();
   });
 
   test('shows the standard monthly price after selecting monthly billing', () => {
@@ -153,8 +154,9 @@ describe('UpgradePage', () => {
     fireEvent.click(screen.getByText('Monthly'));
 
     expect(screen.getByText('$9/mo')).toBeInTheDocument();
-    expect(screen.getByText('$19/mo')).toBeInTheDocument();
-    expect(screen.getByText('$39/mo')).toBeInTheDocument();
+    expect(screen.getByText('$29/mo')).toBeInTheDocument();
+    expect(screen.getByText('$79/mo')).toBeInTheDocument();
+    expect(screen.getByText('$199/mo')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Annual (2 months free)'));
     expect(screen.getByText('$7.50/mo')).toBeInTheDocument();
@@ -193,7 +195,7 @@ describe('UpgradePage', () => {
     expect(screen.getByText('7-day data retention')).toBeInTheDocument();
   });
 
-  test('shows unlimited for enterprise plan', () => {
+  test('shows the Enterprise base event allowance', () => {
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },
     } as any);
@@ -201,9 +203,11 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
+    expect(screen.getByText('20M+ events/month')).toBeInTheDocument();
     expect(
-      screen.getByText('Custom event, API, MCP, website, and member capacity'),
+      screen.getByText('Unlimited websites, members, goals, and session replays'),
     ).toBeInTheDocument();
+    expect(screen.getByText('Dedicated CSM and 99.99% SLA')).toBeInTheDocument();
   });
 
   test('opens an email draft for enterprise sales', () => {
@@ -269,10 +273,14 @@ describe('UpgradePage', () => {
     expect(
       screen.getByText('Core analytics, API read access, and 50 MCP calls/day'),
     ).toBeInTheDocument();
-    expect(screen.getByText('CSV export and daily or weekly email reports')).toBeInTheDocument();
     expect(
-      screen.getByText('CSV and JSON export, 5 webhooks, and Slack alerts'),
+      screen.getByText('CSV (10K) export and daily or weekly email reports'),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText('CSV (100K) and JSON export, 5 webhooks, and Slack alerts'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('CSV (500K)')).toBeInTheDocument();
+    expect(screen.getByText('CSV (∞)')).toBeInTheDocument();
     expect(
       screen.getByText('SSO/SAML, white-label controls, and AI forecasting'),
     ).toBeInTheDocument();
@@ -311,8 +319,9 @@ describe('UpgradePage', () => {
 
     expect(screen.getByText('100K events/month')).toBeInTheDocument();
     expect(screen.getByText('500K events/month')).toBeInTheDocument();
-    expect(screen.getByText('2M events/month')).toBeInTheDocument();
-    expect(screen.getByText('10M events/month and 50 websites')).toBeInTheDocument();
+    expect(screen.getByText('1M events/month')).toBeInTheDocument();
+    expect(screen.getByText('5M events/month and 50 websites')).toBeInTheDocument();
+    expect(screen.getByText('20M+ events/month')).toBeInTheDocument();
   });
 
   test('shows correct retention periods', () => {

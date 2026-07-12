@@ -471,6 +471,7 @@
         "features": [
           "Oyiga 100 ming hodisa",
           "5 veb-sayt",
+          "1 aʼzo, 5 maqsad va oyiga 50 seans takrori",
           "Asosiy tahlil, API oʻqish huquqi va kuniga 50 MCP chaqiruvi",
           "Haqiqiy vaqt boshqaruv paneli",
           "Standart GDPR muvofiqligi",
@@ -487,7 +488,7 @@
           "10 veb-sayt",
           "1 aʼzo, 20 maqsad va oyiga 500 seans takrori",
           "Kuniga 500 MCP chaqiruvi va daqiqasiga 60 API soʻrovi",
-          "CSV eksporti va kunlik yoki haftalik e-pochta hisoboti",
+          "CSV (10K) eksporti va kunlik yoki haftalik e-pochta hisoboti",
           "3 asosiy ogohlantirish qoidasi va cheksiz AI tahlili",
           "Maʼlumotlar 6 oy saqlanadi",
           "Oyiga 5 AI hisoboti"
@@ -497,12 +498,12 @@
         "name": "Professional",
         "description": "Hamkorlik, keng avtomatlashtirish va ilgʻor tahlil kerak bo‘lgan jamoalar uchun.",
         "features": [
-          "Oyiga 2 million hodisa",
+          "Oyiga 1 million hodisa",
           "25 veb-sayt",
           "Boshlangʻich tarifdagi barcha imkoniyat",
           "5 jamoa aʼzosi, 100 maqsad va oyiga 5 ming takror",
           "Cheksiz MCP chaqiruvi va daqiqasiga 300 API soʻrovi",
-          "CSV va JSON eksporti, 5 Webhook va Slack ogohlantirishi",
+          "CSV (100K) va JSON eksporti, 5 Webhook va Slack ogohlantirishi",
           "AI anomaliya aniqlashi, ilgʻor voronkalar va ustuvor yordam",
           "Maʼlumotlar 24 oy saqlanadi",
           "Oyiga 50 AI hisoboti"
@@ -512,10 +513,11 @@
         "name": "Jamoa",
         "description": "Koʻlam, boshqaruv va brendli yetkazib berish kerak bo‘lgan koʻp mahsulotli jamoa va agentliklar uchun.",
         "features": [
-          "Oyiga 10 million hodisa va 50 veb-sayt",
+          "Oyiga 5 million hodisa va 50 veb-sayt",
           "20 aʼzo, cheksiz maqsad va cheksiz maʼlumot saqlash",
           "Cheksiz MCP chaqiruvi va daqiqasiga 600 API soʻrovi",
           "20 Webhook, 100 ogohlantirish qoidasi va oyiga 200 AI hisoboti",
+          "CSV (500K)",
           "SSO/SAML, oq yorliq boshqaruvi va AI prognozi",
           "24 soat ichida yordam javobi maqsadi"
         ]
@@ -524,10 +526,12 @@
         "name": "Korporativ",
         "description": "Hajm, xavfsizlik, yordam va joylashtirish bo‘yicha maxsus talablari bor tashkilotlar uchun.",
         "features": [
-          "Hodisa, API, MCP, veb-sayt va aʼzo sigʻimini moslash",
-          "Saqlash va hisobot sozlamalarini moslash",
+          "Oyiga 20+ million hodisa",
+          "Cheksiz veb-saytlar, a'zolar, maqsadlar va seans takrorlari",
+          "CSV (∞)",
+          "∞ aʼzo, ∞ maqsad va oyiga ∞ seans takrori",
           "Shaxsni aniqlash, brendlash va integratsiyaning ilgʻor talablari",
-          "Maxsus CSM va SLA variantlari"
+          "Maxsus CSM va 99.99% SLA variantlari"
         ]
       }
     },

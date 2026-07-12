@@ -465,6 +465,7 @@
         "features": [
           "100K događaja/mjesec",
           "5 web-stranica",
+          "1 član, 5 ciljeva i 50 snimki sesija/mjesec",
           "Osnovna analitika, pristup API samo za čitanje i 50 MCP poziva/dan",
           "Nadzorna ploča u stvarnom vremenu",
           "Prema zadanim postavkama usklađeno s GDPR",
@@ -481,7 +482,7 @@
           "10 web-stranica",
           "1 član, 20 ciljeva i 500 snimki sesija/mjesec",
           "500 MCP poziva/dan i 60 API zahtjeva/minutu",
-          "CSV izvoz i dnevna ili tjedna izvješća e-poštom",
+          "CSV (10K) izvoz i dnevna ili tjedna izvješća e-poštom",
           "3 osnovna pravila upozorenja i neograničene AI analize",
           "Čuvanje podataka 6 mjeseci",
           "5 AI izvješća/mjesec"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Za timove kojima trebaju suradnja, bogatija automatizacija i napredna analitika.",
         "features": [
-          "2M događaja/mjesec",
+          "1M događaja/mjesec",
           "25 web-stranica",
           "Sve iz plana Starter",
           "5 članova tima, 100 ciljeva i 5K snimki/mjesec",
           "Neograničeni MCP pozivi i 300 API zahtjeva/minutu",
-          "CSV i JSON izvoz, 5 webhookova i Slack upozorenja",
+          "CSV (100K) i JSON izvoz, 5 webhookova i Slack upozorenja",
           "AI otkrivanje anomalija, napredni tokovi i prioritetna podrška",
           "Čuvanje podataka 24 mjeseca",
           "50 AI izvješća/mjesec"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Za timove s više proizvoda i agencije kojima trebaju opseg, upravljanje i isporuka pod vlastitim brendom.",
         "features": [
-          "10M događaja/mjesec i 50 web-stranica",
+          "5M događaja/mjesec i 50 web-stranica",
           "20 članova, neograničeni ciljevi i neograničeno čuvanje podataka",
           "Neograničeni MCP pozivi i 600 API zahtjeva/minutu",
           "20 webhookova, 100 pravila upozorenja i 200 AI izvješća/mjesec",
+          "CSV (500K)",
           "SSO/SAML, kontrole bijele oznake i AI predviđanje",
           "Ciljani odgovor podrške unutar 24 sata"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Za organizacije s prilagođenim zahtjevima za količinu, sigurnost, podršku i implementaciju.",
         "features": [
-          "Prilagođeni kapacitet događaja, API, MCP, web-stranica i članova",
-          "Prilagođena konfiguracija čuvanja podataka i izvještavanja",
+          "20M+ događaja/mjesec",
+          "Neograničene web-stranice, članovi, ciljevi i snimke sesija",
+          "CSV (∞)",
+          "∞ član, ∞ ciljeva i ∞ snimki sesija/mjesec",
           "Napredni zahtjevi za identitet, brendiranje i integracije",
-          "Opcije namjenskog CSM i SLA"
+          "Opcije namjenskog CSM i 99.99% SLA"
         ]
       }
     },

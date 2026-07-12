@@ -482,6 +482,7 @@
         "features": [
           "100K udalostí/mesiac",
           "5 webov",
+          "1 člen, 5 cieľov a 50 záznamov relácií/mesiac",
           "Základná analytika, prístup API na čítanie a 50 volaní MCP/deň",
           "Panel v reálnom čase",
           "Predvolene v súlade s GDPR",
@@ -498,7 +499,7 @@
           "10 webov",
           "1 člen, 20 cieľov a 500 záznamov relácií/mesiac",
           "500 volaní MCP/deň a 60 požiadaviek API/minútu",
-          "Export CSV a denné alebo týždenné e-mailové reporty",
+          "Export CSV (10K) a denné alebo týždenné e-mailové reporty",
           "3 základné pravidlá upozornení a neobmedzené analýzy AI",
           "Uchovávanie údajov 6 mesiacov",
           "5 reportov AI/mesiac"
@@ -508,12 +509,12 @@
         "name": "Pro",
         "description": "Pre tímy, ktoré potrebujú spoluprácu, bohatšiu automatizáciu a pokročilú analytiku.",
         "features": [
-          "2M udalostí/mesiac",
+          "1M udalostí/mesiac",
           "25 webov",
           "Všetko z plánu Štart",
           "5 členov tímu, 100 cieľov a 5K záznamov/mesiac",
           "Neobmedzené volania MCP a 300 požiadaviek API/minútu",
-          "Export CSV a JSON, 5 webhookov a upozornenia v Slacku",
+          "Export CSV (100K) a JSON, 5 webhookov a upozornenia v Slacku",
           "Detekcia anomálií pomocou AI, pokročilé lieviky a prioritná podpora",
           "Uchovávanie údajov 24 mesiacov",
           "50 reportov AI/mesiac"
@@ -523,10 +524,11 @@
         "name": "Tím",
         "description": "Pre tímy s viacerými produktmi a agentúry, ktoré potrebujú škálovanie, správu a značkové výstupy.",
         "features": [
-          "10M udalostí/mesiac a 50 webov",
+          "5M udalostí/mesiac a 50 webov",
           "20 členov, neobmedzené ciele a neobmedzené uchovávanie údajov",
           "Neobmedzené volania MCP a 600 požiadaviek API/minútu",
           "20 webhookov, 100 pravidiel upozornení a 200 reportov AI/mesiac",
+          "CSV (500K)",
           "SSO/SAML, nastavenia vlastného brandingu a prognózy AI",
           "Cieľová doba odozvy podpory 24 hodín"
         ]
@@ -535,10 +537,12 @@
         "name": "Podnikový",
         "description": "Pre organizácie s individuálnymi požiadavkami na objem, zabezpečenie, podporu a nasadenie.",
         "features": [
-          "Individuálna kapacita udalostí, API, MCP, webov a členov",
-          "Individuálne nastavenie uchovávania údajov a reportovania",
+          "20M+ udalostí/mesiac",
+          "Neobmedzené weby, členovia, ciele a záznamy relácií",
+          "CSV (∞)",
+          "∞ člen, ∞ cieľov a ∞ záznamov relácií/mesiac",
           "Pokročilé požiadavky na identitu, branding a integrácie",
-          "Vyhradený CSM a možnosti SLA"
+          "Vyhradený CSM a možnosti 99.99% SLA"
         ]
       }
     }

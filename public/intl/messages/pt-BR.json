@@ -465,6 +465,7 @@
         "features": [
           "100K eventos/mês",
           "5 sites",
+          "1 membro, 5 metas e 50 reproduções de sessão/mês",
           "Análises essenciais, acesso de leitura à API e 50 chamadas MCP/dia",
           "Painel em tempo real",
           "Em conformidade com o GDPR por padrão",
@@ -481,7 +482,7 @@
           "10 sites",
           "1 membro, 20 metas e 500 reproduções de sessão/mês",
           "500 chamadas MCP/dia e 60 solicitações API/minuto",
-          "Exportação CSV e relatórios diários ou semanais por e-mail",
+          "Exportação CSV (10K) e relatórios diários ou semanais por e-mail",
           "3 regras básicas de alerta e análises de IA ilimitadas",
           "Retenção de dados por 6 meses",
           "5 relatórios de IA/mês"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Para equipes que precisam de colaboração, automação mais completa e análises avançadas.",
         "features": [
-          "2M eventos/mês",
+          "1M eventos/mês",
           "25 sites",
           "Tudo do Starter",
           "5 membros da equipe, 100 metas e 5K reproduções/mês",
           "Chamadas MCP ilimitadas e 300 solicitações API/minuto",
-          "Exportação CSV e JSON, 5 webhooks e alertas do Slack",
+          "Exportação CSV (100K) e JSON, 5 webhooks e alertas do Slack",
           "Detecção de anomalias por IA, funis avançados e suporte prioritário",
           "Retenção de dados por 24 meses",
           "50 relatórios de IA/mês"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Para equipes com vários produtos e agências que precisam de escala, governança e entregas com marca própria.",
         "features": [
-          "10M eventos/mês e 50 sites",
+          "5M eventos/mês e 50 sites",
           "20 membros, metas ilimitadas e retenção de dados ilimitada",
           "Chamadas MCP ilimitadas e 600 solicitações API/minuto",
           "20 webhooks, 100 regras de alerta e 200 relatórios de IA/mês",
+          "CSV (500K)",
           "SSO/SAML, controles de marca branca e previsões por IA",
           "Meta de resposta do suporte em 24 horas"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Para organizações com requisitos personalizados de volume, segurança, suporte e implantação.",
         "features": [
-          "Capacidade personalizada de eventos, API, MCP, sites e membros",
+          "20M+ eventos/mês",
+          "Sites, membros, metas e reproduções de sessão ilimitados",
+          "CSV (∞)",
           "Configuração personalizada de retenção e relatórios",
           "Requisitos avançados de identidade, marca e integração",
-          "Opções de CSM dedicado e SLA"
+          "Opções de CSM dedicado e 99.99% SLA"
         ]
       }
     },

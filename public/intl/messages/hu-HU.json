@@ -465,6 +465,7 @@
         "features": [
           "100K esemény havonta",
           "5 webhely",
+          "1 tag, 5 cél és havi 50 munkamenet-visszajátszás",
           "Alapvető analitika, olvasási hozzáférés az API-hoz és napi 50 MCP-hívás",
           "Valós idejű irányítópult",
           "Alapértelmezett GDPR-megfelelőség",
@@ -481,7 +482,7 @@
           "10 webhely",
           "1 tag, 20 cél és havi 500 munkamenet-visszajátszás",
           "Napi 500 MCP-hívás és percenként 60 API-kérés",
-          "CSV-export és napi vagy heti e-mailes jelentések",
+          "CSV (10K)-export és napi vagy heti e-mailes jelentések",
           "3 alapvető riasztási szabály és korlátlan AI-elemzés",
           "6 hónapos adatmegőrzés",
           "Havi 5 AI-jelentés"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Együttműködést, összetettebb automatizálást és fejlett analitikát igénylő csapatoknak.",
         "features": [
-          "2M esemény havonta",
+          "1M esemény havonta",
           "25 webhely",
           "A Kezdő csomag minden funkciója",
           "5 csapattag, 100 cél és havi 5K visszajátszás",
           "Korlátlan MCP-hívás és percenként 300 API-kérés",
-          "CSV- és JSON-export, 5 webhook és Slack-riasztások",
+          "CSV (100K)- és JSON-export, 5 webhook és Slack-riasztások",
           "AI-alapú anomáliaészlelés, fejlett tölcsérek és elsőbbségi támogatás",
           "24 hónapos adatmegőrzés",
           "Havi 50 AI-jelentés"
@@ -506,10 +507,11 @@
         "name": "Csapat",
         "description": "Több termékkel dolgozó csapatoknak és ügynökségeknek, amelyeknek méretezhetőségre, irányításra és saját márkás kézbesítésre van szükségük.",
         "features": [
-          "10M esemény havonta és 50 webhely",
+          "5M esemény havonta és 50 webhely",
           "20 tag, korlátlan cél és korlátlan adatmegőrzés",
           "Korlátlan MCP-hívás és percenként 600 API-kérés",
           "20 webhook, 100 riasztási szabály és havi 200 AI-jelentés",
+          "CSV (500K)",
           "SSO/SAML, saját márkás vezérlők és AI-előrejelzés",
           "24 órás támogatási válaszidő-cél"
         ]
@@ -518,10 +520,12 @@
         "name": "Nagyvállalati",
         "description": "Egyedi mennyiségi, biztonsági, támogatási és üzembe helyezési követelményekkel rendelkező szervezeteknek.",
         "features": [
-          "Egyedi esemény-, API-, MCP-, webhely- és tagkapacitás",
-          "Egyedi adatmegőrzési és jelentéskészítési beállítások",
+          "20M+ esemény havonta",
+          "Korlátlan webhelyek, tagok, célok és munkamenet-visszajátszások",
+          "CSV (∞)",
+          "∞ tag, ∞ cél és havi ∞ munkamenet-visszajátszás",
           "Fejlett identitási, márka- és integrációs követelmények",
-          "Dedikált ügyfélsiker-menedzser és SLA-lehetőségek"
+          "Dedikált ügyfélsiker-menedzser és 99.99% SLA-lehetőségek"
         ]
       }
     },

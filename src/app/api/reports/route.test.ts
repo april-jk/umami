@@ -174,15 +174,16 @@ describe('POST', () => {
     expect(createReport).toHaveBeenCalled();
   });
 
-  test('blocks goals on plans without goal access', async () => {
-    process.env.CLOUD_MODE = '1';
+  test('blocks Free goals at the five-goal quota', async () => {
+    process.env.MEMBERSHIP_ENABLED = '1';
     parseRequestMock.mockResolvedValue({ auth: {}, body: reportBody, error: undefined });
     entitlementMock.mockResolvedValue({
       tenantId: 'tenant-1',
       plan: 'free',
-      allowed: false,
-      value: 0,
+      allowed: true,
+      value: 5,
     });
+    vi.mocked(getTenantGoalCount).mockResolvedValue(5);
     const response = await POST(new Request('http://localhost', { method: 'POST' }));
     expect(response.status).toBe(403);
   });

@@ -4,11 +4,11 @@ import path from 'node:path';
 const messagesDirectory = path.resolve('public/intl/messages');
 const sourceLocale = 'en-US';
 const expectedPlans = {
-  free: 8,
+  free: 9,
   starter: 8,
   pro: 9,
-  team: 6,
-  enterprise: 4,
+  team: 7,
+  enterprise: 6,
 };
 
 function readMessages(locale) {

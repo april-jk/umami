@@ -465,6 +465,7 @@
         "features": [
           "100K įvykių per mėnesį",
           "5 svetainės",
+          "1 narys, 5 tikslų ir 50 seansų įrašų per mėnesį",
           "Pagrindinė analitika, API skaitymo prieiga ir 50 MCP iškvietimų per dieną",
           "Realaus laiko suvestinė",
           "Numatytoji atitiktis GDPR",
@@ -481,7 +482,7 @@
           "10 svetainių",
           "1 narys, 20 tikslų ir 500 seansų įrašų per mėnesį",
           "500 MCP iškvietimų per dieną ir 60 API užklausų per minutę",
-          "CSV eksportas ir kasdienės arba savaitinės ataskaitos el. paštu",
+          "CSV (10K) eksportas ir kasdienės arba savaitinės ataskaitos el. paštu",
           "3 pagrindinės įspėjimų taisyklės ir neribotos AI analizės",
           "6 mėnesių duomenų saugojimas",
           "5 AI ataskaitos per mėnesį"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Komandoms, kurioms reikia bendradarbiavimo, išsamesnio automatizavimo ir pažangios analitikos.",
         "features": [
-          "2M įvykių per mėnesį",
+          "1M įvykių per mėnesį",
           "25 svetainės",
           "Viskas, kas įtraukta į Pradinį planą",
           "5 komandos nariai, 100 tikslų ir 5K įrašų per mėnesį",
           "Neriboti MCP iškvietimai ir 300 API užklausų per minutę",
-          "CSV ir JSON eksportas, 5 webhook sąsajos ir Slack įspėjimai",
+          "CSV (100K) ir JSON eksportas, 5 webhook sąsajos ir Slack įspėjimai",
           "AI anomalijų aptikimas, pažangios konversijų sekos ir prioritetinė pagalba",
           "24 mėnesių duomenų saugojimas",
           "50 AI ataskaitų per mėnesį"
@@ -506,10 +507,11 @@
         "name": "Komanda",
         "description": "Kelių produktų komandoms ir agentūroms, kurioms reikia mastelio, valdymo ir ataskaitų su savo prekės ženklu.",
         "features": [
-          "10M įvykių per mėnesį ir 50 svetainių",
+          "5M įvykių per mėnesį ir 50 svetainių",
           "20 narių, neriboti tikslai ir neribotas duomenų saugojimas",
           "Neriboti MCP iškvietimai ir 600 API užklausų per minutę",
           "20 webhook sąsajų, 100 įspėjimų taisyklių ir 200 AI ataskaitų per mėnesį",
+          "CSV (500K)",
           "SSO/SAML, savo prekės ženklo valdikliai ir AI prognozavimas",
           "Pagalbos atsakymo tikslas – per 24 valandas"
         ]
@@ -518,10 +520,12 @@
         "name": "Įmonėms",
         "description": "Organizacijoms, turinčioms individualius apimties, saugumo, pagalbos ir diegimo reikalavimus.",
         "features": [
-          "Individualus įvykių, API, MCP, svetainių ir narių pajėgumas",
-          "Individuali saugojimo ir ataskaitų konfigūracija",
+          "20M+ įvykių per mėnesį",
+          "Neribotos svetainės, nariai, tikslai ir seansų įrašai",
+          "CSV (∞)",
+          "∞ narys, ∞ tikslų ir ∞ seansų įrašų per mėnesį",
           "Pažangūs tapatybės, prekės ženklo ir integravimo reikalavimai",
-          "Asmeninis klientų sėkmės vadybininkas ir SLA parinktys"
+          "Asmeninis klientų sėkmės vadybininkas ir 99.99% SLA parinktys"
         ]
       }
     },

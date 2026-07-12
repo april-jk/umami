@@ -465,6 +465,7 @@
         "features": [
           "100K gebeurtenissen/maand",
           "5 websites",
+          "1 lid, 5 doelen en 50 sessieherhalingen/maand",
           "Kernanalyses, leestoegang tot de API en 50 MCP-aanroepen/dag",
           "Realtime dashboard",
           "Standaard GDPR-conform",
@@ -481,7 +482,7 @@
           "10 websites",
           "1 lid, 20 doelen en 500 sessieherhalingen/maand",
           "500 MCP-aanroepen/dag en 60 API-verzoeken/minuut",
-          "CSV-export en dagelijkse of wekelijkse e-mailrapporten",
+          "CSV (10K)-export en dagelijkse of wekelijkse e-mailrapporten",
           "3 basiswaarschuwingsregels en onbeperkte AI-analyses",
           "Gegevensbewaring van 6 maanden",
           "5 AI-rapporten/maand"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Voor teams die samenwerking, uitgebreidere automatisering en geavanceerde analyses nodig hebben.",
         "features": [
-          "2M gebeurtenissen/maand",
+          "1M gebeurtenissen/maand",
           "25 websites",
           "Alles uit Starter",
           "5 teamleden, 100 doelen en 5K herhalingen/maand",
           "Onbeperkte MCP-aanroepen en 300 API-verzoeken/minuut",
-          "CSV- en JSON-export, 5 webhooks en Slack-waarschuwingen",
+          "CSV (100K)- en JSON-export, 5 webhooks en Slack-waarschuwingen",
           "AI-anomaliedetectie, geavanceerde trechters en prioriteitsondersteuning",
           "Gegevensbewaring van 24 maanden",
           "50 AI-rapporten/maand"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Voor multiproductteams en bureaus die schaal, governance en levering onder eigen merk nodig hebben.",
         "features": [
-          "10M gebeurtenissen/maand en 50 websites",
+          "5M gebeurtenissen/maand en 50 websites",
           "20 leden, onbeperkte doelen en onbeperkte gegevensbewaring",
           "Onbeperkte MCP-aanroepen en 600 API-verzoeken/minuut",
           "20 webhooks, 100 waarschuwingsregels en 200 AI-rapporten/maand",
+          "CSV (500K)",
           "SSO/SAML, whitelabelbeheer en AI-voorspellingen",
           "Beoogde reactietijd van ondersteuning: 24 uur"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Voor organisaties met aangepaste eisen voor volume, beveiliging, ondersteuning en implementatie.",
         "features": [
-          "Aangepaste capaciteit voor gebeurtenissen, API, MCP, websites en leden",
-          "Aangepaste configuratie voor bewaring en rapportage",
+          "20M+ gebeurtenissen/maand",
+          "Onbeperkte websites, leden, doelen en sessieherhalingen",
+          "CSV (∞)",
+          "∞ lid, ∞ doelen en ∞ sessieherhalingen/maand",
           "Geavanceerde vereisten voor identiteit, merk en integratie",
-          "Opties voor een vaste CSM en SLA"
+          "Opties voor een vaste CSM en 99.99% SLA"
         ]
       }
     },

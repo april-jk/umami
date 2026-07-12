@@ -465,6 +465,7 @@
         "features": [
           "100K imeacht/mí",
           "5 shuíomh gréasáin",
+          "1 bhall, 5 sprioc agus 50 athsheinm seisiúin sa mhí",
           "Bun-anailísíocht, rochtain léite API agus 50 glao MCP sa lá",
           "Deais fíor-ama",
           "Comhlíontach le GDPR de réir réamhshocraithe",
@@ -481,7 +482,7 @@
           "10 suíomh gréasáin",
           "1 bhall, 20 sprioc agus 500 athsheinm seisiúin sa mhí",
           "500 glao MCP sa lá agus 60 iarratas API sa nóiméad",
-          "Easpórtáil CSV agus tuairiscí ríomhphoist laethúla nó seachtainiúla",
+          "Easpórtáil CSV (10K) agus tuairiscí ríomhphoist laethúla nó seachtainiúla",
           "3 riail foláirimh bhunúsacha agus anailísí AI gan teorainn",
           "Coinneáil sonraí 6 mhí",
           "5 thuairisc AI sa mhí"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "D’fhoirne a dteastaíonn comhoibriú, uathoibriú níos saibhre agus ard-anailísíocht uathu.",
         "features": [
-          "2M imeacht/mí",
+          "1M imeacht/mí",
           "25 suíomh gréasáin",
           "Gach rud sa phlean Tosaitheoir",
           "5 bhall, 100 sprioc agus 5K athsheinm sa mhí",
           "Glaonna MCP gan teorainn agus 300 iarratas API sa nóiméad",
-          "Easpórtáil CSV agus JSON, 5 webhooks agus foláirimh Slack",
+          "Easpórtáil CSV (100K) agus JSON, 5 webhooks agus foláirimh Slack",
           "Aimsiú aimhrialtachtaí AI, tonnadóirí ardleibhéil agus tacaíocht tosaíochta",
           "Coinneáil sonraí 24 mí",
           "50 tuairisc AI sa mhí"
@@ -506,10 +507,11 @@
         "name": "Foireann",
         "description": "D’fhoirne iltáirge agus do ghníomhaireachtaí a dteastaíonn scála, rialachas agus seachadadh brandáilte uathu.",
         "features": [
-          "10M imeacht/mí agus 50 suíomh gréasáin",
+          "5M imeacht/mí agus 50 suíomh gréasáin",
           "20 ball, spriocanna gan teorainn agus coinneáil sonraí gan teorainn",
           "Glaonna MCP gan teorainn agus 600 iarratas API sa nóiméad",
           "20 webhook, 100 riail foláirimh agus 200 tuairisc AI sa mhí",
+          "CSV (500K)",
           "SSO/SAML, rialuithe lipéid bháin agus réamhaisnéisiú AI",
           "Sprioc freagartha tacaíochta 24 uair"
         ]
@@ -518,10 +520,12 @@
         "name": "Fiontar",
         "description": "D’eagraíochtaí a bhfuil riachtanais shaincheaptha acu maidir le toirt, slándáil, tacaíocht agus imscaradh.",
         "features": [
-          "Acmhainn shaincheaptha d’imeachtaí, API, MCP, suíomhanna agus baill",
-          "Cumraíocht shaincheaptha coinneála agus tuairiscithe",
+          "20M+ imeacht/mí",
+          "Suíomhanna gréasáin, baill, spriocanna agus athsheinnt seisiúin gan teorainn",
+          "CSV (∞)",
+          "∞ bhall, ∞ sprioc agus ∞ athsheinm seisiúin sa mhí",
           "Ardriachtanais aitheantais, brandála agus comhtháthaithe",
-          "Roghanna tiomnaithe CSM agus SLA"
+          "Roghanna tiomnaithe CSM agus 99.99% SLA"
         ]
       }
     },

@@ -99,7 +99,7 @@ describe('MembershipPage', () => {
       data: {
         plan: 'pro',
         month: '2026-07',
-        events: { used: 1_000_000, limit: 2_000_000 },
+        events: { used: 500_000, limit: 1_000_000 },
         websites: { used: 10, limit: 25 },
         members: { used: 3, limit: 5 },
       },
@@ -142,7 +142,7 @@ describe('MembershipPage', () => {
       data: {
         plan: 'pro',
         month: '2026-07',
-        events: { used: 1_800_000, limit: 2_000_000 },
+        events: { used: 900_000, limit: 1_000_000 },
         websites: { used: 20, limit: 25 },
         members: { used: 2, limit: 5 },
       },
@@ -236,7 +236,7 @@ describe('MembershipPage', () => {
       data: {
         plan: 'team',
         month: '2026-07',
-        events: { used: 5_000_000, limit: 10_000_000 },
+        events: { used: 2_500_000, limit: 5_000_000 },
         websites: { used: 20, limit: 50 },
         members: { used: 10, limit: 20 },
       },
@@ -276,7 +276,7 @@ describe('MembershipPage', () => {
       data: {
         plan: 'team',
         month: '2026-07',
-        events: { used: 1_000_000, limit: 10_000_000 },
+        events: { used: 500_000, limit: 5_000_000 },
         websites: { used: 10, limit: 50 },
         members: { used: 5, limit: 20 },
       },

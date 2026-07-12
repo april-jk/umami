@@ -376,13 +376,16 @@ describe('getTotalTenantMemberCount', () => {
 });
 
 describe('reserveTenantEvent', () => {
-  test('does not reserve a counter for unlimited plans', async () => {
+  test('enforces the Enterprise 20M base event allowance', async () => {
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'enterprise' });
+    prismaMock.client.tenantUsageMonthly.upsert.mockResolvedValue({});
+    prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue({ eventCount: 19_999_999n });
+    prismaMock.client.tenantUsageMonthly.updateMany.mockResolvedValue({ count: 1 });
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
 
     const result = await reserveTenantEvent('tenant-1');
 
-    expect(result).toEqual({ allowed: true, limit: null, used: null, remaining: null });
-    expect(transactionMock).not.toHaveBeenCalled();
+    expect(result).toEqual({ allowed: true, limit: 20_000_000, used: 20_000_000, remaining: 0 });
   });
 
   test('allows event when under limit and returns usage info', async () => {
@@ -430,15 +433,15 @@ describe('reserveTenantEvent', () => {
   test('allows large but finite event limits for team plan', async () => {
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'team' });
     prismaMock.client.tenantUsageMonthly.upsert.mockResolvedValue({});
-    prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue({ eventCount: 9_999_999n });
+    prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue({ eventCount: 4_999_999n });
     prismaMock.client.tenantUsageMonthly.updateMany.mockResolvedValue({ count: 1 });
     transactionMock.mockImplementation(async fn => fn(prismaMock.client));
 
     const result = await reserveTenantEvent('tenant-1');
 
     expect(result.allowed).toBe(true);
-    expect(result.limit).toBe(10_000_000);
-    expect(result.used).toBe(10_000_000);
+    expect(result.limit).toBe(5_000_000);
+    expect(result.used).toBe(5_000_000);
     expect(result.remaining).toBe(0);
   });
 
@@ -523,7 +526,7 @@ describe('getTenantUsage', () => {
 
     expect(result.plan).toBe('pro');
     expect(result.month).toBe('2026-07');
-    expect(result.events).toEqual({ used: 1_000_000, limit: 2_000_000 });
+    expect(result.events).toEqual({ used: 1_000_000, limit: 1_000_000 });
     expect(result.websites).toEqual({ used: 15, limit: 25 });
     expect(result.members).toEqual({ used: 4, limit: 5 }); // 2 teams x 2 members = 4
   });
@@ -549,7 +552,7 @@ describe('getTenantUsage', () => {
 
     const result = await getTenantUsage('tenant-1');
 
-    expect(result.events.limit).toBe(10_000_000);
+    expect(result.events.limit).toBe(5_000_000);
     expect(result.websites.limit).toBe(50);
     expect(result.members.limit).toBe(20);
   });

@@ -474,6 +474,7 @@
         "features": [
           "100K events/month",
           "5 websites",
+          "1 member, 5 goals, and 50 session replays/month",
           "Core analytics, API read access, and 50 MCP calls/day",
           "Real-time dashboard",
           "GDPR compliant by default",
@@ -490,7 +491,7 @@
           "10 websites",
           "1 member, 20 goals, and 500 session replays/month",
           "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
+          "CSV (10K) export and daily or weekly email reports",
           "3 basic alert rules and unlimited AI analyses",
           "6 months data retention",
           "5 AI reports/month"
@@ -500,12 +501,12 @@
         "name": "Pro",
         "description": "For teams that need collaboration, richer automation, and advanced analytics.",
         "features": [
-          "2M events/month",
+          "1M events/month",
           "25 websites",
           "Everything in Starter",
           "5 team members, 100 goals, and 5K replays/month",
           "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
+          "CSV (100K) and JSON export, 5 webhooks, and Slack alerts",
           "AI anomaly detection, advanced funnels, and priority support",
           "24 months data retention",
           "50 AI reports/month"
@@ -515,10 +516,11 @@
         "name": "Team",
         "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
         "features": [
-          "10M events/month and 50 websites",
+          "5M events/month and 50 websites",
           "20 members, unlimited goals, and unlimited data retention",
           "Unlimited MCP calls and 600 API requests/minute",
           "20 webhooks, 100 alert rules, and 200 AI reports/month",
+          "CSV (500K)",
           "SSO/SAML, white-label controls, and AI forecasting",
           "24-hour support response target"
         ]
@@ -527,10 +529,12 @@
         "name": "Enterprise",
         "description": "For organizations with custom volume, security, support, and deployment requirements.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
+          "20M+ events/month",
+          "Unlimited websites, members, goals, and session replays",
+          "CSV (∞)",
           "Custom retention and reporting configuration",
           "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Dedicated CSM and 99.99% SLA"
         ]
       }
     },

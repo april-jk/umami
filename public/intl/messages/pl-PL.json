@@ -482,6 +482,7 @@
         "features": [
           "100K zdarzeń/miesiąc",
           "5 witryn",
+          "1 członek, 5 celów i 50 nagrań sesji/miesiąc",
           "Podstawowa analityka, dostęp do API do odczytu i 50 wywołań MCP/dzień",
           "Pulpit w czasie rzeczywistym",
           "Zgodność z GDPR domyślnie",
@@ -498,7 +499,7 @@
           "10 witryn",
           "1 członek, 20 celów i 500 nagrań sesji/miesiąc",
           "500 wywołań MCP/dzień i 60 zapytań API/minutę",
-          "Eksport CSV i dzienne lub tygodniowe raporty e-mail",
+          "Eksport CSV (10K) i dzienne lub tygodniowe raporty e-mail",
           "3 podstawowe reguły alertów i nieograniczone analizy AI",
           "6 miesięcy przechowywania danych",
           "5 raportów AI/miesiąc"
@@ -508,12 +509,12 @@
         "name": "Pro",
         "description": "Dla zespołów, które potrzebują współpracy, bogatszej automatyzacji i zaawansowanej analityki.",
         "features": [
-          "2M zdarzeń/miesiąc",
+          "1M zdarzeń/miesiąc",
           "25 witryn",
           "Wszystko ze Startowego",
           "5 członków zespołu, 100 celów i 5K nagrań/miesiąc",
           "Nieograniczone wywołania MCP i 300 zapytań API/minutę",
-          "Eksport CSV i JSON, 5 webhooków i alerty Slack",
+          "Eksport CSV (100K) i JSON, 5 webhooków i alerty Slack",
           "Wykrywanie anomalii AI, zaawansowane lejki i priorytetowe wsparcie",
           "24 miesiące przechowywania danych",
           "50 raportów AI/miesiąc"
@@ -523,10 +524,11 @@
         "name": "Zespół",
         "description": "Dla zespołów wieloproduktowych i agencji, które potrzebują skali, zarządzania i brandowanej dostawy.",
         "features": [
-          "10M zdarzeń/miesiąc i 50 witryn",
+          "5M zdarzeń/miesiąc i 50 witryn",
           "20 członków, nieograniczone cele i nieograniczone przechowywanie danych",
           "Nieograniczone wywołania MCP i 600 zapytań API/minutę",
           "20 webhooków, 100 reguł alertów i 200 raportów AI/miesiąc",
+          "CSV (500K)",
           "SSO/SAML, kontroli white-label i prognozowanie AI",
           "Docelowy czas odpowiedzi wsparcia 24 godziny"
         ]
@@ -535,10 +537,12 @@
         "name": "Enterprise",
         "description": "Dla organizacji z niestandardowymi wymaganiami dotyczącymi wolumenu, bezpieczeństwa, wsparcia i wdrażania.",
         "features": [
-          "Niestandardowy wolumen zdarzeń, API, MCP, witryn i członków",
-          "Niestandardowa konfiguracja przechowywania i raportowania",
+          "20M+ zdarzeń/miesiąc",
+          "Nieograniczona liczba witryn, członków, celów i nagrań sesji",
+          "CSV (∞)",
+          "∞ członek, ∞ celów i ∞ nagrań sesji/miesiąc",
           "Zaawansowane wymagania dotyczące tożsamości, brandingu i integracji",
-          "Dedykowany CSM i opcje SLA"
+          "Dedykowany CSM i opcje 99.99% SLA"
         ]
       }
     }

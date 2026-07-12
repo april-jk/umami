@@ -465,6 +465,7 @@
         "features": [
           "100K Ereignisse/Monat",
           "5 Websites",
+          "1 Mitglied, 5 Ziele und 50 Sitzungswiedergaben/Monat",
           "Kernanalysen, API-Lesezugriff und 50 MCP-Aufrufe/Tag",
           "Echtzeit-Dashboard",
           "Standardmäßig GDPR-konform",
@@ -481,7 +482,7 @@
           "10 Websites",
           "1 Mitglied, 20 Ziele und 500 Sitzungswiedergaben/Monat",
           "500 MCP-Aufrufe/Tag und 60 API-Anfragen/Minute",
-          "CSV-Export und tägliche oder wöchentliche E-Mail-Berichte",
+          "CSV (10K)-Export und tägliche oder wöchentliche E-Mail-Berichte",
           "3 grundlegende Alarmregeln und unbegrenzte KI-Analysen",
           "Datenspeicherung für 6 Monate",
           "5 KI-Berichte/Monat"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Für Teams, die Zusammenarbeit, umfassendere Automatisierung und fortgeschrittene Analysen benötigen.",
         "features": [
-          "2M Ereignisse/Monat",
+          "1M Ereignisse/Monat",
           "25 Websites",
           "Alles aus Starter",
           "5 Teammitglieder, 100 Ziele und 5K Wiedergaben/Monat",
           "Unbegrenzte MCP-Aufrufe und 300 API-Anfragen/Minute",
-          "CSV- und JSON-Export, 5 Webhooks und Slack-Benachrichtigungen",
+          "CSV (100K)- und JSON-Export, 5 Webhooks und Slack-Benachrichtigungen",
           "KI-Anomalieerkennung, fortgeschrittene Trichter und bevorzugter Support",
           "Datenspeicherung für 24 Monate",
           "50 KI-Berichte/Monat"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Für Produktteams und Agenturen, die Skalierbarkeit, Governance und eine Bereitstellung unter eigener Marke benötigen.",
         "features": [
-          "10M Ereignisse/Monat und 50 Websites",
+          "5M Ereignisse/Monat und 50 Websites",
           "20 Mitglieder, unbegrenzte Ziele und unbegrenzte Datenspeicherung",
           "Unbegrenzte MCP-Aufrufe und 600 API-Anfragen/Minute",
           "20 Webhooks, 100 Alarmregeln und 200 KI-Berichte/Monat",
+          "CSV (500K)",
           "SSO/SAML, White-Label-Steuerung und KI-Prognosen",
           "Angestrebte Support-Antwortzeit von 24 Stunden"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Für Organisationen mit individuellen Anforderungen an Volumen, Sicherheit, Support und Bereitstellung.",
         "features": [
-          "Nach Masse Kapazität für Ereignisse, API, MCP, Websites und Mitglieder",
-          "Nach Masse Konfiguration von Datenspeicherung und Berichten",
+          "20M+ Ereignisse/Monat",
+          "Unbegrenzte Websites, Mitglieder, Ziele und Sitzungsaufzeichnungen",
+          "CSV (∞)",
+          "∞ Mitglied, ∞ Ziele und ∞ Sitzungswiedergaben/Monat",
           "Erweiterte Anforderungen an Identität, Branding und Integrationen",
-          "Optionen für einen dedizierten CSM und SLA"
+          "Optionen für einen dedizierten CSM und 99.99% SLA"
         ]
       }
     },

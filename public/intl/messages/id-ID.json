@@ -465,6 +465,7 @@
         "features": [
           "100 ribu peristiwa/bulan",
           "5 situs web",
+          "1 anggota, 5 sasaran, dan 50 tayangan ulang sesi/bulan",
           "Analitik inti, akses baca API, dan 50 panggilan MCP/hari",
           "Dasbor waktu nyata",
           "Mematuhi GDPR secara bawaan",
@@ -481,7 +482,7 @@
           "10 situs web",
           "1 anggota, 20 sasaran, dan 500 tayangan ulang sesi/bulan",
           "500 panggilan MCP/hari dan 60 permintaan API/menit",
-          "Ekspor CSV dan laporan email harian atau mingguan",
+          "Ekspor CSV (10K) dan laporan email harian atau mingguan",
           "3 aturan peringatan dasar dan analisis AI tanpa batas",
           "Penyimpanan data 6 bulan",
           "5 laporan AI/bulan"
@@ -491,12 +492,12 @@
         "name": "Profesional",
         "description": "Untuk tim yang membutuhkan kolaborasi, otomatisasi lebih lengkap, dan analitik lanjutan.",
         "features": [
-          "2 juta peristiwa/bulan",
+          "1 juta peristiwa/bulan",
           "25 situs web",
           "Semua fitur paket Pemula",
           "5 anggota tim, 100 sasaran, dan 5 ribu tayangan ulang/bulan",
           "Panggilan MCP tanpa batas dan 300 permintaan API/menit",
-          "Ekspor CSV dan JSON, 5 Webhook, dan peringatan Slack",
+          "Ekspor CSV (100K) dan JSON, 5 Webhook, dan peringatan Slack",
           "Deteksi anomali AI, corong lanjutan, dan dukungan prioritas",
           "Penyimpanan data 24 bulan",
           "50 laporan AI/bulan"
@@ -506,10 +507,11 @@
         "name": "Tim",
         "description": "Untuk tim multiproduk dan agensi yang memerlukan skala, tata kelola, dan pengiriman bermerek.",
         "features": [
-          "10 juta peristiwa/bulan dan 50 situs web",
+          "5 juta peristiwa/bulan dan 50 situs web",
           "20 anggota, sasaran tanpa batas, dan penyimpanan data tanpa batas",
           "Panggilan MCP tanpa batas dan 600 permintaan API/menit",
           "20 Webhook, 100 aturan peringatan, dan 200 laporan AI/bulan",
+          "CSV (500K)",
           "SSO/SAML, kontrol label putih, dan prakiraan AI",
           "Target respons dukungan 24 jam"
         ]
@@ -518,10 +520,12 @@
         "name": "Perusahaan",
         "description": "Untuk organisasi dengan kebutuhan khusus terkait volume, keamanan, dukungan, dan penerapan.",
         "features": [
-          "Kapasitas peristiwa, API, MCP, situs web, dan anggota khusus",
-          "Konfigurasi penyimpanan dan pelaporan khusus",
+          "20+ juta peristiwa/bulan",
+          "Situs web, anggota, sasaran, dan tayangan ulang sesi tanpa batas",
+          "CSV (∞)",
+          "∞ anggota, ∞ sasaran, dan ∞ tayangan ulang sesi/bulan",
           "Kebutuhan identitas, merek, dan integrasi lanjutan",
-          "Opsi CSM khusus dan SLA"
+          "Opsi CSM khusus dan 99.99% SLA"
         ]
       }
     },

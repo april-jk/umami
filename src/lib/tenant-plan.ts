@@ -1,17 +1,22 @@
 export const TENANT_PLAN_LIMITS = {
   free: { eventLimit: 100_000, websiteLimit: 5, memberLimit: 1, retentionDays: 7 },
   starter: { eventLimit: 500_000, websiteLimit: 10, memberLimit: 1, retentionDays: 180 },
-  pro: { eventLimit: 2_000_000, websiteLimit: 25, memberLimit: 5, retentionDays: 730 },
-  team: { eventLimit: 10_000_000, websiteLimit: 50, memberLimit: 20, retentionDays: null },
-  enterprise: { eventLimit: null, websiteLimit: null, memberLimit: null, retentionDays: null },
+  pro: { eventLimit: 1_000_000, websiteLimit: 25, memberLimit: 5, retentionDays: 730 },
+  team: { eventLimit: 5_000_000, websiteLimit: 50, memberLimit: 20, retentionDays: null },
+  enterprise: {
+    eventLimit: 20_000_000,
+    websiteLimit: null,
+    memberLimit: null,
+    retentionDays: null,
+  },
 } as const;
 
 export const TENANT_PLAN_PRICES = {
   free: { monthly: 0, annual: 0 },
   starter: { monthly: 9, annual: 90 },
-  pro: { monthly: 19, annual: 190 },
-  team: { monthly: 39, annual: 390 },
-  enterprise: { monthly: null, annual: null },
+  pro: { monthly: 29, annual: 290 },
+  team: { monthly: 79, annual: 790 },
+  enterprise: { monthly: 199, annual: 1990 },
 } as const;
 
 export type TenantPlanId = keyof typeof TENANT_PLAN_LIMITS;

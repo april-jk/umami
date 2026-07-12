@@ -460,6 +460,7 @@
         "features": [
           "100 nghìn sự kiện/tháng",
           "5 trang web",
+          "1 thành viên, 5 mục tiêu và 50 lượt phát lại phiên/tháng",
           "Phân tích cốt lõi, quyền đọc API và 50 lượt gọi MCP/ngày",
           "Bảng điều khiển thời gian thực",
           "Mặc định tuân thủ GDPR",
@@ -476,7 +477,7 @@
           "10 trang web",
           "1 thành viên, 20 mục tiêu và 500 lượt phát lại phiên/tháng",
           "500 lượt gọi MCP/ngày và 60 yêu cầu API/phút",
-          "Xuất CSV và báo cáo email hàng ngày hoặc hàng tuần",
+          "Xuất CSV (10K) và báo cáo email hàng ngày hoặc hàng tuần",
           "3 quy tắc cảnh báo cơ bản và phân tích AI không giới hạn",
           "Lưu dữ liệu 6 tháng",
           "5 báo cáo AI/tháng"
@@ -486,12 +487,12 @@
         "name": "Chuyên nghiệp",
         "description": "Dành cho nhóm cần cộng tác, tự động hóa phong phú và phân tích nâng cao.",
         "features": [
-          "2 triệu sự kiện/tháng",
+          "1 triệu sự kiện/tháng",
           "25 trang web",
           "Tất cả tính năng của gói Khởi đầu",
           "5 thành viên nhóm, 100 mục tiêu và 5 nghìn lượt phát lại/tháng",
           "Lượt gọi MCP không giới hạn và 300 yêu cầu API/phút",
-          "Xuất CSV và JSON, 5 Webhook và cảnh báo Slack",
+          "Xuất CSV (100K) và JSON, 5 Webhook và cảnh báo Slack",
           "AI phát hiện bất thường, phễu nâng cao và hỗ trợ ưu tiên",
           "Lưu dữ liệu 24 tháng",
           "50 báo cáo AI/tháng"
@@ -501,10 +502,11 @@
         "name": "Nhóm",
         "description": "Dành cho nhóm đa sản phẩm và đại lý cần quy mô, quản trị và phân phối theo thương hiệu.",
         "features": [
-          "10 triệu sự kiện/tháng và 50 trang web",
+          "5 triệu sự kiện/tháng và 50 trang web",
           "20 thành viên, mục tiêu không giới hạn và lưu dữ liệu không giới hạn",
           "Lượt gọi MCP không giới hạn và 600 yêu cầu API/phút",
           "20 Webhook, 100 quy tắc cảnh báo và 200 báo cáo AI/tháng",
+          "CSV (500K)",
           "SSO/SAML, kiểm soát nhãn trắng và dự báo AI",
           "Mục tiêu phản hồi hỗ trợ trong 24 giờ"
         ]
@@ -513,10 +515,12 @@
         "name": "Doanh nghiệp",
         "description": "Dành cho tổ chức có yêu cầu riêng về dung lượng, bảo mật, hỗ trợ và triển khai.",
         "features": [
-          "Tùy chỉnh dung lượng sự kiện, API, MCP, trang web và thành viên",
-          "Tùy chỉnh cấu hình lưu trữ và báo cáo",
+          "20+ triệu sự kiện/tháng",
+          "Không giới hạn trang web, thành viên, mục tiêu và bản phát lại phiên",
+          "CSV (∞)",
+          "∞ thành viên, ∞ mục tiêu và ∞ lượt phát lại phiên/tháng",
           "Yêu cầu nâng cao về danh tính, thương hiệu và tích hợp",
-          "Tùy chọn CSM chuyên trách và SLA"
+          "Tùy chọn CSM chuyên trách và 99.99% SLA"
         ]
       }
     },

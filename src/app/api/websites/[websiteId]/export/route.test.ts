@@ -20,6 +20,7 @@ const entitlementMock = vi.mocked(getWebsiteEntitlement);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
+  delete process.env.MEMBERSHIP_ENABLED;
   vi.clearAllMocks();
   parseRequestMock.mockResolvedValue({ auth: {}, query: {}, error: undefined });
   vi.mocked(getQueryFilters).mockResolvedValue({} as any);
@@ -28,7 +29,7 @@ beforeEach(() => {
     tenantId: 'tenant-1',
     plan: 'starter',
     allowed: true,
-    value: true,
+    value: 10_000,
   });
   vi.mocked(getEventMetrics).mockResolvedValue([
     { name: '=formula', category: 'safe-value', count: 1 },
@@ -59,7 +60,7 @@ test('blocks CSV export when the cloud plan does not include it', async () => {
     tenantId: 'tenant-1',
     plan: 'free',
     allowed: false,
-    value: false,
+    value: 0,
   });
   const response = await GET(new Request('http://localhost'), {
     params: Promise.resolve({ websiteId: 'website-1' }),
@@ -74,6 +75,46 @@ test('blocks CSV export when the cloud plan does not include it', async () => {
     recommendedPlan: 'starter',
     upgradeUrl: '/membership/upgrade?reason=csvExport',
   });
+});
+
+test('blocks CSV exports above the plan row limit', async () => {
+  process.env.MEMBERSHIP_ENABLED = '1';
+  vi.mocked(getEventMetrics).mockResolvedValue(
+    Array.from({ length: 10_001 }, (_, index) => ({ name: `event-${index}` })) as any,
+  );
+
+  const response = await GET(new Request('http://localhost'), {
+    params: Promise.resolve({ websiteId: 'website-1' }),
+  });
+  const body = await response.json();
+
+  expect(response.status).toBe(403);
+  expect(body.error).toMatchObject({
+    code: 'csv-export-limit-reached',
+    current: 10_001,
+    limit: 10_000,
+    currentPlan: 'starter',
+    recommendedPlan: 'pro',
+  });
+});
+
+test('allows unlimited Enterprise CSV exports', async () => {
+  process.env.MEMBERSHIP_ENABLED = '1';
+  entitlementMock.mockResolvedValue({
+    tenantId: 'tenant-1',
+    plan: 'enterprise',
+    allowed: true,
+    value: null,
+  });
+  vi.mocked(getEventMetrics).mockResolvedValue(
+    Array.from({ length: 10_001 }, (_, index) => ({ name: `event-${index}` })) as any,
+  );
+
+  const response = await GET(new Request('http://localhost'), {
+    params: Promise.resolve({ websiteId: 'website-1' }),
+  });
+
+  expect(response.status).toBe(200);
 });
 
 test('returns a CSV zip for entitled plans', async () => {

@@ -465,6 +465,7 @@
         "features": [
           "Aylık 100K olay",
           "5 web sitesi",
+          "1 üye, 5 hedef ve aylık 50 oturum kaydı",
           "Temel analiz, API okuma erişimi ve günlük 50 MCP çağrısı",
           "Gerçek zamanlı gösterge paneli",
           "Varsayılan olarak GDPR uyumlu",
@@ -481,7 +482,7 @@
           "10 web sitesi",
           "1 üye, 20 hedef ve aylık 500 oturum kaydı",
           "Günlük 500 MCP çağrısı ve dakikada 60 API isteği",
-          "CSV dışa aktarma ve günlük veya haftalık e-posta raporları",
+          "CSV (10K) dışa aktarma ve günlük veya haftalık e-posta raporları",
           "3 temel uyarı kuralı ve sınırsız AI analizi",
           "6 ay veri saklama",
           "Ayda 5 AI raporu"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "İş birliğine, daha kapsamlı otomasyona ve gelişmiş analizlere ihtiyaç duyan ekipler için.",
         "features": [
-          "Aylık 2M olay",
+          "Aylık 1M olay",
           "25 web sitesi",
           "Başlangıç planındaki her şey",
           "5 ekip üyesi, 100 hedef ve aylık 5K oturum kaydı",
           "Sınırsız MCP çağrısı ve dakikada 300 API isteği",
-          "CSV ve JSON dışa aktarma, 5 webhook ve Slack uyarıları",
+          "CSV (100K) ve JSON dışa aktarma, 5 webhook ve Slack uyarıları",
           "AI anomali tespiti, gelişmiş dönüşüm hunileri ve öncelikli destek",
           "24 ay veri saklama",
           "Ayda 50 AI raporu"
@@ -506,10 +507,11 @@
         "name": "Ekip",
         "description": "Ölçeklendirme, yönetişim ve kendi markasıyla teslimat gereksinimi olan çok ürünlü ekipler ve ajanslar için.",
         "features": [
-          "Aylık 10M olay ve 50 web sitesi",
+          "Aylık 5M olay ve 50 web sitesi",
           "20 üye, sınırsız hedef ve sınırsız veri saklama",
           "Sınırsız MCP çağrısı ve dakikada 600 API isteği",
           "20 webhook, 100 uyarı kuralı ve ayda 200 AI raporu",
+          "CSV (500K)",
           "SSO/SAML, özel marka kontrolleri ve AI tahmini",
           "24 saatlik destek yanıt hedefi"
         ]
@@ -518,10 +520,12 @@
         "name": "Kurumsal",
         "description": "Özel hacim, güvenlik, destek ve dağıtım gereksinimleri olan kuruluşlar için.",
         "features": [
-          "Özel olay, API, MCP, web sitesi ve üye kapasitesi",
-          "Özel veri saklama ve raporlama yapılandırması",
+          "Aylık 20M+ olay",
+          "Sınırsız web sitesi, üye, hedef ve oturum tekrarı",
+          "CSV (∞)",
+          "∞ üye, ∞ hedef ve aylık ∞ oturum kaydı",
           "Gelişmiş kimlik, marka ve entegrasyon gereksinimleri",
-          "Özel müşteri başarı yöneticisi ve SLA seçenekleri"
+          "Özel müşteri başarı yöneticisi ve 99.99% SLA seçenekleri"
         ]
       }
     },

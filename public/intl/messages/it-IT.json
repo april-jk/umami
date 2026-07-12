@@ -465,6 +465,7 @@
         "features": [
           "100K eventi/mese",
           "5 siti web",
+          "1 membro, 5 obiettivi e 50 replay di sessione/mese",
           "Analisi essenziali, accesso in lettura API e 50 chiamate MCP/giorno",
           "Dashboard in tempo reale",
           "Conforme al GDPR per impostazione predefinita",
@@ -481,7 +482,7 @@
           "10 siti web",
           "1 membro, 20 obiettivi e 500 replay di sessione/mese",
           "500 chiamate MCP/giorno e 60 richieste API/minuto",
-          "Esportazione CSV e report giornalieri o settimanali via e-mail",
+          "Esportazione CSV (10K) e report giornalieri o settimanali via e-mail",
           "3 regole di avviso di base e analisi IA illimitate",
           "Conservazione dei dati per 6 mesi",
           "5 report IA/mese"
@@ -491,12 +492,12 @@
         "name": "Pro",
         "description": "Per team che richiedono collaborazione, automazione più completa e analisi avanzate.",
         "features": [
-          "2M eventi/mese",
+          "1M eventi/mese",
           "25 siti web",
           "Tutto ciò che è incluso in Starter",
           "5 membri del team, 100 obiettivi e 5K replay/mese",
           "Chiamate MCP illimitate e 300 richieste API/minuto",
-          "Esportazione CSV e JSON, 5 webhook e avvisi Slack",
+          "Esportazione CSV (100K) e JSON, 5 webhook e avvisi Slack",
           "Rilevamento delle anomalie con IA, funnel avanzati e supporto prioritario",
           "Conservazione dei dati per 24 mesi",
           "50 report IA/mese"
@@ -506,10 +507,11 @@
         "name": "Team",
         "description": "Per team multiprodotto e agenzie che richiedono scalabilità, governance e consegne personalizzate con il proprio marchio.",
         "features": [
-          "10M eventi/mese e 50 siti web",
+          "5M eventi/mese e 50 siti web",
           "20 membri, obiettivi illimitati e conservazione dei dati illimitata",
           "Chiamate MCP illimitate e 600 richieste API/minuto",
           "20 webhook, 100 regole di avviso e 200 report IA/mese",
+          "CSV (500K)",
           "SSO/SAML, controlli white-label e previsioni IA",
           "Obiettivo di risposta del supporto entro 24 ore"
         ]
@@ -518,10 +520,12 @@
         "name": "Enterprise",
         "description": "Per organizzazioni con requisiti personalizzati di volume, sicurezza, supporto e distribuzione.",
         "features": [
-          "Capacità personalizzata per eventi, API, MCP, siti web e membri",
+          "20M+ eventi/mese",
+          "Siti web, membri, obiettivi e replay delle sessioni illimitati",
+          "CSV (∞)",
           "Configurazione personalizzata di conservazione e reportistica",
           "Requisiti avanzati di identità, branding e integrazione",
-          "Opzioni CSM dedicato e SLA"
+          "Opzioni CSM dedicato e 99.99% SLA"
         ]
       }
     },

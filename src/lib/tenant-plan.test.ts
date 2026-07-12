@@ -89,8 +89,9 @@ describe('isTenantPlanEnforcementEnabled', () => {
 describe('tenant plan prices', () => {
   test('charges ten monthly payments for annual paid plans', () => {
     expect(TENANT_PLAN_PRICES.starter).toEqual({ monthly: 9, annual: 90 });
-    expect(TENANT_PLAN_PRICES.pro).toEqual({ monthly: 19, annual: 190 });
-    expect(TENANT_PLAN_PRICES.team).toEqual({ monthly: 39, annual: 390 });
+    expect(TENANT_PLAN_PRICES.pro).toEqual({ monthly: 29, annual: 290 });
+    expect(TENANT_PLAN_PRICES.team).toEqual({ monthly: 79, annual: 790 });
+    expect(TENANT_PLAN_PRICES.enterprise).toEqual({ monthly: 199, annual: 1990 });
   });
 });
 
@@ -150,10 +151,10 @@ describe('getPlanUpgradeMessage', () => {
     expect(getPlanUpgradeMessage('pro', 'member')).toContain('20');
   });
 
-  test('returns contact sales for enterprise', () => {
+  test('returns the Enterprise base event allowance and then contact sales', () => {
     expect(getPlanUpgradeMessage('enterprise', 'event')).toBe('Contact sales for custom limits.');
     expect(getPlanUpgradeMessage('team', 'event')).toContain('Enterprise');
-    expect(getPlanUpgradeMessage('team', 'event')).toContain('unlimited');
+    expect(getPlanUpgradeMessage('team', 'event')).toContain('20,000,000');
   });
 
   test('handles unknown plans by treating them as free', () => {
@@ -232,10 +233,10 @@ describe('getLimitErrorPayload', () => {
     expect(payload.upgradeMessage).toContain('Team');
   });
 
-  test('handles unlimited limit as null', () => {
-    const payload = getLimitErrorPayload('team', 'event', 100, null);
+  test('handles unlimited website limits as null', () => {
+    const payload = getLimitErrorPayload('enterprise', 'website', 100, null);
     expect(payload.limit).toBeNull();
-    expect(payload.upgradeMessage).toContain('Enterprise');
+    expect(payload.upgradeMessage).toContain('Contact sales');
   });
 
   test('handles bigint current value', () => {

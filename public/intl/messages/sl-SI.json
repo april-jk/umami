@@ -469,6 +469,7 @@
         "features": [
           "100K dogodkov/mesec",
           "5 spletnih mest",
+          "1 član, 5 ciljev in 50 ponovitev sej/mesec",
           "Osnovna analitika, bralni dostop do API in 50 klicev MCP/dan",
           "Nadzorna plošča v realnem času",
           "Privzeto skladno z GDPR",
@@ -485,7 +486,7 @@
           "10 spletnih mest",
           "1 član, 20 ciljev in 500 ponovitev sej/mesec",
           "500 klicev MCP/dan in 60 zahtev API/minuto",
-          "Izvoz CSV ter dnevna ali tedenska e-poštna poročila",
+          "Izvoz CSV (10K) ter dnevna ali tedenska e-poštna poročila",
           "3 osnovna pravila opozoril in neomejene analize z UI",
           "Hramba podatkov 6 mesecev",
           "5 poročil UI/mesec"
@@ -495,12 +496,12 @@
         "name": "Pro",
         "description": "Za ekipe, ki potrebujejo sodelovanje, zmogljivejšo avtomatizacijo in napredno analitiko.",
         "features": [
-          "2M dogodkov/mesec",
+          "1M dogodkov/mesec",
           "25 spletnih mest",
           "Vse iz paketa Starter",
           "5 članov ekipe, 100 ciljev in 5K ponovitev/mesec",
           "Neomejeni klici MCP in 300 zahtev API/minuto",
-          "Izvoz CSV in JSON, 5 webhookov ter opozorila Slack",
+          "Izvoz CSV (100K) in JSON, 5 webhookov ter opozorila Slack",
           "Zaznavanje anomalij z UI, napredni lijaki in prednostna podpora",
           "Hramba podatkov 24 mesecev",
           "50 poročil UI/mesec"
@@ -510,10 +511,11 @@
         "name": "Team",
         "description": "Za večproduktne ekipe in agencije, ki potrebujejo obseg, upravljanje in dostavo pod lastno blagovno znamko.",
         "features": [
-          "10M dogodkov/mesec in 50 spletnih mest",
+          "5M dogodkov/mesec in 50 spletnih mest",
           "20 članov, neomejeni cilji in neomejena hramba podatkov",
           "Neomejeni klici MCP in 600 zahtev API/minuto",
           "20 webhookov, 100 pravil opozoril in 200 poročil UI/mesec",
+          "CSV (500K)",
           "SSO/SAML, upravljanje bele znamke in napovedovanje z UI",
           "Ciljni odziv podpore v 24 urah"
         ]
@@ -522,10 +524,12 @@
         "name": "Enterprise",
         "description": "Za organizacije s prilagojenimi zahtevami glede obsega, varnosti, podpore in namestitve.",
         "features": [
-          "Prilagojena zmogljivost dogodkov, API, MCP, spletnih mest in članov",
-          "Prilagojena nastavitev hrambe in poročanja",
+          "20M+ dogodkov/mesec",
+          "Neomejena spletna mesta, člani, cilji in posnetki sej",
+          "CSV (∞)",
+          "∞ član, ∞ ciljev in ∞ ponovitev sej/mesec",
           "Napredne zahteve glede identitete, blagovne znamke in integracij",
-          "Možnosti namenskega CSM in SLA"
+          "Možnosti namenskega CSM in 99.99% SLA"
         ]
       }
     },

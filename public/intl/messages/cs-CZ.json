@@ -482,6 +482,7 @@
         "features": [
           "100K událostí/měsíc",
           "5 webů",
+          "1 člen, 5 cílů a 50 záznamů relací/měsíc",
           "Základní analytika, přístup API pro čtení a 50 volání MCP/den",
           "Panel v reálném čase",
           "Ve výchozím nastavení v souladu s GDPR",
@@ -498,7 +499,7 @@
           "10 webů",
           "1 člen, 20 cílů a 500 záznamů relací/měsíc",
           "500 volání MCP/den a 60 požadavků API/minutu",
-          "Export CSV a denní nebo týdenní e-mailové reporty",
+          "Export CSV (10K) a denní nebo týdenní e-mailové reporty",
           "3 základní pravidla upozornění a neomezené analýzy AI",
           "Uchovávání dat po dobu 6 měsíců",
           "5 reportů AI/měsíc"
@@ -508,12 +509,12 @@
         "name": "Pro",
         "description": "Pro týmy, které potřebují spolupráci, pokročilejší automatizaci a rozšířenou analytiku.",
         "features": [
-          "2M událostí/měsíc",
+          "1M událostí/měsíc",
           "25 webů",
           "Vše z tarifu Start",
           "5 členů týmu, 100 cílů a 5K záznamů/měsíc",
           "Neomezená volání MCP a 300 požadavků API/minutu",
-          "Export CSV a JSON, 5 webhooků a upozornění ve Slacku",
+          "Export CSV (100K) a JSON, 5 webhooků a upozornění ve Slacku",
           "Detekce anomálií pomocí AI, pokročilé trychtýře a prioritní podpora",
           "Uchovávání dat po dobu 24 měsíců",
           "50 reportů AI/měsíc"
@@ -523,10 +524,11 @@
         "name": "Tým",
         "description": "Pro týmy s více produkty a agentury, které potřebují škálování, správu a značkové výstupy.",
         "features": [
-          "10M událostí/měsíc a 50 webů",
+          "5M událostí/měsíc a 50 webů",
           "20 členů, neomezené cíle a neomezené uchovávání dat",
           "Neomezená volání MCP a 600 požadavků API/minutu",
           "20 webhooků, 100 pravidel upozornění a 200 reportů AI/měsíc",
+          "CSV (500K)",
           "SSO/SAML, nastavení vlastního brandingu a prognózy AI",
           "Cílová doba odezvy podpory 24 hodin"
         ]
@@ -535,10 +537,12 @@
         "name": "Podnikový",
         "description": "Pro organizace s individuálními požadavky na objem, zabezpečení, podporu a nasazení.",
         "features": [
-          "Individuální kapacita událostí, API, MCP, webů a členů",
-          "Individuální nastavení uchovávání dat a reportingu",
+          "20M+ událostí/měsíc",
+          "Neomezené weby, členové, cíle a záznamy relací",
+          "CSV (∞)",
+          "∞ člen, ∞ cílů a ∞ záznamů relací/měsíc",
           "Pokročilé požadavky na identitu, branding a integrace",
-          "Vyhrazený CSM a možnosti SLA"
+          "Vyhrazený CSM a možnosti 99.99% SLA"
         ]
       }
     }
