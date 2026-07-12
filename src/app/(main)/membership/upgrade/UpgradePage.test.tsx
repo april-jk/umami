@@ -110,6 +110,17 @@ describe('UpgradePage', () => {
     expect(screen.getByTestId('plan-card-enterprise')).toHaveStyle({ minWidth: '0' });
   });
 
+  test('anchors plan actions to the bottom of their cards', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+
+    for (const button of screen.getAllByRole('button', { name: 'Subscribe' })) {
+      expect(button).toHaveStyle({ marginTop: 'auto' });
+    }
+  });
+
   test('shows correct limits for free plan', () => {
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },

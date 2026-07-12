@@ -198,9 +198,9 @@ export function UpgradePage() {
               <Panel
                 key={plan}
                 data-test={`plan-card-${plan}`}
-                style={{ ...cardStyle, minWidth: 0 }}
+                style={{ ...cardStyle, minWidth: 0, height: '100%' }}
               >
-                <Column gap="4" padding="2">
+                <Column gap="4" padding="2" style={{ height: '100%' }}>
                   <Column gap="2" alignItems="center">
                     <PlanBadge plan={plan} />
                     <Heading size="sm">{plan.charAt(0).toUpperCase() + plan.slice(1)}</Heading>
@@ -295,7 +295,7 @@ export function UpgradePage() {
 
                   <Button
                     variant={isCurrent ? 'quiet' : 'primary'}
-                    style={{ width: '100%' }}
+                    style={{ width: '100%', marginTop: 'auto' }}
                     isDisabled={
                       isCurrent ||
                       paypalSubscription.isPending ||
