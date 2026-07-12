@@ -248,6 +248,20 @@ describe('canCreateTenantWebsite', () => {
     expect(result).toBe(false);
   });
 
+  test('blocks creation when usage is already above the limit', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'free' });
+    prismaMock.client.website.count.mockResolvedValue(6);
+
+    expect(await canCreateTenantWebsite('tenant-1')).toBe(false);
+  });
+
+  test('allows any website count for an unlimited plan', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'enterprise' });
+    prismaMock.client.website.count.mockResolvedValue(Number.MAX_SAFE_INTEGER);
+
+    expect(await canCreateTenantWebsite('tenant-1')).toBe(true);
+  });
+
   test('allows large but finite limits for team plan', async () => {
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'team' });
     prismaMock.client.website.count.mockResolvedValue(49);
@@ -288,6 +302,24 @@ describe('canAddTeamMember', () => {
     const result = await canAddTeamMember('team-1');
 
     expect(result).toBe(false);
+  });
+
+  test('blocks when member usage is already above the limit', async () => {
+    prismaMock.client.team.findUnique.mockResolvedValue({ tenantId: 'tenant-1' });
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'pro' });
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }]);
+    prismaMock.client.teamUser.count.mockResolvedValue(6);
+
+    expect(await canAddTeamMember('team-1')).toBe(false);
+  });
+
+  test('allows any member count for an unlimited plan', async () => {
+    prismaMock.client.team.findUnique.mockResolvedValue({ tenantId: 'tenant-1' });
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'enterprise' });
+    prismaMock.client.team.findMany.mockResolvedValue([{ id: 'team-1' }]);
+    prismaMock.client.teamUser.count.mockResolvedValue(Number.MAX_SAFE_INTEGER);
+
+    expect(await canAddTeamMember('team-1')).toBe(true);
   });
 
   test('allows large but finite member limits for team plan', async () => {
@@ -381,6 +413,18 @@ describe('reserveTenantEvent', () => {
     expect(result.limit).toBe(100_000);
     expect(result.used).toBe(100_000);
     expect(result.remaining).toBe(0);
+  });
+
+  test('continues blocking when stored usage is already above the limit', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'free' });
+    prismaMock.client.tenantUsageMonthly.upsert.mockResolvedValue({});
+    prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue({ eventCount: 100_001n });
+    prismaMock.client.tenantUsageMonthly.updateMany.mockResolvedValue({ count: 0 });
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
+
+    const result = await reserveTenantEvent('tenant-1');
+
+    expect(result).toEqual({ allowed: false, limit: 100_000, used: 100_001, remaining: 0 });
   });
 
   test('allows large but finite event limits for team plan', async () => {

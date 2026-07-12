@@ -36,6 +36,7 @@ function request() {
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
+  delete process.env.MEMBERSHIP_ENABLED;
   vi.clearAllMocks();
   vi.mocked(canTransferWebsiteToUser).mockResolvedValue(true);
   vi.mocked(canTransferWebsiteToTeam).mockResolvedValue(true);
@@ -94,6 +95,40 @@ describe('POST', () => {
       resource: 'website',
       currentPlan: 'starter',
       recommendedPlan: 'pro',
+    });
+    expect(updateWebsiteMock).not.toHaveBeenCalled();
+  });
+
+  test('allows a cross-tenant transfer immediately below target capacity', async () => {
+    process.env.MEMBERSHIP_ENABLED = '1';
+    parseRequestMock.mockResolvedValue({ auth: {}, body: { userId: 'user-2' }, error: undefined });
+    vi.mocked(getDefaultTenantIdForUser).mockResolvedValue('tenant-2');
+    canCreateTenantWebsiteMock.mockResolvedValue(true);
+
+    expect(
+      (await POST(request(), { params: Promise.resolve({ websiteId: 'website-1' }) })).status,
+    ).toBe(200);
+    expect(canCreateTenantWebsiteMock).toHaveBeenCalledWith('tenant-2');
+    expect(updateWebsiteMock).toHaveBeenCalled();
+  });
+
+  test('blocks cross-tenant team transfer when target capacity is exhausted', async () => {
+    process.env.MEMBERSHIP_ENABLED = '1';
+    parseRequestMock.mockResolvedValue({ auth: {}, body: { teamId: 'team-2' }, error: undefined });
+    vi.mocked(getTenantIdForTeam).mockResolvedValue('tenant-2');
+    canCreateTenantWebsiteMock.mockResolvedValue(false);
+    vi.mocked(getTenantPlan).mockResolvedValue({ plan: 'free' });
+    vi.mocked(getTenantWebsiteCount).mockResolvedValue(5);
+
+    const response = await POST(request(), {
+      params: Promise.resolve({ websiteId: 'website-1' }),
+    });
+
+    expect(response.status).toBe(403);
+    expect((await response.json()).error).toMatchObject({
+      current: 5,
+      limit: 5,
+      code: 'website-limit-reached',
     });
     expect(updateWebsiteMock).not.toHaveBeenCalled();
   });

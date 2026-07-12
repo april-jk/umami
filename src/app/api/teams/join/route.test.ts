@@ -30,6 +30,7 @@ const canAddTeamMemberMock = vi.mocked(canAddTeamMember);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
+  delete process.env.MEMBERSHIP_ENABLED;
   vi.clearAllMocks();
   parseRequestMock.mockResolvedValue({
     auth: { user: { id: 'user-1' } },

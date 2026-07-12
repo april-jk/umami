@@ -46,6 +46,7 @@ const getTotalTenantMemberCountMock = vi.mocked(getTotalTenantMemberCount);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
+  delete process.env.MEMBERSHIP_ENABLED;
   vi.clearAllMocks();
 });
 

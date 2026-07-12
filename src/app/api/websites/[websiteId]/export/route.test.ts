@@ -30,7 +30,9 @@ beforeEach(() => {
     allowed: true,
     value: true,
   });
-  vi.mocked(getEventMetrics).mockResolvedValue([{ name: '=formula' }] as any);
+  vi.mocked(getEventMetrics).mockResolvedValue([
+    { name: '=formula', category: 'safe-value', count: 1 },
+  ] as any);
   vi.mocked(getPageviewMetrics).mockResolvedValue([] as any);
   vi.mocked(getSessionMetrics).mockResolvedValue([] as any);
 });

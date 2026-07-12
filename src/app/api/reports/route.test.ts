@@ -28,6 +28,7 @@ const entitlementMock = vi.mocked(getWebsiteEntitlement);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
+  delete process.env.MEMBERSHIP_ENABLED;
   vi.clearAllMocks();
   canUpdateMock.mockResolvedValue(true);
   vi.mocked(canViewAuthenticatedWebsite).mockResolvedValue(true);
@@ -130,6 +131,47 @@ describe('POST', () => {
       recommendedPlan: 'pro',
       upgradeUrl: '/membership/upgrade?reason=goalLimit',
     });
+  });
+
+  test.each([
+    { current: 19, expectedStatus: 200 },
+    { current: 20, expectedStatus: 403 },
+    { current: 21, expectedStatus: 403 },
+  ])('enforces the Starter goal boundary at $current of 20', async ({
+    current,
+    expectedStatus,
+  }) => {
+    process.env.MEMBERSHIP_ENABLED = '1';
+    parseRequestMock.mockResolvedValue({
+      auth: { user: { id: 'user-1' } },
+      body: reportBody,
+      error: undefined,
+    });
+    vi.mocked(getTenantGoalCount).mockResolvedValue(current);
+
+    const response = await POST(new Request('http://localhost', { method: 'POST' }));
+
+    expect(response.status).toBe(expectedStatus);
+    expect(createReport).toHaveBeenCalledTimes(expectedStatus === 200 ? 1 : 0);
+  });
+
+  test('allows goals without a numeric boundary on unlimited plans', async () => {
+    process.env.MEMBERSHIP_ENABLED = '1';
+    parseRequestMock.mockResolvedValue({
+      auth: { user: { id: 'user-1' } },
+      body: reportBody,
+      error: undefined,
+    });
+    entitlementMock.mockResolvedValue({
+      tenantId: 'tenant-1',
+      plan: 'team',
+      allowed: true,
+      value: null,
+    });
+    vi.mocked(getTenantGoalCount).mockResolvedValue(Number.MAX_SAFE_INTEGER);
+
+    expect((await POST(new Request('http://localhost', { method: 'POST' }))).status).toBe(200);
+    expect(createReport).toHaveBeenCalled();
   });
 
   test('blocks goals on plans without goal access', async () => {

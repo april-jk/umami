@@ -27,6 +27,7 @@ describe('PayPal plan configuration', () => {
     vi.stubEnv('PAYPAL_MODE', 'sandbox');
     vi.stubEnv('PAYPAL_SANDBOX_CLIENT_ID', 'client-id');
     vi.stubEnv('PAYPAL_SANDBOX_CLIENT_SECRET', 'client-secret');
+    vi.stubEnv('PAYPAL_SANDBOX_PLAN_TEAM_YEAR', '');
 
     expect(() => getPaypalPlanId('team', 'year')).toThrow('Missing PayPal plan configuration');
   });

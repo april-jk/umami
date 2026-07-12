@@ -37,6 +37,25 @@ describe('tenant plan limits', () => {
     expect(isWithinLimit(100_000n, 100_000)).toBe(false);
   });
 
+  test.each(
+    Object.entries(TENANT_PLAN_LIMITS).flatMap(([plan, limits]) =>
+      (['eventLimit', 'websiteLimit', 'memberLimit'] as const).map(resource => ({
+        plan,
+        resource,
+        limit: limits[resource],
+      })),
+    ),
+  )('$plan $resource enforces the exact quota boundary', ({ limit }) => {
+    if (limit === null) {
+      expect(isWithinLimit(Number.MAX_SAFE_INTEGER, limit)).toBe(true);
+      return;
+    }
+
+    expect(isWithinLimit(limit - 1, limit)).toBe(true);
+    expect(isWithinLimit(limit, limit)).toBe(false);
+    expect(isWithinLimit(limit + 1, limit)).toBe(false);
+  });
+
   test('calculates a start-of-day retention cutoff', () => {
     const now = new Date('2026-07-11T15:42:00.000Z');
     expect(getRetentionCutoff(7, now)).toEqual(new Date('2026-07-04T00:00:00.000Z'));

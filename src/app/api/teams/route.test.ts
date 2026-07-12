@@ -155,6 +155,25 @@ test('POST blocks creating another team when it would exceed member capacity', a
   expect(createTeamMock).not.toHaveBeenCalled();
 });
 
+test('POST allows the final team owner slot immediately below the member limit', async () => {
+  process.env.MEMBERSHIP_ENABLED = '1';
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1', isAdmin: false } },
+    body: { name: 'First team' },
+    error: undefined,
+  });
+  canCreateTeamMock.mockResolvedValue(true);
+  getDefaultTenantIdForUserMock.mockResolvedValue('tenant-1');
+  getTenantPlanMock.mockResolvedValue({ plan: 'free' });
+  getTotalTenantMemberCountMock.mockResolvedValue(0);
+  createTeamMock.mockResolvedValue([{ id: 'team-1' }] as any);
+
+  expect((await POST(new Request('http://localhost/api/teams', { method: 'POST' }))).status).toBe(
+    200,
+  );
+  expect(createTeamMock).toHaveBeenCalled();
+});
+
 test('POST enforces member capacity when memberships are enabled outside cloud mode', async () => {
   process.env.MEMBERSHIP_ENABLED = '1';
   parseRequestMock.mockResolvedValue({
