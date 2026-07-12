@@ -22,6 +22,12 @@ const planPrices: Record<TenantPlanId, string> = {
   enterprise: 'Custom',
 };
 
+const annualMonthlyPrices: Record<Exclude<TenantPlanId, 'free' | 'enterprise'>, string> = {
+  starter: '$7.50/mo',
+  pro: '$24.17/mo',
+  team: '$82.50/mo',
+};
+
 const planFeatures: Record<TenantPlanId, string[]> = {
   free: ['100K events/month', '5 websites', '1 member', '7 days retention'],
   starter: ['500K events/month', '10 websites', '1 member', '180 days retention', 'API access'],
@@ -169,7 +175,14 @@ export function UpgradePage() {
             </Panel>
           )}
 
-        <Grid columns={{ base: '1fr', md: '1fr 1fr', xl: 'repeat(5, 1fr)' }} gap="4">
+        <Grid
+          columns={{
+            base: '1fr',
+            md: 'repeat(2, minmax(0, 1fr))',
+            xl: 'repeat(5, minmax(0, 1fr))',
+          }}
+          gap="4"
+        >
           {planOrder.map((plan, index) => {
             const isCurrent = plan === currentPlan;
             const isRecommended = index === currentIndex + 1;
@@ -182,7 +195,11 @@ export function UpgradePage() {
                 : {};
 
             return (
-              <Panel key={plan} style={cardStyle}>
+              <Panel
+                key={plan}
+                data-test={`plan-card-${plan}`}
+                style={{ ...cardStyle, minWidth: 0 }}
+              >
                 <Column gap="4" padding="2">
                   <Column gap="2" alignItems="center">
                     <PlanBadge plan={plan} />
@@ -191,7 +208,7 @@ export function UpgradePage() {
                       {plan === 'enterprise' || plan === 'free'
                         ? planPrices[plan]
                         : billingInterval === 'year'
-                          ? `$${({ starter: 90, pro: 290, team: 990 } as const)[plan]}/yr`
+                          ? annualMonthlyPrices[plan]
                           : planPrices[plan]}
                     </Text>
                     {isCurrent && (
@@ -278,6 +295,7 @@ export function UpgradePage() {
 
                   <Button
                     variant={isCurrent ? 'quiet' : 'primary'}
+                    style={{ width: '100%' }}
                     isDisabled={
                       isCurrent ||
                       paypalSubscription.isPending ||

@@ -82,10 +82,32 @@ describe('UpgradePage', () => {
     render(<UpgradePage />);
 
     // Use exact text matching for prices to avoid conflicts with feature text
-    expect(screen.getByText('$90/yr')).toBeInTheDocument();
-    expect(screen.getByText('$290/yr')).toBeInTheDocument();
-    expect(screen.getByText('$990/yr')).toBeInTheDocument();
+    expect(screen.getByText('$7.50/mo')).toBeInTheDocument();
+    expect(screen.getByText('$24.17/mo')).toBeInTheDocument();
+    expect(screen.getByText('$82.50/mo')).toBeInTheDocument();
     expect(screen.getByText('Custom')).toBeInTheDocument();
+  });
+
+  test('shows the standard monthly price after selecting monthly billing', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+    fireEvent.click(screen.getByText('Monthly'));
+
+    expect(screen.getByText('$9/mo')).toBeInTheDocument();
+    expect(screen.getByText('$29/mo')).toBeInTheDocument();
+    expect(screen.getByText('$99/mo')).toBeInTheDocument();
+  });
+
+  test('keeps plan cards from expanding for button copy', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+
+    expect(screen.getByTestId('plan-card-starter')).toHaveStyle({ minWidth: '0' });
+    expect(screen.getByTestId('plan-card-enterprise')).toHaveStyle({ minWidth: '0' });
   });
 
   test('shows correct limits for free plan', () => {
