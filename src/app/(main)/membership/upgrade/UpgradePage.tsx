@@ -296,14 +296,24 @@ export function UpgradePage() {
                   <Button
                     variant={isCurrent ? 'quiet' : 'primary'}
                     style={{ width: '100%', marginTop: 'auto' }}
-                    isDisabled={
-                      isCurrent ||
-                      paypalSubscription.isPending ||
-                      paypalConfirmation.isPending ||
+                    render={
                       plan === 'enterprise'
+                        ? ({ className, children }) => (
+                            <a
+                              href="mailto:watson_zang@foxmail.com"
+                              className={className}
+                              style={{ width: '100%', marginTop: 'auto' }}
+                            >
+                              {children}
+                            </a>
+                          )
+                        : undefined
+                    }
+                    isDisabled={
+                      isCurrent || paypalSubscription.isPending || paypalConfirmation.isPending
                     }
                     onPress={() => {
-                      if (!isCurrent) {
+                      if (!isCurrent && plan !== 'enterprise') {
                         setSelectedPlan(plan);
                         handleUpgrade(plan);
                       }

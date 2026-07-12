@@ -147,6 +147,18 @@ describe('UpgradePage', () => {
     expect(unlimitedTexts.length).toBeGreaterThan(0);
   });
 
+  test('opens an email draft for enterprise sales', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+
+    expect(screen.getByRole('link', { name: 'Contact sales' })).toHaveAttribute(
+      'href',
+      'mailto:watson_zang@foxmail.com',
+    );
+  });
+
   test('shows downgrade warning when a lower plan is selected', () => {
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'pro' },
