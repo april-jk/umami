@@ -27,14 +27,15 @@ describe('PlanLimitDialog', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  test('shows localized usage and recommended plan without server copy', () => {
+  test('shows a concise upgrade prompt without usage or recommendation metadata', () => {
     openPrompt();
 
     render(<PlanLimitDialog />);
 
     expect(screen.getAllByText('Usage limit exceeded').length).toBeGreaterThan(0);
-    expect(screen.getByText('5 / 5')).toBeInTheDocument();
-    expect(screen.getByText('Starter')).toBeInTheDocument();
+    expect(screen.queryByText('5 / 5')).not.toBeInTheDocument();
+    expect(screen.queryByText('Recommended')).not.toBeInTheDocument();
+    expect(screen.queryByText('Starter')).not.toBeInTheDocument();
     expect(screen.queryByText('Do not display this server message')).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Upgrade' })).toHaveAttribute(
       'href',
@@ -97,20 +98,24 @@ describe('PlanLimitDialog', () => {
   });
 
   test('renders the prompt in the active language', () => {
-    openPrompt();
+    openPrompt({ current: 3, limit: 1, resource: 'member', recommendedPlan: 'pro' });
 
     render(<PlanLimitDialog />, { locale: 'zh-CN', messages: zhCN });
 
     expect(screen.getByText('已超出用量限制')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: '升级' })).toBeInTheDocument();
+    expect(screen.queryByText('3 / 1')).not.toBeInTheDocument();
+    expect(screen.queryByText('推荐')).not.toBeInTheDocument();
+    expect(screen.queryByText('专业版')).not.toBeInTheDocument();
     expect(screen.queryByText('Do not display this server message')).not.toBeInTheDocument();
   });
 
-  test('falls back to the usage overview for an unknown resource', () => {
+  test('does not expose resource metadata for unknown resource types', () => {
     openPrompt({ resource: 'csvExport' });
 
     render(<PlanLimitDialog />);
 
-    expect(screen.getByText('Usage Overview')).toBeInTheDocument();
+    expect(screen.queryByText('Usage Overview')).not.toBeInTheDocument();
+    expect(screen.queryByText('5 / 5')).not.toBeInTheDocument();
   });
 });
