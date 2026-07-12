@@ -221,14 +221,14 @@ describe('UpgradePage', () => {
     expect(screen.getAllByText('730 days').length).toBeGreaterThanOrEqual(1);
   });
 
-  test('creates a PayPal subscription when an admin selects a paid plan', async () => {
+  test('creates a PayPal subscription when a tenant user selects a paid plan', async () => {
     const mutateAsyncMock = vi.fn().mockRejectedValue(new Error('PayPal unavailable'));
     useApiMock.mockReturnValue({
       post: postMock,
       useMutation: () => ({ mutate: vi.fn(), mutateAsync: mutateAsyncMock, isPending: false }),
     } as any);
     useLoginQueryMock.mockReturnValue({
-      user: { tenantId: 'tenant-1', plan: 'free', isAdmin: true },
+      user: { tenantId: 'tenant-1', plan: 'free', isAdmin: false },
     } as any);
     useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
 

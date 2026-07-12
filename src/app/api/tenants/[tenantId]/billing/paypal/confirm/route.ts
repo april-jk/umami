@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { findConfiguredPlan, getPaypalSubscription } from '@/lib/paypal';
 import { parseRequest } from '@/lib/request';
-import { json, notFound, unauthorized } from '@/lib/response';
+import { forbidden, json, notFound, unauthorized } from '@/lib/response';
 import { activatePaypalSubscription } from '@/lib/tenant-billing';
+import { canManageTenantBilling } from '@/permissions/tenant';
 import { getTenant } from '@/queries/prisma/tenant';
 
 export async function POST(
@@ -14,10 +15,11 @@ export async function POST(
     z.object({ subscriptionId: z.string().min(1) }),
   );
   if (error) return error();
-  if (!auth.user.isAdmin)
-    return unauthorized({ message: 'Only global admins can manage billing.' });
 
   const { tenantId } = await params;
+  if (!(await canManageTenantBilling(auth, tenantId))) {
+    return forbidden({ message: 'You do not have permission to manage this tenant billing.' });
+  }
   if (!(await getTenant(tenantId))) return notFound();
 
   const subscription = await getPaypalSubscription(body.subscriptionId);

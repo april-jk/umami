@@ -80,8 +80,7 @@ export function UpgradePage() {
 
   useEffect(() => {
     const subscriptionId = searchParams.get('subscription_id');
-    if (searchParams.get('paypal') !== 'success' || !subscriptionId || !user?.isAdmin || !tenantId)
-      return;
+    if (searchParams.get('paypal') !== 'success' || !subscriptionId || !tenantId) return;
 
     paypalConfirmation.mutate(subscriptionId, {
       onSuccess: () => window.history.replaceState({}, '', '/membership/upgrade'),
@@ -90,14 +89,10 @@ export function UpgradePage() {
           'PayPal approved the subscription, but verification did not complete. Please try again.',
         ),
     });
-  }, [paypalConfirmation, searchParams, tenantId, user?.isAdmin]);
+  }, [paypalConfirmation, searchParams, tenantId]);
 
   const handleUpgrade = async (plan: TenantPlanId) => {
     if (plan === currentPlan) return;
-    if (!user?.isAdmin) {
-      setError('Only global administrators can manage subscriptions.');
-      return;
-    }
     if (plan === 'free' || plan === 'enterprise') return;
 
     setError('');
@@ -304,9 +299,7 @@ export function UpgradePage() {
                         ? 'Contact sales'
                         : paypalSubscription.isPending && selectedPlan === plan
                           ? 'Redirecting to PayPal...'
-                          : user?.isAdmin
-                            ? 'Subscribe with PayPal'
-                            : 'Admin required'}
+                          : 'Subscribe with PayPal'}
                   </Button>
                 </Column>
               </Panel>
