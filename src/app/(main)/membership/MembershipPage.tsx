@@ -80,23 +80,30 @@ export function MembershipPage() {
 
         {hasAlert && (
           <Panel style={alertPanelStyle}>
-            <Row gap="3" alignItems="center">
-              <Icon size="sm" style={{ color: hasCritical ? '#ef4444' : '#f97316' }}>
-                <AlertTriangle />
-              </Icon>
-              <Column>
-                <Text weight="bold" style={{ color: hasCritical ? '#ef4444' : '#f97316' }}>
-                  {hasCritical
-                    ? t('membership.usageLimitExceeded')
-                    : t('membership.usageApproachingLimit')}
-                </Text>
-                <Text size="sm" color="muted">
-                  {hasCritical
-                    ? t('membership.exceededDescription')
-                    : t('membership.approachingDescription')}
-                </Text>
-              </Column>
-            </Row>
+            <Grid columns={{ base: '1fr', md: '1fr auto' }} gap="4" alignItems="center">
+              <Row gap="3" alignItems="center">
+                <Icon size="sm" style={{ color: hasCritical ? '#ef4444' : '#f97316' }}>
+                  <AlertTriangle />
+                </Icon>
+                <Column>
+                  <Text weight="bold" style={{ color: hasCritical ? '#ef4444' : '#f97316' }}>
+                    {hasCritical
+                      ? t('membership.usageLimitExceeded')
+                      : t('membership.usageApproachingLimit')}
+                  </Text>
+                  <Text size="sm" color="muted">
+                    {hasCritical
+                      ? t('membership.exceededDescription')
+                      : t('membership.approachingDescription')}
+                  </Text>
+                </Column>
+              </Row>
+              <Link href="/membership/upgrade" passHref>
+                <Button variant={hasCritical ? 'primary' : 'outline'} size="sm">
+                  {t('membership.upgrade')}
+                </Button>
+              </Link>
+            </Grid>
           </Panel>
         )}
 

@@ -1,4 +1,4 @@
-import { getNextPlanId, type TenantPlanId } from './tenant-plan';
+import { getNextPlanId, getTenantPlanId, type TenantPlanId } from './tenant-plan';
 
 export const TENANT_PLAN_ENTITLEMENTS = {
   free: {
@@ -130,18 +130,41 @@ export function getEntitlementUpgradeMessage(
   return 'Contact sales for custom access.';
 }
 
+export function getEntitlementRecommendedPlan(
+  plan: string | null | undefined,
+  feature: TenantEntitlement,
+) {
+  let nextPlan = getNextPlanId(getTenantPlanId(plan));
+
+  while (nextPlan) {
+    if (hasTenantFeature(nextPlan, feature)) {
+      return nextPlan;
+    }
+    nextPlan = getNextPlanId(nextPlan);
+  }
+
+  return null;
+}
+
 export function getEntitlementErrorPayload(
   plan: string | null | undefined,
   feature: TenantEntitlement,
   current?: number,
   limit?: number | null,
 ) {
-  const upgradeMessage = getEntitlementUpgradeMessage(plan, feature);
+  const currentPlan = getTenantPlanId(plan);
+  const recommendedPlan = getEntitlementRecommendedPlan(currentPlan, feature);
+  const upgradeMessage = getEntitlementUpgradeMessage(currentPlan, feature);
   const codeName = feature
     .replace(/Limit$/, '')
     .replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
 
   return {
+    type: 'plan-limit' as const,
+    resource: feature,
+    currentPlan,
+    recommendedPlan,
+    upgradeUrl: `/membership/upgrade?reason=${feature}`,
     message: `Plan entitlement reached. ${upgradeMessage}`,
     code: `${codeName}-limit-reached`,
     current,

@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import {
   getEntitlementErrorPayload,
+  getEntitlementRecommendedPlan,
   getEntitlementUpgradeMessage,
   getTenantPlanEntitlements,
   hasTenantFeature,
@@ -37,10 +38,17 @@ describe('tenant entitlements', () => {
     expect(getEntitlementUpgradeMessage('pro', 'ssoSaml')).toContain('Team');
     expect(getEntitlementUpgradeMessage('free', 'ssoSaml')).toContain('Team');
     expect(getEntitlementUpgradeMessage('enterprise', 'csvExport')).toContain('Contact sales');
+    expect(getEntitlementRecommendedPlan('free', 'ssoSaml')).toBe('team');
+    expect(getEntitlementRecommendedPlan('enterprise', 'csvExport')).toBeNull();
   });
 
   test('builds a standardized entitlement error', () => {
     expect(getEntitlementErrorPayload('free', 'goalLimit', 0, 0)).toEqual({
+      type: 'plan-limit',
+      resource: 'goalLimit',
+      currentPlan: 'free',
+      recommendedPlan: 'starter',
+      upgradeUrl: '/membership/upgrade?reason=goalLimit',
       message: 'Plan entitlement reached. Upgrade to Starter to use this feature.',
       code: 'goal-limit-reached',
       current: 0,

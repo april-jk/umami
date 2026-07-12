@@ -123,6 +123,13 @@ describe('POST', () => {
     expect(response.status).toBe(403);
     expect(body.error.code).toBe('goal-limit-reached');
     expect(body.error.upgradeMessage).toContain('Pro');
+    expect(body.error).toMatchObject({
+      type: 'plan-limit',
+      resource: 'goalLimit',
+      currentPlan: 'starter',
+      recommendedPlan: 'pro',
+      upgradeUrl: '/membership/upgrade?reason=goalLimit',
+    });
   });
 
   test('blocks goals on plans without goal access', async () => {

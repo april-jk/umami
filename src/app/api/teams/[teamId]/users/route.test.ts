@@ -196,6 +196,13 @@ describe('POST', () => {
     expect(body.error.current).toBe(5);
     expect(body.error.limit).toBe(5);
     expect(body.error.upgradeMessage).toContain('Upgrade to Team');
+    expect(body.error).toMatchObject({
+      type: 'plan-limit',
+      resource: 'member',
+      currentPlan: 'pro',
+      recommendedPlan: 'team',
+      upgradeUrl: '/membership/upgrade?reason=member',
+    });
     expect(createTeamUserMock).not.toHaveBeenCalled();
     delete process.env.CLOUD_MODE;
   });
@@ -219,7 +226,7 @@ describe('POST', () => {
     expect(canAddTeamMemberMock).not.toHaveBeenCalled();
   });
 
-  test('blocks member addition for free plan with upgrade message', async () => {
+  test('skips Starter when it would not increase the Free member limit', async () => {
     process.env.CLOUD_MODE = '1';
     parseRequestMock.mockResolvedValue({
       auth: { user: { id: 'user-1' } },
@@ -243,8 +250,9 @@ describe('POST', () => {
     expect(body.error.code).toBe('member-limit-reached');
     expect(body.error.current).toBe(1);
     expect(body.error.limit).toBe(1);
-    expect(body.error.upgradeMessage).toContain('Starter');
-    expect(body.error.upgradeMessage).toContain('1 member');
+    expect(body.error.upgradeMessage).toContain('Pro');
+    expect(body.error.upgradeMessage).toContain('5 members');
+    expect(body.error.recommendedPlan).toBe('pro');
     delete process.env.CLOUD_MODE;
   });
 

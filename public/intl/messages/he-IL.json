@@ -423,6 +423,7 @@
     "user-deleted": "משתמש נמחק.",
     "replay-min-duration-description": "הצג רק הקלטות בהפעלה חוזרת בעלות משך זמן זה או ארוך יותר.",
     "viewed-page": "עמוד שנצפה",
+    "upgrade-required": "תכונה זו דורשת מינוי לתוכנית {plan}.",
     "visitor-log": "מבקר ממדינת <b>{country}</b> משתמבש בדפדפן <b>{browser}</b> ב-<b>{os}</b> <b>{device}</b>"
   },
   "membership": {

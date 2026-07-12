@@ -1,8 +1,33 @@
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, unauthorized } from '@/lib/response';
+import { badRequest, forbidden, json, unauthorized } from '@/lib/response';
+import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
 import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/permissions';
-import { updateWebsite } from '@/queries/prisma';
+import { getWebsite, updateWebsite } from '@/queries/prisma';
+import {
+  canCreateTenantWebsite,
+  getDefaultTenantIdForUser,
+  getTenantIdForTeam,
+  getTenantPlan,
+  getTenantWebsiteCount,
+} from '@/queries/prisma/tenant';
+
+async function getTransferLimitError(sourceTenantId: string | null, targetTenantId: string | null) {
+  if (
+    !process.env.CLOUD_MODE ||
+    !targetTenantId ||
+    sourceTenantId === targetTenantId ||
+    (await canCreateTenantWebsite(targetTenantId))
+  ) {
+    return null;
+  }
+
+  const tenant = await getTenantPlan(targetTenantId);
+  const current = await getTenantWebsiteCount(targetTenantId);
+  const limit = getTenantPlanLimits(tenant?.plan).websiteLimit;
+
+  return getLimitErrorPayload(tenant?.plan, 'website', current, limit);
+}
 
 export async function POST(
   request: Request,
@@ -27,9 +52,20 @@ export async function POST(
       return unauthorized();
     }
 
+    const [source, targetTenantId] = await Promise.all([
+      getWebsite(websiteId),
+      getDefaultTenantIdForUser(userId),
+    ]);
+    const limitError = await getTransferLimitError(source?.tenantId ?? null, targetTenantId);
+
+    if (limitError) {
+      return forbidden(limitError);
+    }
+
     const website = await updateWebsite(websiteId, {
       userId,
       teamId: null,
+      tenantId: targetTenantId,
     });
 
     return json(website);
@@ -38,9 +74,20 @@ export async function POST(
       return unauthorized();
     }
 
+    const [source, targetTenantId] = await Promise.all([
+      getWebsite(websiteId),
+      getTenantIdForTeam(teamId),
+    ]);
+    const limitError = await getTransferLimitError(source?.tenantId ?? null, targetTenantId);
+
+    if (limitError) {
+      return forbidden(limitError);
+    }
+
     const website = await updateWebsite(websiteId, {
       userId: null,
       teamId,
+      tenantId: targetTenantId,
     });
 
     return json(website);

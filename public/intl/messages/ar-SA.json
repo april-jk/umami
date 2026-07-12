@@ -423,6 +423,7 @@
     "user-deleted": "تم حذف المستخدم.",
     "replay-min-duration-description": "إظهار التسجيلات ذات المدة الأطول أو المساوية لهذه المدة فقط.",
     "viewed-page": "شوهدت الصفحة",
+    "upgrade-required": "تتطلب هذه الميزة اشتراكًا في خطة {plan}.",
     "visitor-log": "زائر من <b>{country}</b> يستخدم <b>{browser}</b> على <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

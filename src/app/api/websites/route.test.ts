@@ -1,14 +1,17 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { parseRequest } from '@/lib/request';
-import { canCreateWebsite } from '@/permissions';
-import { createWebsite } from '@/queries/prisma';
+import { fetchAccount } from '@/lib/load';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
+import { createShare, createWebsite, getWebsiteCount } from '@/queries/prisma';
 import {
   canCreateTenantWebsite,
   getDefaultTenantIdForUser,
+  getTenantIdForTeam,
   getTenantPlan,
   getTenantWebsiteCount,
 } from '@/queries/prisma/tenant';
-import { POST } from './route';
+import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
+import { GET, POST } from './route';
 
 vi.mock('@/lib/load', () => ({
   fetchAccount: vi.fn(),
@@ -46,22 +49,134 @@ vi.mock('@/queries/prisma/website', () => ({
 }));
 
 const parseRequestMock = vi.mocked(parseRequest);
+const getQueryFiltersMock = vi.mocked(getQueryFilters);
+const fetchAccountMock = vi.mocked(fetchAccount);
 const canCreateWebsiteMock = vi.mocked(canCreateWebsite);
+const canCreateTeamWebsiteMock = vi.mocked(canCreateTeamWebsite);
 const createWebsiteMock = vi.mocked(createWebsite);
+const createShareMock = vi.mocked(createShare);
+const getWebsiteCountMock = vi.mocked(getWebsiteCount);
 const getDefaultTenantIdForUserMock = vi.mocked(getDefaultTenantIdForUser);
+const getTenantIdForTeamMock = vi.mocked(getTenantIdForTeam);
 const canCreateTenantWebsiteMock = vi.mocked(canCreateTenantWebsite);
 const getTenantPlanMock = vi.mocked(getTenantPlan);
 const getTenantWebsiteCountMock = vi.mocked(getTenantWebsiteCount);
+const getAllUserWebsitesIncludingTeamAccessMock = vi.mocked(getAllUserWebsitesIncludingTeamAccess);
+const getUserWebsitesMock = vi.mocked(getUserWebsites);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
   parseRequestMock.mockReset();
+  getQueryFiltersMock.mockResolvedValue({});
+  fetchAccountMock.mockReset();
   canCreateWebsiteMock.mockReset();
+  canCreateTeamWebsiteMock.mockReset();
   createWebsiteMock.mockReset();
+  createShareMock.mockReset();
+  getWebsiteCountMock.mockReset();
   getDefaultTenantIdForUserMock.mockReset();
+  getTenantIdForTeamMock.mockReset();
   canCreateTenantWebsiteMock.mockReset();
   getTenantPlanMock.mockReset();
   getTenantWebsiteCountMock.mockReset();
+  getAllUserWebsitesIncludingTeamAccessMock.mockReset();
+  getUserWebsitesMock.mockReset();
+});
+
+test('GET returns request parsing errors', async () => {
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+  expect((await GET(new Request('http://localhost/api/websites'))).status).toBe(400);
+});
+
+test('GET returns personal websites by default', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    query: {},
+    error: undefined,
+  } as any);
+  getUserWebsitesMock.mockResolvedValue({ data: [], count: 0 } as any);
+
+  expect((await GET(new Request('http://localhost/api/websites'))).status).toBe(200);
+  expect(getUserWebsitesMock).toHaveBeenCalledWith('user-1', {});
+});
+
+test('GET includes team-access websites when requested', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    query: { includeTeams: '1' },
+    error: undefined,
+  } as any);
+  getAllUserWebsitesIncludingTeamAccessMock.mockResolvedValue({ data: [], count: 0 } as any);
+
+  expect((await GET(new Request('http://localhost/api/websites'))).status).toBe(200);
+  expect(getAllUserWebsitesIncludingTeamAccessMock).toHaveBeenCalledWith('user-1', {});
+});
+
+test('POST returns request parsing errors', async () => {
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+  expect(
+    (await POST(new Request('http://localhost/api/websites', { method: 'POST' }))).status,
+  ).toBe(400);
+});
+
+test('POST creates a tenant team website and share', async () => {
+  process.env.CLOUD_MODE = '1';
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: {
+      name: 'Team site',
+      domain: 'team.example.com',
+      teamId: 'team-1',
+      shareId: 'public-site',
+    },
+    error: undefined,
+  } as any);
+  getTenantIdForTeamMock.mockResolvedValue('tenant-1');
+  canCreateTenantWebsiteMock.mockResolvedValue(true);
+  canCreateTeamWebsiteMock.mockResolvedValue(true);
+  canCreateWebsiteMock.mockResolvedValue(true);
+  createWebsiteMock.mockResolvedValue({ id: 'website-1', name: 'Team site' } as any);
+  createShareMock.mockResolvedValue({ slug: 'public-site' } as any);
+
+  const response = await POST(new Request('http://localhost/api/websites', { method: 'POST' }));
+  expect(response.status).toBe(200);
+  expect(createWebsiteMock).toHaveBeenCalledWith(
+    expect.objectContaining({ teamId: 'team-1', tenantId: 'tenant-1' }),
+  );
+  expect((await response.json()).shareId).toBe('public-site');
+});
+
+test('POST blocks a legacy cloud account at its website limit', async () => {
+  process.env.CLOUD_MODE = '1';
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Legacy', domain: 'legacy.example.com' },
+    error: undefined,
+  } as any);
+  getDefaultTenantIdForUserMock.mockResolvedValue(null);
+  fetchAccountMock.mockResolvedValue({ websiteLimit: 1 } as any);
+  getWebsiteCountMock.mockResolvedValue(1);
+
+  expect(
+    (await POST(new Request('http://localhost/api/websites', { method: 'POST' }))).status,
+  ).toBe(401);
+  expect(createWebsiteMock).not.toHaveBeenCalled();
+});
+
+test('POST rejects callers without website creation permission', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Denied', domain: 'denied.example.com' },
+    error: undefined,
+  } as any);
+  getDefaultTenantIdForUserMock.mockResolvedValue(null);
+  canCreateWebsiteMock.mockResolvedValue(false);
+
+  expect(
+    (await POST(new Request('http://localhost/api/websites', { method: 'POST' }))).status,
+  ).toBe(401);
 });
 
 test('POST creates personal websites inside the authenticated user tenant', async () => {
@@ -122,6 +237,13 @@ test('POST blocks a website when the tenant plan limit is exhausted', async () =
   expect(body.error.current).toBe(5);
   expect(body.error.limit).toBe(5);
   expect(body.error.upgradeMessage).toContain('Starter');
+  expect(body.error).toMatchObject({
+    type: 'plan-limit',
+    resource: 'website',
+    currentPlan: 'free',
+    recommendedPlan: 'starter',
+    upgradeUrl: '/membership/upgrade?reason=website',
+  });
   expect(createWebsiteMock).not.toHaveBeenCalled();
   delete process.env.CLOUD_MODE;
 });

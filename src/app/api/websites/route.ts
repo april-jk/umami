@@ -6,9 +6,9 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
+import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
-import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
 import {
   canCreateTenantWebsite,
   getDefaultTenantIdForUser,
@@ -70,13 +70,7 @@ export async function POST(request: Request) {
       const count = await getTenantWebsiteCount(tenantId);
       const limits = getTenantPlanLimits(tenant?.plan);
       const payload = getLimitErrorPayload(tenant?.plan, 'website', count, limits.websiteLimit);
-      return forbidden({
-        message: payload.message,
-        code: payload.code,
-        current: payload.current,
-        limit: payload.limit,
-        upgradeMessage: payload.upgradeMessage,
-      });
+      return forbidden(payload);
     }
   } else if (process.env.CLOUD_MODE) {
     const account = teamId ? await fetchTeam(teamId) : await fetchAccount(auth.user.id);

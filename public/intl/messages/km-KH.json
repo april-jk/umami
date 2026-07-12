@@ -423,6 +423,7 @@
     "user-deleted": "អ្នកប្រើប្រាស់ត្រូវបានលុបចោល។",
     "replay-min-duration-description": "បង្ហាញតែការចាក់ឡើងវិញដែលមានរយៈពេលនេះ ឬខ្ពស់ជាងនេះ។",
     "viewed-page": "ទំព័រដែលបានមើល",
+    "upgrade-required": "មុខងារនេះតម្រូវឱ្យមានការជាវគម្រោង {plan}។",
     "visitor-log": "អ្នកមើលពីប្រទេស <b>{country}</b> ប្រើប្រាស់កម្មវិធី <b>{browser}</b> លើឧបករណ៍ <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

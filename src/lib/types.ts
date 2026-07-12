@@ -210,6 +210,17 @@ export interface RealtimeData {
 export interface ApiError extends Error {
   code?: string;
   message: string;
+  status?: number;
+  type?: string;
+  current?: number;
+  limit?: number | null;
+  plan?: string;
+  currentPlan?: string;
+  recommendedPlan?: string | null;
+  resource?: string;
+  tenantId?: string;
+  upgradeUrl?: string;
+  upgradeMessage?: string;
 }
 
 export interface BoardComponentConfig {

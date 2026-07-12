@@ -423,6 +423,7 @@
     "user-deleted": "Ο χρήστης διαγράφηκε.",
     "replay-min-duration-description": "Εμφάνιση μόνο αναπαραγωγών με αυτή ή μεγαλύτερη διάρκεια.",
     "viewed-page": "Προβολή σελίδας",
+    "upgrade-required": "Αυτή η λειτουργία απαιτεί συνδρομή στο πρόγραμμα {plan}.",
     "visitor-log": "Επισκέπτης από <b>{country}</b> χρησιμοποιώντας <b>{browser}</b> σε <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

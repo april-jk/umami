@@ -423,6 +423,7 @@
     "user-deleted": "Користувача видалено.",
     "replay-min-duration-description": "Показувати лише відтворення з такою або більшою тривалістю.",
     "viewed-page": "Переглянута сторінка",
+    "upgrade-required": "Для цієї функції потрібна підписка на план {plan}.",
     "visitor-log": "Відвідувач з <b>{country}</b> використовуючи <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

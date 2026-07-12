@@ -423,6 +423,7 @@
     "user-deleted": "صارف حذف ہو گیا۔",
     "replay-min-duration-description": "صرف وہ ری پلے دکھائیں جو اس مدت یا اس سے زیادہ ہوں۔",
     "viewed-page": "دیکھا گیا صفحہ",
+    "upgrade-required": "اس خصوصیت کے لیے {plan} پلان کی رکنیت درکار ہے۔",
     "visitor-log": "<b>{os}</b> <b>{device}</b> پر <b>{browser}</b> کا استعمال کرتے ہوئے <b>{country}</b> سے آنے والا"
   },
   "membership": {

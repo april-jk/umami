@@ -423,6 +423,7 @@
     "user-deleted": "ユーザーが削除されました。",
     "replay-min-duration-description": "この時間以上の再生のみ表示します。",
     "viewed-page": "閲覧されたページ",
+    "upgrade-required": "この機能を利用するには、{plan}プランの契約が必要です。",
     "visitor-log": "<b>{os}</b>(<b>{device}</b>)で<b>{browser}</b>を使用している<b>{country}</b>からの訪問者"
   },
   "membership": {

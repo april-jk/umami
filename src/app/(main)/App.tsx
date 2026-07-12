@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
 import { SideNav } from '@/app/(main)/SideNav';
 import { TopNav } from '@/app/(main)/TopNav';
+import { PlanLimitDialog } from '@/components/common/PlanLimitDialog';
 import { useConfig, useLoginQuery, useNavigation, useTeamQuery } from '@/components/hooks';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
@@ -67,6 +68,7 @@ export function App({ children }) {
         <Column alignItems="center">{children}</Column>
       </Column>
       <UpdateNotice user={user} config={config} />
+      <PlanLimitDialog />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
         <Script src={`${process.env.basePath || ''}/telemetry.js`} />
       )}

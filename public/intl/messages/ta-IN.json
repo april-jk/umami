@@ -423,6 +423,7 @@
     "user-deleted": "பயனர் நீக்கப்பட்டார்.",
     "replay-min-duration-description": "இந்த காலவரையறை அல்லது அதற்கும் அதிகமான மறுஒலிப்புகளை மட்டும் காட்டு.",
     "viewed-page": "பார்வையிட்ட பக்கம்",
+    "upgrade-required": "இந்த அம்சத்திற்கு {plan} திட்டச் சந்தா தேவை.",
     "visitor-log": "<b>{country}</b>வில் இருந்து பார்வையாளர் <b>{browser}</b> ஐ <b>{os}</b> <b>{device}</b>லில் பயன்படுத்துகிறார்"
   },
   "membership": {

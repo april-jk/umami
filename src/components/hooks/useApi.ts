@@ -4,13 +4,27 @@ import { getApiUrl } from '@/lib/api-url';
 import { getClientAuthToken } from '@/lib/client';
 import { SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { type FetchResponse, httpDelete, httpGet, httpPost, httpPut } from '@/lib/fetch';
+import type { ApiError } from '@/lib/types';
 import { useApp } from '@/store/app';
+import { showPlanLimit } from '@/store/plan-limit';
+
+export function isPlanLimitError(error: Partial<ApiError> | null | undefined): boolean {
+  return (
+    error?.type === 'plan-limit' ||
+    (!!error?.code?.endsWith('-limit-reached') && typeof error.upgradeMessage === 'string')
+  );
+}
 
 async function handleResponse(res: FetchResponse): Promise<any> {
   if (!res.ok) {
-    const { message, code, status } = res?.data?.error || {};
+    const payload = res?.data?.error || {};
+    const error = Object.assign(new Error(payload.message), payload) as ApiError;
 
-    return Promise.reject(Object.assign(new Error(message), { code, status }));
+    if (isPlanLimitError(error) && error.code) {
+      showPlanLimit(error as ApiError & { code: string });
+    }
+
+    return Promise.reject(error);
   }
   return Promise.resolve(res.data);
 }
@@ -20,9 +34,7 @@ export function useApi() {
   const shareToken = useApp(state => state.shareToken?.token);
 
   const shareHeaders =
-    shareId && shareToken
-      ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' }
-      : {};
+    shareId && shareToken ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' } : {};
 
   const defaultHeaders = {
     authorization: `Bearer ${getClientAuthToken()}`,

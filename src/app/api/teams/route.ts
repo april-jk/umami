@@ -4,11 +4,16 @@ import { getRandomChars } from '@/lib/generate';
 import { fetchAccount } from '@/lib/load';
 import redis from '@/lib/redis';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, sortingParams } from '@/lib/schema';
+import { getLimitErrorPayload, getTenantPlanLimits, isWithinLimit } from '@/lib/tenant-plan';
 import { canCreateTeam } from '@/permissions';
 import { createTeam, getUserTeams } from '@/queries/prisma';
-import { getDefaultTenantIdForUser } from '@/queries/prisma/tenant';
+import {
+  getDefaultTenantIdForUser,
+  getTenantPlan,
+  getTotalTenantMemberCount,
+} from '@/queries/prisma/tenant';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -50,6 +55,16 @@ export async function POST(request: Request) {
   const teamId = uuid();
   const teamOwnerId = ownerId && auth.user.isAdmin ? ownerId : auth.user.id;
   const tenantId = await getDefaultTenantIdForUser(teamOwnerId);
+
+  if (process.env.CLOUD_MODE && tenantId) {
+    const tenant = await getTenantPlan(tenantId);
+    const current = await getTotalTenantMemberCount(tenantId);
+    const limit = getTenantPlanLimits(tenant?.plan).memberLimit;
+
+    if (!isWithinLimit(current, limit)) {
+      return forbidden(getLimitErrorPayload(tenant?.plan, 'member', current, limit));
+    }
+  }
 
   const team = await createTeam(
     {

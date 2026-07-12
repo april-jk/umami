@@ -65,6 +65,13 @@ test('blocks CSV export when the cloud plan does not include it', async () => {
   const body = await response.json();
   expect(response.status).toBe(403);
   expect(body.error.code).toBe('csv-export-limit-reached');
+  expect(body.error).toMatchObject({
+    type: 'plan-limit',
+    resource: 'csvExport',
+    currentPlan: 'free',
+    recommendedPlan: 'starter',
+    upgradeUrl: '/membership/upgrade?reason=csvExport',
+  });
 });
 
 test('returns a CSV zip for entitled plans', async () => {

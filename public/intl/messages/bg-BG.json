@@ -423,6 +423,7 @@
     "user-deleted": "Потребителят е изтрит.",
     "replay-min-duration-description": "Показвай само записи с тази или по-голяма продължителност.",
     "viewed-page": "Страницата е видяна",
+    "upgrade-required": "Тази функция изисква абонамент за план {plan}.",
     "visitor-log": "Посетител от <b>{country}</b>, използващ <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

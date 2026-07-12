@@ -423,6 +423,7 @@
     "user-deleted": "ผู้ใช้ถูกลบแล้ว",
     "replay-min-duration-description": "แสดงเฉพาะการเล่นซ้ำที่มีระยะเวลาเท่ากับหรือมากกว่านี้",
     "viewed-page": "หน้าที่ดู",
+    "upgrade-required": "ฟีเจอร์นี้ต้องสมัครสมาชิกแพ็กเกจ {plan}",
     "visitor-log": "ผู้เข้าชมจาก <b>{country}</b> กำลังใช้งานผ่าน <b>{browser}</b> บน <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

@@ -90,13 +90,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
     const count = tenantId ? await getTotalTenantMemberCount(tenantId) : 0;
     const limits = getTenantPlanLimits(tenant?.plan);
     const payload = getLimitErrorPayload(tenant?.plan, 'member', count, limits.memberLimit);
-    return forbidden({
-      message: payload.message,
-      code: payload.code,
-      current: payload.current,
-      limit: payload.limit,
-      upgradeMessage: payload.upgradeMessage,
-    });
+    return forbidden(payload);
   }
 
   const users = await createTeamUser(userId, teamId, role);

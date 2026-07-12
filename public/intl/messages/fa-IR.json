@@ -423,6 +423,7 @@
     "user-deleted": "کاربر حذف شد.",
     "replay-min-duration-description": "فقط پخش‌هایی را نشان بده که مدت زمان آن‌ها برابر یا بیشتر از این مقدار است.",
     "viewed-page": "صفحه مشاهده شد",
+    "upgrade-required": "این قابلیت به اشتراک طرح {plan} نیاز دارد.",
     "visitor-log": "بازدیدکننده از کشور <b>{country}</b> با مروگر <b>{browser}</b> در <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

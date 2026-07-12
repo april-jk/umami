@@ -423,6 +423,7 @@
     "user-deleted": "Хэрэглэгч устсан.",
     "replay-min-duration-description": "Зөвхөн энэ эсвэл үүнээс их үргэлжлэх хугацаатай тоглуулалтуудыг харуул.",
     "viewed-page": "Үзсэн хуудас",
+    "upgrade-required": "Энэ функцийг ашиглахын тулд {plan} багцын захиалга шаардлагатай.",
     "visitor-log": "<b>{country}</b> улсаас <b>{os}</b> <b>{device}</b> дээр <b>{browser}</b> хөтөч ашиглан орсон"
   },
   "membership": {

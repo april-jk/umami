@@ -428,6 +428,7 @@
     "user-deleted": "Người dùng đã bị xóa.",
     "replay-min-duration-description": "Chỉ hiển thị các lần phát lại có thời lượng bằng hoặc trên mức này.",
     "viewed-page": "Đã xem trang",
+    "upgrade-required": "Tính năng này yêu cầu đăng ký gói {plan}.",
     "visitor-log": "Khách từ <b>{country}</b> đang sử dụng <b>{browser}</b> trên <b>{os}</b> <b>{device}</b>",
     "visitors-dropped-off": "Khách truy cập đã rời đi"
   },

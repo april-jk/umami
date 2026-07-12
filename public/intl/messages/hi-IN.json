@@ -423,6 +423,7 @@
     "user-deleted": "उपयोगकर्ता हटाया गया।",
     "replay-min-duration-description": "केवल इस अवधि या उससे अधिक की रिप्ले दिखाएं।",
     "viewed-page": "देखा गया पेज",
+    "upgrade-required": "इस सुविधा के लिए {plan} प्लान की सदस्यता आवश्यक है।",
     "visitor-log": "<b>{country}</b> का आगंतुक, जो <b>{browser}</b> का उपयोग करता है, <b>{os}</b> यन्त्र पर"
   },
   "membership": {

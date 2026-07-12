@@ -423,6 +423,7 @@
     "user-deleted": "Карыстальнік выдалены.",
     "replay-min-duration-description": "Паказваць толькі паўторы з такой або большай працягласцю.",
     "viewed-page": "Праглядзеў старонку",
+    "upgrade-required": "Гэтая функцыя патрабуе падпіскі на план {plan}.",
     "visitor-log": "Наведвальнік з <b>{country}</b> праз <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

@@ -423,6 +423,7 @@
     "user-deleted": "使用者已刪除。",
     "replay-min-duration-description": "只顯示時長達到或超過此值的回放。",
     "viewed-page": "已瀏覽的網頁",
+    "upgrade-required": "此功能需要訂閱 {plan} 方案。",
     "visitor-log": "來自 <b>{country}</b> 的訪客在 <b>{device}</b> 上的 <b>{os}</b> 使用 <b>{browser}</b> 瀏覽。"
   },
   "membership": {

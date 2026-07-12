@@ -19,8 +19,12 @@ export type TenantPlanLimits = (typeof TENANT_PLAN_LIMITS)[TenantPlanId];
 
 const DEFAULT_PLAN: TenantPlanId = 'free';
 
+export function getTenantPlanId(plan?: string | null): TenantPlanId {
+  return plan in TENANT_PLAN_LIMITS ? (plan as TenantPlanId) : DEFAULT_PLAN;
+}
+
 export function getTenantPlanLimits(plan?: string | null): TenantPlanLimits {
-  return TENANT_PLAN_LIMITS[plan as TenantPlanId] ?? TENANT_PLAN_LIMITS[DEFAULT_PLAN];
+  return TENANT_PLAN_LIMITS[getTenantPlanId(plan)];
 }
 
 export function isWithinLimit(current: number | bigint, limit: number | null): boolean {
@@ -50,12 +54,32 @@ export function getNextPlanId(planId?: string | null): TenantPlanId | null {
   return order[idx + 1];
 }
 
+export function getRecommendedPlanId(
+  planId: string | null | undefined,
+  limitType: 'event' | 'website' | 'member',
+): TenantPlanId | null {
+  const currentPlan = getTenantPlanId(planId);
+  const limitKey = `${limitType}Limit` as 'eventLimit' | 'websiteLimit' | 'memberLimit';
+  const currentLimit = TENANT_PLAN_LIMITS[currentPlan][limitKey];
+  let nextPlan = getNextPlanId(currentPlan);
+
+  while (nextPlan) {
+    const nextLimit = TENANT_PLAN_LIMITS[nextPlan][limitKey];
+    if (nextLimit === null || (currentLimit !== null && nextLimit > currentLimit)) {
+      return nextPlan;
+    }
+    nextPlan = getNextPlanId(nextPlan);
+  }
+
+  return null;
+}
+
 /** Get upgrade suggestion message for a given limit type */
 export function getPlanUpgradeMessage(
   planId: string | null | undefined,
   limitType: 'event' | 'website' | 'member',
 ): string {
-  const nextPlan = getNextPlanId(planId);
+  const nextPlan = getRecommendedPlanId(planId, limitType);
   if (!nextPlan) {
     return 'Contact sales for custom limits.';
   }
@@ -103,6 +127,11 @@ export function getLimitErrorPayload(
   current: number;
   limit: number | null;
   upgradeMessage: string;
+  type: 'plan-limit';
+  resource: 'event' | 'website' | 'member';
+  currentPlan: TenantPlanId;
+  recommendedPlan: TenantPlanId | null;
+  upgradeUrl: string;
 } {
   const codeMap = {
     event: 'event-limit-reached',
@@ -110,9 +139,16 @@ export function getLimitErrorPayload(
     member: 'member-limit-reached',
   };
 
-  const upgradeMessage = getPlanUpgradeMessage(planId, limitType);
+  const currentPlan = getTenantPlanId(planId);
+  const recommendedPlan = getRecommendedPlanId(currentPlan, limitType);
+  const upgradeMessage = getPlanUpgradeMessage(currentPlan, limitType);
 
   return {
+    type: 'plan-limit' as const,
+    resource: limitType,
+    currentPlan,
+    recommendedPlan,
+    upgradeUrl: `/membership/upgrade?reason=${limitType}`,
     message: `${limitType.charAt(0).toUpperCase() + limitType.slice(1)} limit reached. ${upgradeMessage}`,
     code: codeMap[limitType],
     current: Number(current),

@@ -1,6 +1,6 @@
 import { useToast } from '@umami/react-zen';
 import type { ApiError } from '@/lib/types';
-import { useApi } from '../useApi';
+import { isPlanLimitError, useApi } from '../useApi';
 import { useModified } from '../useModified';
 
 export function useUpdateQuery(path: string, params?: Record<string, any>) {
@@ -11,5 +11,5 @@ export function useUpdateQuery(path: string, params?: Record<string, any>) {
   const { touch } = useModified();
   const { toast } = useToast();
 
-  return { ...query, touch, toast };
+  return { ...query, error: isPlanLimitError(query.error) ? null : query.error, touch, toast };
 }

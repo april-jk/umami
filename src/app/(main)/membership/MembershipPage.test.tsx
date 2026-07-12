@@ -131,6 +131,7 @@ describe('MembershipPage', () => {
     render(<MembershipPage />);
 
     expect(screen.getByText('Usage limit exceeded')).toBeInTheDocument();
+    expect(screen.getAllByText('Upgrade')).toHaveLength(2);
   });
 
   test('shows warning alert when usage approaching limit', () => {
@@ -151,6 +152,7 @@ describe('MembershipPage', () => {
     render(<MembershipPage />);
 
     expect(screen.getByText('Usage approaching limit')).toBeInTheDocument();
+    expect(screen.getAllByText('Upgrade')).toHaveLength(2);
   });
 
   test('renders enterprise plan with unlimited limits', () => {
@@ -263,7 +265,7 @@ describe('MembershipPage', () => {
 
     render(<MembershipPage />);
 
-    expect(screen.getByText('Upgrade')).toBeInTheDocument();
+    expect(screen.getAllByText('Upgrade').length).toBeGreaterThan(0);
   });
 
   test('shows no alert when usage is low', () => {

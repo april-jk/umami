@@ -423,6 +423,7 @@
     "user-deleted": "Пользователь удален.",
     "replay-min-duration-description": "Показывать только воспроизведения с такой или большей продолжительностью.",
     "viewed-page": "Просмотренная страница",
+    "upgrade-required": "Для этой функции требуется подписка на тариф {plan}.",
     "visitor-log": "Посетитель из <b>{country}</b> используя <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   },
   "membership": {

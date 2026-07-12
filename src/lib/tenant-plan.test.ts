@@ -3,7 +3,9 @@ import {
   getLimitErrorPayload,
   getNextPlanId,
   getPlanUpgradeMessage,
+  getRecommendedPlanId,
   getRetentionCutoff,
+  getTenantPlanId,
   getTenantPlanLimits,
   getUsageAlertLevel,
   getUsagePercentage,
@@ -20,6 +22,12 @@ describe('tenant plan limits', () => {
   test('defaults unknown and missing plans to Free', () => {
     expect(getTenantPlanLimits()).toEqual(TENANT_PLAN_LIMITS.free);
     expect(getTenantPlanLimits('legacy-plan')).toEqual(TENANT_PLAN_LIMITS.free);
+  });
+
+  test('normalizes plan identifiers', () => {
+    expect(getTenantPlanId('pro')).toBe('pro');
+    expect(getTenantPlanId('legacy-plan')).toBe('free');
+    expect(getTenantPlanId()).toBe('free');
   });
 
   test('treats null limits as unlimited and supports bigint counters', () => {
@@ -105,9 +113,20 @@ describe('getPlanUpgradeMessage', () => {
     expect(getPlanUpgradeMessage('team', 'event')).toContain('unlimited');
   });
 
-  test('handles unknown plans by treating as free tier', () => {
-    // Unknown plan defaults to free via getTenantPlanLimits, but getNextPlanId returns null for unknown
-    expect(getPlanUpgradeMessage('unknown', 'website')).toBe('Contact sales for custom limits.');
+  test('handles unknown plans by treating them as free', () => {
+    expect(getPlanUpgradeMessage('unknown', 'website')).toContain('Starter');
+  });
+});
+
+describe('getRecommendedPlanId', () => {
+  test('skips a paid tier that does not increase the exhausted limit', () => {
+    expect(getRecommendedPlanId('free', 'member')).toBe('pro');
+    expect(getRecommendedPlanId('free', 'website')).toBe('starter');
+    expect(getRecommendedPlanId('pro', 'event')).toBe('team');
+  });
+
+  test('returns null when the current plan is already unlimited', () => {
+    expect(getRecommendedPlanId('enterprise', 'member')).toBeNull();
   });
 });
 
@@ -146,6 +165,13 @@ describe('getLimitErrorPayload', () => {
     expect(payload.message).toContain('Event limit reached.');
     expect(payload.message).toContain('Upgrade to Starter');
     expect(payload.upgradeMessage).toContain('Starter');
+    expect(payload).toMatchObject({
+      type: 'plan-limit',
+      resource: 'event',
+      currentPlan: 'free',
+      recommendedPlan: 'starter',
+      upgradeUrl: '/membership/upgrade?reason=event',
+    });
   });
 
   test('returns structured error for website limit', () => {
@@ -172,5 +198,10 @@ describe('getLimitErrorPayload', () => {
   test('handles bigint current value', () => {
     const payload = getLimitErrorPayload('free', 'event', 100_000n, 100_000);
     expect(payload.current).toBe(100_000);
+  });
+
+  test('normalizes unknown plans and omits a recommendation after Enterprise', () => {
+    expect(getLimitErrorPayload('unknown', 'website', 5, 5).currentPlan).toBe('free');
+    expect(getLimitErrorPayload('enterprise', 'website', 5, null).recommendedPlan).toBeNull();
   });
 });

@@ -423,6 +423,7 @@
     "user-deleted": "用户已删除。",
     "replay-min-duration-description": "只显示时长达到或超过此值的回放。",
     "viewed-page": "已浏览页面",
+    "upgrade-required": "此功能需要订阅 {plan} 套餐。",
     "visitor-log": "来自 <b>{country}</b> 的访客在搭载 <b>{os}</b> 的 <b>{device}</b> 上使用 <b>{browser}</b> 浏览器进行访问。"
   },
   "membership": {
