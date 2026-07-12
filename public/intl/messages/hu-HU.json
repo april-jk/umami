@@ -380,7 +380,8 @@
     "website-id": "Weboldal-ID",
     "websites": "Weboldalak",
     "window": "Ablak",
-    "yesterday": "Tegnap"
+    "yesterday": "Tegnap",
+    "membership": "Tagság"
   },
   "message": {
     "action-confirmation": "Írja be a(z) {confirmation} szót az alábbi mezőbe a megerősítéshez.",
@@ -437,92 +438,109 @@
     "visitor-log": "Látógató <b>{country}</b> területéről, <b>{os}</b> <b>{device}</b> eszközön, <b>{browser}</b> böngészőből."
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Vissza",
+    "title": "Tagság bővítése",
+    "description": "Válasszon az analitikai kapacitásnak, az AI-munkafolyamatoknak, az együttműködésnek és a jelentéskészítési igényeknek megfelelő csomagot.",
+    "annual": "Éves (2 hónap ingyen)",
+    "monthly": "Havi",
+    "downgradeTitle": "Figyelmeztetés alacsonyabb csomagra váltáskor",
+    "downgradeDescription": "Az alacsonyabb csomagra váltás csökkentheti az elérhető erőforrásokat. A meglévő adatokat megőrizzük, de előfordulhat, hogy nem adhat hozzá új webhelyeket vagy tagokat, amíg nem felel meg az új csomag korlátainak.",
+    "current": "Jelenlegi",
+    "recommended": "Ajánlott",
+    "currentPlan": "Jelenlegi csomag",
+    "contactSales": "Kapcsolatfelvétel az értékesítéssel",
+    "redirecting": "Átirányítás a fizetéshez...",
+    "subscribe": "Előfizetés",
+    "freePrice": "Ingyenes",
+    "customPrice": "Egyedi ár",
+    "pricePerMonth": "${price}/hó",
+    "billedYear": "Évente ${price} számlázva (2 hónap megtakarítás)",
+    "yearAvailable": "Évi ${price} áron elérhető",
+    "confirmationError": "Az előfizetés jóváhagyását nem sikerült ellenőrizni. Próbálja újra.",
+    "checkoutError": "Nem sikerült elindítani a fizetést. Próbálja újra.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Ingyenes",
+        "description": "Ideális mellékprojektekhez és korai kísérletekhez. Alapvető analitika havi 100K eseménnyel, 5 webhelyen.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K esemény havonta",
+          "5 webhely",
+          "Alapvető analitika, olvasási hozzáférés az API-hoz és napi 50 MCP-hívás",
+          "Valós idejű irányítópult",
+          "Alapértelmezett GDPR-megfelelőség",
+          "7 napos adatmegőrzés",
+          "Percenként 10 API-kérés és havonta 10 AI-elemzés",
+          "Közösségi támogatás (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Kezdő",
+        "description": "Növekvő projektekhez, amelyeknek nagyobb kapacitásra, AI-munkafolyamatokra és rendszeresen kézbesített analitikai felismerésekre van szükségük.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K esemény havonta",
+          "10 webhely",
+          "1 tag, 20 cél és havi 500 munkamenet-visszajátszás",
+          "Napi 500 MCP-hívás és percenként 60 API-kérés",
+          "CSV-export és napi vagy heti e-mailes jelentések",
+          "3 alapvető riasztási szabály és korlátlan AI-elemzés",
+          "6 hónapos adatmegőrzés",
+          "Havi 5 AI-jelentés"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Együttműködést, összetettebb automatizálást és fejlett analitikát igénylő csapatoknak.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M esemény havonta",
+          "25 webhely",
+          "A Kezdő csomag minden funkciója",
+          "5 csapattag, 100 cél és havi 5K visszajátszás",
+          "Korlátlan MCP-hívás és percenként 300 API-kérés",
+          "CSV- és JSON-export, 5 webhook és Slack-riasztások",
+          "AI-alapú anomáliaészlelés, fejlett tölcsérek és elsőbbségi támogatás",
+          "24 hónapos adatmegőrzés",
+          "Havi 50 AI-jelentés"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Csapat",
+        "description": "Több termékkel dolgozó csapatoknak és ügynökségeknek, amelyeknek méretezhetőségre, irányításra és saját márkás kézbesítésre van szükségük.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M esemény havonta és 50 webhely",
+          "20 tag, korlátlan cél és korlátlan adatmegőrzés",
+          "Korlátlan MCP-hívás és percenként 600 API-kérés",
+          "20 webhook, 100 riasztási szabály és havi 200 AI-jelentés",
+          "SSO/SAML, saját márkás vezérlők és AI-előrejelzés",
+          "24 órás támogatási válaszidő-cél"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Nagyvállalati",
+        "description": "Egyedi mennyiségi, biztonsági, támogatási és üzembe helyezési követelményekkel rendelkező szervezeteknek.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Egyedi esemény-, API-, MCP-, webhely- és tagkapacitás",
+          "Egyedi adatmegőrzési és jelentéskészítési beállítások",
+          "Fejlett identitási, márka- és integrációs követelmények",
+          "Dedikált ügyfélsiker-menedzser és SLA-lehetőségek"
         ]
       }
-    }
+    },
+    "loading": "Betöltés...",
+    "unavailable": "Nem érhető el tagsági információ.",
+    "manageDescription": "Kezelje csomagját, tekintse meg a használatot, és szükség esetén váltson magasabb csomagra.",
+    "usageLimitExceeded": "A használati korlát túllépve",
+    "usageApproachingLimit": "A használat közelíti a korlátot",
+    "exceededDescription": "Egy vagy több használati korlátot túllépett. Váltson magasabb csomagra az összes funkció további használatához.",
+    "approachingDescription": "Egy vagy több használati korlátot hamarosan elér. A megszakítások elkerülése érdekében fontolja meg a magasabb csomagra váltást.",
+    "upgrade": "Bővítés",
+    "currentBillingPeriod": "Jelenlegi számlázási időszak",
+    "dataRetention": "Adatmegőrzés",
+    "unlimited": "Korlátlan",
+    "retentionDays": "{count} nap",
+    "usageOverview": "Használati áttekintés",
+    "events": "Események",
+    "websites": "Webhelyek",
+    "members": "Tagok",
+    "planLabel": "{plan} csomag"
   }
 }

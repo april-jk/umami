@@ -370,7 +370,8 @@
     "website-id": "웹사이트 ID",
     "websites": "웹사이트",
     "window": "창",
-    "yesterday": "어제"
+    "yesterday": "어제",
+    "membership": "멤버십"
   },
   "message": {
     "action-confirmation": "확인을 위해 아래 상자에 {confirmation}을(를) 입력하세요.",
@@ -425,92 +426,109 @@
     "visitor-log": "<b>{os}</b> <b>{device}</b>에서 <b>{browser}</b>을(를) 사용하는 <b>{country}</b>의 방문자"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "뒤로",
+    "title": "멤버십 업그레이드",
+    "description": "분석 용량, AI 워크플로, 협업 및 보고 요구에 맞는 요금제를 선택하세요.",
+    "annual": "연간 결제(2개월 무료)",
+    "monthly": "월간 결제",
+    "downgradeTitle": "다운그레이드 경고",
+    "downgradeDescription": "다운그레이드하면 사용 가능한 리소스가 줄어들 수 있습니다. 기존 데이터는 보존되지만 새 요금제 한도 이내가 될 때까지 새 웹사이트나 구성원을 추가하지 못할 수 있습니다.",
+    "current": "현재",
+    "recommended": "추천",
+    "currentPlan": "현재 요금제",
+    "contactSales": "영업팀 문의",
+    "redirecting": "결제 페이지로 이동 중...",
+    "subscribe": "구독하기",
+    "freePrice": "무료",
+    "customPrice": "맞춤형",
+    "pricePerMonth": "월 ${price}",
+    "billedYear": "연 ${price} 청구(2개월 절약)",
+    "yearAvailable": "연 ${price} 요금제 이용 가능",
+    "confirmationError": "구독 승인을 확인할 수 없습니다. 다시 시도해 주세요.",
+    "checkoutError": "결제를 시작할 수 없습니다. 다시 시도해 주세요.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "무료",
+        "description": "사이드 프로젝트와 초기 실험에 적합합니다. 5개 웹사이트에서 월 10만 이벤트까지 핵심 분석을 이용하세요.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "월 10만 이벤트",
+          "웹사이트 5개",
+          "핵심 분석, API 읽기 접근 및 일 50회 MCP 호출",
+          "실시간 대시보드",
+          "기본 GDPR 준수",
+          "7일 데이터 보존",
+          "분당 API 요청 10회 및 월 AI 분석 10회",
+          "커뮤니티 지원(Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "스타터",
+        "description": "더 많은 용량, AI 워크플로 및 정기적인 분석 인사이트 제공이 필요한 성장 중인 프로젝트용입니다.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "월 50만 이벤트",
+          "웹사이트 10개",
+          "구성원 1명, 목표 20개 및 월 세션 리플레이 500회",
+          "일 500회 MCP 호출 및 분당 API 요청 60회",
+          "CSV 내보내기 및 일간 또는 주간 이메일 보고서",
+          "기본 알림 규칙 3개 및 무제한 AI 분석",
+          "6개월 데이터 보존",
+          "월 AI 보고서 5개"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "프로",
+        "description": "협업, 풍부한 자동화 및 고급 분석이 필요한 팀용입니다.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "월 200만 이벤트",
+          "웹사이트 25개",
+          "스타터의 모든 기능",
+          "팀 구성원 5명, 목표 100개 및 월 리플레이 5천 회",
+          "무제한 MCP 호출 및 분당 API 요청 300회",
+          "CSV 및 JSON 내보내기, Webhook 5개 및 Slack 알림",
+          "AI 이상 탐지, 고급 퍼널 및 우선 지원",
+          "24개월 데이터 보존",
+          "월 AI 보고서 50개"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "팀",
+        "description": "확장성, 거버넌스 및 브랜드 보고가 필요한 다중 제품 팀과 대행사용입니다.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "월 1천만 이벤트 및 웹사이트 50개",
+          "구성원 20명, 무제한 목표 및 무제한 데이터 보존",
+          "무제한 MCP 호출 및 분당 API 요청 600회",
+          "Webhook 20개, 알림 규칙 100개 및 월 AI 보고서 200개",
+          "SSO/SAML, 화이트 라벨 제어 및 AI 예측",
+          "24시간 이내 지원 응답 목표"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "엔터프라이즈",
+        "description": "맞춤형 용량, 보안, 지원 및 배포 요구가 있는 조직용입니다.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "이벤트, API, MCP, 웹사이트 및 구성원 용량 맞춤 설정",
+          "보존 및 보고 구성 맞춤 설정",
+          "고급 ID, 브랜딩 및 통합 요구 사항",
+          "전담 CSM 및 SLA 옵션"
         ]
       }
-    }
+    },
+    "loading": "불러오는 중...",
+    "unavailable": "멤버십 정보를 불러올 수 없습니다.",
+    "manageDescription": "요금제, 사용량 및 결제 상태를 관리합니다.",
+    "usageLimitExceeded": "요금제 사용 한도를 초과했습니다",
+    "usageApproachingLimit": "요금제 사용 한도에 근접했습니다",
+    "exceededDescription": "서비스를 계속 이용하려면 요금제를 업그레이드하세요.",
+    "approachingDescription": "중단을 피하려면 미리 업그레이드하세요.",
+    "upgrade": "업그레이드",
+    "currentBillingPeriod": "현재 결제 기간",
+    "dataRetention": "데이터 보존 기간",
+    "unlimited": "무제한",
+    "retentionDays": "{count}일",
+    "usageOverview": "사용량 개요",
+    "events": "이벤트",
+    "websites": "웹사이트",
+    "members": "구성원",
+    "planLabel": "{plan} 요금제"
   }
 }

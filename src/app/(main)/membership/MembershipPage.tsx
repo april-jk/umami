@@ -1,19 +1,20 @@
 'use client';
 
-import { Column, Grid, Heading, Icon, Row, Text, Button } from '@umami/react-zen';
+import { Button, Column, Grid, Heading, Icon, Row, Text } from '@umami/react-zen';
+import Link from 'next/link';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useLoginQuery, useTenantUsageQuery, useMessages } from '@/components/hooks';
-import { Crown, AlertTriangle, ArrowUpRight } from '@/components/icons';
-import { getUsagePercentage, getUsageAlertLevel, getTenantPlanLimits } from '@/lib/tenant-plan';
-import { UsageBar } from './UsageBar';
+import { useLocale, useLoginQuery, useMessages, useTenantUsageQuery } from '@/components/hooks';
+import { AlertTriangle, ArrowUpRight, Crown } from '@/components/icons';
+import { getTenantPlanLimits, getUsageAlertLevel, getUsagePercentage } from '@/lib/tenant-plan';
 import { PlanBadge } from './PlanBadge';
-import Link from 'next/link';
+import { UsageBar } from './UsageBar';
 
 export function MembershipPage() {
   const { user } = useLoginQuery();
   const { t, labels } = useMessages();
+  const { locale } = useLocale();
   const tenantId = user?.tenantId || user?.tenants?.[0]?.id;
 
   const { data: usage, isLoading } = useTenantUsageQuery(tenantId);
@@ -22,7 +23,7 @@ export function MembershipPage() {
     return (
       <PageBody>
         <PageHeader title={t(labels.membership)} />
-        <Text color="muted">Loading...</Text>
+        <Text color="muted">{t('membership.loading')}</Text>
       </PageBody>
     );
   }
@@ -36,7 +37,7 @@ export function MembershipPage() {
             <Icon size="lg" color="muted">
               <Crown />
             </Icon>
-            <Text color="muted">No membership information available.</Text>
+            <Text color="muted">{t('membership.unavailable')}</Text>
           </Column>
         </Panel>
       </PageBody>
@@ -44,21 +45,29 @@ export function MembershipPage() {
   }
 
   const plan = usage?.plan || user?.plan || 'free';
+  const planName = t(`membership.plans.${plan}.name`);
   const limits = getTenantPlanLimits(plan);
 
-  const eventPct = getUsagePercentage(usage?.events?.used || 0, usage?.events?.limit ?? limits.eventLimit);
+  const eventPct = getUsagePercentage(
+    usage?.events?.used || 0,
+    usage?.events?.limit ?? limits.eventLimit,
+  );
   const websitePct = getUsagePercentage(
     usage?.websites?.used || 0,
     usage?.websites?.limit ?? limits.websiteLimit,
   );
-  const memberPct = getUsagePercentage(usage?.members?.used || 0, usage?.members?.limit ?? limits.memberLimit);
+  const memberPct = getUsagePercentage(
+    usage?.members?.used || 0,
+    usage?.members?.limit ?? limits.memberLimit,
+  );
 
   const eventAlert = getUsageAlertLevel(eventPct);
   const websiteAlert = getUsageAlertLevel(websitePct);
   const memberAlert = getUsageAlertLevel(memberPct);
 
   const hasAlert = eventAlert !== 'none' || websiteAlert !== 'none' || memberAlert !== 'none';
-  const hasCritical = eventAlert === 'exceeded' || websiteAlert === 'exceeded' || memberAlert === 'exceeded';
+  const hasCritical =
+    eventAlert === 'exceeded' || websiteAlert === 'exceeded' || memberAlert === 'exceeded';
 
   const alertPanelStyle = hasCritical
     ? { backgroundColor: '#fef2f2', border: '1px solid #fecaca' }
@@ -67,10 +76,7 @@ export function MembershipPage() {
   return (
     <PageBody>
       <Column gap="6">
-        <PageHeader
-          title={t(labels.membership)}
-          description="Manage your plan, view usage, and upgrade when needed."
-        />
+        <PageHeader title={t(labels.membership)} description={t('membership.manageDescription')} />
 
         {hasAlert && (
           <Panel style={alertPanelStyle}>
@@ -80,12 +86,14 @@ export function MembershipPage() {
               </Icon>
               <Column>
                 <Text weight="bold" style={{ color: hasCritical ? '#ef4444' : '#f97316' }}>
-                  {hasCritical ? 'Usage limit exceeded' : 'Usage approaching limit'}
+                  {hasCritical
+                    ? t('membership.usageLimitExceeded')
+                    : t('membership.usageApproachingLimit')}
                 </Text>
                 <Text size="sm" color="muted">
                   {hasCritical
-                    ? 'You have exceeded one or more usage limits. Please upgrade your plan to continue using all features.'
-                    : 'You are approaching one or more usage limits. Consider upgrading to avoid interruptions.'}
+                    ? t('membership.exceededDescription')
+                    : t('membership.approachingDescription')}
                 </Text>
               </Column>
             </Row>
@@ -97,10 +105,8 @@ export function MembershipPage() {
             <Column gap="4">
               <Row alignItems="center" justifyContent="space-between">
                 <Row gap="3" alignItems="center">
-                  <PlanBadge plan={plan} />
-                  <Heading size="sm">
-                    {plan.charAt(0).toUpperCase() + plan.slice(1)} Plan
-                  </Heading>
+                  <PlanBadge plan={plan} label={planName} />
+                  <Heading size="sm">{t('membership.planLabel', { plan: planName })}</Heading>
                 </Row>
                 <Link href="/membership/upgrade" passHref>
                   <Button variant="primary" size="sm">
@@ -108,44 +114,54 @@ export function MembershipPage() {
                       <Icon size="sm">
                         <ArrowUpRight />
                       </Icon>
-                      Upgrade
+                      {t('membership.upgrade')}
                     </Row>
                   </Button>
                 </Link>
               </Row>
 
               <Column gap="1">
-                <Text size="sm" color="muted">Current billing period</Text>
+                <Text size="sm" color="muted">
+                  {t('membership.currentBillingPeriod')}
+                </Text>
                 <Text weight="bold">{usage?.month || new Date().toISOString().slice(0, 7)}</Text>
               </Column>
 
               <Column gap="1">
-                <Text size="sm" color="muted">Data retention</Text>
+                <Text size="sm" color="muted">
+                  {t('membership.dataRetention')}
+                </Text>
                 <Text weight="bold">
                   {limits.retentionDays === null
-                    ? 'Unlimited'
-                    : `${limits.retentionDays} days`}
+                    ? t('membership.unlimited')
+                    : t('membership.retentionDays', { count: limits.retentionDays })}
                 </Text>
               </Column>
             </Column>
           </Panel>
 
-          <Panel title="Usage Overview">
+          <Panel title={t('membership.usageOverview')}>
             <Column gap="4">
               <UsageBar
-                label="Events"
+                label={t('membership.events')}
+                locale={locale}
+                unlimitedLabel={t('membership.unlimited')}
                 used={usage?.events?.used || 0}
                 limit={usage?.events?.limit ?? limits.eventLimit}
                 alert={eventAlert}
               />
               <UsageBar
-                label="Websites"
+                label={t('membership.websites')}
+                locale={locale}
+                unlimitedLabel={t('membership.unlimited')}
                 used={usage?.websites?.used || 0}
                 limit={usage?.websites?.limit ?? limits.websiteLimit}
                 alert={websiteAlert}
               />
               <UsageBar
-                label="Members"
+                label={t('membership.members')}
+                locale={locale}
+                unlimitedLabel={t('membership.unlimited')}
                 used={usage?.members?.used || 0}
                 limit={usage?.members?.limit ?? limits.memberLimit}
                 alert={memberAlert}

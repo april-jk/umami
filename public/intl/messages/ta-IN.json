@@ -370,7 +370,8 @@
     "website-id": "வலைத்தள ID",
     "websites": "வலைத்தளங்கள்",
     "window": "சாளரம்",
-    "yesterday": "நேற்று"
+    "yesterday": "நேற்று",
+    "membership": "உறுப்பினர் சந்தா"
   },
   "message": {
     "action-confirmation": "உறுதிப்படுத்த கீழே உள்ள பெட்டியில் {confirmation} என்று தட்டச்சு செய்யவும்.",
@@ -425,92 +426,109 @@
     "visitor-log": "<b>{country}</b>வில் இருந்து பார்வையாளர் <b>{browser}</b> ஐ <b>{os}</b> <b>{device}</b>லில் பயன்படுத்துகிறார்"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "பின்செல்",
+    "title": "உறுப்பினர் திட்டத்தை மேம்படுத்து",
+    "description": "பகுப்பாய்வு கொள்ளளவு, AI பணிப்பாய்வு, ஒத்துழைப்பு மற்றும் அறிக்கையிடல் தேவைகளுக்கான திட்டத்தைத் தேர்ந்தெடுக்கவும்.",
+    "annual": "ஆண்டு (2 மாதங்கள் இலவசம்)",
+    "monthly": "மாதாந்திரம்",
+    "downgradeTitle": "திட்டக் குறைப்பு எச்சரிக்கை",
+    "downgradeDescription": "திட்டத்தைக் குறைப்பதால் கிடைக்கும் வளங்கள் குறையலாம். தற்போதைய தரவு பாதுகாக்கப்படும், ஆனால் புதிய திட்ட வரம்பிற்குள் வரும் வரை புதிய இணையதளம் அல்லது உறுப்பினரைச் சேர்க்க முடியாமல் போகலாம்.",
+    "current": "தற்போதைய",
+    "recommended": "பரிந்துரைக்கப்பட்டது",
+    "currentPlan": "தற்போதைய திட்டம்",
+    "contactSales": "விற்பனையைத் தொடர்புகொள்",
+    "redirecting": "பணம் செலுத்தும் பக்கத்திற்குச் செல்கிறது...",
+    "subscribe": "சந்தா செலுத்து",
+    "freePrice": "இலவசம்",
+    "customPrice": "தனிப்பயன்",
+    "pricePerMonth": "${price}/மாதம்",
+    "billedYear": "ஆண்டுக்கு ${price} கட்டணம் (2 மாத சேமிப்பு)",
+    "yearAvailable": "ஆண்டுக்கு ${price} திட்டம் உள்ளது",
+    "confirmationError": "உங்கள் சந்தா ஒப்புதலைச் சரிபார்க்க முடியவில்லை. மீண்டும் முயலவும்.",
+    "checkoutError": "பணம் செலுத்துவதைத் தொடங்க முடியவில்லை. மீண்டும் முயலவும்.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "இலவசம்",
+        "description": "துணைத் திட்டங்கள் மற்றும் தொடக்கச் சோதனைகளுக்கு ஏற்றது. 5 இணையதளங்களில் மாதம் 100 ஆயிரம் நிகழ்வுகளுடன் அடிப்படை பகுப்பாய்வு.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "மாதம் 100 ஆயிரம் நிகழ்வுகள்",
+          "5 இணையதளங்கள்",
+          "அடிப்படை பகுப்பாய்வு, API வாசிப்பு அணுகல் மற்றும் நாளுக்கு 50 MCP அழைப்புகள்",
+          "நேரலை முகப்புப்பலகை",
+          "இயல்பாக GDPR இணக்கம்",
+          "7 நாள் தரவு சேமிப்பு",
+          "நிமிடத்திற்கு 10 API கோரிக்கைகள் மற்றும் மாதம் 10 AI பகுப்பாய்வுகள்",
+          "சமூக ஆதரவு (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "தொடக்கம்",
+        "description": "அதிக கொள்ளளவு, AI பணிப்பாய்வு மற்றும் வழக்கமான பகுப்பாய்வு தகவல் தேவைப்படும் வளரும் திட்டங்களுக்கு.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "மாதம் 500 ஆயிரம் நிகழ்வுகள்",
+          "10 இணையதளங்கள்",
+          "1 உறுப்பினர், 20 இலக்குகள் மற்றும் மாதம் 500 அமர்வு மறுஒளிபரப்புகள்",
+          "நாளுக்கு 500 MCP அழைப்புகள் மற்றும் நிமிடத்திற்கு 60 API கோரிக்கைகள்",
+          "CSV ஏற்றுமதி மற்றும் தினசரி அல்லது வாராந்திர மின்னஞ்சல் அறிக்கைகள்",
+          "3 அடிப்படை எச்சரிக்கை விதிகள் மற்றும் வரம்பற்ற AI பகுப்பாய்வுகள்",
+          "6 மாத தரவு சேமிப்பு",
+          "மாதம் 5 AI அறிக்கைகள்"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "தொழில்முறை",
+        "description": "ஒத்துழைப்பு, மேம்பட்ட தானியக்கம் மற்றும் உயர்நிலை பகுப்பாய்வு தேவைப்படும் அணிகளுக்கு.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "மாதம் 2 மில்லியன் நிகழ்வுகள்",
+          "25 இணையதளங்கள்",
+          "தொடக்கத் திட்டத்தின் அனைத்தும்",
+          "5 அணி உறுப்பினர்கள், 100 இலக்குகள் மற்றும் மாதம் 5 ஆயிரம் மறுஒளிபரப்புகள்",
+          "வரம்பற்ற MCP அழைப்புகள் மற்றும் நிமிடத்திற்கு 300 API கோரிக்கைகள்",
+          "CSV மற்றும் JSON ஏற்றுமதி, 5 Webhook மற்றும் Slack எச்சரிக்கைகள்",
+          "AI முரண்பாடு கண்டறிதல், மேம்பட்ட புனல்கள் மற்றும் முன்னுரிமை ஆதரவு",
+          "24 மாத தரவு சேமிப்பு",
+          "மாதம் 50 AI அறிக்கைகள்"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "அணி",
+        "description": "அளவு, நிர்வாகம் மற்றும் முத்திரையிட்ட வழங்கல் தேவைப்படும் பல-தயாரிப்பு அணிகள் மற்றும் முகமைகளுக்கு.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "மாதம் 10 மில்லியன் நிகழ்வுகள் மற்றும் 50 இணையதளங்கள்",
+          "20 உறுப்பினர்கள், வரம்பற்ற இலக்குகள் மற்றும் வரம்பற்ற தரவு சேமிப்பு",
+          "வரம்பற்ற MCP அழைப்புகள் மற்றும் நிமிடத்திற்கு 600 API கோரிக்கைகள்",
+          "20 Webhook, 100 எச்சரிக்கை விதிகள் மற்றும் மாதம் 200 AI அறிக்கைகள்",
+          "SSO/SAML, வெள்ளை-முத்திரை கட்டுப்பாடுகள் மற்றும் AI முன்னறிவிப்பு",
+          "24 மணி நேர ஆதரவு பதில் இலக்கு"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "நிறுவனம்",
+        "description": "தனிப்பயன் அளவு, பாதுகாப்பு, ஆதரவு மற்றும் நிறுவல் தேவைகள் கொண்ட நிறுவனங்களுக்கு.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "நிகழ்வு, API, MCP, இணையதளம் மற்றும் உறுப்பினர் கொள்ளளவு தனிப்பயன்",
+          "சேமிப்பு மற்றும் அறிக்கை அமைப்பு தனிப்பயன்",
+          "மேம்பட்ட அடையாளம், முத்திரை மற்றும் ஒருங்கிணைப்புத் தேவைகள்",
+          "பிரத்யேக CSM மற்றும் SLA விருப்பங்கள்"
         ]
       }
-    }
+    },
+    "loading": "ஏற்றுகிறது...",
+    "unavailable": "உறுப்பினர் தகவலை ஏற்ற முடியவில்லை.",
+    "manageDescription": "திட்டம், பயன்பாடு மற்றும் கட்டண நிலையை நிர்வகிக்கவும்.",
+    "usageLimitExceeded": "திட்டப் பயன்பாட்டு வரம்பை மீறிவிட்டீர்கள்",
+    "usageApproachingLimit": "திட்டப் பயன்பாட்டு வரம்பை நெருங்குகிறீர்கள்",
+    "exceededDescription": "சேவையைத் தொடர திட்டத்தை மேம்படுத்தவும்.",
+    "approachingDescription": "தடங்கலைத் தவிர்க்க முன்கூட்டியே மேம்படுத்தவும்.",
+    "upgrade": "மேம்படுத்து",
+    "currentBillingPeriod": "தற்போதைய கட்டணக் காலம்",
+    "dataRetention": "தரவு சேமிப்புக் காலம்",
+    "unlimited": "வரம்பற்றது",
+    "retentionDays": "{count} நாட்கள்",
+    "usageOverview": "பயன்பாட்டுச் சுருக்கம்",
+    "events": "நிகழ்வுகள்",
+    "websites": "இணையதளங்கள்",
+    "members": "உறுப்பினர்கள்",
+    "planLabel": "{plan} திட்டம்"
   }
 }

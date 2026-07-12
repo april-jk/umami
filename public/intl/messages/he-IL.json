@@ -370,7 +370,8 @@
     "website-id": "מזהה אתר",
     "websites": "אתרים",
     "window": "חלון",
-    "yesterday": "אתמול"
+    "yesterday": "אתמול",
+    "membership": "חברות"
   },
   "message": {
     "action-confirmation": "הקלידו {confirmation} בתיבה למטה לאישור.",
@@ -425,92 +426,109 @@
     "visitor-log": "מבקר ממדינת <b>{country}</b> משתמבש בדפדפן <b>{browser}</b> ב-<b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "חזרה",
+    "title": "שדרוג החברות",
+    "description": "בחרו תוכנית שמתאימה לנפח הניתוח, לתהליכי AI, לשיתוף הפעולה ולצורכי הדיווח שלכם.",
+    "annual": "שנתי (חודשיים חינם)",
+    "monthly": "חודשי",
+    "downgradeTitle": "אזהרת שדרוג לאחור",
+    "downgradeDescription": "מעבר לתוכנית נמוכה יותר עשוי לצמצם את המשאבים הזמינים. הנתונים הקיימים יישמרו, אך ייתכן שלא תוכלו להוסיף אתרים או חברים עד שתעמדו במגבלות התוכנית החדשה.",
+    "current": "נוכחית",
+    "recommended": "מומלצת",
+    "currentPlan": "התוכנית הנוכחית",
+    "contactSales": "יצירת קשר עם המכירות",
+    "redirecting": "מעביר לתשלום...",
+    "subscribe": "הרשמה",
+    "freePrice": "חינם",
+    "customPrice": "מותאם אישית",
+    "pricePerMonth": "${price}/חודש",
+    "billedYear": "חיוב של ${price}/שנה (חיסכון של חודשיים)",
+    "yearAvailable": "זמין ב-${price}/שנה",
+    "confirmationError": "לא ניתן היה לאמת את אישור המינוי. נסו שוב.",
+    "checkoutError": "לא ניתן להתחיל את התשלום. נסו שוב.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "חינם",
+        "description": "מושלם לפרויקטים צדדיים ולניסויים ראשונים. ניתוח ליבה עם 100K אירועים בחודש ב-5 אתרים.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K אירועים/חודש",
+          "5 אתרים",
+          "ניתוח ליבה, גישת קריאה ל-API ו-50 קריאות MCP ביום",
+          "לוח מחוונים בזמן אמת",
+          "תואם GDPR כברירת מחדל",
+          "שמירת נתונים ל-7 ימים",
+          "10 בקשות API בדקה ו-10 ניתוחי AI בחודש",
+          "תמיכת קהילה (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "מתחילים",
+        "description": "לפרויקטים בצמיחה שזקוקים ליותר קיבולת, לתהליכי AI ולמסירה שוטפת של תובנות.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K אירועים/חודש",
+          "10 אתרים",
+          "חבר אחד, 20 יעדים ו-500 הקלטות הפעלה בחודש",
+          "500 קריאות MCP ביום ו-60 בקשות API בדקה",
+          "ייצוא CSV ודוחות דוא״ל יומיים או שבועיים",
+          "3 כללי התראה בסיסיים וניתוחי AI ללא הגבלה",
+          "שמירת נתונים ל-6 חודשים",
+          "5 דוחות AI בחודש"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "מקצועית",
+        "description": "לצוותים שזקוקים לשיתוף פעולה, אוטומציה עשירה יותר וניתוח מתקדם.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M אירועים/חודש",
+          "25 אתרים",
+          "כל מה שבתוכנית מתחילים",
+          "5 חברים, 100 יעדים ו-5K הקלטות בחודש",
+          "קריאות MCP ללא הגבלה ו-300 בקשות API בדקה",
+          "ייצוא CSV ו-JSON, חמישה webhooks והתראות Slack",
+          "זיהוי חריגות AI, משפכים מתקדמים ותמיכה בעדיפות",
+          "שמירת נתונים ל-24 חודשים",
+          "50 דוחות AI בחודש"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "צוות",
+        "description": "לצוותים מרובי מוצרים ולסוכנויות שזקוקים להיקף, ממשל ומסירה ממותגת.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M אירועים/חודש ו-50 אתרים",
+          "20 חברים, יעדים ללא הגבלה ושמירת נתונים ללא הגבלה",
+          "קריאות MCP ללא הגבלה ו-600 בקשות API בדקה",
+          "20 webhooks, מאה כללי התראה ו-200 דוחות AI בחודש",
+          "SSO/SAML, בקרות מותג לבן וחיזוי AI",
+          "יעד מענה תמיכה בתוך 24 שעות"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "ארגונית",
+        "description": "לארגונים עם דרישות מותאמות לנפח, אבטחה, תמיכה ופריסה.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "קיבולת מותאמת לאירועים, API, MCP, אתרים וחברים",
+          "תצורת שמירה ודיווח מותאמת",
+          "דרישות מתקדמות לזהות, מיתוג ואינטגרציה",
+          "אפשרויות CSM ו-SLA ייעודיות"
         ]
       }
-    }
+    },
+    "loading": "טוען...",
+    "unavailable": "אין מידע על חברות.",
+    "manageDescription": "נהלו את התוכנית, צפו בשימוש ושדרגו לפי הצורך.",
+    "usageLimitExceeded": "חריגה ממגבלת השימוש",
+    "usageApproachingLimit": "מתקרבים למגבלת השימוש",
+    "exceededDescription": "חרגתם ממגבלת שימוש אחת או יותר. שדרגו את התוכנית כדי להמשיך להשתמש בכל התכונות.",
+    "approachingDescription": "אתם מתקרבים למגבלת שימוש אחת או יותר. שקלו לשדרג כדי למנוע הפרעות.",
+    "upgrade": "שדרוג",
+    "currentBillingPeriod": "תקופת החיוב הנוכחית",
+    "dataRetention": "שמירת נתונים",
+    "unlimited": "ללא הגבלה",
+    "retentionDays": "{count} ימים",
+    "usageOverview": "סקירת שימוש",
+    "events": "אירועים",
+    "websites": "אתרים",
+    "members": "חברים",
+    "planLabel": "תוכנית {plan}"
   }
 }

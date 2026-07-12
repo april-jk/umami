@@ -380,7 +380,8 @@
     "website-id": "Website-ID",
     "websites": "Websites",
     "window": "Venster",
-    "yesterday": "Gisteren"
+    "yesterday": "Gisteren",
+    "membership": "Lidmaatschap"
   },
   "message": {
     "action-confirmation": "Typ {confirmation} in het veld hieronder om te bevestigen.",
@@ -437,92 +438,109 @@
     "visitor-log": "Bezoeker uit <b>{country}</b> met <b>{browser}</b> op een <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Terug",
+    "title": "Lidmaatschap upgraden",
+    "description": "Kies een abonnement dat past bij je behoefte aan analysecapaciteit, AI-workflows, samenwerking en rapportage.",
+    "annual": "Jaarlijks (2 maanden gratis)",
+    "monthly": "Maandelijks",
+    "downgradeTitle": "Waarschuwing bij downgraden",
+    "downgradeDescription": "Downgraden kan je beschikbare middelen beperken. Bestaande gegevens blijven behouden, maar je kunt mogelijk geen nieuwe websites of leden toevoegen totdat je binnen de limieten van het nieuwe abonnement valt.",
+    "current": "Huidig",
+    "recommended": "Aanbevolen",
+    "currentPlan": "Huidig abonnement",
+    "contactSales": "Contact opnemen met verkoop",
+    "redirecting": "Doorsturen naar afrekenen...",
+    "subscribe": "Abonneren",
+    "freePrice": "Gratis",
+    "customPrice": "Op maat",
+    "pricePerMonth": "${price}/maand",
+    "billedYear": "${price}/jaar gefactureerd (bespaar 2 maanden)",
+    "yearAvailable": "Beschikbaar voor ${price}/jaar",
+    "confirmationError": "De goedkeuring van je abonnement kon niet worden geverifieerd. Probeer het opnieuw.",
+    "checkoutError": "Afrekenen kon niet worden gestart. Probeer het opnieuw.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratis",
+        "description": "Perfect voor nevenprojecten en eerste experimenten. Krijg kernanalyses met 100K gebeurtenissen/maand voor 5 websites.",
         "features": [
-          "100K events/month",
+          "100K gebeurtenissen/maand",
           "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "Kernanalyses, leestoegang tot de API en 50 MCP-aanroepen/dag",
+          "Realtime dashboard",
+          "Standaard GDPR-conform",
+          "Gegevensbewaring van 7 dagen",
+          "10 API-verzoeken/minuut en 10 AI-analyses/maand",
+          "Communityondersteuning (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "Voor groeiende projecten die meer capaciteit, AI-workflows en regelmatige levering van analyse-inzichten nodig hebben.",
         "features": [
-          "500K events/month",
+          "500K gebeurtenissen/maand",
           "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "1 lid, 20 doelen en 500 sessieherhalingen/maand",
+          "500 MCP-aanroepen/dag en 60 API-verzoeken/minuut",
+          "CSV-export en dagelijkse of wekelijkse e-mailrapporten",
+          "3 basiswaarschuwingsregels en onbeperkte AI-analyses",
+          "Gegevensbewaring van 6 maanden",
+          "5 AI-rapporten/maand"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Voor teams die samenwerking, uitgebreidere automatisering en geavanceerde analyses nodig hebben.",
         "features": [
-          "2M events/month",
+          "2M gebeurtenissen/maand",
           "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "Alles uit Starter",
+          "5 teamleden, 100 doelen en 5K herhalingen/maand",
+          "Onbeperkte MCP-aanroepen en 300 API-verzoeken/minuut",
+          "CSV- en JSON-export, 5 webhooks en Slack-waarschuwingen",
+          "AI-anomaliedetectie, geavanceerde trechters en prioriteitsondersteuning",
+          "Gegevensbewaring van 24 maanden",
+          "50 AI-rapporten/maand"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "Voor multiproductteams en bureaus die schaal, governance en levering onder eigen merk nodig hebben.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M gebeurtenissen/maand en 50 websites",
+          "20 leden, onbeperkte doelen en onbeperkte gegevensbewaring",
+          "Onbeperkte MCP-aanroepen en 600 API-verzoeken/minuut",
+          "20 webhooks, 100 waarschuwingsregels en 200 AI-rapporten/maand",
+          "SSO/SAML, whitelabelbeheer en AI-voorspellingen",
+          "Beoogde reactietijd van ondersteuning: 24 uur"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "Voor organisaties met aangepaste eisen voor volume, beveiliging, ondersteuning en implementatie.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Aangepaste capaciteit voor gebeurtenissen, API, MCP, websites en leden",
+          "Aangepaste configuratie voor bewaring en rapportage",
+          "Geavanceerde vereisten voor identiteit, merk en integratie",
+          "Opties voor een vaste CSM en SLA"
         ]
       }
-    }
+    },
+    "loading": "Laden…",
+    "unavailable": "Niet beschikbaar",
+    "manageDescription": "Beheer je abonnement en bekijk het gebruik van je huidige abonnement.",
+    "usageLimitExceeded": "Gebruikslimiet overschreden",
+    "usageApproachingLimit": "Gebruikslimiet bijna bereikt",
+    "exceededDescription": "Je hebt een limiet van je abonnement overschreden. Upgrade om de dienst zonder onderbreking te blijven gebruiken.",
+    "approachingDescription": "Je nadert een limiet van je abonnement. Upgrade voor meer capaciteit.",
+    "upgrade": "Upgraden",
+    "currentBillingPeriod": "Huidige factureringsperiode",
+    "dataRetention": "Gegevensbewaring",
+    "unlimited": "Onbeperkt",
+    "retentionDays": "{count} dagen",
+    "usageOverview": "Gebruiksoverzicht",
+    "events": "Gebeurtenissen",
+    "websites": "Websites",
+    "members": "Leden",
+    "planLabel": "Abonnement {plan}"
   }
 }

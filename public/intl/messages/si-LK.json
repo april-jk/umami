@@ -370,7 +370,8 @@
     "website-id": "වෙබ් අඩවි ID",
     "websites": "වෙබ් අඩවි",
     "window": "කවුළුව",
-    "yesterday": "ඊයේ"
+    "yesterday": "ඊයේ",
+    "membership": "සාමාජිකත්වය"
   },
   "message": {
     "action-confirmation": "තහවුරු කිරීමට පහත කොටුවේ {confirmation} ටයිප් කරන්න.",
@@ -425,92 +426,109 @@
     "visitor-log": "<b>{country}</b> සිට <b>{os}</b> <b>{device}</b> හි <b>{browser}</b> භාවිතා කරන නරඹන්නා"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "ආපසු",
+    "title": "සාමාජිකත්වය උසස් කරන්න",
+    "description": "විශ්ලේෂණ ධාරිතාව, AI කාර්ය ප්‍රවාහ, සහයෝගිතාව සහ වාර්තා අවශ්‍යතා සඳහා සැලැස්මක් තෝරන්න.",
+    "annual": "වාර්ෂික (මාස 2 නොමිලේ)",
+    "monthly": "මාසික",
+    "downgradeTitle": "පහළ දැමීමේ අනතුරු ඇඟවීම",
+    "downgradeDescription": "සැලැස්ම පහළ දැමීමෙන් පවතින සම්පත් අඩු විය හැක. දත්ත සුරැකෙන නමුත් නව සැලැස්මේ සීමාවට පැමිණෙන තුරු නව වෙබ් අඩවි හෝ සාමාජිකයන් එක් කළ නොහැකි විය හැක.",
+    "current": "වත්මන්",
+    "recommended": "නිර්දේශිත",
+    "currentPlan": "වත්මන් සැලැස්ම",
+    "contactSales": "විකුණුම් අංශය අමතන්න",
+    "redirecting": "ගෙවීම් පිටුවට යොමු වෙමින්...",
+    "subscribe": "දායක වන්න",
+    "freePrice": "නොමිලේ",
+    "customPrice": "අභිරුචි",
+    "pricePerMonth": "${price}/මාසය",
+    "billedYear": "වසරකට ${price} අය කෙරේ (මාස 2 ඉතිරි)",
+    "yearAvailable": "වසරකට ${price} සැලැස්ම ඇත",
+    "confirmationError": "ඔබේ දායකත්ව අනුමැතිය තහවුරු කළ නොහැකි විය. නැවත උත්සාහ කරන්න.",
+    "checkoutError": "ගෙවීම ආරම්භ කළ නොහැක. නැවත උත්සාහ කරන්න.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "නොමිලේ",
+        "description": "අමතර ව්‍යාපෘති සහ මුල් අත්හදා බැලීම් සඳහා සුදුසුය. වෙබ් අඩවි 5ක මසකට සිදුවීම් 100 දහසක් සමඟ මූලික විශ්ලේෂණ.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "මසකට සිදුවීම් 100 දහසක්",
+          "වෙබ් අඩවි 5ක්",
+          "මූලික විශ්ලේෂණ, API කියවීමේ ප්‍රවේශය සහ දිනකට MCP ඇමතුම් 50ක්",
+          "තත්‍ය කාලීන උපකරණ පුවරුව",
+          "පෙරනිමියෙන් GDPR අනුකූලයි",
+          "දින 7ක දත්ත රඳවා තබා ගැනීම",
+          "මිනිත්තුවකට API ඉල්ලීම් 10ක් සහ මසකට AI විශ්ලේෂණ 10ක්",
+          "ප්‍රජා සහාය (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "ආරම්භක",
+        "description": "වැඩි ධාරිතාව, AI කාර්ය ප්‍රවාහ සහ නිතිපතා විශ්ලේෂණ තොරතුරු අවශ්‍ය වන වර්ධනය වන ව්‍යාපෘති සඳහා.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "මසකට සිදුවීම් 500 දහසක්",
+          "වෙබ් අඩවි 10ක්",
+          "සාමාජික 1, ඉලක්ක 20 සහ මසකට සැසි නැවත ධාවන 500",
+          "දිනකට MCP 500 සහ මිනිත්තුවකට API 60",
+          "CSV නිර්යාතය සහ දෛනික හෝ සතිපතා ඊමේල් වාර්තා",
+          "මූලික ඇඟවීම් නීති 3 සහ අසීමිත AI විශ්ලේෂණ",
+          "මාස 6ක දත්ත රඳවා තබා ගැනීම",
+          "මසකට AI වාර්තා 5ක්"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "වෘත්තීය",
+        "description": "සහයෝගිතාව, වඩා හොඳ ස්වයංක්‍රීයකරණය සහ උසස් විශ්ලේෂණ අවශ්‍ය කණ්ඩායම් සඳහා.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "මසකට සිදුවීම් මිලියන 2ක්",
+          "වෙබ් අඩවි 25ක්",
+          "ආරම්භක සැලැස්මේ සියල්ල",
+          "කණ්ඩායම් සාමාජිකයන් 5, ඉලක්ක 100 සහ මසකට replay 5 දහසක්",
+          "අසීමිත MCP සහ මිනිත්තුවකට API 300",
+          "CSV සහ JSON නිර්යාතය, Webhook 5 සහ Slack ඇඟවීම්",
+          "AI අසාමාන්‍යතා හඳුනාගැනීම, උසස් පුනීල සහ ප්‍රමුඛතා සහාය",
+          "මාස 24ක දත්ත රඳවා තබා ගැනීම",
+          "මසකට AI වාර්තා 50ක්"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "කණ්ඩායම",
+        "description": "පරිමාණය, පාලනය සහ සන්නාමගත බෙදාහැරීම අවශ්‍ය බහු-නිෂ්පාදන කණ්ඩායම් සහ නියෝජිතායතන සඳහා.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "මසකට සිදුවීම් මිලියන 10ක් සහ වෙබ් අඩවි 50ක්",
+          "සාමාජිකයන් 20, අසීමිත ඉලක්ක සහ අසීමිත දත්ත රඳවා තබා ගැනීම",
+          "අසීමිත MCP සහ මිනිත්තුවකට API 600",
+          "Webhook 20, ඇඟවීම් නීති 100 සහ මසකට AI වාර්තා 200",
+          "SSO/SAML, සුදු ලේබල් පාලන සහ AI පුරෝකථනය",
+          "පැය 24ක සහාය ප්‍රතිචාර ඉලක්කය"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "ව්‍යවසාය",
+        "description": "අභිරුචි පරිමාව, ආරක්ෂාව, සහාය සහ යෙදවීමේ අවශ්‍යතා ඇති ආයතන සඳහා.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "සිදුවීම්, API, MCP, වෙබ් අඩවි සහ සාමාජික ධාරිතාව අභිරුචි",
+          "රඳවා තබා ගැනීම සහ වාර්තා සැකසුම අභිරුචි",
+          "උසස් අනන්‍යතාව, සන්නාම සහ ඒකාබද්ධතා අවශ්‍යතා",
+          "කැපවූ CSM සහ SLA විකල්ප"
         ]
       }
-    }
+    },
+    "loading": "පූරණය වෙමින්...",
+    "unavailable": "සාමාජිකත්ව තොරතුරු පූරණය කළ නොහැක.",
+    "manageDescription": "සැලැස්ම, භාවිතය සහ බිල්පත් තත්ත්වය කළමනාකරණය කරන්න.",
+    "usageLimitExceeded": "ඔබ සැලැස්මේ භාවිත සීමාව ඉක්මවා ඇත",
+    "usageApproachingLimit": "ඔබ සැලැස්මේ භාවිත සීමාවට ළඟා වෙමින් ඇත",
+    "exceededDescription": "සේවාව දිගටම භාවිත කිරීමට සැලැස්ම උසස් කරන්න.",
+    "approachingDescription": "බාධා වළක්වා ගැනීමට කලින් උසස් කරන්න.",
+    "upgrade": "උසස් කරන්න",
+    "currentBillingPeriod": "වත්මන් බිල්පත් කාලය",
+    "dataRetention": "දත්ත රඳවා තබන කාලය",
+    "unlimited": "අසීමිත",
+    "retentionDays": "දින {count}",
+    "usageOverview": "භාවිත සාරාංශය",
+    "events": "සිදුවීම්",
+    "websites": "වෙබ් අඩවි",
+    "members": "සාමාජිකයන්",
+    "planLabel": "{plan} සැලැස්ම"
   }
 }

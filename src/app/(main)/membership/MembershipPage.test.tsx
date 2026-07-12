@@ -1,27 +1,46 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+import enUS from '../../../../public/intl/messages/en-US.json';
+import zhCN from '../../../../public/intl/messages/zh-CN.json';
 import { MembershipPage } from './MembershipPage';
 
 vi.mock('@/components/hooks', () => ({
   useLoginQuery: vi.fn(),
   useTenantUsageQuery: vi.fn(),
   useMessages: vi.fn(),
+  useLocale: vi.fn(),
 }));
 
 vi.mock('next/link', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-import { useLoginQuery, useTenantUsageQuery, useMessages } from '@/components/hooks';
+import { useLocale, useLoginQuery, useMessages, useTenantUsageQuery } from '@/components/hooks';
 
 const useLoginQueryMock = vi.mocked(useLoginQuery);
 const useTenantUsageQueryMock = vi.mocked(useTenantUsageQuery);
 const useMessagesMock = vi.mocked(useMessages);
+const useLocaleMock = vi.mocked(useLocale);
+
+function createTranslator(messages: any) {
+  const getNestedValue = (messagePath: string) =>
+    messagePath.split('.').reduce((value: any, key) => value?.[key], messages);
+
+  return (key: string, values?: Record<string, string | number>) => {
+    const value = getNestedValue(key);
+    if (typeof value !== 'string') return key;
+    return Object.entries(values ?? {}).reduce(
+      (text, [name, replacement]) => text.replace(`{${name}}`, String(replacement)),
+      value,
+    );
+  };
+}
 
 beforeEach(() => {
   vi.clearAllMocks();
+  useLocaleMock.mockReturnValue({ locale: 'en-US' } as any);
   useMessagesMock.mockReturnValue({
-    t: (key: string) => key,
+    t: createTranslator(enUS),
     labels: { membership: 'label.membership' },
     messages: {},
   } as any);
@@ -63,7 +82,7 @@ describe('MembershipPage', () => {
 
     render(<MembershipPage />);
 
-    expect(screen.getByText('free')).toBeInTheDocument();
+    expect(screen.getAllByText('Free').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Free Plan')).toBeInTheDocument();
     expect(screen.getByText('2026-07')).toBeInTheDocument();
     expect(screen.getByText('7 days')).toBeInTheDocument();
@@ -89,7 +108,7 @@ describe('MembershipPage', () => {
 
     render(<MembershipPage />);
 
-    expect(screen.getByText('pro')).toBeInTheDocument();
+    expect(screen.getAllByText('Pro').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Pro Plan')).toBeInTheDocument();
     expect(screen.getByText('730 days')).toBeInTheDocument();
   });
@@ -151,7 +170,7 @@ describe('MembershipPage', () => {
 
     render(<MembershipPage />);
 
-    expect(screen.getByText('enterprise')).toBeInTheDocument();
+    expect(screen.getAllByText('Enterprise').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Enterprise Plan')).toBeInTheDocument();
     expect(screen.getAllByText('Unlimited').length).toBeGreaterThanOrEqual(1);
   });
@@ -172,8 +191,39 @@ describe('MembershipPage', () => {
 
     render(<MembershipPage />);
 
-    expect(screen.getByText('starter')).toBeInTheDocument();
+    expect(screen.getAllByText('Starter').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Starter Plan')).toBeInTheDocument();
+  });
+
+  test('updates usage content when the active language changes', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantUsageQueryMock.mockReturnValue({
+      data: {
+        plan: 'free',
+        month: '2026-07',
+        events: { used: 50_000, limit: 100_000 },
+        websites: { used: 3, limit: 5 },
+        members: { used: 1, limit: 1 },
+      },
+      isLoading: false,
+    } as any);
+
+    const { rerender } = render(<MembershipPage />);
+    expect(
+      screen.getByText('Manage your plan, view usage, and upgrade when needed.'),
+    ).toBeInTheDocument();
+
+    useMessagesMock.mockReturnValue({
+      t: createTranslator(zhCN),
+      labels: { membership: 'label.membership' },
+      messages: {},
+    } as any);
+    useLocaleMock.mockReturnValue({ locale: 'zh-CN' } as any);
+    rerender(<MembershipPage />);
+
+    expect(screen.getByText('管理套餐、查看用量，并在需要时升级。')).toBeInTheDocument();
+    expect(screen.getByText('当前计费周期')).toBeInTheDocument();
+    expect(screen.getByText('用量概览')).toBeInTheDocument();
   });
 
   test('uses tenants array fallback for tenantId', () => {
@@ -193,7 +243,7 @@ describe('MembershipPage', () => {
 
     render(<MembershipPage />);
 
-    expect(screen.getByText('team')).toBeInTheDocument();
+    expect(screen.getAllByText('Team').length).toBeGreaterThanOrEqual(1);
   });
 
   test('shows upgrade button', () => {

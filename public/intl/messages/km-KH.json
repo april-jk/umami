@@ -370,7 +370,8 @@
     "website-id": "ID គេហទំព័រ",
     "websites": "គេហទំព័រ",
     "window": "បង្អួច",
-    "yesterday": "ម្សិលមិញ"
+    "yesterday": "ម្សិលមិញ",
+    "membership": "សមាជិកភាព"
   },
   "message": {
     "action-confirmation": "សសេរ {confirmation} នៅក្នុងប្រអប់ខាងក្រោមដើម្បីបញ្ជាក់។",
@@ -425,92 +426,109 @@
     "visitor-log": "អ្នកមើលពីប្រទេស <b>{country}</b> ប្រើប្រាស់កម្មវិធី <b>{browser}</b> លើឧបករណ៍ <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "ត្រឡប់ក្រោយ",
+    "title": "ដំឡើងសមាជិកភាព",
+    "description": "ជ្រើសរើសគម្រោងសម្រាប់តម្រូវការទំហំវិភាគ លំហូរការងារ AI កិច្ចសហការ និងរបាយការណ៍របស់អ្នក។",
+    "annual": "ប្រចាំឆ្នាំ (ឥតគិតថ្លៃ 2 ខែ)",
+    "monthly": "ប្រចាំខែ",
+    "downgradeTitle": "ការព្រមានបន្ថយគម្រោង",
+    "downgradeDescription": "ការបន្ថយគម្រោងអាចកាត់បន្ថយធនធានដែលអាចប្រើបាន។ ទិន្នន័យចាស់នឹងត្រូវរក្សាទុក ប៉ុន្តែអ្នកអាចមិនអាចបន្ថែមវេបសាយ ឬសមាជិកថ្មីរហូតដល់ការប្រើប្រាស់ស្ថិតក្នុងដែនកំណត់ថ្មី។",
+    "current": "បច្ចុប្បន្ន",
+    "recommended": "ណែនាំ",
+    "currentPlan": "គម្រោងបច្ចុប្បន្ន",
+    "contactSales": "ទាក់ទងផ្នែកលក់",
+    "redirecting": "កំពុងបញ្ជូនទៅការទូទាត់...",
+    "subscribe": "ជាវ",
+    "freePrice": "ឥតគិតថ្លៃ",
+    "customPrice": "តាមតម្រូវការ",
+    "pricePerMonth": "${price}/ខែ",
+    "billedYear": "គិតថ្លៃ ${price}/ឆ្នាំ (សន្សំ 2 ខែ)",
+    "yearAvailable": "មានគម្រោង ${price}/ឆ្នាំ",
+    "confirmationError": "មិនអាចផ្ទៀងផ្ទាត់ការយល់ព្រមជាវរបស់អ្នកបានទេ។ សូមព្យាយាមម្ដងទៀត។",
+    "checkoutError": "មិនអាចចាប់ផ្តើមការទូទាត់បានទេ។ សូមព្យាយាមម្ដងទៀត។",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "ឥតគិតថ្លៃ",
+        "description": "សមស្របសម្រាប់គម្រោងតូច និងការសាកល្បងដំបូង។ វិភាគស្នូល 100 ពាន់ព្រឹត្តិការណ៍/ខែ លើ 5 វេបសាយ។",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100 ពាន់ព្រឹត្តិការណ៍/ខែ",
+          "5 វេបសាយ",
+          "វិភាគស្នូល សិទ្ធិអាន API និងការហៅ MCP 50 ដង/ថ្ងៃ",
+          "ផ្ទាំងព័ត៌មានពេលវេលាពិត",
+          "អនុលោម GDPR តាមលំនាំដើម",
+          "រក្សាទិន្នន័យ 7 ថ្ងៃ",
+          "សំណើ API 10 ដង/នាទី និងវិភាគ AI 10 ដង/ខែ",
+          "ជំនួយសហគមន៍ (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "ចាប់ផ្តើម",
+        "description": "សម្រាប់គម្រោងកំពុងរីកចម្រើន ដែលត្រូវការទំហំបន្ថែម លំហូរការងារ AI និងការផ្តល់ព័ត៌មានវិភាគជាប្រចាំ។",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500 ពាន់ព្រឹត្តិការណ៍/ខែ",
+          "10 វេបសាយ",
+          "សមាជិក 1 នាក់ គោលដៅ 20 និងការចាក់សម័យឡើងវិញ 500/ខែ",
+          "ការហៅ MCP 500/ថ្ងៃ និងសំណើ API 60/នាទី",
+          "នាំចេញ CSV និងរបាយការណ៍អ៊ីមែលប្រចាំថ្ងៃឬសប្តាហ៍",
+          "ច្បាប់ជូនដំណឹងមូលដ្ឋាន 3 និងវិភាគ AI គ្មានដែនកំណត់",
+          "រក្សាទិន្នន័យ 6 ខែ",
+          "របាយការណ៍ AI 5/ខែ"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "អាជីព",
+        "description": "សម្រាប់ក្រុមដែលត្រូវការកិច្ចសហការ ស្វ័យប្រវត្តិកម្មច្រើន និងវិភាគកម្រិតខ្ពស់។",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2 លានព្រឹត្តិការណ៍/ខែ",
+          "25 វេបសាយ",
+          "មុខងារទាំងអស់ក្នុងគម្រោងចាប់ផ្តើម",
+          "សមាជិកក្រុម 5 គោលដៅ 100 និងការចាក់ឡើងវិញ 5 ពាន់/ខែ",
+          "ការហៅ MCP គ្មានដែនកំណត់ និងសំណើ API 300/នាទី",
+          "នាំចេញ CSV និង JSON, Webhook 5 និងការជូនដំណឹង Slack",
+          "AI រកឃើញភាពមិនប្រក្រតី ចីវលោខ្ពស់ និងជំនួយអាទិភាព",
+          "រក្សាទិន្នន័យ 24 ខែ",
+          "របាយការណ៍ AI 50/ខែ"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "ក្រុម",
+        "description": "សម្រាប់ក្រុមផលិតផលច្រើន និងភ្នាក់ងារដែលត្រូវការទំហំ ការគ្រប់គ្រង និងការបញ្ជូនមានម៉ាក។",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10 លានព្រឹត្តិការណ៍/ខែ និង 50 វេបសាយ",
+          "សមាជិក 20 គោលដៅគ្មានដែនកំណត់ និងរក្សាទិន្នន័យគ្មានដែនកំណត់",
+          "ការហៅ MCP គ្មានដែនកំណត់ និងសំណើ API 600/នាទី",
+          "Webhook 20 ច្បាប់ជូនដំណឹង 100 និងរបាយការណ៍ AI 200/ខែ",
+          "SSO/SAML ការគ្រប់គ្រងស្លាកស និងការព្យាករណ៍ AI",
+          "គោលដៅឆ្លើយតបជំនួយក្នុង 24 ម៉ោង"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "សហគ្រាស",
+        "description": "សម្រាប់អង្គការដែលមានតម្រូវការផ្ទាល់ខ្លួនផ្នែកទំហំ សុវត្ថិភាព ជំនួយ និងការដាក់ឱ្យប្រើ។",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "ទំហំតាមតម្រូវការសម្រាប់ព្រឹត្តិការណ៍ API, MCP វេបសាយ និងសមាជិក",
+          "ការកំណត់ការរក្សាទុក និងរបាយការណ៍តាមតម្រូវការ",
+          "តម្រូវការកម្រិតខ្ពស់ផ្នែកអត្តសញ្ញាណ ម៉ាក និងការរួមបញ្ចូល",
+          "ជម្រើស CSM ផ្ទាល់ និង SLA"
         ]
       }
-    }
+    },
+    "loading": "កំពុងផ្ទុក...",
+    "unavailable": "មិនអាចផ្ទុកព័ត៌មានសមាជិកភាពបានទេ។",
+    "manageDescription": "គ្រប់គ្រងគម្រោង ការប្រើប្រាស់ និងស្ថានភាពវិក្កយបត្រ។",
+    "usageLimitExceeded": "អ្នកបានប្រើលើសដែនកំណត់គម្រោង",
+    "usageApproachingLimit": "អ្នកជិតដល់ដែនកំណត់គម្រោង",
+    "exceededDescription": "ដំឡើងគម្រោងដើម្បីបន្តប្រើសេវា។",
+    "approachingDescription": "សូមដំឡើងជាមុនដើម្បីជៀសវាងការរំខាន។",
+    "upgrade": "ដំឡើង",
+    "currentBillingPeriod": "រយៈពេលវិក្កយបត្របច្ចុប្បន្ន",
+    "dataRetention": "រយៈពេលរក្សាទិន្នន័យ",
+    "unlimited": "គ្មានដែនកំណត់",
+    "retentionDays": "{count} ថ្ងៃ",
+    "usageOverview": "ទិដ្ឋភាពការប្រើប្រាស់",
+    "events": "ព្រឹត្តិការណ៍",
+    "websites": "វេបសាយ",
+    "members": "សមាជិក",
+    "planLabel": "គម្រោង {plan}"
   }
 }

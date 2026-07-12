@@ -380,7 +380,8 @@
     "website-id": "ID do sitio web",
     "websites": "Sitios web",
     "window": "Ventá",
-    "yesterday": "Onte"
+    "yesterday": "Onte",
+    "membership": "Ballraíocht"
   },
   "message": {
     "action-confirmation": "Escribe {confirmation} na caixa de embaixo para confirmar.",
@@ -437,92 +438,109 @@
     "visitor-log": "Visitante desde <b>{country}</b> usando <b>{browser}</b> en <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Ar ais",
+    "title": "Uasghrádaigh an bhallraíocht",
+    "description": "Roghnaigh plean a oireann do d’acmhainn anailísíochta, do shreafaí oibre AI, don chomhoibriú agus do riachtanais tuairiscithe.",
+    "annual": "Bliantúil (2 mhí saor in aisce)",
+    "monthly": "Míosúil",
+    "downgradeTitle": "Rabhadh íosghrádaithe",
+    "downgradeDescription": "D’fhéadfadh íosghrádú na hacmhainní atá ar fáil a laghdú. Coinneofar na sonraí reatha, ach seans nach mbeidh tú in ann suíomhanna gréasáin ná baill nua a chur leis go dtí go mbeidh tú laistigh de theorainneacha an phlean nua.",
+    "current": "Reatha",
+    "recommended": "Molta",
+    "currentPlan": "Plean reatha",
+    "contactSales": "Déan teagmháil le díolacháin",
+    "redirecting": "Á atreorú chuig an tseiceáil amach...",
+    "subscribe": "Liostáil",
+    "freePrice": "Saor in aisce",
+    "customPrice": "Saincheaptha",
+    "pricePerMonth": "${price}/mí",
+    "billedYear": "Gearrtar ${price}/bliain (sábháil 2 mhí)",
+    "yearAvailable": "${price}/bliain ar fáil",
+    "confirmationError": "Níorbh fhéidir ceadú do shíntiúis a dheimhniú. Bain triail eile as.",
+    "checkoutError": "Níorbh fhéidir an tseiceáil amach a thosú. Bain triail eile as.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Saor in aisce",
+        "description": "Foirfe do thionscadail taobh agus do thurgnaimh luatha. Faigh bun-anailísíocht le 100K imeacht sa mhí thar 5 shuíomh gréasáin.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K imeacht/mí",
+          "5 shuíomh gréasáin",
+          "Bun-anailísíocht, rochtain léite API agus 50 glao MCP sa lá",
+          "Deais fíor-ama",
+          "Comhlíontach le GDPR de réir réamhshocraithe",
+          "Coinneáil sonraí 7 lá",
+          "10 n-iarratas API sa nóiméad agus 10 n-anailís AI sa mhí",
+          "Tacaíocht pobail (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Tosaitheoir",
+        "description": "Do thionscadail atá ag fás agus a dteastaíonn níos mó acmhainne, sreafaí oibre AI agus léargais rialta anailísíochta uathu.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K imeacht/mí",
+          "10 suíomh gréasáin",
+          "1 bhall, 20 sprioc agus 500 athsheinm seisiúin sa mhí",
+          "500 glao MCP sa lá agus 60 iarratas API sa nóiméad",
+          "Easpórtáil CSV agus tuairiscí ríomhphoist laethúla nó seachtainiúla",
+          "3 riail foláirimh bhunúsacha agus anailísí AI gan teorainn",
+          "Coinneáil sonraí 6 mhí",
+          "5 thuairisc AI sa mhí"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "D’fhoirne a dteastaíonn comhoibriú, uathoibriú níos saibhre agus ard-anailísíocht uathu.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M imeacht/mí",
+          "25 suíomh gréasáin",
+          "Gach rud sa phlean Tosaitheoir",
+          "5 bhall, 100 sprioc agus 5K athsheinm sa mhí",
+          "Glaonna MCP gan teorainn agus 300 iarratas API sa nóiméad",
+          "Easpórtáil CSV agus JSON, 5 webhooks agus foláirimh Slack",
+          "Aimsiú aimhrialtachtaí AI, tonnadóirí ardleibhéil agus tacaíocht tosaíochta",
+          "Coinneáil sonraí 24 mí",
+          "50 tuairisc AI sa mhí"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Foireann",
+        "description": "D’fhoirne iltáirge agus do ghníomhaireachtaí a dteastaíonn scála, rialachas agus seachadadh brandáilte uathu.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M imeacht/mí agus 50 suíomh gréasáin",
+          "20 ball, spriocanna gan teorainn agus coinneáil sonraí gan teorainn",
+          "Glaonna MCP gan teorainn agus 600 iarratas API sa nóiméad",
+          "20 webhook, 100 riail foláirimh agus 200 tuairisc AI sa mhí",
+          "SSO/SAML, rialuithe lipéid bháin agus réamhaisnéisiú AI",
+          "Sprioc freagartha tacaíochta 24 uair"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Fiontar",
+        "description": "D’eagraíochtaí a bhfuil riachtanais shaincheaptha acu maidir le toirt, slándáil, tacaíocht agus imscaradh.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Acmhainn shaincheaptha d’imeachtaí, API, MCP, suíomhanna agus baill",
+          "Cumraíocht shaincheaptha coinneála agus tuairiscithe",
+          "Ardriachtanais aitheantais, brandála agus comhtháthaithe",
+          "Roghanna tiomnaithe CSM agus SLA"
         ]
       }
-    }
+    },
+    "loading": "Á lódáil...",
+    "unavailable": "Níl eolas ballraíochta ar fáil.",
+    "manageDescription": "Bainistigh do phlean, féach ar úsáid agus uasghrádaigh nuair is gá.",
+    "usageLimitExceeded": "Sáraíodh an teorainn úsáide",
+    "usageApproachingLimit": "Ag druidim leis an teorainn úsáide",
+    "exceededDescription": "Tá teorainn úsáide amháin nó níos mó sáraithe agat. Uasghrádaigh do phlean chun leanúint de na gnéithe uile a úsáid.",
+    "approachingDescription": "Tá tú ag druidim le teorainn úsáide amháin nó níos mó. Smaoinigh ar uasghrádú chun cur isteach a sheachaint.",
+    "upgrade": "Uasghrádaigh",
+    "currentBillingPeriod": "Tréimhse bhilleála reatha",
+    "dataRetention": "Coinneáil sonraí",
+    "unlimited": "Gan teorainn",
+    "retentionDays": "{count} lá",
+    "usageOverview": "Forléargas úsáide",
+    "events": "Imeachtaí",
+    "websites": "Suíomhanna gréasáin",
+    "members": "Baill",
+    "planLabel": "Plean {plan}"
   }
 }

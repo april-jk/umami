@@ -370,7 +370,8 @@
     "website-id": "ওয়েবসাইট ID",
     "websites": "সবগুলো ওয়েবসাইট",
     "window": "উইন্ডো",
-    "yesterday": "গতকাল"
+    "yesterday": "গতকাল",
+    "membership": "সদস্যপদ"
   },
   "message": {
     "action-confirmation": "নিশ্চিত করতে নিচের বক্সে {confirmation} টাইপ করুন।",
@@ -425,92 +426,109 @@
     "visitor-log": "<b>{country}</b> থেকে একজন ভিসিটর {ব্রাউজার}, ব্যবহার করছেন <b>{os}</b> <b>{device}</b> এর মধ্যে।"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "ফিরে যান",
+    "title": "সদস্যতা আপগ্রেড করুন",
+    "description": "বিশ্লেষণ ক্ষমতা, AI কর্মপ্রবাহ, সহযোগিতা ও প্রতিবেদনের প্রয়োজন অনুযায়ী পরিকল্পনা বেছে নিন।",
+    "annual": "বার্ষিক (2 মাস বিনামূল্যে)",
+    "monthly": "মাসিক",
+    "downgradeTitle": "পরিকল্পনা কমানোর সতর্কতা",
+    "downgradeDescription": "পরিকল্পনা কমালে উপলভ্য সম্পদ কমতে পারে। বর্তমান ডেটা সংরক্ষিত থাকবে, তবে নতুন পরিকল্পনার সীমার মধ্যে না আসা পর্যন্ত নতুন ওয়েবসাইট বা সদস্য যোগ করা নাও যেতে পারে।",
+    "current": "বর্তমান",
+    "recommended": "প্রস্তাবিত",
+    "currentPlan": "বর্তমান পরিকল্পনা",
+    "contactSales": "বিক্রয় বিভাগে যোগাযোগ",
+    "redirecting": "পেমেন্ট পাতায় নেওয়া হচ্ছে...",
+    "subscribe": "সদস্যতা নিন",
+    "freePrice": "বিনামূল্যে",
+    "customPrice": "কাস্টম",
+    "pricePerMonth": "${price}/মাস",
+    "billedYear": "বছরে ${price} বিল (2 মাস সাশ্রয়)",
+    "yearAvailable": "বছরে ${price} পরিকল্পনা উপলভ্য",
+    "confirmationError": "আপনার সদস্যতার অনুমোদন যাচাই করা যায়নি। আবার চেষ্টা করুন।",
+    "checkoutError": "পেমেন্ট শুরু করা যায়নি। আবার চেষ্টা করুন।",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "বিনামূল্যে",
+        "description": "পার্শ্ব প্রকল্প ও প্রাথমিক পরীক্ষার জন্য উপযুক্ত। 5টি ওয়েবসাইটে মাসে 100 হাজার ইভেন্টসহ মূল বিশ্লেষণ।",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "মাসে 100 হাজার ইভেন্ট",
+          "5টি ওয়েবসাইট",
+          "মূল বিশ্লেষণ, API পড়ার অধিকার এবং দিনে 50টি MCP কল",
+          "রিয়েল-টাইম ড্যাশবোর্ড",
+          "ডিফল্টভাবে GDPR অনুগত",
+          "7 দিনের ডেটা সংরক্ষণ",
+          "মিনিটে 10টি API অনুরোধ এবং মাসে 10টি AI বিশ্লেষণ",
+          "কমিউনিটি সহায়তা (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "প্রারম্ভিক",
+        "description": "বেশি ক্ষমতা, AI কর্মপ্রবাহ ও নিয়মিত বিশ্লেষণ তথ্য প্রয়োজন এমন ক্রমবর্ধমান প্রকল্পের জন্য।",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "মাসে 500 হাজার ইভেন্ট",
+          "10টি ওয়েবসাইট",
+          "1 সদস্য, 20 লক্ষ্য এবং মাসে 500 সেশন রিপ্লে",
+          "দিনে 500 MCP কল এবং মিনিটে 60 API অনুরোধ",
+          "CSV রপ্তানি এবং দৈনিক বা সাপ্তাহিক ইমেইল প্রতিবেদন",
+          "3টি মৌলিক সতর্কতা নিয়ম এবং সীমাহীন AI বিশ্লেষণ",
+          "6 মাসের ডেটা সংরক্ষণ",
+          "মাসে 5টি AI প্রতিবেদন"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "পেশাদার",
+        "description": "সহযোগিতা, উন্নত স্বয়ংক্রিয়তা ও উচ্চতর বিশ্লেষণ প্রয়োজন এমন দলের জন্য।",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "মাসে 2 মিলিয়ন ইভেন্ট",
+          "25টি ওয়েবসাইট",
+          "প্রারম্ভিক পরিকল্পনার সব সুবিধা",
+          "5 দলীয় সদস্য, 100 লক্ষ্য এবং মাসে 5 হাজার রিপ্লে",
+          "সীমাহীন MCP কল এবং মিনিটে 300 API অনুরোধ",
+          "CSV ও JSON রপ্তানি, 5 Webhook এবং Slack সতর্কতা",
+          "AI অস্বাভাবিকতা শনাক্তকরণ, উন্নত ফানেল ও অগ্রাধিকার সহায়তা",
+          "24 মাসের ডেটা সংরক্ষণ",
+          "মাসে 50টি AI প্রতিবেদন"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "দল",
+        "description": "স্কেল, পরিচালনা ও ব্র্যান্ডযুক্ত সরবরাহ প্রয়োজন এমন বহু-পণ্য দল ও সংস্থার জন্য।",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "মাসে 10 মিলিয়ন ইভেন্ট এবং 50টি ওয়েবসাইট",
+          "20 সদস্য, সীমাহীন লক্ষ্য ও সীমাহীন ডেটা সংরক্ষণ",
+          "সীমাহীন MCP কল এবং মিনিটে 600 API অনুরোধ",
+          "20 Webhook, 100 সতর্কতা নিয়ম এবং মাসে 200 AI প্রতিবেদন",
+          "SSO/SAML, হোয়াইট-লেবেল নিয়ন্ত্রণ ও AI পূর্বাভাস",
+          "24 ঘণ্টার মধ্যে সহায়তার লক্ষ্য"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "এন্টারপ্রাইজ",
+        "description": "কাস্টম ক্ষমতা, নিরাপত্তা, সহায়তা ও স্থাপনার প্রয়োজন থাকা প্রতিষ্ঠানের জন্য।",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "ইভেন্ট, API, MCP, ওয়েবসাইট ও সদস্য ক্ষমতা কাস্টম",
+          "সংরক্ষণ ও প্রতিবেদন বিন্যাস কাস্টম",
+          "উন্নত পরিচয়, ব্র্যান্ড ও সমন্বয় প্রয়োজন",
+          "নিবেদিত CSM ও SLA বিকল্প"
         ]
       }
-    }
+    },
+    "loading": "লোড হচ্ছে...",
+    "unavailable": "সদস্যতার তথ্য লোড করা যায়নি।",
+    "manageDescription": "পরিকল্পনা, ব্যবহার ও বিলের অবস্থা পরিচালনা করুন।",
+    "usageLimitExceeded": "পরিকল্পনার ব্যবহারের সীমা ছাড়িয়েছেন",
+    "usageApproachingLimit": "পরিকল্পনার ব্যবহারের সীমার কাছে পৌঁছেছেন",
+    "exceededDescription": "সেবা চালিয়ে যেতে পরিকল্পনা আপগ্রেড করুন।",
+    "approachingDescription": "বিঘ্ন এড়াতে আগেই আপগ্রেড করুন।",
+    "upgrade": "আপগ্রেড",
+    "currentBillingPeriod": "বর্তমান বিলের সময়কাল",
+    "dataRetention": "ডেটা সংরক্ষণের মেয়াদ",
+    "unlimited": "সীমাহীন",
+    "retentionDays": "{count} দিন",
+    "usageOverview": "ব্যবহারের সারাংশ",
+    "events": "ইভেন্ট",
+    "websites": "ওয়েবসাইট",
+    "members": "সদস্য",
+    "planLabel": "{plan} পরিকল্পনা"
   }
 }

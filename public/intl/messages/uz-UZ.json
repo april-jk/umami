@@ -385,7 +385,8 @@
     "hosts": "Xostlar",
     "revenue-property": "Daromad xususiyati",
     "urls": "URL'lar",
-    "user-property": "Foydalanuvchi xususiyati"
+    "user-property": "Foydalanuvchi xususiyati",
+    "membership": "A'zolik"
   },
   "message": {
     "action-confirmation": "Tasdiqlash uchun pastdagi qutiga **{confirmation}** yozing.",
@@ -443,92 +444,109 @@
     "visitors-dropped-off": "Tashrif buyuruvchilar tashlab ketishdi"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Orqaga",
+    "title": "Aʼzolikni yangilash",
+    "description": "Tahlil sigʻimi, AI ish jarayonlari, hamkorlik va hisobot ehtiyojlaringizga mos tarifni tanlang.",
+    "annual": "Yillik (2 oy bepul)",
+    "monthly": "Oylik",
+    "downgradeTitle": "Tarifni pasaytirish ogohlantirishi",
+    "downgradeDescription": "Tarifni pasaytirish mavjud resurslarni kamaytirishi mumkin. Avvalgi maʼlumotlar saqlanadi, ammo yangi tarif chegarasiga tushmaguningizcha yangi sayt yoki aʼzo qoʻsha olmasligingiz mumkin.",
+    "current": "Joriy",
+    "recommended": "Tavsiya etiladi",
+    "currentPlan": "Joriy tarif",
+    "contactSales": "Savdo bo‘limi bilan bog‘lanish",
+    "redirecting": "Toʻlov sahifasiga yoʻnaltirilmoqda...",
+    "subscribe": "Obuna boʻlish",
+    "freePrice": "Bepul",
+    "customPrice": "Maxsus",
+    "pricePerMonth": "${price}/oy",
+    "billedYear": "Yiliga ${price} undiriladi (2 oy tejaladi)",
+    "yearAvailable": "Yiliga ${price} tarif mavjud",
+    "confirmationError": "Obuna tasdigʻini tekshirib boʻlmadi. Qayta urinib ko‘ring.",
+    "checkoutError": "Toʻlovni boshlash imkonsiz. Qayta urinib ko‘ring.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Bepul",
+        "description": "Yon loyihalar va dastlabki tajribalar uchun. 5 saytda oyiga 100 ming hodisagacha asosiy tahlil.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "Oyiga 100 ming hodisa",
+          "5 veb-sayt",
+          "Asosiy tahlil, API oʻqish huquqi va kuniga 50 MCP chaqiruvi",
+          "Haqiqiy vaqt boshqaruv paneli",
+          "Standart GDPR muvofiqligi",
+          "Maʼlumotlar 7 kun saqlanadi",
+          "Daqiqasiga 10 API soʻrovi va oyiga 10 AI tahlili",
+          "Hamjamiyat yordami (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Boshlangʻich",
+        "description": "Koʻproq sigʻim, AI ish jarayonlari va muntazam tahliliy maʼlumot kerak bo‘lgan rivojlanayotgan loyihalar uchun.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "Oyiga 500 ming hodisa",
+          "10 veb-sayt",
+          "1 aʼzo, 20 maqsad va oyiga 500 seans takrori",
+          "Kuniga 500 MCP chaqiruvi va daqiqasiga 60 API soʻrovi",
+          "CSV eksporti va kunlik yoki haftalik e-pochta hisoboti",
+          "3 asosiy ogohlantirish qoidasi va cheksiz AI tahlili",
+          "Maʼlumotlar 6 oy saqlanadi",
+          "Oyiga 5 AI hisoboti"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "Professional",
+        "description": "Hamkorlik, keng avtomatlashtirish va ilgʻor tahlil kerak bo‘lgan jamoalar uchun.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "Oyiga 2 million hodisa",
+          "25 veb-sayt",
+          "Boshlangʻich tarifdagi barcha imkoniyat",
+          "5 jamoa aʼzosi, 100 maqsad va oyiga 5 ming takror",
+          "Cheksiz MCP chaqiruvi va daqiqasiga 300 API soʻrovi",
+          "CSV va JSON eksporti, 5 Webhook va Slack ogohlantirishi",
+          "AI anomaliya aniqlashi, ilgʻor voronkalar va ustuvor yordam",
+          "Maʼlumotlar 24 oy saqlanadi",
+          "Oyiga 50 AI hisoboti"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Jamoa",
+        "description": "Koʻlam, boshqaruv va brendli yetkazib berish kerak bo‘lgan koʻp mahsulotli jamoa va agentliklar uchun.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "Oyiga 10 million hodisa va 50 veb-sayt",
+          "20 aʼzo, cheksiz maqsad va cheksiz maʼlumot saqlash",
+          "Cheksiz MCP chaqiruvi va daqiqasiga 600 API soʻrovi",
+          "20 Webhook, 100 ogohlantirish qoidasi va oyiga 200 AI hisoboti",
+          "SSO/SAML, oq yorliq boshqaruvi va AI prognozi",
+          "24 soat ichida yordam javobi maqsadi"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Korporativ",
+        "description": "Hajm, xavfsizlik, yordam va joylashtirish bo‘yicha maxsus talablari bor tashkilotlar uchun.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Hodisa, API, MCP, veb-sayt va aʼzo sigʻimini moslash",
+          "Saqlash va hisobot sozlamalarini moslash",
+          "Shaxsni aniqlash, brendlash va integratsiyaning ilgʻor talablari",
+          "Maxsus CSM va SLA variantlari"
         ]
       }
-    }
+    },
+    "loading": "Yuklanmoqda...",
+    "unavailable": "Aʼzolik maʼlumotini yuklab boʻlmadi.",
+    "manageDescription": "Tarif, foydalanish va hisob-kitob holatini boshqaring.",
+    "usageLimitExceeded": "Tarifdan foydalanish chegarasidan oshdingiz",
+    "usageApproachingLimit": "Tarifdan foydalanish chegarasiga yaqinlashdingiz",
+    "exceededDescription": "Xizmatni davom ettirish uchun tarifni yangilang.",
+    "approachingDescription": "Uzilishning oldini olish uchun oldindan yangilang.",
+    "upgrade": "Yangilash",
+    "currentBillingPeriod": "Joriy hisob-kitob davri",
+    "dataRetention": "Maʼlumot saqlash muddati",
+    "unlimited": "Cheksiz",
+    "retentionDays": "{count} kun",
+    "usageOverview": "Foydalanish sharhi",
+    "events": "Hodisalar",
+    "websites": "Veb-saytlar",
+    "members": "Aʼzolar",
+    "planLabel": "{plan} tarifi"
   }
 }

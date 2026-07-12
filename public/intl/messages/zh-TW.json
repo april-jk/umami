@@ -370,7 +370,8 @@
     "website-id": "網站 ID",
     "websites": "網站",
     "window": "視窗",
-    "yesterday": "昨天"
+    "yesterday": "昨天",
+    "membership": "會員"
   },
   "message": {
     "action-confirmation": "請在下方欄位輸入 {confirmation} 以確認。",
@@ -511,6 +512,23 @@
           "专属客户成功经理和 SLA 选项"
         ]
       }
-    }
+    },
+    "loading": "載入中...",
+    "unavailable": "目前沒有會員資訊。",
+    "manageDescription": "管理方案、查看用量，並在需要時升級。",
+    "usageLimitExceeded": "已超出用量限制",
+    "usageApproachingLimit": "用量即將達到限制",
+    "exceededDescription": "您已超出一項或多項用量限制。請升級方案以繼續使用所有功能。",
+    "approachingDescription": "您即將達到一項或多項用量限制。建議升級以避免服務中斷。",
+    "upgrade": "升級",
+    "currentBillingPeriod": "目前計費週期",
+    "dataRetention": "資料保留",
+    "unlimited": "無限制",
+    "retentionDays": "{count} 天",
+    "usageOverview": "用量概覽",
+    "events": "事件",
+    "websites": "網站",
+    "members": "成員",
+    "planLabel": "{plan} 方案"
   }
 }

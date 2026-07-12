@@ -380,7 +380,8 @@
     "website-id": "Nettsted-ID",
     "websites": "Nettsteder",
     "window": "Vindu",
-    "yesterday": "I går"
+    "yesterday": "I går",
+    "membership": "Medlemskap"
   },
   "message": {
     "action-confirmation": "Skriv {confirmation} i feltet nedenfor for å bekrefte.",
@@ -437,92 +438,109 @@
     "visitor-log": "Besøkende fra <b>{country}</b> med <b>{browser}</b> på <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Tilbake",
+    "title": "Oppgrader medlemskap",
+    "description": "Velg et abonnement som passer behovene dine for analysekapasitet, AI-arbeidsflyter, samarbeid og rapportering.",
+    "annual": "Årlig (2 måneder gratis)",
+    "monthly": "Månedlig",
+    "downgradeTitle": "Advarsel om nedgradering",
+    "downgradeDescription": "Nedgradering kan redusere de tilgjengelige ressursene dine. Eksisterende data blir bevart, men du kan kanskje ikke legge til nye nettsteder eller medlemmer før du er innenfor grensene for det nye abonnementet.",
+    "current": "Gjeldende",
+    "recommended": "Anbefalt",
+    "currentPlan": "Gjeldende abonnement",
+    "contactSales": "Kontakt salgsavdelingen",
+    "redirecting": "Videresender til betaling...",
+    "subscribe": "Abonner",
+    "freePrice": "Gratis",
+    "customPrice": "Tilpasset",
+    "pricePerMonth": "${price}/mnd.",
+    "billedYear": "Faktureres ${price}/år (spar 2 måneder)",
+    "yearAvailable": "Tilgjengelig for ${price}/år",
+    "confirmationError": "Godkjenningen av abonnementet ditt kunne ikke bekreftes. Prøv igjen.",
+    "checkoutError": "Betalingen kunne ikke startes. Prøv igjen.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratis",
+        "description": "Perfekt for sideprosjekter og tidlige eksperimenter. Få grunnleggende analyse med 100K hendelser/måned på 5 nettsteder.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K hendelser/måned",
+          "5 nettsteder",
+          "Grunnleggende analyse, lesetilgang til API og 50 MCP-kall/dag",
+          "Sanntidsoversikt",
+          "GDPR-kompatibel som standard",
+          "Datalagring i 7 dager",
+          "10 API-forespørsler/minutt og 10 AI-analyser/måned",
+          "Fellesskapsstøtte (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "For voksende prosjekter som trenger mer kapasitet, AI-arbeidsflyter og regelmessig levering av analyseinnsikt.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K hendelser/måned",
+          "10 nettsteder",
+          "1 medlem, 20 mål og 500 øktavspillinger/måned",
+          "500 MCP-kall/dag og 60 API-forespørsler/minutt",
+          "CSV-eksport og daglige eller ukentlige e-postrapporter",
+          "3 grunnleggende varslingsregler og ubegrensede AI-analyser",
+          "Datalagring i 6 måneder",
+          "5 AI-rapporter/måned"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "For team som trenger samarbeid, mer omfattende automatisering og avansert analyse.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M hendelser/måned",
+          "25 nettsteder",
+          "Alt i Starter",
+          "5 teammedlemmer, 100 mål og 5K avspillinger/måned",
+          "Ubegrensede MCP-kall og 300 API-forespørsler/minutt",
+          "CSV- og JSON-eksport, 5 webhooks og Slack-varsler",
+          "AI-basert avviksdeteksjon, avanserte trakter og prioritert støtte",
+          "Datalagring i 24 måneder",
+          "50 AI-rapporter/måned"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "For team med flere produkter og byråer som trenger skalering, styring og leveranser med egen merkevare.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M hendelser/måned og 50 nettsteder",
+          "20 medlemmer, ubegrensede mål og ubegrenset datalagring",
+          "Ubegrensede MCP-kall og 600 API-forespørsler/minutt",
+          "20 webhooks, 100 varslingsregler og 200 AI-rapporter/måned",
+          "SSO/SAML, white label-kontroller og AI-prognoser",
+          "Mål om svar fra kundestøtte innen 24 timer"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "For organisasjoner med tilpassede krav til volum, sikkerhet, støtte og utrulling.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Tilpasset kapasitet for hendelser, API, MCP, nettsteder og medlemmer",
+          "Tilpasset konfigurasjon av datalagring og rapportering",
+          "Avanserte krav til identitet, merkevare og integrasjon",
+          "Alternativer for dedikert CSM og SLA"
         ]
       }
-    }
+    },
+    "loading": "Laster inn...",
+    "unavailable": "Ikke tilgjengelig",
+    "manageDescription": "Administrer abonnementet ditt og se gjennom bruken av gjeldende abonnement.",
+    "usageLimitExceeded": "Bruksgrensen er overskredet",
+    "usageApproachingLimit": "Bruksgrensen er nesten nådd",
+    "exceededDescription": "Du har overskredet en grense i abonnementet. Oppgrader for å fortsette å bruke tjenesten uten avbrudd.",
+    "approachingDescription": "Du nærmer deg en grense i abonnementet. Oppgrader for å få mer kapasitet.",
+    "upgrade": "Oppgrader",
+    "currentBillingPeriod": "Gjeldende faktureringsperiode",
+    "dataRetention": "Datalagring",
+    "unlimited": "Ubegrenset",
+    "retentionDays": "{count} dager",
+    "usageOverview": "Bruksoversikt",
+    "events": "Hendelser",
+    "websites": "Nettsteder",
+    "members": "Medlemmer",
+    "planLabel": "Abonnementet {plan}"
   }
 }

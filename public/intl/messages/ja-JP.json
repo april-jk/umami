@@ -370,7 +370,8 @@
     "website-id": "WebサイトID",
     "websites": "Webサイト",
     "window": "ウィンドウ",
-    "yesterday": "昨日"
+    "yesterday": "昨日",
+    "membership": "メンバーシップ"
   },
   "message": {
     "action-confirmation": "承認する場合は、下のフォームに「{confirmation}」と入力してください。",
@@ -425,92 +426,109 @@
     "visitor-log": "<b>{os}</b>(<b>{device}</b>)で<b>{browser}</b>を使用している<b>{country}</b>からの訪問者"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "戻る",
+    "title": "メンバーシップをアップグレード",
+    "description": "分析容量、AIワークフロー、共同作業、レポートのニーズに合ったプランを選択してください。",
+    "annual": "年払い（2か月分無料）",
+    "monthly": "月払い",
+    "downgradeTitle": "ダウングレードに関する警告",
+    "downgradeDescription": "ダウングレードすると、利用可能なリソースが減る場合があります。既存のデータは保持されますが、新しいプランの上限内に収まるまで、新しいウェブサイトやメンバーを追加できないことがあります。",
+    "current": "現在",
+    "recommended": "おすすめ",
+    "currentPlan": "現在のプラン",
+    "contactSales": "営業に問い合わせる",
+    "redirecting": "決済画面に移動しています...",
+    "subscribe": "登録する",
+    "freePrice": "無料",
+    "customPrice": "カスタム",
+    "pricePerMonth": "${price}/月",
+    "billedYear": "年額${price}を請求（2か月分お得）",
+    "yearAvailable": "年額${price}のプランあり",
+    "confirmationError": "サブスクリプションの承認を確認できませんでした。もう一度お試しください。",
+    "checkoutError": "決済を開始できません。もう一度お試しください。",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "無料",
+        "description": "個人プロジェクトや初期の実験に最適です。5サイト合計で月間10万イベントまで、基本的な分析機能を利用できます。",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "月間10万イベント",
+          "5ウェブサイト",
+          "基本分析、API読み取りアクセス、1日50回のMCP呼び出し",
+          "リアルタイムダッシュボード",
+          "標準でGDPR準拠",
+          "データ保持期間7日",
+          "1分あたり10回のAPIリクエスト、月10回のAI分析",
+          "コミュニティサポート（Discord）"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "スターター",
+        "description": "より多くの容量、AIワークフロー、分析情報の定期配信を必要とする成長中のプロジェクト向けです。",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "月間50万イベント",
+          "10ウェブサイト",
+          "メンバー1人、目標20件、月500件のセッションリプレイ",
+          "1日500回のMCP呼び出し、1分あたり60回のAPIリクエスト",
+          "CSVエクスポート、日次または週次のメールレポート",
+          "基本アラートルール3件、AI分析は無制限",
+          "データ保持期間6か月",
+          "月5件のAIレポート"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "プロ",
+        "description": "共同作業、高度な自動化、詳細な分析を必要とするチーム向けです。",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "月間200万イベント",
+          "25ウェブサイト",
+          "スターターの全機能",
+          "チームメンバー5人、目標100件、月5,000件のリプレイ",
+          "MCP呼び出し無制限、1分あたり300回のAPIリクエスト",
+          "CSV・JSONエクスポート、Webhook 5件、Slackアラート",
+          "AI異常検知、高度なファネル、優先サポート",
+          "データ保持期間24か月",
+          "月50件のAIレポート"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "チーム",
+        "description": "拡張性、ガバナンス、ブランド付き配信を必要とする複数製品チームや代理店向けです。",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "月間1,000万イベント、50ウェブサイト",
+          "メンバー20人、目標無制限、データ保持期間無制限",
+          "MCP呼び出し無制限、1分あたり600回のAPIリクエスト",
+          "Webhook 20件、アラートルール100件、月200件のAIレポート",
+          "SSO/SAML、ホワイトラベル管理、AI予測",
+          "24時間以内のサポート回答目標"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "エンタープライズ",
+        "description": "独自の容量、セキュリティ、サポート、導入要件を持つ組織向けです。",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "イベント、API、MCP、ウェブサイト、メンバーの容量をカスタマイズ",
+          "データ保持とレポート設定をカスタマイズ",
+          "高度なID管理、ブランド設定、連携要件",
+          "専任CSMとSLAのオプション"
         ]
       }
-    }
+    },
+    "loading": "読み込み中...",
+    "unavailable": "メンバーシップ情報を取得できません。",
+    "manageDescription": "プラン、使用量、請求状況を管理します。",
+    "usageLimitExceeded": "プランの使用量上限を超えています",
+    "usageApproachingLimit": "プランの使用量上限に近づいています",
+    "exceededDescription": "サービスを継続するにはプランをアップグレードしてください。",
+    "approachingDescription": "中断を避けるため、早めのアップグレードをご検討ください。",
+    "upgrade": "アップグレード",
+    "currentBillingPeriod": "現在の請求期間",
+    "dataRetention": "データ保持期間",
+    "unlimited": "無制限",
+    "retentionDays": "{count}日",
+    "usageOverview": "使用状況の概要",
+    "events": "イベント",
+    "websites": "ウェブサイト",
+    "members": "メンバー",
+    "planLabel": "{plan}プラン"
   }
 }

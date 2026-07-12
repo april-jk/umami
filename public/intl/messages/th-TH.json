@@ -370,7 +370,8 @@
     "website-id": "ID เว็บไซต์",
     "websites": "เว็บไซต์",
     "window": "หน้าต่าง",
-    "yesterday": "เมื่อวาน"
+    "yesterday": "เมื่อวาน",
+    "membership": "สมาชิกภาพ"
   },
   "message": {
     "action-confirmation": "พิมพ์ {confirmation} ในช่องด้านล่างเพื่อยืนยัน",
@@ -425,92 +426,109 @@
     "visitor-log": "ผู้เข้าชมจาก <b>{country}</b> กำลังใช้งานผ่าน <b>{browser}</b> บน <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "ย้อนกลับ",
+    "title": "อัปเกรดสมาชิก",
+    "description": "เลือกแผนที่เหมาะกับความต้องการด้านความจุการวิเคราะห์ เวิร์กโฟลว์ AI การทำงานร่วมกัน และรายงาน",
+    "annual": "รายปี (ฟรี 2 เดือน)",
+    "monthly": "รายเดือน",
+    "downgradeTitle": "คำเตือนการลดระดับ",
+    "downgradeDescription": "การลดระดับอาจทำให้ทรัพยากรที่ใช้ได้ลดลง ข้อมูลเดิมจะยังคงอยู่ แต่คุณอาจเพิ่มเว็บไซต์หรือสมาชิกใหม่ไม่ได้จนกว่าจะอยู่ภายในขีดจำกัดของแผนใหม่",
+    "current": "ปัจจุบัน",
+    "recommended": "แนะนำ",
+    "currentPlan": "แผนปัจจุบัน",
+    "contactSales": "ติดต่อฝ่ายขาย",
+    "redirecting": "กำลังไปยังหน้าชำระเงิน...",
+    "subscribe": "สมัครสมาชิก",
+    "freePrice": "ฟรี",
+    "customPrice": "กำหนดเอง",
+    "pricePerMonth": "${price}/เดือน",
+    "billedYear": "เรียกเก็บ ${price}/ปี (ประหยัด 2 เดือน)",
+    "yearAvailable": "มีแผน ${price}/ปี",
+    "confirmationError": "ไม่สามารถยืนยันการอนุมัติการสมัครของคุณได้ โปรดลองอีกครั้ง",
+    "checkoutError": "ไม่สามารถเริ่มชำระเงินได้ โปรดลองอีกครั้ง",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "ฟรี",
+        "description": "เหมาะสำหรับโปรเจกต์เสริมและการทดลองระยะแรก รับการวิเคราะห์หลักพร้อม 100,000 เหตุการณ์/เดือนใน 5 เว็บไซต์",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100,000 เหตุการณ์/เดือน",
+          "5 เว็บไซต์",
+          "การวิเคราะห์หลัก สิทธิ์อ่าน API และการเรียก MCP 50 ครั้ง/วัน",
+          "แดชบอร์ดแบบเรียลไทม์",
+          "สอดคล้องกับ GDPR โดยค่าเริ่มต้น",
+          "เก็บข้อมูล 7 วัน",
+          "คำขอ API 10 ครั้ง/นาที และการวิเคราะห์ AI 10 ครั้ง/เดือน",
+          "การสนับสนุนจากชุมชน (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "เริ่มต้น",
+        "description": "สำหรับโปรเจกต์ที่กำลังเติบโตและต้องการความจุเพิ่ม เวิร์กโฟลว์ AI และข้อมูลเชิงลึกเป็นประจำ",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500,000 เหตุการณ์/เดือน",
+          "10 เว็บไซต์",
+          "สมาชิก 1 คน เป้าหมาย 20 รายการ และการเล่นเซสชันย้อนหลัง 500 ครั้ง/เดือน",
+          "การเรียก MCP 500 ครั้ง/วัน และคำขอ API 60 ครั้ง/นาที",
+          "ส่งออก CSV และรายงานอีเมลรายวันหรือรายสัปดาห์",
+          "กฎแจ้งเตือนพื้นฐาน 3 ข้อ และการวิเคราะห์ AI ไม่จำกัด",
+          "เก็บข้อมูล 6 เดือน",
+          "รายงาน AI 5 ฉบับ/เดือน"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "โปร",
+        "description": "สำหรับทีมที่ต้องการทำงานร่วมกัน ระบบอัตโนมัติที่มากขึ้น และการวิเคราะห์ขั้นสูง",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2 ล้านเหตุการณ์/เดือน",
+          "25 เว็บไซต์",
+          "ทุกอย่างในแผนเริ่มต้น",
+          "สมาชิกทีม 5 คน เป้าหมาย 100 รายการ และการเล่นย้อนหลัง 5,000 ครั้ง/เดือน",
+          "การเรียก MCP ไม่จำกัด และคำขอ API 300 ครั้ง/นาที",
+          "ส่งออก CSV และ JSON, Webhook 5 รายการ และการแจ้งเตือน Slack",
+          "AI ตรวจจับความผิดปกติ ฟันเนลขั้นสูง และการสนับสนุนลำดับความสำคัญ",
+          "เก็บข้อมูล 24 เดือน",
+          "รายงาน AI 50 ฉบับ/เดือน"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "ทีม",
+        "description": "สำหรับทีมหลายผลิตภัณฑ์และเอเจนซีที่ต้องการการขยายขนาด การกำกับดูแล และการส่งมอบภายใต้แบรนด์",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10 ล้านเหตุการณ์/เดือน และ 50 เว็บไซต์",
+          "สมาชิก 20 คน เป้าหมายไม่จำกัด และเก็บข้อมูลไม่จำกัด",
+          "การเรียก MCP ไม่จำกัด และคำขอ API 600 ครั้ง/นาที",
+          "Webhook 20 รายการ กฎแจ้งเตือน 100 ข้อ และรายงาน AI 200 ฉบับ/เดือน",
+          "SSO/SAML การควบคุมไวต์เลเบล และการคาดการณ์ด้วย AI",
+          "เป้าหมายตอบกลับการสนับสนุนภายใน 24 ชั่วโมง"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "องค์กร",
+        "description": "สำหรับองค์กรที่มีข้อกำหนดเฉพาะด้านปริมาณ ความปลอดภัย การสนับสนุน และการติดตั้ง",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "กำหนดความจุเหตุการณ์ API, MCP เว็บไซต์ และสมาชิกเอง",
+          "กำหนดค่าการเก็บรักษาและรายงานเอง",
+          "ข้อกำหนดขั้นสูงด้านอัตลักษณ์ แบรนด์ และการผสานรวม",
+          "ตัวเลือก CSM เฉพาะและ SLA"
         ]
       }
-    }
+    },
+    "loading": "กำลังโหลด...",
+    "unavailable": "ไม่สามารถโหลดข้อมูลสมาชิกได้",
+    "manageDescription": "จัดการแผน การใช้งาน และสถานะการเรียกเก็บเงิน",
+    "usageLimitExceeded": "คุณใช้เกินขีดจำกัดของแผนแล้ว",
+    "usageApproachingLimit": "คุณใกล้ถึงขีดจำกัดของแผนแล้ว",
+    "exceededDescription": "อัปเกรดแผนเพื่อใช้บริการต่อ",
+    "approachingDescription": "โปรดพิจารณาอัปเกรดล่วงหน้าเพื่อหลีกเลี่ยงการหยุดชะงัก",
+    "upgrade": "อัปเกรด",
+    "currentBillingPeriod": "รอบเรียกเก็บเงินปัจจุบัน",
+    "dataRetention": "ระยะเวลาเก็บข้อมูล",
+    "unlimited": "ไม่จำกัด",
+    "retentionDays": "{count} วัน",
+    "usageOverview": "ภาพรวมการใช้งาน",
+    "events": "เหตุการณ์",
+    "websites": "เว็บไซต์",
+    "members": "สมาชิก",
+    "planLabel": "แผน {plan}"
   }
 }

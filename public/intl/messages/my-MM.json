@@ -370,7 +370,8 @@
     "website-id": "ဝက်ဘ်ဆိုဒ် အိုင်ဒီ",
     "websites": "ဝက်ဘ်ဆိုဒ်များ",
     "window": "ဝင်းဒိုး",
-    "yesterday": "မနေ့က"
+    "yesterday": "မနေ့က",
+    "membership": "အဖွဲ့ဝင်မှု"
   },
   "message": {
     "action-confirmation": "အတည်ပြုရန် အောက်ပါအကွက်တွင် {confirmation} ကို ရိုက်ထည့်ပါ။",
@@ -425,92 +426,109 @@
     "visitor-log": "<b>{country}</b> မှ <b>{browser}</b> ဖြင့် <b>{os}</b> <b>{device}</b> တွင် ဝင်ရောက်ကြည့်ရှုသူ"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "နောက်သို့",
+    "title": "အသင်းဝင်အဆင့်မြှင့်ရန်",
+    "description": "ခွဲခြမ်းစိတ်ဖြာမှု ပမာဏ၊ AI အလုပ်စဉ်၊ ပူးပေါင်းဆောင်ရွက်မှုနှင့် အစီရင်ခံစာလိုအပ်ချက်များအတွက် အစီအစဉ်ကိုရွေးပါ။",
+    "annual": "နှစ်စဉ် (2 လ အခမဲ့)",
+    "monthly": "လစဉ်",
+    "downgradeTitle": "အဆင့်လျှော့ချမှု သတိပေးချက်",
+    "downgradeDescription": "အဆင့်လျှော့ချခြင်းသည် ရရှိနိုင်သောအရင်းအမြစ်များကို လျော့နည်းစေနိုင်သည်။ မူလဒေတာကို ထိန်းသိမ်းထားမည်ဖြစ်သော်လည်း အစီအစဉ်အသစ်၏ ကန့်သတ်ချက်အတွင်း ရောက်သည်အထိ ဝဘ်ဆိုက် သို့မဟုတ် အဖွဲ့ဝင်အသစ် ထည့်၍မရနိုင်ပါ။",
+    "current": "လက်ရှိ",
+    "recommended": "အကြံပြုထားသည်",
+    "currentPlan": "လက်ရှိအစီအစဉ်",
+    "contactSales": "အရောင်းဌာနကို ဆက်သွယ်ရန်",
+    "redirecting": "ငွေပေးချေမှုသို့ လွှဲပြောင်းနေသည်...",
+    "subscribe": "စာရင်းသွင်းရန်",
+    "freePrice": "အခမဲ့",
+    "customPrice": "စိတ်ကြိုက်",
+    "pricePerMonth": "${price}/လ",
+    "billedYear": "တစ်နှစ် ${price} ကျသင့်မည် (2 လ သက်သာ)",
+    "yearAvailable": "တစ်နှစ် ${price} အစီအစဉ်ရှိသည်",
+    "confirmationError": "သင့်စာရင်းသွင်းမှု အတည်ပြုချက်ကို စစ်ဆေး၍မရပါ။ ထပ်မံကြိုးစားပါ။",
+    "checkoutError": "ငွေပေးချေမှု စတင်၍မရပါ။ ထပ်မံကြိုးစားပါ။",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "အခမဲ့",
+        "description": "ဘေးထွက်ပရောဂျက်နှင့် အစမ်းသပ်မှုများအတွက် သင့်တော်သည်။ ဝဘ်ဆိုက် 5 ခုတွင် တစ်လဖြစ်ရပ် 100,000 အထိ အခြေခံခွဲခြမ်းစိတ်ဖြာမှု။",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "တစ်လဖြစ်ရပ် 100,000",
+          "ဝဘ်ဆိုက် 5 ခု",
+          "အခြေခံခွဲခြမ်းစိတ်ဖြာမှု၊ API ဖတ်ခွင့်နှင့် တစ်ရက် MCP ခေါ်ဆိုမှု 50",
+          "အချိန်နှင့်တစ်ပြေးညီ ဒက်ရှ်ဘုတ်",
+          "မူလအတိုင်း GDPR နှင့်ကိုက်ညီမှု",
+          "ဒေတာ 7 ရက်ထိန်းသိမ်းမှု",
+          "တစ်မိနစ် API တောင်းဆိုမှု 10 နှင့် တစ်လ AI ခွဲခြမ်းစိတ်ဖြာမှု 10",
+          "အသိုင်းအဝိုင်းအကူအညီ (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "အစပြု",
+        "description": "ပိုမိုသောပမာဏ၊ AI အလုပ်စဉ်နှင့် ပုံမှန်ခွဲခြမ်းစိတ်ဖြာသတင်းအချက်အလက်လိုသော တိုးတက်နေသည့်ပရောဂျက်များအတွက်။",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "တစ်လဖြစ်ရပ် 500,000",
+          "ဝဘ်ဆိုက် 10 ခု",
+          "အဖွဲ့ဝင် 1၊ ရည်မှန်းချက် 20 နှင့် တစ်လ အသုံးပြုမှတ်တမ်းပြန်ဖွင့်မှု 500",
+          "တစ်ရက် MCP 500 နှင့် တစ်မိနစ် API 60",
+          "CSV တင်ပို့မှုနှင့် နေ့စဉ် သို့မဟုတ် အပတ်စဉ် အီးမေးလ်အစီရင်ခံစာ",
+          "အခြေခံသတိပေးစည်းမျဉ်း 3 နှင့် အကန့်အသတ်မဲ့ AI ခွဲခြမ်းစိတ်ဖြာမှု",
+          "ဒေတာ 6 လထိန်းသိမ်းမှု",
+          "တစ်လ AI အစီရင်ခံစာ 5"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "ကျွမ်းကျင်",
+        "description": "ပူးပေါင်းမှု၊ ပိုမိုကောင်းမွန်သောအလိုအလျောက်လုပ်ဆောင်မှုနှင့် အဆင့်မြင့်ခွဲခြမ်းစိတ်ဖြာမှုလိုသောအဖွဲ့များအတွက်။",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "တစ်လဖြစ်ရပ် 2 သန်း",
+          "ဝဘ်ဆိုက် 25 ခု",
+          "အစပြုအစီအစဉ်ရှိ အရာအားလုံး",
+          "အဖွဲ့ဝင် 5၊ ရည်မှန်းချက် 100 နှင့် တစ်လ replay 5,000",
+          "အကန့်အသတ်မဲ့ MCP နှင့် တစ်မိနစ် API 300",
+          "CSV နှင့် JSON တင်ပို့မှု၊ Webhook 5 နှင့် Slack သတိပေးချက်",
+          "AI မူမမှန်မှုရှာဖွေခြင်း၊ အဆင့်မြင့် funnel နှင့် ဦးစားပေးအကူအညီ",
+          "ဒေတာ 24 လထိန်းသိမ်းမှု",
+          "တစ်လ AI အစီရင်ခံစာ 50"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "အဖွဲ့",
+        "description": "အတိုင်းအတာ၊ စီမံခန့်ခွဲမှုနှင့် အမှတ်တံဆိပ်ဖြင့်ပေးပို့မှုလိုသော ထုတ်ကုန်စုံအဖွဲ့နှင့် အေဂျင်စီများအတွက်။",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "တစ်လဖြစ်ရပ် 10 သန်းနှင့် ဝဘ်ဆိုက် 50",
+          "အဖွဲ့ဝင် 20၊ အကန့်အသတ်မဲ့ရည်မှန်းချက်နှင့် ဒေတာထိန်းသိမ်းမှု",
+          "အကန့်အသတ်မဲ့ MCP နှင့် တစ်မိနစ် API 600",
+          "Webhook 20၊ သတိပေးစည်းမျဉ်း 100 နှင့် တစ်လ AI အစီရင်ခံစာ 200",
+          "SSO/SAML၊ အဖြူရောင်တံဆိပ်ထိန်းချုပ်မှုနှင့် AI ခန့်မှန်းမှု",
+          "24 နာရီအတွင်း အကူအညီတုံ့ပြန်ရန် ရည်မှန်းချက်"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "လုပ်ငန်းကြီး",
+        "description": "ပမာဏ၊ လုံခြုံရေး၊ အကူအညီနှင့် ဖြန့်ကျက်မှု စိတ်ကြိုက်လိုအပ်သောအဖွဲ့အစည်းများအတွက်။",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "ဖြစ်ရပ်၊ API, MCP၊ ဝဘ်ဆိုက်နှင့် အဖွဲ့ဝင်ပမာဏ စိတ်ကြိုက်",
+          "ထိန်းသိမ်းမှုနှင့် အစီရင်ခံစာ ပြင်ဆင်မှု စိတ်ကြိုက်",
+          "အဆင့်မြင့်အထောက်အထား၊ အမှတ်တံဆိပ်နှင့် ပေါင်းစည်းမှုလိုအပ်ချက်",
+          "သီးသန့် CSM နှင့် SLA ရွေးချယ်မှု"
         ]
       }
-    }
+    },
+    "loading": "ဖွင့်နေသည်...",
+    "unavailable": "အသင်းဝင်အချက်အလက်ကို မရယူနိုင်ပါ။",
+    "manageDescription": "အစီအစဉ်၊ အသုံးပြုမှုနှင့် ငွေတောင်းခံမှုအခြေအနေကို စီမံပါ။",
+    "usageLimitExceeded": "အစီအစဉ်အသုံးပြုမှု ကန့်သတ်ချက် ကျော်လွန်နေသည်",
+    "usageApproachingLimit": "အစီအစဉ်အသုံးပြုမှု ကန့်သတ်ချက်နီးလာသည်",
+    "exceededDescription": "ဝန်ဆောင်မှုဆက်သုံးရန် အစီအစဉ်ကို အဆင့်မြှင့်ပါ။",
+    "approachingDescription": "ပြတ်တောက်မှုမဖြစ်စေရန် ကြိုတင်အဆင့်မြှင့်ပါ။",
+    "upgrade": "အဆင့်မြှင့်ရန်",
+    "currentBillingPeriod": "လက်ရှိငွေတောင်းခံကာလ",
+    "dataRetention": "ဒေတာထိန်းသိမ်းကာလ",
+    "unlimited": "အကန့်အသတ်မဲ့",
+    "retentionDays": "{count} ရက်",
+    "usageOverview": "အသုံးပြုမှုအကျဉ်းချုပ်",
+    "events": "ဖြစ်ရပ်များ",
+    "websites": "ဝဘ်ဆိုက်များ",
+    "members": "အဖွဲ့ဝင်များ",
+    "planLabel": "{plan} အစီအစဉ်"
   }
 }

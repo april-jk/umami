@@ -380,7 +380,8 @@
     "website-id": "ID del lloc web",
     "websites": "Llocs web",
     "window": "Finestra",
-    "yesterday": "Ahir"
+    "yesterday": "Ahir",
+    "membership": "Membresia"
   },
   "message": {
     "action-confirmation": "Escrigui {confirmation} al cuadre inferior per confirmar.",
@@ -437,92 +438,109 @@
     "visitor-log": "Visitant de <b>{country}</b> usant <b>{browser}</b> a <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Enrere",
+    "title": "Millora la subscripció",
+    "description": "Tria un pla adaptat a les teves necessitats de capacitat analítica, fluxos de treball amb IA, col·laboració i informes.",
+    "annual": "Anual (2 mesos gratis)",
+    "monthly": "Mensual",
+    "downgradeTitle": "Avís de canvi a un pla inferior",
+    "downgradeDescription": "Canviar a un pla inferior pot reduir els recursos disponibles. Les dades existents es conservaran, però potser no podràs afegir llocs web o membres nous fins que compleixis els límits del pla nou.",
+    "current": "Actual",
+    "recommended": "Recomanat",
+    "currentPlan": "Pla actual",
+    "contactSales": "Contacta amb vendes",
+    "redirecting": "Redirigint al pagament...",
+    "subscribe": "Subscriu-t’hi",
+    "freePrice": "Gratuït",
+    "customPrice": "Personalitzat",
+    "pricePerMonth": "${price}/mes",
+    "billedYear": "Facturat a ${price}/any (estalvia 2 mesos)",
+    "yearAvailable": "Disponible per ${price}/any",
+    "confirmationError": "No s’ha pogut verificar l’aprovació de la subscripció. Torna-ho a provar.",
+    "checkoutError": "No s’ha pogut iniciar el pagament. Torna-ho a provar.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratuït",
+        "description": "Perfecte per a projectes personals i primers experiments. Obté analítica essencial amb 100K esdeveniments/mes en 5 llocs web.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K esdeveniments/mes",
+          "5 llocs web",
+          "Analítica essencial, accés de lectura a l’API i 50 crides MCP/dia",
+          "Tauler en temps real",
+          "Compatible amb el GDPR per defecte",
+          "Conservació de dades durant 7 dies",
+          "10 sol·licituds API/minut i 10 anàlisis d’IA/mes",
+          "Suport de la comunitat (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "Per a projectes en creixement que necessiten més capacitat, fluxos de treball amb IA i lliurament periòdic d’informació analítica.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K esdeveniments/mes",
+          "10 llocs web",
+          "1 membre, 20 objectius i 500 reproduccions de sessió/mes",
+          "500 crides MCP/dia i 60 sol·licituds API/minut",
+          "Exportació CSV i informes diaris o setmanals per correu electrònic",
+          "3 regles d’alerta bàsiques i anàlisis d’IA il·limitades",
+          "Conservació de dades durant 6 mesos",
+          "5 informes d’IA/mes"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Per a equips que necessiten col·laboració, una automatització més completa i analítica avançada.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M esdeveniments/mes",
+          "25 llocs web",
+          "Tot el que inclou Starter",
+          "5 membres de l’equip, 100 objectius i 5K reproduccions/mes",
+          "Crides MCP il·limitades i 300 sol·licituds API/minut",
+          "Exportació CSV i JSON, 5 webhooks i alertes de Slack",
+          "Detecció d’anomalies amb IA, embuts avançats i suport prioritari",
+          "Conservació de dades durant 24 mesos",
+          "50 informes d’IA/mes"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "Per a equips multiproducte i agències que necessiten escala, governança i lliuraments amb marca pròpia.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M esdeveniments/mes i 50 llocs web",
+          "20 membres, objectius il·limitats i conservació de dades il·limitada",
+          "Crides MCP il·limitades i 600 sol·licituds API/minut",
+          "20 webhooks, 100 regles d’alerta i 200 informes d’IA/mes",
+          "SSO/SAML, controls de marca blanca i prediccions amb IA",
+          "Objectiu de resposta del suport en 24 hores"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "Per a organitzacions amb requisits personalitzats de volum, seguretat, suport i desplegament.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Capacitat personalitzada d’esdeveniments, API, MCP, llocs web i membres",
+          "Configuració personalitzada de conservació i informes",
+          "Requisits avançats d’identitat, marca i integració",
+          "Opcions de CSM dedicat i SLA"
         ]
       }
-    }
+    },
+    "loading": "S’està carregant…",
+    "unavailable": "No disponible",
+    "manageDescription": "Gestiona la subscripció i consulta l’ús del pla actual.",
+    "usageLimitExceeded": "Límit d’ús superat",
+    "usageApproachingLimit": "Límit d’ús gairebé assolit",
+    "exceededDescription": "Has superat un límit del pla. Millora’l per continuar utilitzant el servei sense interrupcions.",
+    "approachingDescription": "T’estàs acostant a un límit del pla. Millora’l per obtenir més capacitat.",
+    "upgrade": "Millora",
+    "currentBillingPeriod": "Període de facturació actual",
+    "dataRetention": "Conservació de dades",
+    "unlimited": "Il·limitat",
+    "retentionDays": "{count} dies",
+    "usageOverview": "Resum d’ús",
+    "events": "Esdeveniments",
+    "websites": "Llocs web",
+    "members": "Membres",
+    "planLabel": "Pla {plan}"
   }
 }

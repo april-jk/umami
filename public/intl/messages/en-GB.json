@@ -380,7 +380,8 @@
     "website-id": "Website ID",
     "websites": "Websites",
     "window": "Window",
-    "yesterday": "Yesterday"
+    "yesterday": "Yesterday",
+    "membership": "Membership"
   },
   "message": {
     "action-confirmation": "Type {confirmation} in the box below to confirm.",
@@ -438,8 +439,8 @@
   },
   "membership": {
     "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
+    "title": "Upgrade membership",
+    "description": "Choose a plan for your organisation’s analytics capacity, AI workflows, collaboration, and reporting needs.",
     "annual": "Annual (2 months free)",
     "monthly": "Monthly",
     "downgradeTitle": "Downgrade Warning",
@@ -447,20 +448,20 @@
     "current": "Current",
     "recommended": "Recommended",
     "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
+    "contactSales": "Contact Sales",
     "redirecting": "Redirecting to checkout...",
     "subscribe": "Subscribe",
     "freePrice": "Free",
-    "customPrice": "Custom",
+    "customPrice": "Bespoke",
     "pricePerMonth": "${price}/mo",
     "billedYear": "Billed ${price}/year (save 2 months)",
     "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "confirmationError": "Your subscription approval could not be confirmed. Please try again.",
+    "checkoutError": "We could not start checkout. Please try again.",
     "plans": {
       "free": {
         "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "description": "Ideal for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
         "features": [
           "100K events/month",
           "5 websites",
@@ -515,14 +516,31 @@
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "For organisations with custom volume, security, support, and deployment requirements.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
+          "Bespoke event, API, MCP, website, and member capacity",
+          "Bespoke retention and reporting configuration",
           "Advanced identity, branding, and integration requirements",
           "Dedicated CSM and SLA options"
         ]
       }
-    }
+    },
+    "loading": "Loading…",
+    "unavailable": "Unavailable",
+    "manageDescription": "Manage your subscription and review usage for your current plan.",
+    "usageLimitExceeded": "Usage limit exceeded",
+    "usageApproachingLimit": "Usage limit nearly reached",
+    "exceededDescription": "You have exceeded a plan limit. Upgrade to continue using the service without interruption.",
+    "approachingDescription": "You are approaching a plan limit. Upgrade for additional capacity.",
+    "upgrade": "Upgrade",
+    "currentBillingPeriod": "Current billing period",
+    "dataRetention": "Data retention",
+    "unlimited": "Unlimited",
+    "retentionDays": "{count} days",
+    "usageOverview": "Usage overview",
+    "events": "Events",
+    "websites": "Websites",
+    "members": "Members",
+    "planLabel": "{plan} plan"
   }
 }

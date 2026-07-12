@@ -1,16 +1,18 @@
 'use client';
 
 import { Column, Row, Text } from '@umami/react-zen';
-import { getUsagePercentage, getUsageAlertLevel } from '@/lib/tenant-plan';
+import { getUsageAlertLevel, getUsagePercentage } from '@/lib/tenant-plan';
 
 interface UsageBarProps {
   label: string;
+  locale: string;
+  unlimitedLabel: string;
   used: number;
   limit: number | null;
   alert?: 'none' | 'warning' | 'critical' | 'exceeded';
 }
 
-export function UsageBar({ label, used, limit, alert }: UsageBarProps) {
+export function UsageBar({ label, locale, unlimitedLabel, used, limit, alert }: UsageBarProps) {
   const percentage = getUsagePercentage(used, limit);
   const alertLevel = alert || getUsageAlertLevel(percentage);
 
@@ -31,25 +33,21 @@ export function UsageBar({ label, used, limit, alert }: UsageBarProps) {
         <Text weight="bold">{label}</Text>
         <Row gap="2" alignItems="center">
           <Text size="sm" color="muted">
-            {used.toLocaleString()} / {limit === null ? 'Unlimited' : limit.toLocaleString()}
+            {used.toLocaleString(locale)} /{' '}
+            {limit === null ? unlimitedLabel : limit.toLocaleString(locale)}
           </Text>
           {percentage !== null && (
-            <Text
-              size="sm"
-              weight="bold"
-              style={{ color: barColor }}
-            >
-              {percentage.toFixed(1)}%
+            <Text size="sm" weight="bold" style={{ color: barColor }}>
+              {percentage.toLocaleString(locale, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })}
+              %
             </Text>
           )}
         </Row>
       </Row>
-      <Row
-        height="8px"
-        backgroundColor="surface-sunken"
-        borderRadius
-        overflow="hidden"
-      >
+      <Row height="8px" backgroundColor="surface-sunken" borderRadius overflow="hidden">
         <div
           style={{
             width: `${barWidth}%`,

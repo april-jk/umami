@@ -370,7 +370,8 @@
     "website-id": "Вебийн ID",
     "websites": "Вебүүд",
     "window": "Цонх",
-    "yesterday": "Өчигдөр"
+    "yesterday": "Өчигдөр",
+    "membership": "Гишүүнчлэл"
   },
   "message": {
     "action-confirmation": "Доорх хэсэгт {confirmation} гэж бичин баталгаажуулна уу.",
@@ -425,92 +426,109 @@
     "visitor-log": "<b>{country}</b> улсаас <b>{os}</b> <b>{device}</b> дээр <b>{browser}</b> хөтөч ашиглан орсон"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Буцах",
+    "title": "Гишүүнчлэлээ ахиулах",
+    "description": "Аналитикийн багтаамж, AI ажлын урсгал, хамтын ажиллагаа, тайлангийн хэрэгцээндээ тохирох багцыг сонгоно уу.",
+    "annual": "Жилээр (2 сар үнэгүй)",
+    "monthly": "Сараар",
+    "downgradeTitle": "Багц бууруулах анхааруулга",
+    "downgradeDescription": "Багцаа бууруулснаар ашиглах нөөц багасаж болно. Одоогийн өгөгдөл хадгалагдах боловч шинэ багцын хязгаарт багтах хүртэл вэбсайт эсвэл гишүүн нэмэх боломжгүй байж болно.",
+    "current": "Одоогийн",
+    "recommended": "Санал болгох",
+    "currentPlan": "Одоогийн багц",
+    "contactSales": "Борлуулалттай холбогдох",
+    "redirecting": "Төлбөрийн хуудас руу шилжүүлж байна...",
+    "subscribe": "Захиалах",
+    "freePrice": "Үнэгүй",
+    "customPrice": "Тохируулгатай",
+    "pricePerMonth": "${price}/сар",
+    "billedYear": "Жилд ${price} төлнө (2 сар хэмнэнэ)",
+    "yearAvailable": "Жилийн ${price} багц бий",
+    "confirmationError": "Захиалгын зөвшөөрлийг баталгаажуулж чадсангүй. Дахин оролдоно уу.",
+    "checkoutError": "Төлбөрийг эхлүүлж чадсангүй. Дахин оролдоно уу.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Үнэгүй",
+        "description": "Хажуугийн төсөл, анхны туршилтад тохиромжтой. 5 вэбсайтад сард 100 мянган үйл явдал бүхий үндсэн аналитик.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "Сард 100 мянган үйл явдал",
+          "5 вэбсайт",
+          "Үндсэн аналитик, API унших эрх, өдөрт 50 MCP дуудлага",
+          "Бодит цагийн самбар",
+          "Анхнаасаа GDPR нийцэлтэй",
+          "Өгөгдөл 7 хоног хадгална",
+          "Минутанд 10 API хүсэлт, сард 10 AI шинжилгээ",
+          "Олон нийтийн дэмжлэг (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Эхлэл",
+        "description": "Илүү их багтаамж, AI ажлын урсгал, тогтмол аналитикийн мэдээлэл шаардлагатай өсөн буй төсөлд.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "Сард 500 мянган үйл явдал",
+          "10 вэбсайт",
+          "1 гишүүн, 20 зорилго, сард 500 сессийн бичлэг",
+          "Өдөрт 500 MCP дуудлага, минутанд 60 API хүсэлт",
+          "CSV экспорт, өдөр тутмын эсвэл долоо хоногийн имэйл тайлан",
+          "3 үндсэн дохиоллын дүрэм, хязгааргүй AI шинжилгээ",
+          "Өгөгдөл 6 сар хадгална",
+          "Сард 5 AI тайлан"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "Мэргэжлийн",
+        "description": "Хамтын ажиллагаа, өргөн автоматжуулалт, ахисан аналитик шаардлагатай багт.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "Сард 2 сая үйл явдал",
+          "25 вэбсайт",
+          "Эхлэл багцын бүх боломж",
+          "5 багийн гишүүн, 100 зорилго, сард 5 мянган бичлэг",
+          "Хязгааргүй MCP дуудлага, минутанд 300 API хүсэлт",
+          "CSV ба JSON экспорт, 5 Webhook, Slack дохиолол",
+          "AI хэвийн бус байдлын илрүүлэлт, ахисан юүлүүр, тэргүүлэх дэмжлэг",
+          "Өгөгдөл 24 сар хадгална",
+          "Сард 50 AI тайлан"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Баг",
+        "description": "Өргөтгөл, засаглал, брэндчилсэн хүргэлт шаардлагатай олон бүтээгдэхүүний баг, агентлагт.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "Сард 10 сая үйл явдал, 50 вэбсайт",
+          "20 гишүүн, хязгааргүй зорилго ба өгөгдөл хадгалалт",
+          "Хязгааргүй MCP дуудлага, минутанд 600 API хүсэлт",
+          "20 Webhook, 100 дохиоллын дүрэм, сард 200 AI тайлан",
+          "SSO/SAML, цагаан шошгоны удирдлага, AI таамаглал",
+          "24 цагийн дотор дэмжлэг үзүүлэх зорилт"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Байгууллага",
+        "description": "Багтаамж, аюулгүй байдал, дэмжлэг, байршуулалтын тусгай шаардлагатай байгууллагад.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Үйл явдал, API, MCP, вэбсайт, гишүүний багтаамжийг тохируулна",
+          "Хадгалалт ба тайлангийн тохиргоог тохируулна",
+          "Таних эрх, брэнд, интеграцийн ахисан шаардлага",
+          "Зориулалтын CSM ба SLA сонголт"
         ]
       }
-    }
+    },
+    "loading": "Уншиж байна...",
+    "unavailable": "Гишүүнчлэлийн мэдээллийг ачаалж чадсангүй.",
+    "manageDescription": "Багц, хэрэглээ, төлбөрийн төлөвийг удирдана.",
+    "usageLimitExceeded": "Та багцын хэрэглээний хязгаарыг давсан",
+    "usageApproachingLimit": "Та багцын хэрэглээний хязгаарт ойртсон",
+    "exceededDescription": "Үйлчилгээг үргэлжлүүлэхийн тулд багцаа ахиулна уу.",
+    "approachingDescription": "Тасалдлаас сэргийлж эрт ахиулахыг зөвлөж байна.",
+    "upgrade": "Ахиулах",
+    "currentBillingPeriod": "Одоогийн төлбөрийн хугацаа",
+    "dataRetention": "Өгөгдөл хадгалах хугацаа",
+    "unlimited": "Хязгааргүй",
+    "retentionDays": "{count} хоног",
+    "usageOverview": "Хэрэглээний тойм",
+    "events": "Үйл явдал",
+    "websites": "Вэбсайт",
+    "members": "Гишүүд",
+    "planLabel": "{plan} багц"
   }
 }

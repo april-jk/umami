@@ -533,6 +533,23 @@
           "Dedicated CSM and SLA options"
         ]
       }
-    }
+    },
+    "loading": "Loading...",
+    "unavailable": "No membership information available.",
+    "manageDescription": "Manage your plan, view usage, and upgrade when needed.",
+    "usageLimitExceeded": "Usage limit exceeded",
+    "usageApproachingLimit": "Usage approaching limit",
+    "exceededDescription": "You have exceeded one or more usage limits. Please upgrade your plan to continue using all features.",
+    "approachingDescription": "You are approaching one or more usage limits. Consider upgrading to avoid interruptions.",
+    "upgrade": "Upgrade",
+    "currentBillingPeriod": "Current billing period",
+    "dataRetention": "Data retention",
+    "unlimited": "Unlimited",
+    "retentionDays": "{count} days",
+    "usageOverview": "Usage Overview",
+    "events": "Events",
+    "websites": "Websites",
+    "members": "Members",
+    "planLabel": "{plan} Plan"
   }
 }

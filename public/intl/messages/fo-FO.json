@@ -380,7 +380,8 @@
     "website-id": "Heimasíðu-ID",
     "websites": "Heimasíður",
     "window": "Gluggi",
-    "yesterday": "Í gjár"
+    "yesterday": "Í gjár",
+    "membership": "Limaskapur"
   },
   "message": {
     "action-confirmation": "Skriva {confirmation} í teigin niðanfyri at vátta.",
@@ -437,92 +438,109 @@
     "visitor-log": "Vitjandi frá <b>{country}</b> brúkar <b>{browser}</b> á <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Aftur",
+    "title": "Dagfør limaskapin",
+    "description": "Vel eina ætlan, ið hóskar til tørvin á greiningarorku, AI-arbeiðsgongdum, samstarvi og frágreiðingum.",
+    "annual": "Árliga (2 mánaðir ókeypis)",
+    "monthly": "Mánaðarliga",
+    "downgradeTitle": "Ávaring um niðurstigan",
+    "downgradeDescription": "Niðurstigan kann minka um tøku tilfeingini. Verandi dátur verða varðveittar, men tú kanst møguliga ikki leggja nýggjar heimasíður ella limir afturat, fyrr enn nýtslan er innan markið í nýggju ætlanini.",
+    "current": "Núverandi",
+    "recommended": "Viðmælt",
+    "currentPlan": "Núverandi ætlan",
+    "contactSales": "Set teg í samband við søluna",
+    "redirecting": "Sendir víðari til gjalding...",
+    "subscribe": "Tekna hald",
+    "freePrice": "Ókeypis",
+    "customPrice": "Sersniðið",
+    "pricePerMonth": "${price}/mnð.",
+    "billedYear": "Goldið ${price}/ár (spar 2 mánaðir)",
+    "yearAvailable": "Fæst fyri ${price}/ár",
+    "confirmationError": "Tað bar ikki til at vátta góðkenningina av haldinum. Royn aftur.",
+    "checkoutError": "Tað bar ikki til at byrja gjaldingina. Royn aftur.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Ókeypis",
+        "description": "Hóskar væl til síðuprojekt og fyrstu royndir. Fá grundleggjandi greining við 100K hendingum/mánað á 5 heimasíðum.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K hendingar/mánað",
+          "5 heimasíður",
+          "Grundleggjandi greining, lesiatgongd til API og 50 MCP-kall/dag",
+          "Stjórnborð í rauntíð",
+          "Samsvarar GDPR sum standard",
+          "Dátugoymsla í 7 dagar",
+          "10 API-fyrispurningar/minutt og 10 AI-greiningar/mánað",
+          "Stuðul frá felagsskapinum (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "Til vaksandi projekt, ið hava tørv á meiri orku, AI-arbeiðsgongdum og regluligari veiting av greiningarinnliti.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K hendingar/mánað",
+          "10 heimasíður",
+          "1 limur, 20 mál og 500 setuavspælingar/mánað",
+          "500 MCP-kall/dag og 60 API-fyrispurningar/minutt",
+          "CSV-útflutningur og dagligar ella vikuligar teldupostfrágreiðingar",
+          "3 grundleggjandi ávaringarreglur og óavmarkaðar AI-greiningar",
+          "Dátugoymsla í 6 mánaðir",
+          "5 AI-frágreiðingar/mánað"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Til toymi, ið hava tørv á samstarvi, meiri víðfevndari sjálvvirkan og framkomnari greining.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M hendingar/mánað",
+          "25 heimasíður",
+          "Alt í Starter",
+          "5 toymislimir, 100 mál og 5K avspælingar/mánað",
+          "Óavmarkað MCP-kall og 300 API-fyrispurningar/minutt",
+          "CSV- og JSON-útflutningur, 5 webhooks og Slack-ávaringar",
+          "AI-fráviksgreining, framkomnar trektar og raðfestur stuðul",
+          "Dátugoymsla í 24 mánaðir",
+          "50 AI-frágreiðingar/mánað"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "Til toymi við fleiri vørum og fyritøkur, ið hava tørv á skala, stýring og veiting undir egnum merki.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M hendingar/mánað og 50 heimasíður",
+          "20 limir, óavmarkað mál og óavmarkað dátugoymsla",
+          "Óavmarkað MCP-kall og 600 API-fyrispurningar/minutt",
+          "20 webhooks, 100 ávaringarreglur og 200 AI-frágreiðingar/mánað",
+          "SSO/SAML, white label-stýring og AI-framsagnir",
+          "Mál um svar frá stuðli innan 24 tímar"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "Til felagsskapir við serligum krøvum til nøgd, trygd, stuðul og útbreiðslu.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Sersniðin orka til hendingar, API, MCP, heimasíður og limir",
+          "Sersniðin uppseting av dátugoymslu og frágreiðingum",
+          "Framkomin krøv til samleika, merking og integratión",
+          "Møguleikar fyri fastan CSM og SLA"
         ]
       }
-    }
+    },
+    "loading": "Lesur inn...",
+    "unavailable": "Ikki tøkt",
+    "manageDescription": "Umsit haldið og kanna nýtsluna í núverandi ætlan.",
+    "usageLimitExceeded": "Nýtslumarkið er farið upp um",
+    "usageApproachingLimit": "Nýtslumarkið er næstan rokkið",
+    "exceededDescription": "Tú ert farin upp um eitt mark í ætlanini. Dagfør fyri at halda fram at nýta tænastuna uttan steðg.",
+    "approachingDescription": "Tú nærkast einum marki í ætlanini. Dagfør fyri at fáa meiri orku.",
+    "upgrade": "Dagfør",
+    "currentBillingPeriod": "Núverandi gjaldstíðarskeið",
+    "dataRetention": "Dátugoymsla",
+    "unlimited": "Óavmarkað",
+    "retentionDays": "{count} dagar",
+    "usageOverview": "Yvirlit yvir nýtslu",
+    "events": "Hendingar",
+    "websites": "Heimasíður",
+    "members": "Limir",
+    "planLabel": "Ætlanin {plan}"
   }
 }

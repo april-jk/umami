@@ -380,7 +380,8 @@
     "website-id": "ID web stranice",
     "websites": "Web stranice",
     "window": "Prozor",
-    "yesterday": "Jučer"
+    "yesterday": "Jučer",
+    "membership": "Članstvo"
   },
   "message": {
     "action-confirmation": "Unesite {confirmation} ispod da potvrdite.",
@@ -437,92 +438,109 @@
     "visitor-log": "Posjetitelj iz <b>{country}</b> koristi <b>{browser}</b> na <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Nazad",
+    "title": "Nadogradite članstvo",
+    "description": "Izaberite plan koji odgovara vašim potrebama za analitičkim kapacitetom, AI tokovima rada, saradnjom i izvještavanjem.",
+    "annual": "Godišnje (2 mjeseca besplatno)",
+    "monthly": "Mjesečno",
+    "downgradeTitle": "Upozorenje o prelasku na niži plan",
+    "downgradeDescription": "Prelazak na niži plan može smanjiti dostupne resurse. Postojeći podaci bit će sačuvani, ali možda nećete moći dodavati nove web stranice ili članove dok se ne uklopite u ograničenja novog plana.",
+    "current": "Trenutno",
+    "recommended": "Preporučeno",
+    "currentPlan": "Trenutni plan",
+    "contactSales": "Obratite se prodaji",
+    "redirecting": "Preusmjeravanje na plaćanje...",
+    "subscribe": "Pretplatite se",
+    "freePrice": "Besplatno",
+    "customPrice": "Prilagođeno",
+    "pricePerMonth": "${price}/mj.",
+    "billedYear": "Naplaćuje se ${price}/godinu (uštedite 2 mjeseca)",
+    "yearAvailable": "Dostupno za ${price}/godinu",
+    "confirmationError": "Odobrenje pretplate nije bilo moguće potvrditi. Pokušajte ponovo.",
+    "checkoutError": "Plaćanje nije bilo moguće pokrenuti. Pokušajte ponovo.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Besplatno",
+        "description": "Savršeno za dodatne projekte i početne eksperimente. Dobijte osnovnu analitiku sa 100K događaja/mjesec na 5 web stranica.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K događaja/mjesec",
+          "5 web stranica",
+          "Osnovna analitika, pristup API samo za čitanje i 50 MCP poziva/dan",
+          "Nadzorna ploča u stvarnom vremenu",
+          "Podrazumijevano usklađeno s GDPR",
+          "Čuvanje podataka 7 dana",
+          "10 API zahtjeva/minutu i 10 AI analiza/mjesec",
+          "Podrška zajednice (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "Za rastuće projekte kojima trebaju veći kapacitet, AI tijekovi rada i redovna dostava analitičkih uvida.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K događaja/mjesec",
+          "10 web stranica",
+          "1 član, 20 ciljeva i 500 snimaka sesija/mjesec",
+          "500 MCP poziva/dan i 60 API zahtjeva/minutu",
+          "CSV izvoz i dnevna ili tjedna izvještaji e-poštom",
+          "3 osnovna pravila upozorenja i neograničene AI analize",
+          "Čuvanje podataka 6 mjeseci",
+          "5 AI izvještaji/mjesec"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Za timove kojima trebaju saradnja, naprednija automatizacija i napredna analitika.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M događaja/mjesec",
+          "25 web stranica",
+          "Sve iz plana Starter",
+          "5 članova tima, 100 ciljeva i 5K snimaka/mjesec",
+          "Neograničeni MCP pozivi i 300 API zahtjeva/minutu",
+          "CSV i JSON izvoz, 5 webhookova i Slack upozorenja",
+          "AI prepoznavanje anomalija, napredni tokovi i prioritetna podrška",
+          "Čuvanje podataka 24 mjeseca",
+          "50 AI izvještaji/mjesec"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "Za timove s više proizvoda i agencije kojima trebaju opseg, upravljanje i isporuka pod vlastitim brendom.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M događaja/mjesec i 50 web stranica",
+          "20 članova, neograničeni ciljevi i neograničeno čuvanje podataka",
+          "Neograničeni MCP pozivi i 600 API zahtjeva/minutu",
+          "20 webhookova, 100 pravila upozorenja i 200 AI izvještaji/mjesec",
+          "SSO/SAML, kontrole bijele oznake i AI predviđanje",
+          "Ciljani odgovor podrške unutar 24 sata"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "Za organizacije s prilagođenim zahtjevima za obim, sigurnost, podršku i implementaciju.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Prilagođeni kapacitet događaja, API, MCP, web stranica i članova",
+          "Prilagođena konfiguracija čuvanja podataka i izvještavanja",
+          "Napredni zahtjevi za identitet, brendiranje i integracije",
+          "Opcije namjenskog CSM i SLA"
         ]
       }
-    }
+    },
+    "loading": "Učitavanje...",
+    "unavailable": "Nije dostupno",
+    "manageDescription": "Upravljajte pretplatom i pregledajte korištenje trenutačnog plana.",
+    "usageLimitExceeded": "Ograničenje korištenja je premašeno",
+    "usageApproachingLimit": "Ograničenje korištenja gotovo je dosegnuto",
+    "exceededDescription": "Premašili ste ograničenje plana. Nadogradite ga kako biste nastavili neometano koristiti uslugu.",
+    "approachingDescription": "Približavate se ograničenju plana. Nadogradite ga za dodatni kapacitet.",
+    "upgrade": "Nadogradi",
+    "currentBillingPeriod": "Trenutno obračunsko period",
+    "dataRetention": "Čuvanje podataka",
+    "unlimited": "Neograničeno",
+    "retentionDays": "{count} dana",
+    "usageOverview": "Pregled korištenja",
+    "events": "Događaji",
+    "websites": "Web-stranice",
+    "members": "Članovi",
+    "planLabel": "Plan {plan}"
   }
 }

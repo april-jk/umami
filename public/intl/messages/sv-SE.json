@@ -380,7 +380,8 @@
     "website-id": "Webbplats ID",
     "websites": "Webbplatser",
     "window": "Fönster",
-    "yesterday": "Igår"
+    "yesterday": "Igår",
+    "membership": "Medlemskap"
   },
   "message": {
     "action-confirmation": "Skriv {confirmation} i rutan nedan för att bekräfta.",
@@ -437,92 +438,109 @@
     "visitor-log": "Besökare från <b>{country}</b> med <b>{browser}</b> på <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Tillbaka",
+    "title": "Uppgradera medlemskap",
+    "description": "Välj en plan som passar dina behov av analyskapacitet, AI-arbetsflöden, samarbete och rapportering.",
+    "annual": "Årligen (2 månader gratis)",
+    "monthly": "Månadsvis",
+    "downgradeTitle": "Varning vid nedgradering",
+    "downgradeDescription": "En nedgradering kan minska dina tillgängliga resurser. Befintliga data bevaras, men du kanske inte kan lägga till nya webbplatser eller medlemmar förrän du håller dig inom den nya planens gränser.",
+    "current": "Nuvarande",
+    "recommended": "Rekommenderad",
+    "currentPlan": "Nuvarande plan",
+    "contactSales": "Kontakta säljteamet",
+    "redirecting": "Omdirigerar till betalning...",
+    "subscribe": "Prenumerera",
+    "freePrice": "Gratis",
+    "customPrice": "Anpassat",
+    "pricePerMonth": "${price}/mån",
+    "billedYear": "Faktureras ${price}/år (spara 2 månader)",
+    "yearAvailable": "Tillgängligt för ${price}/år",
+    "confirmationError": "Godkännandet av din prenumeration kunde inte verifieras. Försök igen.",
+    "checkoutError": "Det gick inte att starta betalningen. Försök igen.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratis",
+        "description": "Perfekt för sidoprojekt och tidiga experiment. Få grundläggande analys med 100K händelser/månad på 5 webbplatser.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K händelser/månad",
+          "5 webbplatser",
+          "Grundläggande analys, läsåtkomst till API och 50 MCP-anrop/dag",
+          "Instrumentpanel i realtid",
+          "GDPR-kompatibel som standard",
+          "Datalagring i 7 dagar",
+          "10 API-förfrågningar/minut och 10 AI-analyser/månad",
+          "Communitysupport (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "För växande projekt som behöver mer kapacitet, AI-arbetsflöden och regelbunden leverans av analysinsikter.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K händelser/månad",
+          "10 webbplatser",
+          "1 medlem, 20 mål och 500 sessionsuppspelningar/månad",
+          "500 MCP-anrop/dag och 60 API-förfrågningar/minut",
+          "CSV-export och dagliga eller veckovisa e-postrapporter",
+          "3 grundläggande varningsregler och obegränsade AI-analyser",
+          "Datalagring i 6 månader",
+          "5 AI-rapporter/månad"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "För team som behöver samarbete, mer omfattande automatisering och avancerad analys.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M händelser/månad",
+          "25 webbplatser",
+          "Allt i Starter",
+          "5 teammedlemmar, 100 mål och 5K uppspelningar/månad",
+          "Obegränsade MCP-anrop och 300 API-förfrågningar/minut",
+          "CSV- och JSON-export, 5 webhooks och Slack-varningar",
+          "AI-baserad avvikelsedetektering, avancerade trattar och prioriterad support",
+          "Datalagring i 24 månader",
+          "50 AI-rapporter/månad"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "För team med flera produkter och byråer som behöver skalbarhet, styrning och leveranser under eget varumärke.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M händelser/månad och 50 webbplatser",
+          "20 medlemmar, obegränsade mål och obegränsad datalagring",
+          "Obegränsade MCP-anrop och 600 API-förfrågningar/minut",
+          "20 webhooks, 100 varningsregler och 200 AI-rapporter/månad",
+          "SSO/SAML, white label-kontroller och AI-prognoser",
+          "Mål för supportsvar inom 24 timmar"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "För organisationer med anpassade krav på volym, säkerhet, support och driftsättning.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Anpassad kapacitet för händelser, API, MCP, webbplatser och medlemmar",
+          "Anpassad konfiguration för datalagring och rapportering",
+          "Avancerade krav på identitet, varumärke och integration",
+          "Alternativ för dedikerad CSM och SLA"
         ]
       }
-    }
+    },
+    "loading": "Läser in...",
+    "unavailable": "Inte tillgängligt",
+    "manageDescription": "Hantera din prenumeration och granska användningen för din nuvarande plan.",
+    "usageLimitExceeded": "Användningsgränsen har överskridits",
+    "usageApproachingLimit": "Användningsgränsen är nästan nådd",
+    "exceededDescription": "Du har överskridit en gräns i din plan. Uppgradera för att fortsätta använda tjänsten utan avbrott.",
+    "approachingDescription": "Du närmar dig en gräns i din plan. Uppgradera för att få mer kapacitet.",
+    "upgrade": "Uppgradera",
+    "currentBillingPeriod": "Nuvarande faktureringsperiod",
+    "dataRetention": "Datalagring",
+    "unlimited": "Obegränsad",
+    "retentionDays": "{count} dagar",
+    "usageOverview": "Användningsöversikt",
+    "events": "Händelser",
+    "websites": "Webbplatser",
+    "members": "Medlemmar",
+    "planLabel": "Planen {plan}"
   }
 }

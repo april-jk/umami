@@ -380,7 +380,8 @@
     "website-id": "ID situs web",
     "websites": "Situs web",
     "window": "Jendela",
-    "yesterday": "Kemarin"
+    "yesterday": "Kemarin",
+    "membership": "Keanggotaan"
   },
   "message": {
     "action-confirmation": "Ketik {confirmation} pada kotak di bawah untuk mengonfirmasi.",
@@ -437,92 +438,109 @@
     "visitor-log": "Pengunjung dari <b>{country}</b> dengan <b>{browser}</b> di <b>{device}</b> <b>{os}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Kembali",
+    "title": "Tingkatkan Keanggotaan",
+    "description": "Pilih paket sesuai kebutuhan kapasitas analitik, alur kerja AI, kolaborasi, dan pelaporan.",
+    "annual": "Tahunan (gratis 2 bulan)",
+    "monthly": "Bulanan",
+    "downgradeTitle": "Peringatan Penurunan Paket",
+    "downgradeDescription": "Menurunkan paket dapat mengurangi sumber daya yang tersedia. Data lama tetap disimpan, tetapi Anda mungkin tidak dapat menambah situs web atau anggota baru sampai penggunaan berada dalam batas paket baru.",
+    "current": "Saat ini",
+    "recommended": "Disarankan",
+    "currentPlan": "Paket Saat Ini",
+    "contactSales": "Hubungi bagian penjualan",
+    "redirecting": "Mengalihkan ke pembayaran...",
+    "subscribe": "Berlangganan",
+    "freePrice": "Gratis",
+    "customPrice": "Khusus",
+    "pricePerMonth": "${price}/bln",
+    "billedYear": "Ditagih ${price}/tahun (hemat 2 bulan)",
+    "yearAvailable": "Tersedia ${price}/tahun",
+    "confirmationError": "Persetujuan langganan Anda tidak dapat diverifikasi. Silakan coba lagi.",
+    "checkoutError": "Tidak dapat memulai pembayaran. Silakan coba lagi.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratis",
+        "description": "Cocok untuk proyek sampingan dan eksperimen awal. Analitik inti dengan 100 ribu peristiwa/bulan di 5 situs web.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100 ribu peristiwa/bulan",
+          "5 situs web",
+          "Analitik inti, akses baca API, dan 50 panggilan MCP/hari",
+          "Dasbor waktu nyata",
+          "Mematuhi GDPR secara bawaan",
+          "Penyimpanan data 7 hari",
+          "10 permintaan API/menit dan 10 analisis AI/bulan",
+          "Dukungan komunitas (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Pemula",
+        "description": "Untuk proyek berkembang yang membutuhkan kapasitas lebih besar, alur kerja AI, dan wawasan analitik berkala.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500 ribu peristiwa/bulan",
+          "10 situs web",
+          "1 anggota, 20 sasaran, dan 500 tayangan ulang sesi/bulan",
+          "500 panggilan MCP/hari dan 60 permintaan API/menit",
+          "Ekspor CSV dan laporan email harian atau mingguan",
+          "3 aturan peringatan dasar dan analisis AI tanpa batas",
+          "Penyimpanan data 6 bulan",
+          "5 laporan AI/bulan"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "Profesional",
+        "description": "Untuk tim yang membutuhkan kolaborasi, otomatisasi lebih lengkap, dan analitik lanjutan.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2 juta peristiwa/bulan",
+          "25 situs web",
+          "Semua fitur paket Pemula",
+          "5 anggota tim, 100 sasaran, dan 5 ribu tayangan ulang/bulan",
+          "Panggilan MCP tanpa batas dan 300 permintaan API/menit",
+          "Ekspor CSV dan JSON, 5 Webhook, dan peringatan Slack",
+          "Deteksi anomali AI, corong lanjutan, dan dukungan prioritas",
+          "Penyimpanan data 24 bulan",
+          "50 laporan AI/bulan"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Tim",
+        "description": "Untuk tim multiproduk dan agensi yang memerlukan skala, tata kelola, dan pengiriman bermerek.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10 juta peristiwa/bulan dan 50 situs web",
+          "20 anggota, sasaran tanpa batas, dan penyimpanan data tanpa batas",
+          "Panggilan MCP tanpa batas dan 600 permintaan API/menit",
+          "20 Webhook, 100 aturan peringatan, dan 200 laporan AI/bulan",
+          "SSO/SAML, kontrol label putih, dan prakiraan AI",
+          "Target respons dukungan 24 jam"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Perusahaan",
+        "description": "Untuk organisasi dengan kebutuhan khusus terkait volume, keamanan, dukungan, dan penerapan.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Kapasitas peristiwa, API, MCP, situs web, dan anggota khusus",
+          "Konfigurasi penyimpanan dan pelaporan khusus",
+          "Kebutuhan identitas, merek, dan integrasi lanjutan",
+          "Opsi CSM khusus dan SLA"
         ]
       }
-    }
+    },
+    "loading": "Memuat...",
+    "unavailable": "Tidak dapat memuat informasi keanggotaan.",
+    "manageDescription": "Kelola paket, penggunaan, dan status penagihan.",
+    "usageLimitExceeded": "Anda telah melampaui batas penggunaan paket",
+    "usageApproachingLimit": "Anda mendekati batas penggunaan paket",
+    "exceededDescription": "Tingkatkan paket untuk terus menggunakan layanan.",
+    "approachingDescription": "Pertimbangkan peningkatan lebih awal agar layanan tidak terganggu.",
+    "upgrade": "Tingkatkan",
+    "currentBillingPeriod": "Periode tagihan saat ini",
+    "dataRetention": "Masa penyimpanan data",
+    "unlimited": "Tanpa batas",
+    "retentionDays": "{count} hari",
+    "usageOverview": "Ringkasan penggunaan",
+    "events": "Peristiwa",
+    "websites": "Situs web",
+    "members": "Anggota",
+    "planLabel": "Paket {plan}"
   }
 }

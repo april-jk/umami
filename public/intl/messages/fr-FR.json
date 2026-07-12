@@ -380,7 +380,8 @@
     "website-id": "ID de site",
     "websites": "Sites",
     "window": "Fenêtre",
-    "yesterday": "Hier"
+    "yesterday": "Hier",
+    "membership": "Abonnement"
   },
   "message": {
     "action-confirmation": "Taper {confirmation} ci-dessous pour confirmer.",
@@ -437,92 +438,109 @@
     "visitor-log": "Visiteur de <b>{country}</b> utilisant <b>{browser}</b> sur <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Retour",
+    "title": "Améliorer l’abonnement",
+    "description": "Choisissez une offre adaptée à vos besoins en capacité d’analyse, workflows d’IA, collaboration et rapports.",
+    "annual": "Annuel (2 mois offerts)",
+    "monthly": "Mensuel",
+    "downgradeTitle": "Avertissement de rétrogradation",
+    "downgradeDescription": "La rétrogradation peut réduire vos ressources disponibles. Les données existantes seront conservées, mais vous ne pourrez peut-être plus ajouter de sites web ou de membres tant que vous dépasserez les limites de la nouvelle offre.",
+    "current": "Actuel",
+    "recommended": "Recommandé",
+    "currentPlan": "Offre actuelle",
+    "contactSales": "Contacter le service commercial",
+    "redirecting": "Redirection vers le paiement…",
+    "subscribe": "S’abonner",
+    "freePrice": "Gratuit",
+    "customPrice": "Sur mesure",
+    "pricePerMonth": "${price}/mois",
+    "billedYear": "Facturé ${price}/an (2 mois économisés)",
+    "yearAvailable": "Disponible à ${price}/an",
+    "confirmationError": "L’approbation de votre abonnement n’a pas pu être vérifiée. Veuillez réessayer.",
+    "checkoutError": "Impossible de lancer le paiement. Veuillez réessayer.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratuit",
+        "description": "Idéal pour les projets personnels et les premières expérimentations. Profitez des analyses essentielles avec 100K événements/mois sur 5 sites web.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K événements/mois",
+          "5 sites web",
+          "Analyses essentielles, accès en lecture à l’API et 50 appels MCP/jour",
+          "Tableau de bord en temps réel",
+          "Conforme au GDPR par défaut",
+          "Conservation des données pendant 7 jours",
+          "10 requêtes API/minute et 10 analyses d’IA/mois",
+          "Assistance communautaire (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "Pour les projets en croissance qui ont besoin de plus de capacité, de workflows d’IA et d’un suivi analytique régulier.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K événements/mois",
+          "10 sites web",
+          "1 membre, 20 objectifs et 500 relectures de session/mois",
+          "500 appels MCP/jour et 60 requêtes API/minute",
+          "Export CSV et rapports quotidiens ou hebdomadaires par e-mail",
+          "3 règles d’alerte de base et analyses d’IA illimitées",
+          "Conservation des données pendant 6 mois",
+          "5 rapports d’IA/mois"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Pour les équipes qui ont besoin de collaboration, d’une automatisation plus riche et d’analyses avancées.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M événements/mois",
+          "25 sites web",
+          "Tout ce qui est inclus dans Starter",
+          "5 membres d’équipe, 100 objectifs et 5K relectures/mois",
+          "Appels MCP illimités et 300 requêtes API/minute",
+          "Exports CSV et JSON, 5 webhooks et alertes Slack",
+          "Détection d’anomalies par IA, entonnoirs avancés et assistance prioritaire",
+          "Conservation des données pendant 24 mois",
+          "50 rapports d’IA/mois"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "Pour les équipes multiproduits et les agences qui ont besoin d’évolutivité, de gouvernance et de livrables à leur marque.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M événements/mois et 50 sites web",
+          "20 membres, objectifs illimités et conservation des données illimitée",
+          "Appels MCP illimités et 600 requêtes API/minute",
+          "20 webhooks, 100 règles d’alerte et 200 rapports d’IA/mois",
+          "SSO/SAML, contrôles en marque blanche et prévisions par IA",
+          "Objectif de réponse de l’assistance sous 24 heures"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "Pour les organisations ayant des exigences spécifiques en matière de volume, sécurité, assistance et déploiement.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Capacité personnalisée pour les événements, l’API, MCP, les sites web et les membres",
+          "Configuration personnalisée de la conservation et des rapports",
+          "Exigences avancées en matière d’identité, de marque et d’intégration",
+          "Options de CSM dédié et de SLA"
         ]
       }
-    }
+    },
+    "loading": "Chargement…",
+    "unavailable": "Indisponible",
+    "manageDescription": "Gérez votre abonnement et consultez l’utilisation de votre offre actuelle.",
+    "usageLimitExceeded": "Limite d’utilisation dépassée",
+    "usageApproachingLimit": "Limite d’utilisation bientôt atteinte",
+    "exceededDescription": "Vous avez dépassé une limite de votre offre. Passez à une offre supérieure pour continuer à utiliser le service sans interruption.",
+    "approachingDescription": "Vous approchez d’une limite de votre offre. Passez à une offre supérieure pour obtenir plus de capacité.",
+    "upgrade": "Améliorer",
+    "currentBillingPeriod": "Période de facturation actuelle",
+    "dataRetention": "Conservation des données",
+    "unlimited": "Illimité",
+    "retentionDays": "{count} jours",
+    "usageOverview": "Aperçu de l’utilisation",
+    "events": "Événements",
+    "websites": "Sites web",
+    "members": "Membres",
+    "planLabel": "Offre {plan}"
   }
 }

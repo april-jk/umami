@@ -380,7 +380,8 @@
     "website-id": "ID sito web",
     "websites": "Siti web",
     "window": "Finestra",
-    "yesterday": "Ieri"
+    "yesterday": "Ieri",
+    "membership": "Abbonamento"
   },
   "message": {
     "action-confirmation": "Digita {confirmation} nella casella sottostante per confermare.",
@@ -437,92 +438,109 @@
     "visitor-log": "Utenti da <b>{country}</b> tramite <b>{browser}</b> su <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Indietro",
+    "title": "Aggiorna abbonamento",
+    "description": "Scegli un piano adatto alle tue esigenze di capacità analitica, flussi di lavoro IA, collaborazione e reportistica.",
+    "annual": "Annuale (2 mesi gratis)",
+    "monthly": "Mensile",
+    "downgradeTitle": "Avviso di downgrade",
+    "downgradeDescription": "Il downgrade può ridurre le risorse disponibili. I dati esistenti verranno conservati, ma potresti non poter aggiungere nuovi siti web o membri finché non rientri nei limiti del nuovo piano.",
+    "current": "Attuale",
+    "recommended": "Consigliato",
+    "currentPlan": "Piano attuale",
+    "contactSales": "Contatta le vendite",
+    "redirecting": "Reindirizzamento al pagamento...",
+    "subscribe": "Abbonati",
+    "freePrice": "Gratis",
+    "customPrice": "Personalizzato",
+    "pricePerMonth": "${price}/mese",
+    "billedYear": "Addebito di ${price}/anno (risparmi 2 mesi)",
+    "yearAvailable": "Disponibile a ${price}/anno",
+    "confirmationError": "Non è stato possibile verificare l’approvazione dell’abbonamento. Riprova.",
+    "checkoutError": "Impossibile avviare il pagamento. Riprova.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratis",
+        "description": "Perfetto per progetti secondari e primi esperimenti. Ottieni le analisi essenziali con 100K eventi/mese su 5 siti web.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K eventi/mese",
+          "5 siti web",
+          "Analisi essenziali, accesso in lettura API e 50 chiamate MCP/giorno",
+          "Dashboard in tempo reale",
+          "Conforme al GDPR per impostazione predefinita",
+          "Conservazione dei dati per 7 giorni",
+          "10 richieste API/minuto e 10 analisi IA/mese",
+          "Supporto della community (Discord)"
         ]
       },
       "starter": {
         "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "description": "Per progetti in crescita che richiedono più capacità, flussi di lavoro IA e una distribuzione regolare degli insight analitici.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K eventi/mese",
+          "10 siti web",
+          "1 membro, 20 obiettivi e 500 replay di sessione/mese",
+          "500 chiamate MCP/giorno e 60 richieste API/minuto",
+          "Esportazione CSV e report giornalieri o settimanali via e-mail",
+          "3 regole di avviso di base e analisi IA illimitate",
+          "Conservazione dei dati per 6 mesi",
+          "5 report IA/mese"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Per team che richiedono collaborazione, automazione più completa e analisi avanzate.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M eventi/mese",
+          "25 siti web",
+          "Tutto ciò che è incluso in Starter",
+          "5 membri del team, 100 obiettivi e 5K replay/mese",
+          "Chiamate MCP illimitate e 300 richieste API/minuto",
+          "Esportazione CSV e JSON, 5 webhook e avvisi Slack",
+          "Rilevamento delle anomalie con IA, funnel avanzati e supporto prioritario",
+          "Conservazione dei dati per 24 mesi",
+          "50 report IA/mese"
         ]
       },
       "team": {
         "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "description": "Per team multiprodotto e agenzie che richiedono scalabilità, governance e consegne personalizzate con il proprio marchio.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M eventi/mese e 50 siti web",
+          "20 membri, obiettivi illimitati e conservazione dei dati illimitata",
+          "Chiamate MCP illimitate e 600 richieste API/minuto",
+          "20 webhook, 100 regole di avviso e 200 report IA/mese",
+          "SSO/SAML, controlli white-label e previsioni IA",
+          "Obiettivo di risposta del supporto entro 24 ore"
         ]
       },
       "enterprise": {
         "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "description": "Per organizzazioni con requisiti personalizzati di volume, sicurezza, supporto e distribuzione.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Capacità personalizzata per eventi, API, MCP, siti web e membri",
+          "Configurazione personalizzata di conservazione e reportistica",
+          "Requisiti avanzati di identità, branding e integrazione",
+          "Opzioni CSM dedicato e SLA"
         ]
       }
-    }
+    },
+    "loading": "Caricamento…",
+    "unavailable": "Non disponibile",
+    "manageDescription": "Gestisci l’abbonamento e controlla l’utilizzo del piano attuale.",
+    "usageLimitExceeded": "Limite di utilizzo superato",
+    "usageApproachingLimit": "Limite di utilizzo quasi raggiunto",
+    "exceededDescription": "Hai superato un limite del piano. Esegui l’upgrade per continuare a usare il servizio senza interruzioni.",
+    "approachingDescription": "Ti stai avvicinando a un limite del piano. Esegui l’upgrade per ottenere più capacità.",
+    "upgrade": "Passa al piano superiore",
+    "currentBillingPeriod": "Periodo di fatturazione attuale",
+    "dataRetention": "Conservazione dei dati",
+    "unlimited": "Illimitato",
+    "retentionDays": "{count} giorni",
+    "usageOverview": "Panoramica utilizzo",
+    "events": "Eventi",
+    "websites": "Siti web",
+    "members": "Membri",
+    "planLabel": "Piano {plan}"
   }
 }

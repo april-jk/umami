@@ -370,7 +370,8 @@
     "website-id": "网站 ID",
     "websites": "网站",
     "window": "窗口",
-    "yesterday": "昨天"
+    "yesterday": "昨天",
+    "membership": "会员"
   },
   "message": {
     "action-confirmation": "请在下方输入框中输入 {confirmation} 以确认操作。",
@@ -511,6 +512,23 @@
           "专属客户成功经理和 SLA 选项"
         ]
       }
-    }
+    },
+    "loading": "加载中...",
+    "unavailable": "暂无会员信息。",
+    "manageDescription": "管理套餐、查看用量，并在需要时升级。",
+    "usageLimitExceeded": "已超出用量限制",
+    "usageApproachingLimit": "用量即将达到限制",
+    "exceededDescription": "您已超出一项或多项用量限制。请升级套餐以继续使用全部功能。",
+    "approachingDescription": "您即将达到一项或多项用量限制。建议升级以避免服务中断。",
+    "upgrade": "升级",
+    "currentBillingPeriod": "当前计费周期",
+    "dataRetention": "数据保留",
+    "unlimited": "无限制",
+    "retentionDays": "{count} 天",
+    "usageOverview": "用量概览",
+    "events": "事件",
+    "websites": "网站",
+    "members": "成员",
+    "planLabel": "{plan} 套餐"
   }
 }

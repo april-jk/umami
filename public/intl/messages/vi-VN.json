@@ -375,7 +375,8 @@
     "website-id": "ID website",
     "websites": "Các website",
     "window": "Cửa sổ",
-    "yesterday": "Hôm qua"
+    "yesterday": "Hôm qua",
+    "membership": "Gói thành viên"
   },
   "message": {
     "action-confirmation": "Nhập {confirmation} vào ô bên dưới để xác nhận.",
@@ -431,92 +432,109 @@
     "visitors-dropped-off": "Khách truy cập đã rời đi"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Quay lại",
+    "title": "Nâng cấp gói thành viên",
+    "description": "Chọn gói phù hợp với nhu cầu về dung lượng phân tích, quy trình AI, cộng tác và báo cáo.",
+    "annual": "Hàng năm (miễn phí 2 tháng)",
+    "monthly": "Hàng tháng",
+    "downgradeTitle": "Cảnh báo hạ cấp",
+    "downgradeDescription": "Hạ cấp có thể làm giảm tài nguyên khả dụng. Dữ liệu hiện có vẫn được giữ lại, nhưng bạn có thể không thêm được trang web hoặc thành viên mới cho đến khi nằm trong giới hạn của gói mới.",
+    "current": "Hiện tại",
+    "recommended": "Đề xuất",
+    "currentPlan": "Gói hiện tại",
+    "contactSales": "Liên hệ kinh doanh",
+    "redirecting": "Đang chuyển đến trang thanh toán...",
+    "subscribe": "Đăng ký",
+    "freePrice": "Miễn phí",
+    "customPrice": "Tùy chỉnh",
+    "pricePerMonth": "${price}/tháng",
+    "billedYear": "Thanh toán ${price}/năm (tiết kiệm 2 tháng)",
+    "yearAvailable": "Có gói ${price}/năm",
+    "confirmationError": "Không thể xác minh phê duyệt đăng ký của bạn. Vui lòng thử lại.",
+    "checkoutError": "Không thể bắt đầu thanh toán. Vui lòng thử lại.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Miễn phí",
+        "description": "Phù hợp cho dự án phụ và thử nghiệm ban đầu. Nhận phân tích cốt lõi với 100 nghìn sự kiện/tháng trên 5 trang web.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100 nghìn sự kiện/tháng",
+          "5 trang web",
+          "Phân tích cốt lõi, quyền đọc API và 50 lượt gọi MCP/ngày",
+          "Bảng điều khiển thời gian thực",
+          "Mặc định tuân thủ GDPR",
+          "Lưu dữ liệu 7 ngày",
+          "10 yêu cầu API/phút và 10 lượt phân tích AI/tháng",
+          "Hỗ trợ cộng đồng (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Khởi đầu",
+        "description": "Dành cho dự án đang phát triển cần thêm dung lượng, quy trình AI và nhận thông tin phân tích định kỳ.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500 nghìn sự kiện/tháng",
+          "10 trang web",
+          "1 thành viên, 20 mục tiêu và 500 lượt phát lại phiên/tháng",
+          "500 lượt gọi MCP/ngày và 60 yêu cầu API/phút",
+          "Xuất CSV và báo cáo email hàng ngày hoặc hàng tuần",
+          "3 quy tắc cảnh báo cơ bản và phân tích AI không giới hạn",
+          "Lưu dữ liệu 6 tháng",
+          "5 báo cáo AI/tháng"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "Chuyên nghiệp",
+        "description": "Dành cho nhóm cần cộng tác, tự động hóa phong phú và phân tích nâng cao.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2 triệu sự kiện/tháng",
+          "25 trang web",
+          "Tất cả tính năng của gói Khởi đầu",
+          "5 thành viên nhóm, 100 mục tiêu và 5 nghìn lượt phát lại/tháng",
+          "Lượt gọi MCP không giới hạn và 300 yêu cầu API/phút",
+          "Xuất CSV và JSON, 5 Webhook và cảnh báo Slack",
+          "AI phát hiện bất thường, phễu nâng cao và hỗ trợ ưu tiên",
+          "Lưu dữ liệu 24 tháng",
+          "50 báo cáo AI/tháng"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Nhóm",
+        "description": "Dành cho nhóm đa sản phẩm và đại lý cần quy mô, quản trị và phân phối theo thương hiệu.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10 triệu sự kiện/tháng và 50 trang web",
+          "20 thành viên, mục tiêu không giới hạn và lưu dữ liệu không giới hạn",
+          "Lượt gọi MCP không giới hạn và 600 yêu cầu API/phút",
+          "20 Webhook, 100 quy tắc cảnh báo và 200 báo cáo AI/tháng",
+          "SSO/SAML, kiểm soát nhãn trắng và dự báo AI",
+          "Mục tiêu phản hồi hỗ trợ trong 24 giờ"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Doanh nghiệp",
+        "description": "Dành cho tổ chức có yêu cầu riêng về dung lượng, bảo mật, hỗ trợ và triển khai.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Tùy chỉnh dung lượng sự kiện, API, MCP, trang web và thành viên",
+          "Tùy chỉnh cấu hình lưu trữ và báo cáo",
+          "Yêu cầu nâng cao về danh tính, thương hiệu và tích hợp",
+          "Tùy chọn CSM chuyên trách và SLA"
         ]
       }
-    }
+    },
+    "loading": "Đang tải...",
+    "unavailable": "Không thể tải thông tin thành viên.",
+    "manageDescription": "Quản lý gói, mức sử dụng và trạng thái thanh toán.",
+    "usageLimitExceeded": "Bạn đã vượt giới hạn sử dụng của gói",
+    "usageApproachingLimit": "Bạn sắp đạt giới hạn sử dụng của gói",
+    "exceededDescription": "Hãy nâng cấp gói để tiếp tục sử dụng dịch vụ.",
+    "approachingDescription": "Hãy cân nhắc nâng cấp sớm để tránh gián đoạn.",
+    "upgrade": "Nâng cấp",
+    "currentBillingPeriod": "Kỳ thanh toán hiện tại",
+    "dataRetention": "Thời gian lưu dữ liệu",
+    "unlimited": "Không giới hạn",
+    "retentionDays": "{count} ngày",
+    "usageOverview": "Tổng quan sử dụng",
+    "events": "Sự kiện",
+    "websites": "Trang web",
+    "members": "Thành viên",
+    "planLabel": "Gói {plan}"
   }
 }

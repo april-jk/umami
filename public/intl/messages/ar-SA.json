@@ -370,7 +370,8 @@
     "website-id": "معرّف الموقع",
     "websites": "المواقع",
     "window": "النافذة",
-    "yesterday": "الأمس"
+    "yesterday": "الأمس",
+    "membership": "العضوية"
   },
   "message": {
     "action-confirmation": "اكتب {confirmation} في المربع أدناه للتأكيد.",
@@ -425,92 +426,109 @@
     "visitor-log": "زائر من <b>{country}</b> يستخدم <b>{browser}</b> على <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "رجوع",
+    "title": "ترقية العضوية",
+    "description": "اختر خطة تناسب سعة التحليلات وتدفقات عمل الذكاء الاصطناعي والتعاون واحتياجات التقارير لديك.",
+    "annual": "سنوي (شهران مجاناً)",
+    "monthly": "شهري",
+    "downgradeTitle": "تحذير خفض الخطة",
+    "downgradeDescription": "قد يؤدي خفض الخطة إلى تقليل الموارد المتاحة. ستُحفظ البيانات الحالية، لكن قد لا تتمكن من إضافة مواقع أو أعضاء جدد حتى تصبح ضمن حدود الخطة الجديدة.",
+    "current": "الحالية",
+    "recommended": "موصى بها",
+    "currentPlan": "الخطة الحالية",
+    "contactSales": "تواصل مع المبيعات",
+    "redirecting": "جارٍ الانتقال إلى الدفع...",
+    "subscribe": "اشترك",
+    "freePrice": "مجاني",
+    "customPrice": "مخصص",
+    "pricePerMonth": "${price}/شهرياً",
+    "billedYear": "تُدفع ${price}/سنوياً (وفّر شهرين)",
+    "yearAvailable": "متاح مقابل ${price}/سنوياً",
+    "confirmationError": "تعذر التحقق من الموافقة على اشتراكك. حاول مرة أخرى.",
+    "checkoutError": "تعذر بدء الدفع. حاول مرة أخرى.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "مجاني",
+        "description": "مثالية للمشاريع الجانبية والتجارب المبكرة. احصل على التحليلات الأساسية مع 100K حدث شهرياً عبر 5 مواقع.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K حدث/شهر",
+          "5 مواقع",
+          "تحليلات أساسية ووصول قراءة إلى API و50 استدعاء MCP يومياً",
+          "لوحة معلومات آنية",
+          "متوافقة مع GDPR افتراضياً",
+          "الاحتفاظ بالبيانات لمدة 7 أيام",
+          "10 طلبات API في الدقيقة و10 تحليلات AI شهرياً",
+          "دعم المجتمع (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "المبتدئة",
+        "description": "للمشاريع النامية التي تحتاج إلى سعة أكبر وتدفقات عمل AI وتسليم منتظم لرؤى التحليلات.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K حدث/شهر",
+          "10 مواقع",
+          "عضو واحد و20 هدفاً و500 إعادة جلسة شهرياً",
+          "500 استدعاء MCP يومياً و60 طلب API في الدقيقة",
+          "تصدير CSV وتقارير بريد إلكتروني يومية أو أسبوعية",
+          "3 قواعد تنبيه أساسية وتحليلات AI غير محدودة",
+          "الاحتفاظ بالبيانات لمدة 6 أشهر",
+          "5 تقارير AI شهرياً"
         ]
       },
       "pro": {
-        "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "name": "احترافية",
+        "description": "للفرق التي تحتاج إلى التعاون والأتمتة الأوسع والتحليلات المتقدمة.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M حدث/شهر",
+          "25 موقعاً",
+          "كل ما في الخطة المبتدئة",
+          "5 أعضاء و100 هدف و5K إعادة جلسة شهرياً",
+          "استدعاءات MCP غير محدودة و300 طلب API في الدقيقة",
+          "تصدير CSV وJSON و5 webhooks وتنبيهات Slack",
+          "اكتشاف الشذوذ بالذكاء الاصطناعي ومسارات تحويل متقدمة ودعم ذو أولوية",
+          "الاحتفاظ بالبيانات لمدة 24 شهراً",
+          "50 تقرير AI شهرياً"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "الفريق",
+        "description": "للفرق متعددة المنتجات والوكالات التي تحتاج إلى التوسع والحوكمة والتسليم بعلامتها التجارية.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M حدث/شهر و50 موقعاً",
+          "20 عضواً وأهداف غير محدودة واحتفاظ غير محدود بالبيانات",
+          "استدعاءات MCP غير محدودة و600 طلب API في الدقيقة",
+          "20 webhook و100 قاعدة تنبيه و200 تقرير AI شهرياً",
+          "SSO/SAML وتحكم بالعلامة البيضاء وتنبؤات AI",
+          "هدف الاستجابة للدعم خلال 24 ساعة"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "المؤسسات",
+        "description": "للمؤسسات ذات المتطلبات المخصصة للحجم والأمان والدعم والنشر.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "سعة مخصصة للأحداث وAPI وMCP والمواقع والأعضاء",
+          "إعدادات مخصصة للاحتفاظ والتقارير",
+          "متطلبات متقدمة للهوية والعلامة التجارية والتكامل",
+          "خيارات CSM وSLA مخصصة"
         ]
       }
-    }
+    },
+    "loading": "جارٍ التحميل...",
+    "unavailable": "لا تتوفر معلومات عضوية.",
+    "manageDescription": "أدر خطتك واعرض الاستخدام وقم بالترقية عند الحاجة.",
+    "usageLimitExceeded": "تم تجاوز حد الاستخدام",
+    "usageApproachingLimit": "الاقتراب من حد الاستخدام",
+    "exceededDescription": "لقد تجاوزت حداً واحداً أو أكثر من حدود الاستخدام. قم بترقية خطتك لمواصلة استخدام جميع الميزات.",
+    "approachingDescription": "أنت تقترب من حد واحد أو أكثر من حدود الاستخدام. فكّر في الترقية لتجنب الانقطاع.",
+    "upgrade": "ترقية",
+    "currentBillingPeriod": "فترة الفوترة الحالية",
+    "dataRetention": "الاحتفاظ بالبيانات",
+    "unlimited": "غير محدود",
+    "retentionDays": "{count} يوماً",
+    "usageOverview": "نظرة عامة على الاستخدام",
+    "events": "الأحداث",
+    "websites": "المواقع",
+    "members": "الأعضاء",
+    "planLabel": "خطة {plan}"
   }
 }

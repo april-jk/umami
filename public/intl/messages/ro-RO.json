@@ -380,7 +380,8 @@
     "website-id": "ID Website",
     "websites": "Site-uri web",
     "window": "Fereastră",
-    "yesterday": "Ieri"
+    "yesterday": "Ieri",
+    "membership": "Abonament"
   },
   "message": {
     "action-confirmation": "Scrie {confirmation} în câmpul de mai jos pentru a confirma.",
@@ -437,92 +438,109 @@
     "visitor-log": "Vizitator din <b>{country}</b> folosind <b>{browser}</b> pe <b>{os}</b> <b>{device}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Înapoi",
+    "title": "Actualizează abonamentul",
+    "description": "Alege un plan potrivit nevoilor tale de capacitate analitică, fluxuri de lucru AI, colaborare și raportare.",
+    "annual": "Anual (2 luni gratuite)",
+    "monthly": "Lunar",
+    "downgradeTitle": "Avertisment privind trecerea la un plan inferior",
+    "downgradeDescription": "Trecerea la un plan inferior poate reduce resursele disponibile. Datele existente vor fi păstrate, dar este posibil să nu poți adăuga site-uri sau membri noi până când te încadrezi în limitele noului plan.",
+    "current": "Actual",
+    "recommended": "Recomandat",
+    "currentPlan": "Planul actual",
+    "contactSales": "Contactează echipa de vânzări",
+    "redirecting": "Redirecționare către plată...",
+    "subscribe": "Abonează-te",
+    "freePrice": "Gratuit",
+    "customPrice": "Preț personalizat",
+    "pricePerMonth": "${price}/lună",
+    "billedYear": "Facturat ${price}/an (economisești 2 luni)",
+    "yearAvailable": "Disponibil la ${price}/an",
+    "confirmationError": "Aprobarea abonamentului nu a putut fi verificată. Încearcă din nou.",
+    "checkoutError": "Plata nu a putut fi inițiată. Încearcă din nou.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Gratuit",
+        "description": "Perfect pentru proiecte secundare și experimente timpurii. Beneficiezi de analize de bază cu 100K evenimente/lună pe 5 site-uri.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "100K evenimente/lună",
+          "5 site-uri",
+          "Analize de bază, acces de citire API și 50 de apeluri MCP/zi",
+          "Tablou de bord în timp real",
+          "Conformitate GDPR în mod implicit",
+          "Păstrarea datelor timp de 7 zile",
+          "10 solicitări API/minut și 10 analize AI/lună",
+          "Asistență din partea comunității (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Începător",
+        "description": "Pentru proiecte în creștere care au nevoie de capacitate mai mare, fluxuri de lucru AI și furnizarea regulată de informații analitice.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "500K evenimente/lună",
+          "10 site-uri",
+          "1 membru, 20 de obiective și 500 de reluări de sesiuni/lună",
+          "500 de apeluri MCP/zi și 60 de solicitări API/minut",
+          "Export CSV și rapoarte zilnice sau săptămânale prin e-mail",
+          "3 reguli de alertă de bază și analize AI nelimitate",
+          "Păstrarea datelor timp de 6 luni",
+          "5 rapoarte AI/lună"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "Pentru echipe care au nevoie de colaborare, automatizare mai complexă și analize avansate.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "2M evenimente/lună",
+          "25 de site-uri",
+          "Tot ce include planul Începător",
+          "5 membri ai echipei, 100 de obiective și 5K reluări/lună",
+          "Apeluri MCP nelimitate și 300 de solicitări API/minut",
+          "Export CSV și JSON, 5 webhook-uri și alerte Slack",
+          "Detectarea anomaliilor cu AI, pâlnii avansate și asistență prioritară",
+          "Păstrarea datelor timp de 24 de luni",
+          "50 de rapoarte AI/lună"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Echipă",
+        "description": "Pentru echipe cu mai multe produse și agenții care au nevoie de scalare, guvernanță și livrare sub marcă proprie.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "10M evenimente/lună și 50 de site-uri",
+          "20 de membri, obiective nelimitate și păstrarea nelimitată a datelor",
+          "Apeluri MCP nelimitate și 600 de solicitări API/minut",
+          "20 de webhook-uri, 100 de reguli de alertă și 200 de rapoarte AI/lună",
+          "SSO/SAML, opțiuni de marcă proprie și prognoze AI",
+          "Țintă de răspuns din partea asistenței în 24 de ore"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Companii",
+        "description": "Pentru organizații cu cerințe personalizate privind volumul, securitatea, asistența și implementarea.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Capacitate personalizată pentru evenimente, API, MCP, site-uri și membri",
+          "Configurare personalizată pentru păstrarea datelor și raportare",
+          "Cerințe avansate de identitate, marcă și integrare",
+          "Manager dedicat pentru succesul clienților și opțiuni SLA"
         ]
       }
-    }
+    },
+    "loading": "Se încarcă...",
+    "unavailable": "Nu sunt disponibile informații despre abonament.",
+    "manageDescription": "Gestionează planul, consultă utilizarea și fă upgrade când este necesar.",
+    "usageLimitExceeded": "Limita de utilizare a fost depășită",
+    "usageApproachingLimit": "Utilizarea se apropie de limită",
+    "exceededDescription": "Ai depășit una sau mai multe limite de utilizare. Fă upgrade planului pentru a continua să folosești toate funcțiile.",
+    "approachingDescription": "Te apropii de una sau mai multe limite de utilizare. Ia în considerare un upgrade pentru a evita întreruperile.",
+    "upgrade": "Treci la un plan superior",
+    "currentBillingPeriod": "Perioada de facturare actuală",
+    "dataRetention": "Păstrarea datelor",
+    "unlimited": "Nelimitat",
+    "retentionDays": "{count} zile",
+    "usageOverview": "Prezentare generală a utilizării",
+    "events": "Evenimente",
+    "websites": "Site-uri",
+    "members": "Membri",
+    "planLabel": "Planul {plan}"
   }
 }

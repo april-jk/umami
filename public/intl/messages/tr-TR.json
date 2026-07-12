@@ -380,7 +380,8 @@
     "website-id": "Web sitesi ID",
     "websites": "Web siteleri",
     "window": "Pencere",
-    "yesterday": "Dün"
+    "yesterday": "Dün",
+    "membership": "Üyelik"
   },
   "message": {
     "action-confirmation": "Onaylamak için aşağıdaki kutuya {confirmation} yazın.",
@@ -437,92 +438,109 @@
     "visitor-log": "Yeni ziyaretçi: <b>{country}</b>, <b>{os}</b>, <b>{device}</b>, <b>{browser}</b>"
   },
   "membership": {
-    "back": "Back",
-    "title": "Upgrade Membership",
-    "description": "Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs.",
-    "annual": "Annual (2 months free)",
-    "monthly": "Monthly",
-    "downgradeTitle": "Downgrade Warning",
-    "downgradeDescription": "Downgrading may reduce your available resources. Existing data will be preserved, but you may not be able to add new websites or members until you are within the new plan limits.",
-    "current": "Current",
-    "recommended": "Recommended",
-    "currentPlan": "Current Plan",
-    "contactSales": "Contact sales",
-    "redirecting": "Redirecting to checkout...",
-    "subscribe": "Subscribe",
-    "freePrice": "Free",
-    "customPrice": "Custom",
-    "pricePerMonth": "${price}/mo",
-    "billedYear": "Billed ${price}/year (save 2 months)",
-    "yearAvailable": "${price}/year available",
-    "confirmationError": "Your subscription approval could not be verified. Please try again.",
-    "checkoutError": "Unable to start checkout. Please try again.",
+    "back": "Geri",
+    "title": "Üyeliği yükselt",
+    "description": "Analiz kapasitesi, AI iş akışları, iş birliği ve raporlama ihtiyaçlarınıza uygun bir plan seçin.",
+    "annual": "Yıllık (2 ay ücretsiz)",
+    "monthly": "Aylık",
+    "downgradeTitle": "Plan düşürme uyarısı",
+    "downgradeDescription": "Planınızı düşürmek kullanılabilir kaynaklarınızı azaltabilir. Mevcut veriler korunur ancak yeni planın sınırları içine girene kadar yeni web siteleri veya üyeler ekleyemeyebilirsiniz.",
+    "current": "Mevcut",
+    "recommended": "Önerilen",
+    "currentPlan": "Mevcut plan",
+    "contactSales": "Satış ekibiyle iletişime geç",
+    "redirecting": "Ödeme sayfasına yönlendiriliyor...",
+    "subscribe": "Abone ol",
+    "freePrice": "Ücretsiz",
+    "customPrice": "Özel fiyat",
+    "pricePerMonth": "${price}/ay",
+    "billedYear": "Yıllık ${price} faturalandırılır (2 ay tasarruf)",
+    "yearAvailable": "Yıllık ${price} seçeneği mevcut",
+    "confirmationError": "Abonelik onayınız doğrulanamadı. Lütfen tekrar deneyin.",
+    "checkoutError": "Ödeme işlemi başlatılamadı. Lütfen tekrar deneyin.",
     "plans": {
       "free": {
-        "name": "Free",
-        "description": "Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.",
+        "name": "Ücretsiz",
+        "description": "Yan projeler ve ilk denemeler için idealdir. 5 web sitesinde aylık 100K olayla temel analiz özelliklerinden yararlanın.",
         "features": [
-          "100K events/month",
-          "5 websites",
-          "Core analytics, API read access, and 50 MCP calls/day",
-          "Real-time dashboard",
-          "GDPR compliant by default",
-          "7-day data retention",
-          "10 API requests/minute and 10 AI analyses/month",
-          "Community support (Discord)"
+          "Aylık 100K olay",
+          "5 web sitesi",
+          "Temel analiz, API okuma erişimi ve günlük 50 MCP çağrısı",
+          "Gerçek zamanlı gösterge paneli",
+          "Varsayılan olarak GDPR uyumlu",
+          "7 gün veri saklama",
+          "Dakikada 10 API isteği ve ayda 10 AI analizi",
+          "Topluluk desteği (Discord)"
         ]
       },
       "starter": {
-        "name": "Starter",
-        "description": "For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.",
+        "name": "Başlangıç",
+        "description": "Daha fazla kapasiteye, AI iş akışlarına ve düzenli olarak sunulan analiz içgörülerine ihtiyaç duyan büyüyen projeler için.",
         "features": [
-          "500K events/month",
-          "10 websites",
-          "1 member, 20 goals, and 500 session replays/month",
-          "500 MCP calls/day and 60 API requests/minute",
-          "CSV export and daily or weekly email reports",
-          "3 basic alert rules and unlimited AI analyses",
-          "6 months data retention",
-          "5 AI reports/month"
+          "Aylık 500K olay",
+          "10 web sitesi",
+          "1 üye, 20 hedef ve aylık 500 oturum kaydı",
+          "Günlük 500 MCP çağrısı ve dakikada 60 API isteği",
+          "CSV dışa aktarma ve günlük veya haftalık e-posta raporları",
+          "3 temel uyarı kuralı ve sınırsız AI analizi",
+          "6 ay veri saklama",
+          "Ayda 5 AI raporu"
         ]
       },
       "pro": {
         "name": "Pro",
-        "description": "For teams that need collaboration, richer automation, and advanced analytics.",
+        "description": "İş birliğine, daha kapsamlı otomasyona ve gelişmiş analizlere ihtiyaç duyan ekipler için.",
         "features": [
-          "2M events/month",
-          "25 websites",
-          "Everything in Starter",
-          "5 team members, 100 goals, and 5K replays/month",
-          "Unlimited MCP calls and 300 API requests/minute",
-          "CSV and JSON export, 5 webhooks, and Slack alerts",
-          "AI anomaly detection, advanced funnels, and priority support",
-          "24 months data retention",
-          "50 AI reports/month"
+          "Aylık 2M olay",
+          "25 web sitesi",
+          "Başlangıç planındaki her şey",
+          "5 ekip üyesi, 100 hedef ve aylık 5K oturum kaydı",
+          "Sınırsız MCP çağrısı ve dakikada 300 API isteği",
+          "CSV ve JSON dışa aktarma, 5 webhook ve Slack uyarıları",
+          "AI anomali tespiti, gelişmiş dönüşüm hunileri ve öncelikli destek",
+          "24 ay veri saklama",
+          "Ayda 50 AI raporu"
         ]
       },
       "team": {
-        "name": "Team",
-        "description": "For multi-product teams and agencies that need scale, governance, and branded delivery.",
+        "name": "Ekip",
+        "description": "Ölçeklendirme, yönetişim ve kendi markasıyla teslimat gereksinimi olan çok ürünlü ekipler ve ajanslar için.",
         "features": [
-          "10M events/month and 50 websites",
-          "20 members, unlimited goals, and unlimited data retention",
-          "Unlimited MCP calls and 600 API requests/minute",
-          "20 webhooks, 100 alert rules, and 200 AI reports/month",
-          "SSO/SAML, white-label controls, and AI forecasting",
-          "24-hour support response target"
+          "Aylık 10M olay ve 50 web sitesi",
+          "20 üye, sınırsız hedef ve sınırsız veri saklama",
+          "Sınırsız MCP çağrısı ve dakikada 600 API isteği",
+          "20 webhook, 100 uyarı kuralı ve ayda 200 AI raporu",
+          "SSO/SAML, özel marka kontrolleri ve AI tahmini",
+          "24 saatlik destek yanıt hedefi"
         ]
       },
       "enterprise": {
-        "name": "Enterprise",
-        "description": "For organizations with custom volume, security, support, and deployment requirements.",
+        "name": "Kurumsal",
+        "description": "Özel hacim, güvenlik, destek ve dağıtım gereksinimleri olan kuruluşlar için.",
         "features": [
-          "Custom event, API, MCP, website, and member capacity",
-          "Custom retention and reporting configuration",
-          "Advanced identity, branding, and integration requirements",
-          "Dedicated CSM and SLA options"
+          "Özel olay, API, MCP, web sitesi ve üye kapasitesi",
+          "Özel veri saklama ve raporlama yapılandırması",
+          "Gelişmiş kimlik, marka ve entegrasyon gereksinimleri",
+          "Özel müşteri başarı yöneticisi ve SLA seçenekleri"
         ]
       }
-    }
+    },
+    "loading": "Yükleniyor...",
+    "unavailable": "Üyelik bilgisi bulunmuyor.",
+    "manageDescription": "Planınızı yönetin, kullanımınızı görüntüleyin ve gerektiğinde yükseltin.",
+    "usageLimitExceeded": "Kullanım sınırı aşıldı",
+    "usageApproachingLimit": "Kullanım sınıra yaklaşıyor",
+    "exceededDescription": "Bir veya daha fazla kullanım sınırını aştınız. Tüm özellikleri kullanmaya devam etmek için planınızı yükseltin.",
+    "approachingDescription": "Bir veya daha fazla kullanım sınırına yaklaşıyorsunuz. Kesintileri önlemek için planınızı yükseltmeyi değerlendirin.",
+    "upgrade": "Yükselt",
+    "currentBillingPeriod": "Mevcut faturalandırma dönemi",
+    "dataRetention": "Veri saklama",
+    "unlimited": "Sınırsız",
+    "retentionDays": "{count} gün",
+    "usageOverview": "Kullanıma genel bakış",
+    "events": "Olaylar",
+    "websites": "Web siteleri",
+    "members": "Üyeler",
+    "planLabel": "{plan} planı"
   }
 }
