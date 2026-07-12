@@ -7,99 +7,41 @@ import { useEffect, useState } from 'react';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useApi, useLoginQuery, useTenantQuery } from '@/components/hooks';
+import { useApi, useLoginQuery, useMessages, useTenantQuery } from '@/components/hooks';
 import { AlertTriangle, ArrowLeft, Check } from '@/components/icons';
 import { TENANT_PLAN_PRICES, type TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 
-const planContent: Record<TenantPlanId, { description: string; features: string[] }> = {
-  free: {
-    description:
-      'Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.',
-    features: [
-      '100K events/month',
-      '5 websites',
-      'Core analytics, API read access, and 50 MCP calls/day',
-      'Real-time dashboard',
-      'GDPR compliant by default',
-      '7-day data retention',
-      '10 API requests/minute and 10 AI analyses/month',
-      'Community support (Discord)',
-    ],
-  },
-  starter: {
-    description:
-      'For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.',
-    features: [
-      '500K events/month',
-      '10 websites',
-      '1 member, 20 goals, and 500 session replays/month',
-      '500 MCP calls/day and 60 API requests/minute',
-      'CSV export and daily or weekly email reports',
-      '3 basic alert rules and unlimited AI analyses',
-      '6 months data retention',
-      '5 AI reports/month',
-    ],
-  },
-  pro: {
-    description: 'For teams that need collaboration, richer automation, and advanced analytics.',
-    features: [
-      '2M events/month',
-      '25 websites',
-      'Everything in Starter',
-      '5 team members, 100 goals, and 5K replays/month',
-      'Unlimited MCP calls and 300 API requests/minute',
-      'CSV and JSON export, 5 webhooks, and Slack alerts',
-      'AI anomaly detection, advanced funnels, and priority support',
-      '24 months data retention',
-      '50 AI reports/month',
-    ],
-  },
-  team: {
-    description:
-      'For multi-product teams and agencies that need scale, governance, and branded delivery.',
-    features: [
-      '10M events/month and 50 websites',
-      '20 members, unlimited goals, and unlimited data retention',
-      'Unlimited MCP calls and 600 API requests/minute',
-      '20 webhooks, 100 alert rules, and 200 AI reports/month',
-      'SSO/SAML, white-label controls, and AI forecasting',
-      '24-hour support response target',
-    ],
-  },
-  enterprise: {
-    description:
-      'For organizations with custom volume, security, support, and deployment requirements.',
-    features: [
-      'Custom event, API, MCP, website, and member capacity',
-      'Custom retention and reporting configuration',
-      'Advanced identity, branding, and integration requirements',
-      'Dedicated CSM and SLA options',
-    ],
-  },
-};
-
-function getDisplayedPrice(plan: TenantPlanId, interval: 'month' | 'year') {
-  if (plan === 'free') return 'Free';
+function getDisplayedPrice(
+  plan: TenantPlanId,
+  interval: 'month' | 'year',
+  translate: (key: string, values?: Record<string, string | number>) => string,
+) {
+  if (plan === 'free') return translate('membership.freePrice');
 
   const price = TENANT_PLAN_PRICES[plan];
-  if (price.monthly === null || price.annual === null) return 'Custom';
+  if (price.monthly === null || price.annual === null) {
+    return translate('membership.customPrice');
+  }
 
   const monthlyPrice = interval === 'year' ? price.annual / 12 : price.monthly;
-  return `$${monthlyPrice.toFixed(interval === 'year' ? 2 : 0)}/mo`;
+  return translate('membership.pricePerMonth', {
+    price: monthlyPrice.toFixed(interval === 'year' ? 2 : 0),
+  });
 }
 
 export function UpgradePage() {
   const { user } = useLoginQuery();
   const tenantId = user?.tenantId || user?.tenants?.[0]?.id;
   const { data: tenant } = useTenantQuery(tenantId);
+  const { t } = useMessages();
   const { post, useMutation } = useApi();
   const searchParams = useSearchParams();
   const [selectedPlan, setSelectedPlan] = useState<TenantPlanId | null>(null);
   const [billingInterval, setBillingInterval] = useState<'month' | 'year'>('year');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<'confirmationError' | 'checkoutError' | null>(null);
   const paypalSubscription = useMutation({
     mutationFn: ({
       plan,
@@ -123,13 +65,12 @@ export function UpgradePage() {
 
     paypalConfirmation.mutate(subscriptionId, {
       onSuccess: () => window.history.replaceState({}, '', '/membership/upgrade'),
-      onError: () =>
-        setError('Your subscription approval could not be verified. Please try again.'),
+      onError: () => setError('confirmationError'),
     });
   }, [paypalConfirmation, searchParams, tenantId]);
 
   const handleUpgrade = async (plan: Exclude<TenantPlanId, 'free' | 'enterprise'>) => {
-    setError('');
+    setError(null);
     try {
       const { approveUrl } = await paypalSubscription.mutateAsync({
         plan,
@@ -137,7 +78,7 @@ export function UpgradePage() {
       });
       window.location.assign(approveUrl);
     } catch {
-      setError('Unable to start checkout. Please try again.');
+      setError('checkoutError');
     }
   };
 
@@ -151,20 +92,17 @@ export function UpgradePage() {
                 <Icon size="sm">
                   <ArrowLeft />
                 </Icon>
-                Back
+                {t('membership.back')}
               </Row>
             </Button>
           </Link>
         </Row>
 
-        <PageHeader
-          title="Upgrade Membership"
-          description="Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs."
-        />
+        <PageHeader title={t('membership.title')} description={t('membership.description')} />
 
         {error && (
           <Panel style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}>
-            <Text style={{ color: '#ef4444' }}>{error}</Text>
+            <Text style={{ color: '#ef4444' }}>{t(`membership.${error}`)}</Text>
           </Panel>
         )}
 
@@ -173,13 +111,13 @@ export function UpgradePage() {
             variant={billingInterval === 'year' ? 'primary' : 'quiet'}
             onPress={() => setBillingInterval('year')}
           >
-            Annual (2 months free)
+            {t('membership.annual')}
           </Button>
           <Button
             variant={billingInterval === 'month' ? 'primary' : 'quiet'}
             onPress={() => setBillingInterval('month')}
           >
-            Monthly
+            {t('membership.monthly')}
           </Button>
         </Row>
 
@@ -193,12 +131,10 @@ export function UpgradePage() {
                 </Icon>
                 <Column>
                   <Text weight="bold" style={{ color: '#f97316' }}>
-                    Downgrade Warning
+                    {t('membership.downgradeTitle')}
                   </Text>
                   <Text size="sm" color="muted">
-                    Downgrading may reduce your available resources. Existing data will be preserved
-                    but you may not be able to add new websites or members until you are within the
-                    new plan limits.
+                    {t('membership.downgradeDescription')}
                   </Text>
                 </Column>
               </Row>
@@ -216,7 +152,12 @@ export function UpgradePage() {
           {planOrder.map((plan, index) => {
             const isCurrent = plan === currentPlan;
             const isRecommended = index === currentIndex + 1;
-            const content = planContent[plan];
+            const planKey = `membership.plans.${plan}`;
+            const planName = t(`${planKey}.name`);
+            const content = {
+              description: t(`${planKey}.description`),
+              features: t.raw(`${planKey}.features`) as string[],
+            };
             const pricing = TENANT_PLAN_PRICES[plan];
 
             const cardStyle = isCurrent
@@ -233,16 +174,16 @@ export function UpgradePage() {
               >
                 <Column gap="4" padding="2" style={{ height: '100%' }}>
                   <Column gap="2" alignItems="center">
-                    <PlanBadge plan={plan} />
-                    <Heading size="sm">{plan.charAt(0).toUpperCase() + plan.slice(1)}</Heading>
+                    <PlanBadge plan={plan} label={planName} />
+                    <Heading size="sm">{planName}</Heading>
                     <Text weight="bold" size="lg">
-                      {getDisplayedPrice(plan, billingInterval)}
+                      {getDisplayedPrice(plan, billingInterval, t)}
                     </Text>
                     {pricing.annual !== null && pricing.monthly !== null && pricing.monthly > 0 && (
                       <Text size="sm" color="muted">
                         {billingInterval === 'year'
-                          ? `Billed $${pricing.annual}/year (save 2 months)`
-                          : `$${pricing.annual}/year available`}
+                          ? t('membership.billedYear', { price: pricing.annual })
+                          : t('membership.yearAvailable', { price: pricing.annual })}
                       </Text>
                     )}
                     {isCurrent && (
@@ -256,7 +197,7 @@ export function UpgradePage() {
                           padding: '2px 8px',
                         }}
                       >
-                        Current
+                        {t('membership.current')}
                       </Text>
                     )}
                     {isRecommended && !isCurrent && (
@@ -270,7 +211,7 @@ export function UpgradePage() {
                           padding: '2px 8px',
                         }}
                       >
-                        Recommended
+                        {t('membership.recommended')}
                       </Text>
                     )}
                   </Column>
@@ -317,12 +258,12 @@ export function UpgradePage() {
                     }}
                   >
                     {isCurrent
-                      ? 'Current Plan'
+                      ? t('membership.currentPlan')
                       : plan === 'enterprise'
-                        ? 'Contact sales'
+                        ? t('membership.contactSales')
                         : paypalSubscription.isPending && selectedPlan === plan
-                          ? 'Redirecting to checkout...'
-                          : 'Subscribe'}
+                          ? t('membership.redirecting')
+                          : t('membership.subscribe')}
                   </Button>
                 </Column>
               </Panel>

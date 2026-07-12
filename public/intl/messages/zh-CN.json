@@ -423,5 +423,94 @@
     "replay-min-duration-description": "只显示时长达到或超过此值的回放。",
     "viewed-page": "已浏览页面",
     "visitor-log": "来自 <b>{country}</b> 的访客在搭载 <b>{os}</b> 的 <b>{device}</b> 上使用 <b>{browser}</b> 浏览器进行访问。"
+  },
+  "membership": {
+    "back": "返回",
+    "title": "升级会员",
+    "description": "根据数据分析容量、AI 工作流、团队协作和报告需求选择合适的方案。",
+    "annual": "按年支付（赠送 2 个月）",
+    "monthly": "按月支付",
+    "downgradeTitle": "降级提醒",
+    "downgradeDescription": "降级可能会减少可用资源。现有数据将被保留，但在使用量降至新方案限制以内之前，可能无法新增网站或成员。",
+    "current": "当前方案",
+    "recommended": "推荐",
+    "currentPlan": "当前方案",
+    "contactSales": "联系销售",
+    "redirecting": "正在前往结账...",
+    "subscribe": "订阅",
+    "freePrice": "免费",
+    "customPrice": "定制",
+    "pricePerMonth": "${price}/月",
+    "billedYear": "每年支付 ${price}（赠送 2 个月）",
+    "yearAvailable": "可选每年 ${price}",
+    "confirmationError": "无法验证订阅授权，请重试。",
+    "checkoutError": "无法开始结账，请重试。",
+    "plans": {
+      "free": {
+        "name": "免费版",
+        "description": "适合个人项目和早期试验，包含每月 10 万事件和 5 个网站的核心分析能力。",
+        "features": [
+          "每月 10 万事件",
+          "5 个网站",
+          "核心分析、API 只读访问和每天 50 次 MCP 调用",
+          "实时仪表板",
+          "默认符合 GDPR",
+          "数据保留 7 天",
+          "每分钟 10 次 API 请求和每月 10 次 AI 分析",
+          "社区支持（Discord）"
+        ]
+      },
+      "starter": {
+        "name": "入门版",
+        "description": "适合需要更大容量、AI 工作流和定期分析洞察的成长型项目。",
+        "features": [
+          "每月 50 万事件",
+          "10 个网站",
+          "1 名成员、20 个目标和每月 500 次会话回放",
+          "每天 500 次 MCP 调用和每分钟 60 次 API 请求",
+          "CSV 导出和每日或每周邮件报告",
+          "3 条基础告警规则和不限次数的 AI 分析",
+          "数据保留 6 个月",
+          "每月 5 份 AI 报告"
+        ]
+      },
+      "pro": {
+        "name": "专业版",
+        "description": "适合需要团队协作、更丰富自动化和高级分析的团队。",
+        "features": [
+          "每月 200 万事件",
+          "25 个网站",
+          "包含入门版全部权益",
+          "5 名团队成员、100 个目标和每月 5000 次回放",
+          "不限 MCP 调用，每分钟 300 次 API 请求",
+          "CSV 和 JSON 导出、5 个 Webhook 和 Slack 告警",
+          "AI 异常检测、高级漏斗和优先支持",
+          "数据保留 24 个月",
+          "每月 50 份 AI 报告"
+        ]
+      },
+      "team": {
+        "name": "团队版",
+        "description": "适合需要规模化管理、治理和品牌交付的多产品团队及代理机构。",
+        "features": [
+          "每月 1000 万事件和 50 个网站",
+          "20 名成员、不限目标和不限数据保留时间",
+          "不限 MCP 调用，每分钟 600 次 API 请求",
+          "20 个 Webhook、100 条告警规则和每月 200 份 AI 报告",
+          "SSO/SAML、白标控制和 AI 预测",
+          "24 小时内支持响应"
+        ]
+      },
+      "enterprise": {
+        "name": "企业版",
+        "description": "适合对容量、安全、支持和部署有定制要求的组织。",
+        "features": [
+          "定制事件、API、MCP、网站和成员容量",
+          "定制数据保留和报告配置",
+          "高级身份、品牌和集成需求",
+          "专属客户成功经理和 SLA 选项"
+        ]
+      }
+    }
   }
 }

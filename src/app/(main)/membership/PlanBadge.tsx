@@ -4,6 +4,7 @@ import { Text } from '@umami/react-zen';
 
 interface PlanBadgeProps {
   plan: string;
+  label?: string;
 }
 
 const planColors: Record<string, string> = {
@@ -14,7 +15,7 @@ const planColors: Record<string, string> = {
   enterprise: '#eab308',
 };
 
-export function PlanBadge({ plan }: PlanBadgeProps) {
+export function PlanBadge({ plan, label }: PlanBadgeProps) {
   const color = planColors[plan] || '#6b7280';
 
   return (
@@ -30,7 +31,7 @@ export function PlanBadge({ plan }: PlanBadgeProps) {
         fontSize: 12,
       }}
     >
-      {plan}
+      {label ?? plan}
     </Text>
   );
 }

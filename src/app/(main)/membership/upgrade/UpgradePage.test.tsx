@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import enUS from '../../../../../public/intl/messages/en-US.json';
+import zhCN from '../../../../../public/intl/messages/zh-CN.json';
 import { UpgradePage } from './UpgradePage';
 
 const { getSearchParamMock } = vi.hoisted(() => ({ getSearchParamMock: vi.fn() }));
@@ -27,10 +29,29 @@ const useApiMock = vi.mocked(useApi);
 const useMessagesMock = vi.mocked(useMessages);
 const postMock = vi.fn();
 
+function createTranslator(messages: any) {
+  const getNestedValue = (path: string) =>
+    path.split('.').reduce((value: any, key) => value?.[key], messages);
+
+  return Object.assign(
+    (key: string, values?: Record<string, string | number>) => {
+      const value = getNestedValue(key);
+      if (typeof value !== 'string') return key;
+      return Object.entries(values ?? {}).reduce(
+        (text, [name, replacement]) => text.replace(`{${name}}`, String(replacement)),
+        value,
+      );
+    },
+    { raw: (key: string) => getNestedValue(key) },
+  );
+}
+
+const translate = createTranslator(enUS);
+
 beforeEach(() => {
   vi.clearAllMocks();
   getSearchParamMock.mockReturnValue(null);
-  useMessagesMock.mockReturnValue({ t: (key: string) => key, labels: {}, messages: {} } as any);
+  useMessagesMock.mockReturnValue({ t: translate, labels: {}, messages: {} } as any);
   useApiMock.mockReturnValue({
     post: postMock,
     useMutation: () => ({ mutate: vi.fn(), mutateAsync: vi.fn(), isPending: false }),
@@ -47,11 +68,30 @@ describe('UpgradePage', () => {
     render(<UpgradePage />);
 
     // Plan badges should all be present
-    expect(screen.getAllByText('free').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('starter').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('pro').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('team').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('enterprise').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Free').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Starter').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Pro').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Team').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Enterprise').length).toBeGreaterThanOrEqual(1);
+  });
+
+  test('updates plan cards when the active language changes', () => {
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    const { rerender } = render(<UpgradePage />);
+    expect(screen.getByText('Upgrade Membership')).toBeInTheDocument();
+
+    useMessagesMock.mockReturnValue({
+      t: createTranslator(zhCN),
+      labels: {},
+      messages: {},
+    } as any);
+    rerender(<UpgradePage />);
+
+    expect(screen.getByText('升级会员')).toBeInTheDocument();
+    expect(screen.getByText('核心分析、API 只读访问和每天 50 次 MCP 调用')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: '订阅' })).toHaveLength(3);
   });
 
   test('highlights current plan as free', () => {

@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { describe, expect, test } from 'vitest';
 import { PlanBadge } from './PlanBadge';
 
 describe('PlanBadge', () => {
@@ -31,5 +31,10 @@ describe('PlanBadge', () => {
   test('renders unknown plan with default color', () => {
     render(<PlanBadge plan="unknown" />);
     expect(screen.getByText('unknown')).toBeInTheDocument();
+  });
+
+  test('renders a localized label when provided', () => {
+    render(<PlanBadge plan="free" label="免费版" />);
+    expect(screen.getByText('免费版')).toBeInTheDocument();
   });
 });
