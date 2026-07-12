@@ -236,7 +236,7 @@ describe('UpgradePage', () => {
 
     // Find and click an upgrade button (not the current plan one)
     const buttons = screen.getAllByRole('button');
-    const upgradeButton = buttons.find(b => b.textContent?.includes('Subscribe with PayPal'));
+    const upgradeButton = buttons.find(b => b.textContent?.includes('Subscribe'));
     expect(upgradeButton).toBeDefined();
     if (upgradeButton) {
       fireEvent.click(upgradeButton);
@@ -246,9 +246,7 @@ describe('UpgradePage', () => {
           interval: 'year',
         });
       });
-      expect(
-        screen.getByText('Unable to start the PayPal subscription. Please try again.'),
-      ).toBeInTheDocument();
+      expect(screen.getByText('Unable to start checkout. Please try again.')).toBeInTheDocument();
     }
   });
 

@@ -85,9 +85,7 @@ export function UpgradePage() {
     paypalConfirmation.mutate(subscriptionId, {
       onSuccess: () => window.history.replaceState({}, '', '/membership/upgrade'),
       onError: () =>
-        setError(
-          'PayPal approved the subscription, but verification did not complete. Please try again.',
-        ),
+        setError('Your subscription approval could not be verified. Please try again.'),
     });
   }, [paypalConfirmation, searchParams, tenantId]);
 
@@ -103,7 +101,7 @@ export function UpgradePage() {
       });
       window.location.assign(approveUrl);
     } catch {
-      setError('Unable to start the PayPal subscription. Please try again.');
+      setError('Unable to start checkout. Please try again.');
     }
   };
 
@@ -298,8 +296,8 @@ export function UpgradePage() {
                       : plan === 'enterprise'
                         ? 'Contact sales'
                         : paypalSubscription.isPending && selectedPlan === plan
-                          ? 'Redirecting to PayPal...'
-                          : 'Subscribe with PayPal'}
+                          ? 'Redirecting to checkout...'
+                          : 'Subscribe'}
                   </Button>
                 </Column>
               </Panel>
