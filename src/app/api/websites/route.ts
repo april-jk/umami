@@ -6,7 +6,11 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
-import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
+import {
+  getLimitErrorPayload,
+  getTenantPlanLimits,
+  isTenantPlanEnforcementEnabled,
+} from '@/lib/tenant-plan';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
 import {
@@ -64,7 +68,7 @@ export async function POST(request: Request) {
     ? await getTenantIdForTeam(teamId)
     : await getDefaultTenantIdForUser(auth.user.id);
 
-  if (process.env.CLOUD_MODE && tenantId) {
+  if (isTenantPlanEnforcementEnabled() && tenantId) {
     if (!(await canCreateTenantWebsite(tenantId))) {
       const tenant = await getTenantPlan(tenantId);
       const count = await getTenantWebsiteCount(tenantId);

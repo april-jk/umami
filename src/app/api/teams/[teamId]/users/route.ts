@@ -2,7 +2,11 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, teamRoleParam } from '@/lib/schema';
-import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
+import {
+  getLimitErrorPayload,
+  getTenantPlanLimits,
+  isTenantPlanEnforcementEnabled,
+} from '@/lib/tenant-plan';
 import { canUpdateTeam, canViewTeam } from '@/permissions';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries/prisma';
 import {
@@ -84,7 +88,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
     return badRequest({ message: 'User is already a member of the Team.' });
   }
 
-  if (process.env.CLOUD_MODE && !(await canAddTeamMember(teamId))) {
+  if (isTenantPlanEnforcementEnabled() && !(await canAddTeamMember(teamId))) {
     const tenantId = await getTenantIdForTeam(teamId);
     const tenant = tenantId ? await getTenantPlan(tenantId) : null;
     const count = tenantId ? await getTotalTenantMemberCount(tenantId) : 0;

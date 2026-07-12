@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { parseRequest } from '@/lib/request';
+import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
+import { parseRequest } from '@/lib/request';
 import { getTenantPlan, reserveWebsiteEvent } from '@/queries/prisma/tenant';
-import { saveEvent, saveSessionData, createSession } from '@/queries/sql';
-import { POST } from './route';
+import { createSession, saveEvent } from '@/queries/sql';
+import { POST, sendSchema } from './route';
 
 vi.mock('@/lib/clickhouse', () => ({
   default: { enabled: false },
@@ -59,12 +61,19 @@ const fetchWebsiteMock = vi.mocked(fetchWebsite);
 const reserveWebsiteEventMock = vi.mocked(reserveWebsiteEvent);
 const getTenantPlanMock = vi.mocked(getTenantPlan);
 const saveEventMock = vi.mocked(saveEvent);
+const createSessionMock = vi.mocked(createSession);
+const parseTokenMock = vi.mocked(parseToken);
+const hasBlockedIpMock = vi.mocked(hasBlockedIp);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
+  delete process.env.MEMBERSHIP_ENABLED;
   delete process.env.DISABLE_BOT_CHECK;
+  delete process.env.REMOVE_TRAILING_SLASH;
   process.env.DISABLE_BOT_CHECK = '1';
   vi.clearAllMocks();
+  hasBlockedIpMock.mockReturnValue(false);
+  parseTokenMock.mockResolvedValue(null);
 });
 
 function createRequest(body: any) {
@@ -76,6 +85,30 @@ function createRequest(body: any) {
 }
 
 describe('POST event tracking', () => {
+  test('validates formula-safe names and exactly one source', () => {
+    expect(
+      sendSchema.safeParse({
+        type: 'event',
+        payload: { website: '550e8400-e29b-41d4-a716-446655440000', name: '=SUM(A1:A2)' },
+      }).success,
+    ).toBe(false);
+    expect(
+      sendSchema.safeParse({
+        type: 'event',
+        payload: {
+          website: '550e8400-e29b-41d4-a716-446655440000',
+          link: '550e8400-e29b-41d4-a716-446655440001',
+        },
+      }).success,
+    ).toBe(false);
+    expect(
+      sendSchema.safeParse({
+        type: 'event',
+        payload: { website: '550e8400-e29b-41d4-a716-446655440000', name: 'signup' },
+      }).success,
+    ).toBe(true);
+  });
+
   test('tracks event successfully', async () => {
     parseRequestMock.mockResolvedValue({
       body: {
@@ -96,6 +129,107 @@ describe('POST event tracking', () => {
     expect(response.status).toBe(200);
     expect(body.sessionId).toBe('mock-uuid');
     expect(saveEventMock).toHaveBeenCalled();
+  });
+
+  test('enforces event limits when memberships are enabled outside cloud mode', async () => {
+    process.env.MEMBERSHIP_ENABLED = '1';
+    parseRequestMock.mockResolvedValue({
+      body: {
+        type: 'event',
+        payload: {
+          website: 'website-1',
+          url: '/page',
+          hostname: 'example.com',
+        },
+      },
+      error: undefined,
+    } as any);
+    fetchWebsiteMock.mockResolvedValue({ id: 'website-1', tenantId: 'tenant-1' } as any);
+    reserveWebsiteEventMock.mockResolvedValue({
+      allowed: false,
+      limit: 100_000,
+      used: 100_000,
+      remaining: 0,
+    });
+    getTenantPlanMock.mockResolvedValue({ plan: 'free' });
+
+    const response = await POST(createRequest({}));
+
+    expect(response.status).toBe(403);
+    expect(reserveWebsiteEventMock).toHaveBeenCalled();
+    expect(saveEventMock).not.toHaveBeenCalled();
+  });
+
+  test('reuses a valid cache token and refreshes an expired visit', async () => {
+    parseRequestMock.mockResolvedValue({
+      body: {
+        type: 'event',
+        payload: { website: 'website-1', url: '/cached', hostname: 'example.com' },
+      },
+      error: undefined,
+    } as any);
+    parseTokenMock.mockResolvedValue({
+      type: 'cache',
+      websiteId: 'website-1',
+      sessionId: 'cached-session',
+      visitId: 'expired-visit',
+      iat: 1,
+    } as any);
+    const request = createRequest({});
+    request.headers.set('x-umami-cache', 'valid-cache-token');
+
+    const response = await POST(request);
+
+    expect(response.status).toBe(200);
+    expect(parseTokenMock).toHaveBeenCalledWith('valid-cache-token', 'secret');
+    expect(fetchWebsiteMock).not.toHaveBeenCalled();
+    expect(createSessionMock).not.toHaveBeenCalled();
+    expect(saveEventMock).toHaveBeenCalledWith(expect.objectContaining({ visitId: 'mock-uuid' }));
+  });
+
+  test('blocks configured IP addresses', async () => {
+    parseRequestMock.mockResolvedValue({
+      body: {
+        type: 'event',
+        payload: { website: 'website-1', url: '/page', hostname: 'example.com' },
+      },
+      error: undefined,
+    } as any);
+    fetchWebsiteMock.mockResolvedValue({ id: 'website-1', tenantId: 'tenant-1' } as any);
+    hasBlockedIpMock.mockReturnValue(true);
+
+    const response = await POST(createRequest({}));
+
+    expect(response.status).toBe(403);
+    expect(saveEventMock).not.toHaveBeenCalled();
+  });
+
+  test('normalizes trailing slashes and referrer details', async () => {
+    process.env.REMOVE_TRAILING_SLASH = '1';
+    parseRequestMock.mockResolvedValue({
+      body: {
+        type: 'event',
+        payload: {
+          website: 'website-1',
+          url: 'https://example.com/pricing/?source=test',
+          referrer: 'https://docs.example.com/start?chapter=1',
+        },
+      },
+      error: undefined,
+    } as any);
+    fetchWebsiteMock.mockResolvedValue({ id: 'website-1', tenantId: 'tenant-1' } as any);
+
+    const response = await POST(createRequest({}));
+
+    expect(response.status).toBe(200);
+    expect(saveEventMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        urlPath: '/pricing',
+        referrerPath: '/start',
+        referrerQuery: 'chapter=1',
+        referrerDomain: 'docs.example.com',
+      }),
+    );
   });
 
   test('returns website not found when website does not exist', async () => {
@@ -467,7 +601,6 @@ describe('POST event tracking', () => {
 
   test('returns beep boop for bot requests', async () => {
     delete process.env.DISABLE_BOT_CHECK;
-    const { getClientInfo } = await import('@/lib/detect');
     vi.mocked(getClientInfo).mockResolvedValue({
       ip: '127.0.0.1',
       userAgent: 'GoogleBot/2.1',
@@ -502,7 +635,8 @@ describe('POST event tracking', () => {
   test('returns error for invalid request body', async () => {
     parseRequestMock.mockResolvedValue({
       body: {},
-      error: () => new Response(JSON.stringify({ error: { message: 'Invalid request' } }), { status: 400 }),
+      error: () =>
+        new Response(JSON.stringify({ error: { message: 'Invalid request' } }), { status: 400 }),
     } as any);
 
     const response = await POST(createRequest({}));

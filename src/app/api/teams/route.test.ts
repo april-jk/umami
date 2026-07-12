@@ -56,6 +56,7 @@ const getTotalTenantMemberCountMock = vi.mocked(getTotalTenantMemberCount);
 
 beforeEach(() => {
   delete process.env.CLOUD_MODE;
+  delete process.env.MEMBERSHIP_ENABLED;
   parseRequestMock.mockReset();
   getQueryFiltersMock.mockResolvedValue({});
   fetchAccountMock.mockReset();
@@ -148,6 +149,31 @@ test('POST blocks creating another team when it would exceed member capacity', a
     type: 'plan-limit',
     code: 'member-limit-reached',
     resource: 'member',
+    currentPlan: 'free',
+    recommendedPlan: 'pro',
+  });
+  expect(createTeamMock).not.toHaveBeenCalled();
+});
+
+test('POST enforces member capacity when memberships are enabled outside cloud mode', async () => {
+  process.env.MEMBERSHIP_ENABLED = '1';
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1', isAdmin: false } },
+    body: { name: 'Another team' },
+    error: undefined,
+  });
+  canCreateTeamMock.mockResolvedValue(true);
+  getDefaultTenantIdForUserMock.mockResolvedValue('tenant-1');
+  getTenantPlanMock.mockResolvedValue({ plan: 'free' });
+  getTotalTenantMemberCountMock.mockResolvedValue(1);
+
+  const response = await POST(new Request('http://localhost/api/teams', { method: 'POST' }));
+  const body = await response.json();
+
+  expect(response.status).toBe(403);
+  expect(body.error).toMatchObject({
+    type: 'plan-limit',
+    code: 'member-limit-reached',
     currentPlan: 'free',
     recommendedPlan: 'pro',
   });

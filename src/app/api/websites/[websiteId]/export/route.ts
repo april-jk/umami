@@ -4,6 +4,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, withDateRange } from '@/lib/schema';
 import { getEntitlementErrorPayload } from '@/lib/tenant-entitlements';
+import { isTenantPlanEnforcementEnabled } from '@/lib/tenant-plan';
 import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getWebsiteEntitlement } from '@/queries/prisma/tenant-entitlement';
 import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries/sql';
@@ -28,7 +29,7 @@ export async function GET(
     return unauthorized();
   }
 
-  if (process.env.CLOUD_MODE) {
+  if (isTenantPlanEnforcementEnabled()) {
     const entitlement = await getWebsiteEntitlement(websiteId, 'csvExport');
     if (!entitlement.allowed) {
       return forbidden(getEntitlementErrorPayload(entitlement.plan, 'csvExport'));

@@ -19,6 +19,14 @@ export type TenantPlanLimits = (typeof TENANT_PLAN_LIMITS)[TenantPlanId];
 
 const DEFAULT_PLAN: TenantPlanId = 'free';
 
+export function isTenantPlanEnforcementEnabled(): boolean {
+  const membershipEnabled = process.env.MEMBERSHIP_ENABLED?.trim().toLowerCase();
+
+  return Boolean(
+    process.env.CLOUD_MODE || membershipEnabled === '1' || membershipEnabled === 'true',
+  );
+}
+
 export function getTenantPlanId(plan?: string | null): TenantPlanId {
   return plan in TENANT_PLAN_LIMITS ? (plan as TenantPlanId) : DEFAULT_PLAN;
 }

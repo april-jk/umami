@@ -4,6 +4,7 @@ import { parseRequest } from '@/lib/request';
 import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, reportSchema, reportTypeParam } from '@/lib/schema';
 import { getEntitlementErrorPayload, getTenantPlanEntitlements } from '@/lib/tenant-entitlements';
+import { isTenantPlanEnforcementEnabled } from '@/lib/tenant-plan';
 import type { ShareSection } from '@/permissions';
 import {
   canUpdateWebsite,
@@ -91,7 +92,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  if (process.env.CLOUD_MODE && type === 'goal') {
+  if (isTenantPlanEnforcementEnabled() && type === 'goal') {
     const entitlement = await getWebsiteEntitlement(websiteId, 'goalLimit');
     const limit = getTenantPlanEntitlements(entitlement.plan).goalLimit;
     const current = entitlement.tenantId ? await getTenantGoalCount(entitlement.tenantId) : 0;

@@ -2,6 +2,8 @@
 
 `PAYPAL_MODE` chooses the only active environment: `sandbox` or `live`. The server reads credentials and plan IDs only from the matching prefix; the browser never receives a Client Secret.
 
+Set `MEMBERSHIP_ENABLED=1` to enforce tenant plan quotas independently of the payment provider. `CLOUD_MODE` continues to enable enforcement for legacy hosted deployments, while self-hosted installations remain unrestricted unless membership enforcement is explicitly enabled.
+
 Required variables for each environment:
 
 ```bash

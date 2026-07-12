@@ -6,14 +6,18 @@ import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { getSalt, hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
-import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
 import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
+import {
+  getLimitErrorPayload,
+  getTenantPlanLimits,
+  isTenantPlanEnforcementEnabled,
+} from '@/lib/tenant-plan';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
 import { getTenantPlan, reserveWebsiteEvent } from '@/queries/prisma/tenant';
+import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
@@ -30,7 +34,7 @@ const safeStringParam = () =>
     message: 'Value must not start with =, +, -, @, tab, or carriage return',
   });
 
-const schema = z.object({
+export const sendSchema = z.object({
   type: z.enum(['event', 'identify', 'performance']),
   payload: z
     .object({
@@ -74,7 +78,7 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const { body, error } = await parseRequest(request, schema, { skipAuth: true });
+    const { body, error } = await parseRequest(request, sendSchema, { skipAuth: true });
 
     if (error) {
       return error();
@@ -185,7 +189,7 @@ export async function POST(request: Request) {
     }
 
     if (type === COLLECTION_TYPE.event) {
-      if (process.env.CLOUD_MODE && websiteId) {
+      if (isTenantPlanEnforcementEnabled() && websiteId) {
         const quota = await reserveWebsiteEvent(websiteId, createdAt);
         if (!quota.allowed) {
           const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;
@@ -311,7 +315,7 @@ export async function POST(request: Request) {
         });
       }
     } else if (type === COLLECTION_TYPE.performance) {
-      if (process.env.CLOUD_MODE && websiteId) {
+      if (isTenantPlanEnforcementEnabled() && websiteId) {
         const quota = await reserveWebsiteEvent(websiteId, createdAt);
         if (!quota.allowed) {
           const tenant = website?.tenantId ? await getTenantPlan(website.tenantId) : null;

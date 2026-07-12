@@ -1,7 +1,11 @@
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, unauthorized } from '@/lib/response';
-import { getLimitErrorPayload, getTenantPlanLimits } from '@/lib/tenant-plan';
+import {
+  getLimitErrorPayload,
+  getTenantPlanLimits,
+  isTenantPlanEnforcementEnabled,
+} from '@/lib/tenant-plan';
 import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/permissions';
 import { getWebsite, updateWebsite } from '@/queries/prisma';
 import {
@@ -14,7 +18,7 @@ import {
 
 async function getTransferLimitError(sourceTenantId: string | null, targetTenantId: string | null) {
   if (
-    !process.env.CLOUD_MODE ||
+    !isTenantPlanEnforcementEnabled() ||
     !targetTenantId ||
     sourceTenantId === targetTenantId ||
     (await canCreateTenantWebsite(targetTenantId))

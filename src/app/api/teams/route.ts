@@ -6,7 +6,12 @@ import redis from '@/lib/redis';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, sortingParams } from '@/lib/schema';
-import { getLimitErrorPayload, getTenantPlanLimits, isWithinLimit } from '@/lib/tenant-plan';
+import {
+  getLimitErrorPayload,
+  getTenantPlanLimits,
+  isTenantPlanEnforcementEnabled,
+  isWithinLimit,
+} from '@/lib/tenant-plan';
 import { canCreateTeam } from '@/permissions';
 import { createTeam, getUserTeams } from '@/queries/prisma';
 import {
@@ -56,7 +61,7 @@ export async function POST(request: Request) {
   const teamOwnerId = ownerId && auth.user.isAdmin ? ownerId : auth.user.id;
   const tenantId = await getDefaultTenantIdForUser(teamOwnerId);
 
-  if (process.env.CLOUD_MODE && tenantId) {
+  if (isTenantPlanEnforcementEnabled() && tenantId) {
     const tenant = await getTenantPlan(tenantId);
     const current = await getTotalTenantMemberCount(tenantId);
     const limit = getTenantPlanLimits(tenant?.plan).memberLimit;

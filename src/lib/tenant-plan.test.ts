@@ -9,6 +9,7 @@ import {
   getTenantPlanLimits,
   getUsageAlertLevel,
   getUsagePercentage,
+  isTenantPlanEnforcementEnabled,
   isWithinLimit,
   TENANT_PLAN_LIMITS,
   TENANT_PLAN_PRICES,
@@ -40,6 +41,29 @@ describe('tenant plan limits', () => {
     const now = new Date('2026-07-11T15:42:00.000Z');
     expect(getRetentionCutoff(7, now)).toEqual(new Date('2026-07-04T00:00:00.000Z'));
     expect(getRetentionCutoff(null, now)).toBeNull();
+  });
+});
+
+describe('isTenantPlanEnforcementEnabled', () => {
+  test('supports the provider-independent membership switch', () => {
+    delete process.env.CLOUD_MODE;
+    process.env.MEMBERSHIP_ENABLED = 'true';
+
+    expect(isTenantPlanEnforcementEnabled()).toBe(true);
+
+    process.env.MEMBERSHIP_ENABLED = '1';
+    expect(isTenantPlanEnforcementEnabled()).toBe(true);
+
+    delete process.env.MEMBERSHIP_ENABLED;
+  });
+
+  test('keeps legacy cloud mode enabled and self-hosted mode unrestricted by default', () => {
+    delete process.env.MEMBERSHIP_ENABLED;
+    process.env.CLOUD_MODE = '1';
+    expect(isTenantPlanEnforcementEnabled()).toBe(true);
+
+    delete process.env.CLOUD_MODE;
+    expect(isTenantPlanEnforcementEnabled()).toBe(false);
   });
 });
 
