@@ -38,8 +38,8 @@ describe('tenant plan limits', () => {
 describe('tenant plan prices', () => {
   test('charges ten monthly payments for annual paid plans', () => {
     expect(TENANT_PLAN_PRICES.starter).toEqual({ monthly: 9, annual: 90 });
-    expect(TENANT_PLAN_PRICES.pro).toEqual({ monthly: 29, annual: 290 });
-    expect(TENANT_PLAN_PRICES.team).toEqual({ monthly: 99, annual: 990 });
+    expect(TENANT_PLAN_PRICES.pro).toEqual({ monthly: 19, annual: 190 });
+    expect(TENANT_PLAN_PRICES.team).toEqual({ monthly: 39, annual: 390 });
   });
 });
 

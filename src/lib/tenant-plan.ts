@@ -9,8 +9,8 @@ export const TENANT_PLAN_LIMITS = {
 export const TENANT_PLAN_PRICES = {
   free: { monthly: 0, annual: 0 },
   starter: { monthly: 9, annual: 90 },
-  pro: { monthly: 29, annual: 290 },
-  team: { monthly: 99, annual: 990 },
+  pro: { monthly: 19, annual: 190 },
+  team: { monthly: 39, annual: 390 },
   enterprise: { monthly: null, annual: null },
 } as const;
 

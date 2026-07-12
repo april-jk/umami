@@ -88,8 +88,10 @@ describe('UpgradePage', () => {
 
     // Use exact text matching for prices to avoid conflicts with feature text
     expect(screen.getByText('$7.50/mo')).toBeInTheDocument();
-    expect(screen.getByText('$24.17/mo')).toBeInTheDocument();
-    expect(screen.getByText('$82.50/mo')).toBeInTheDocument();
+    expect(screen.getByText('$15.83/mo')).toBeInTheDocument();
+    expect(screen.getByText('$32.50/mo')).toBeInTheDocument();
+    expect(screen.getByText('Billed $190/year (save 2 months)')).toBeInTheDocument();
+    expect(screen.getByText('Billed $390/year (save 2 months)')).toBeInTheDocument();
     expect(screen.getByText('Custom')).toBeInTheDocument();
   });
 
@@ -101,8 +103,8 @@ describe('UpgradePage', () => {
     fireEvent.click(screen.getByText('Monthly'));
 
     expect(screen.getByText('$9/mo')).toBeInTheDocument();
-    expect(screen.getByText('$29/mo')).toBeInTheDocument();
-    expect(screen.getByText('$99/mo')).toBeInTheDocument();
+    expect(screen.getByText('$19/mo')).toBeInTheDocument();
+    expect(screen.getByText('$39/mo')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Annual (2 months free)'));
     expect(screen.getByText('$7.50/mo')).toBeInTheDocument();
@@ -137,10 +139,8 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    // Check event limit specifically
-    expect(screen.getByText('100,000/mo')).toBeInTheDocument();
-    // '7 days' is unique enough
-    expect(screen.getByText('7 days')).toBeInTheDocument();
+    expect(screen.getByText('100K events/month')).toBeInTheDocument();
+    expect(screen.getByText('7-day data retention')).toBeInTheDocument();
   });
 
   test('shows unlimited for enterprise plan', () => {
@@ -151,8 +151,9 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    const unlimitedTexts = screen.getAllByText('Unlimited');
-    expect(unlimitedTexts.length).toBeGreaterThan(0);
+    expect(
+      screen.getByText('Custom event, API, MCP, website, and member capacity'),
+    ).toBeInTheDocument();
   });
 
   test('opens an email draft for enterprise sales', () => {
@@ -207,7 +208,7 @@ describe('UpgradePage', () => {
     expect(screen.getByText('Current Plan')).toBeInTheDocument();
   });
 
-  test('only advertises benefits enforced by the membership system', () => {
+  test('matches the public pricing page feature catalog', () => {
     useLoginQueryMock.mockReturnValue({
       user: { tenantId: 'tenant-1', plan: 'free' },
     } as any);
@@ -215,11 +216,16 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    expect(screen.getByText('100,000/mo')).toBeInTheDocument();
-    expect(screen.queryByText('API access')).not.toBeInTheDocument();
-    expect(screen.queryByText('Email reports')).not.toBeInTheDocument();
-    expect(screen.queryByText('White-label')).not.toBeInTheDocument();
-    expect(screen.queryByText('SSO ready')).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Core analytics, API read access, and 50 MCP calls/day'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('CSV export and daily or weekly email reports')).toBeInTheDocument();
+    expect(
+      screen.getByText('CSV and JSON export, 5 webhooks, and Slack alerts'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('SSO/SAML, white-label controls, and AI forecasting'),
+    ).toBeInTheDocument();
   });
 
   test('disables upgrade button for current plan', () => {
@@ -253,10 +259,10 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    expect(screen.getByText('100,000/mo')).toBeInTheDocument();
-    expect(screen.getByText('500,000/mo')).toBeInTheDocument();
-    expect(screen.getByText('2,000,000/mo')).toBeInTheDocument();
-    expect(screen.getByText('10,000,000/mo')).toBeInTheDocument();
+    expect(screen.getByText('100K events/month')).toBeInTheDocument();
+    expect(screen.getByText('500K events/month')).toBeInTheDocument();
+    expect(screen.getByText('2M events/month')).toBeInTheDocument();
+    expect(screen.getByText('10M events/month and 50 websites')).toBeInTheDocument();
   });
 
   test('shows correct retention periods', () => {
@@ -267,10 +273,12 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
-    // Use getAllByText for retention periods that appear in multiple plans
-    expect(screen.getAllByText('7 days').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('180 days').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('730 days').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('7-day data retention')).toBeInTheDocument();
+    expect(screen.getByText('6 months data retention')).toBeInTheDocument();
+    expect(screen.getByText('24 months data retention')).toBeInTheDocument();
+    expect(
+      screen.getByText('20 members, unlimited goals, and unlimited data retention'),
+    ).toBeInTheDocument();
   });
 
   test('creates a PayPal subscription when a tenant user selects a paid plan', async () => {

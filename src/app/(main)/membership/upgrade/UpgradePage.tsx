@@ -8,11 +8,78 @@ import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 import { useApi, useLoginQuery, useTenantQuery } from '@/components/hooks';
-import { AlertTriangle, ArrowLeft } from '@/components/icons';
-import { TENANT_PLAN_LIMITS, TENANT_PLAN_PRICES, type TenantPlanId } from '@/lib/tenant-plan';
+import { AlertTriangle, ArrowLeft, Check } from '@/components/icons';
+import { TENANT_PLAN_PRICES, type TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
+
+const planContent: Record<TenantPlanId, { description: string; features: string[] }> = {
+  free: {
+    description:
+      'Perfect for side projects and early experiments. Get core analytics with 100K events/month across 5 websites.',
+    features: [
+      '100K events/month',
+      '5 websites',
+      'Core analytics, API read access, and 50 MCP calls/day',
+      'Real-time dashboard',
+      'GDPR compliant by default',
+      '7-day data retention',
+      '10 API requests/minute and 10 AI analyses/month',
+      'Community support (Discord)',
+    ],
+  },
+  starter: {
+    description:
+      'For growing projects that need more capacity, AI workflows, and regular delivery of analytics insights.',
+    features: [
+      '500K events/month',
+      '10 websites',
+      '1 member, 20 goals, and 500 session replays/month',
+      '500 MCP calls/day and 60 API requests/minute',
+      'CSV export and daily or weekly email reports',
+      '3 basic alert rules and unlimited AI analyses',
+      '6 months data retention',
+      '5 AI reports/month',
+    ],
+  },
+  pro: {
+    description: 'For teams that need collaboration, richer automation, and advanced analytics.',
+    features: [
+      '2M events/month',
+      '25 websites',
+      'Everything in Starter',
+      '5 team members, 100 goals, and 5K replays/month',
+      'Unlimited MCP calls and 300 API requests/minute',
+      'CSV and JSON export, 5 webhooks, and Slack alerts',
+      'AI anomaly detection, advanced funnels, and priority support',
+      '24 months data retention',
+      '50 AI reports/month',
+    ],
+  },
+  team: {
+    description:
+      'For multi-product teams and agencies that need scale, governance, and branded delivery.',
+    features: [
+      '10M events/month and 50 websites',
+      '20 members, unlimited goals, and unlimited data retention',
+      'Unlimited MCP calls and 600 API requests/minute',
+      '20 webhooks, 100 alert rules, and 200 AI reports/month',
+      'SSO/SAML, white-label controls, and AI forecasting',
+      '24-hour support response target',
+    ],
+  },
+  enterprise: {
+    description:
+      'For organizations with custom volume, security, support, and deployment requirements.',
+    features: [
+      'Custom event, API, MCP, website, and member capacity',
+      'Custom retention and reporting configuration',
+      'Advanced identity, branding, and integration requirements',
+      'Dedicated CSM and SLA options',
+    ],
+  },
+};
 
 function getDisplayedPrice(plan: TenantPlanId, interval: 'month' | 'year') {
   if (plan === 'free') return 'Free';
@@ -92,7 +159,7 @@ export function UpgradePage() {
 
         <PageHeader
           title="Upgrade Membership"
-          description="Every plan includes privacy-first analytics. Upgrade for more events, websites, members, and data retention."
+          description="Choose a plan for your analytics capacity, AI workflows, collaboration, and reporting needs."
         />
 
         {error && (
@@ -149,7 +216,8 @@ export function UpgradePage() {
           {planOrder.map((plan, index) => {
             const isCurrent = plan === currentPlan;
             const isRecommended = index === currentIndex + 1;
-            const limits = TENANT_PLAN_LIMITS[plan];
+            const content = planContent[plan];
+            const pricing = TENANT_PLAN_PRICES[plan];
 
             const cardStyle = isCurrent
               ? { border: '2px solid #8b5cf6', backgroundColor: '#faf5ff' }
@@ -170,6 +238,13 @@ export function UpgradePage() {
                     <Text weight="bold" size="lg">
                       {getDisplayedPrice(plan, billingInterval)}
                     </Text>
+                    {pricing.annual !== null && pricing.monthly !== null && pricing.monthly > 0 && (
+                      <Text size="sm" color="muted">
+                        {billingInterval === 'year'
+                          ? `Billed $${pricing.annual}/year (save 2 months)`
+                          : `$${pricing.annual}/year available`}
+                      </Text>
+                    )}
                     {isCurrent && (
                       <Text
                         size="sm"
@@ -200,45 +275,19 @@ export function UpgradePage() {
                     )}
                   </Column>
 
+                  <Text size="sm" color="muted">
+                    {content.description}
+                  </Text>
+
                   <Column gap="2">
-                    <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">
-                        Events:
-                      </Text>
-                      <Text size="sm" color="muted">
-                        {limits.eventLimit === null
-                          ? 'Unlimited'
-                          : `${limits.eventLimit.toLocaleString()}/mo`}
-                      </Text>
-                    </Row>
-                    <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">
-                        Websites:
-                      </Text>
-                      <Text size="sm" color="muted">
-                        {limits.websiteLimit === null
-                          ? 'Unlimited'
-                          : limits.websiteLimit.toString()}
-                      </Text>
-                    </Row>
-                    <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">
-                        Members:
-                      </Text>
-                      <Text size="sm" color="muted">
-                        {limits.memberLimit === null ? 'Unlimited' : limits.memberLimit.toString()}
-                      </Text>
-                    </Row>
-                    <Row gap="2" alignItems="center">
-                      <Text size="sm" weight="bold">
-                        Retention:
-                      </Text>
-                      <Text size="sm" color="muted">
-                        {limits.retentionDays === null
-                          ? 'Unlimited'
-                          : `${limits.retentionDays} days`}
-                      </Text>
-                    </Row>
+                    {content.features.map(feature => (
+                      <Row key={feature} gap="2" alignItems="center">
+                        <Icon size="sm" style={{ color: '#22c55e', flexShrink: 0 }}>
+                          <Check />
+                        </Icon>
+                        <Text size="sm">{feature}</Text>
+                      </Row>
+                    ))}
                   </Column>
 
                   <Button
