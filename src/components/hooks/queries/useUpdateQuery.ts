@@ -10,6 +10,21 @@ export function useUpdateQuery(path: string, params?: Record<string, any>) {
   });
   const { touch } = useModified();
   const { toast } = useToast();
+  const mutateAsync = async (...args: Parameters<typeof query.mutateAsync>) => {
+    try {
+      return await query.mutateAsync(...args);
+    } catch (error) {
+      if (!isPlanLimitError(error as ApiError)) {
+        throw error;
+      }
+    }
+  };
 
-  return { ...query, error: isPlanLimitError(query.error) ? null : query.error, touch, toast };
+  return {
+    ...query,
+    mutateAsync,
+    error: isPlanLimitError(query.error) ? null : query.error,
+    touch,
+    toast,
+  };
 }

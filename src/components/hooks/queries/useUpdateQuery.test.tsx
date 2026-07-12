@@ -40,4 +40,30 @@ describe('useUpdateQuery', () => {
 
     expect(result.current.error).toBeNull();
   });
+
+  test('consumes plan limit rejections after the global dialog handles them', async () => {
+    const error = Object.assign(new Error('Limit reached'), { type: 'plan-limit' });
+    const mutateAsync = vi.fn().mockRejectedValue(error);
+    useApiMock.mockReturnValue({
+      post: vi.fn(),
+      useMutation: vi.fn().mockReturnValue({ mutateAsync, error }),
+    } as any);
+
+    const { result } = renderHook(() => useUpdateQuery('/items'));
+
+    await expect(result.current.mutateAsync({ name: 'Item' })).resolves.toBeUndefined();
+  });
+
+  test('continues to reject ordinary mutation failures', async () => {
+    const error = new Error('Request failed');
+    const mutateAsync = vi.fn().mockRejectedValue(error);
+    useApiMock.mockReturnValue({
+      post: vi.fn(),
+      useMutation: vi.fn().mockReturnValue({ mutateAsync, error }),
+    } as any);
+
+    const { result } = renderHook(() => useUpdateQuery('/items'));
+
+    await expect(result.current.mutateAsync({ name: 'Item' })).rejects.toBe(error);
+  });
 });
