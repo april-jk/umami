@@ -28,11 +28,12 @@ END $$;
 CREATE TEMP TABLE demo_site AS
 WITH created AS (
   INSERT INTO website (
-    website_id, tenant_id, user_id, created_by, name, domain, recorder_enabled, replay_config
+    website_id, tenant_id, user_id, created_by, name, domain, recorder_enabled, replay_config, created_at
   )
   SELECT
     gen_random_uuid(), tenant_id, user_id, user_id,
-    'Amami Docs Growth Demo', 'docs.amami.dev', false, '{"maskAllInputs":true}'::jsonb
+    'Amami Docs Growth Demo', 'docs.amami.dev', false, '{"maskAllInputs":true}'::jsonb,
+    timestamptz '2024-06-24 00:00:00+00'
   FROM demo_scope
   RETURNING website_id
 )
