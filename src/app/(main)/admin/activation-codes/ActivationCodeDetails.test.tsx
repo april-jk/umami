@@ -102,7 +102,8 @@ test('renders plan, usage, and all redemption fields with username fallback', ()
     'copy:AMAMI-DETAIL-1234',
   );
   expect(screen.getByText('2 / 10')).toBeInTheDocument();
-  expect(screen.getByText(/activationCodes\.user:Ada/)).toBeInTheDocument();
+  expect(screen.getByText('Ada')).toBeInTheDocument();
+  expect(screen.getByText('ada@example.com')).toBeInTheDocument();
   expect(screen.getByText(/activationCodes\.user:fallback@example\.com/)).toBeInTheDocument();
   expect(screen.getByText(/activationCodes\.workspace:Acme/)).toBeInTheDocument();
   expect(screen.getAllByText(/activationCodes\.redeemedAt:/)).toHaveLength(2);

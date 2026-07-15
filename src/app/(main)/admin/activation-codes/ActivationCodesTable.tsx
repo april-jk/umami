@@ -8,14 +8,15 @@ import {
   Modal,
   Row,
   Text,
+  useToast,
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { Badge } from '@/components/common/Badge';
 import { CopyButton } from '@/components/common/CopyButton';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import type { ActivationCodeRecord } from '@/components/hooks';
-import { useMessages } from '@/components/hooks';
-import { Edit, Eye, Trash } from '@/components/icons';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import { Edit, Eye, Power, PowerOff, Trash } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
 import { ActivationCodeDeleteForm } from './ActivationCodeDeleteForm';
 import { ActivationCodeDetails } from './ActivationCodeDetails';
@@ -39,9 +40,32 @@ function statusVariant(status: string): 'good' | 'warning' | 'danger' | 'gray' {
 
 export function ActivationCodesTable({ data = [], ...props }: { data: ActivationCodeRecord[] }) {
   const { t, labels } = useMessages();
+  const { put, useMutation } = useApi();
+  const { touch } = useModified();
+  const { toast } = useToast();
   const [editCode, setEditCode] = useState<ActivationCodeRecord | null>(null);
   const [deleteCode, setDeleteCode] = useState<ActivationCodeRecord | null>(null);
   const [detailCode, setDetailCode] = useState<ActivationCodeRecord | null>(null);
+  const statusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: 'active' | 'disabled' }) =>
+      put(`/admin/activation-codes/${id}`, { status }),
+  });
+
+  const updateStatus = async (code: ActivationCodeRecord) => {
+    const status = code.status === 'disabled' ? 'active' : 'disabled';
+    try {
+      await statusMutation.mutateAsync({ id: code.id, status });
+      touch('activation-codes');
+      touch(`activation-code:${code.id}`);
+      toast(
+        t('activationCodes.statusUpdated', {
+          status: t(`activationCodes.status.${status}`),
+        }),
+      );
+    } catch (error) {
+      toast(error instanceof Error ? error.message : t('activationCodes.statusUpdateFailed'));
+    }
+  };
 
   return (
     <>
@@ -116,7 +140,7 @@ export function ActivationCodesTable({ data = [], ...props }: { data: Activation
                   <Icon>
                     <Eye />
                   </Icon>
-                  <Text>{t(labels.view)}</Text>
+                  <Text>{t('activationCodes.redemptionHistory')}</Text>
                 </Row>
               </MenuItem>
               <MenuItem onAction={() => setEditCode(row)}>
@@ -125,6 +149,18 @@ export function ActivationCodesTable({ data = [], ...props }: { data: Activation
                     <Edit />
                   </Icon>
                   <Text>{t(labels.edit)}</Text>
+                </Row>
+              </MenuItem>
+              <MenuItem isDisabled={statusMutation.isPending} onAction={() => updateStatus(row)}>
+                <Row alignItems="center" gap>
+                  <Icon>{row.status === 'disabled' ? <Power /> : <PowerOff />}</Icon>
+                  <Text>
+                    {t(
+                      row.status === 'disabled'
+                        ? 'activationCodes.enable'
+                        : 'activationCodes.disable',
+                    )}
+                  </Text>
                 </Row>
               </MenuItem>
               <MenuItem onAction={() => setDeleteCode(row)}>

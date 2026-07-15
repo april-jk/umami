@@ -28,6 +28,7 @@ integration('activation code admin API with PostgreSQL', () => {
   });
 
   afterAll(async () => {
+    if (!prisma) return;
     if (createdId) {
       await prisma.client.activationCode.deleteMany({ where: { id: createdId } });
     }
@@ -114,6 +115,40 @@ integration('activation code admin API with PostgreSQL', () => {
       name: 'Integration test',
       note: null,
       maxRedemptions: 3,
+    });
+
+    const disableResponse = await detailRoute.PUT(request('PUT', '', { status: 'disabled' }), {
+      params,
+    });
+    expect(disableResponse.status).toBe(200);
+    expect(await disableResponse.json()).toMatchObject({
+      id: activationCodeId,
+      status: 'disabled',
+    });
+
+    const disabledDetailResponse = await detailRoute.GET(request('GET', ''), { params });
+    expect(await disabledDetailResponse.json()).toMatchObject({
+      id: activationCodeId,
+      status: 'disabled',
+    });
+
+    const disabledListResponse = await collectionRoute.GET(
+      request('GET', `/api/admin/activation-codes?search=${stored.codePrefix}`),
+    );
+    const disabledList = await disabledListResponse.json();
+    expect(disabledList.data).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: activationCodeId, status: 'disabled' }),
+      ]),
+    );
+
+    const enableResponse = await detailRoute.PUT(request('PUT', '', { status: 'active' }), {
+      params,
+    });
+    expect(enableResponse.status).toBe(200);
+    expect(await enableResponse.json()).toMatchObject({
+      id: activationCodeId,
+      status: 'active',
     });
 
     const deleteResponse = await detailRoute.DELETE(request('DELETE', ''), { params });

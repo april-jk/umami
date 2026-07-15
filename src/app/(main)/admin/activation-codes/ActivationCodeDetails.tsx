@@ -51,7 +51,18 @@ export function ActivationCodeDetails({ activationCodeId }: { activationCodeId: 
         {redemptions.length ? (
           <DataTable data={redemptions}>
             <DataColumn id="user" label={t('activationCodes.user')} width="2fr">
-              {(row: any) => row.user.displayName || row.user.username}
+              {(row: any) =>
+                row.user.displayName ? (
+                  <Column gap="1">
+                    <Text>{row.user.displayName}</Text>
+                    <Text size="sm" color="muted">
+                      {row.user.username}
+                    </Text>
+                  </Column>
+                ) : (
+                  row.user.username
+                )
+              }
             </DataColumn>
             <DataColumn id="tenant" label={t('activationCodes.workspace')} width="2fr">
               {(row: any) => row.tenant.name}

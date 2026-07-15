@@ -3,7 +3,19 @@ import { beforeEach, expect, test, vi } from 'vitest';
 import enUS from '../../../../../public/intl/messages/en-US.json';
 import { ActivationCodesTable } from './ActivationCodesTable';
 
-vi.mock('@/components/hooks', () => ({ useMessages: vi.fn(), useNavigation: vi.fn() }));
+vi.mock('@umami/react-zen', async importOriginal => ({
+  ...(await importOriginal<typeof import('@umami/react-zen')>()),
+  useToast: () => ({ toast: vi.fn() }),
+}));
+vi.mock('@/components/hooks', () => ({
+  useApi: () => ({
+    put: vi.fn(),
+    useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  }),
+  useMessages: vi.fn(),
+  useModified: () => ({ touch: vi.fn() }),
+  useNavigation: vi.fn(),
+}));
 vi.mock('@/components/common/Badge', () => ({
   Badge: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
 }));
