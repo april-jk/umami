@@ -542,6 +542,7 @@
     "approachingDescription": "Тасалдлаас сэргийлж эрт ахиулахыг зөвлөж байна.",
     "upgrade": "Ахиулах",
     "currentBillingPeriod": "Одоогийн төлбөрийн хугацаа",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Өгөгдөл хадгалах хугацаа",
     "unlimited": "Хязгааргүй",
     "retentionDays": "{count} хоног",

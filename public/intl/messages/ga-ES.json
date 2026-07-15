@@ -553,6 +553,7 @@
     "approachingDescription": "Tá tú ag druidim le teorainn úsáide amháin nó níos mó. Smaoinigh ar uasghrádú chun cur isteach a sheachaint.",
     "upgrade": "Uasghrádaigh",
     "currentBillingPeriod": "Tréimhse bhilleála reatha",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Coinneáil sonraí",
     "unlimited": "Gan teorainn",
     "retentionDays": "{count} lá",

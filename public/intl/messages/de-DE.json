@@ -553,6 +553,7 @@
     "approachingDescription": "Sie nähern sich einem Limit Ihres Tarifs. Ein Upgrade schafft zusätzliche Kapazität.",
     "upgrade": "Tarif hochstufen",
     "currentBillingPeriod": "Aktueller Abrechnungszeitraum",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Datenspeicherung",
     "unlimited": "Unbegrenzt",
     "retentionDays": "{count} Tage",

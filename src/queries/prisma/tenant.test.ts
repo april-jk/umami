@@ -621,6 +621,9 @@ describe('reserveWebsiteEvent', () => {
 describe('getTenantUsage', () => {
   test('returns usage stats for all dimensions', async () => {
     prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'pro' });
+    prismaMock.client.tenantSubscription.findUnique.mockResolvedValue({
+      currentPeriodEnd: new Date('2026-08-01T00:00:00.000Z'),
+    });
     prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue({
       eventCount: 1_000_000n,
       websiteCount: 10,
@@ -634,6 +637,7 @@ describe('getTenantUsage', () => {
 
     expect((result as any).plan).toBe('pro');
     expect(result.month).toBe('2026-07');
+    expect(result.membershipEndsAt).toBe('2026-08-01T00:00:00.000Z');
     expect(result.events).toEqual({ used: 1_000_000, limit: 1_000_000 });
     expect(result.websites).toEqual({ used: 15, limit: 25 });
     expect(result.members).toEqual({ used: 4, limit: 5 }); // 2 teams x 2 members = 4
@@ -650,6 +654,7 @@ describe('getTenantUsage', () => {
     expect(result.events).toEqual({ used: 0, limit: 100_000 });
     expect(result.websites).toEqual({ used: 0, limit: 5 });
     expect(result.members).toEqual({ used: 0, limit: 1 });
+    expect(result.membershipEndsAt).toBeNull();
   });
 
   test('returns high limits for team plan (finite but large)', async () => {

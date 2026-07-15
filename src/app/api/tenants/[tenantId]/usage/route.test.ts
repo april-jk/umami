@@ -34,6 +34,7 @@ describe('GET /api/tenants/[tenantId]/usage', () => {
     getTenantUsageMock.mockResolvedValue({
       plan: 'pro',
       month: '2026-07',
+      membershipEndsAt: '2026-08-01T00:00:00.000Z',
       events: { used: 500_000, limit: 1_000_000 },
       websites: { used: 15, limit: 25 },
       members: { used: 3, limit: 5 },
@@ -47,6 +48,7 @@ describe('GET /api/tenants/[tenantId]/usage', () => {
 
     expect(response.status).toBe(200);
     expect(body.plan).toBe('pro');
+    expect(body.membershipEndsAt).toBe('2026-08-01T00:00:00.000Z');
     expect(body.events).toEqual({ used: 500_000, limit: 1_000_000 });
     expect(body.websites).toEqual({ used: 15, limit: 25 });
     expect(body.members).toEqual({ used: 3, limit: 5 });
@@ -93,6 +95,7 @@ describe('GET /api/tenants/[tenantId]/usage', () => {
     getTenantUsageMock.mockResolvedValue({
       plan: 'free',
       month: '2026-07',
+      membershipEndsAt: null,
       events: { used: 0, limit: 100_000 },
       websites: { used: 0, limit: 5 },
       members: { used: 0, limit: 1 },
@@ -118,6 +121,7 @@ describe('GET /api/tenants/[tenantId]/usage', () => {
     getTenantUsageMock.mockResolvedValue({
       plan: 'enterprise',
       month: '2026-07',
+      membershipEndsAt: null,
       events: { used: 50_000_000, limit: null },
       websites: { used: 100, limit: null },
       members: { used: 50, limit: null },

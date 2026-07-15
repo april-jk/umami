@@ -553,6 +553,7 @@
     "approachingDescription": "Pertimbangkan naik taraf awal bagi mengelakkan gangguan.",
     "upgrade": "Naik taraf",
     "currentBillingPeriod": "Tempoh bil semasa",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Tempoh pengekalan data",
     "unlimited": "Tanpa had",
     "retentionDays": "{count} hari",

@@ -542,6 +542,7 @@
     "approachingDescription": "أنت تقترب من حد واحد أو أكثر من حدود الاستخدام. فكّر في الترقية لتجنب الانقطاع.",
     "upgrade": "ترقية",
     "currentBillingPeriod": "فترة الفوترة الحالية",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "الاحتفاظ بالبيانات",
     "unlimited": "غير محدود",
     "retentionDays": "{count} يوماً",

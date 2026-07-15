@@ -542,6 +542,7 @@
     "approachingDescription": "آپ استعمال کی ایک یا زیادہ حدود کے قریب ہیں۔ تعطل سے بچنے کے لیے اپ گریڈ پر غور کریں۔",
     "upgrade": "اپ گریڈ",
     "currentBillingPeriod": "موجودہ بلنگ مدت",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "ڈیٹا برقرار رکھنا",
     "unlimited": "لامحدود",
     "retentionDays": "{count} دن",

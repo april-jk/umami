@@ -542,6 +542,7 @@
     "approachingDescription": "中断を避けるため、早めのアップグレードをご検討ください。",
     "upgrade": "アップグレード",
     "currentBillingPeriod": "現在の請求期間",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "データ保持期間",
     "unlimited": "無制限",
     "retentionDays": "{count}日",

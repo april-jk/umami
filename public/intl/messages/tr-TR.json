@@ -553,6 +553,7 @@
     "approachingDescription": "Bir veya daha fazla kullanım sınırına yaklaşıyorsunuz. Kesintileri önlemek için planınızı yükseltmeyi değerlendirin.",
     "upgrade": "Yükselt",
     "currentBillingPeriod": "Mevcut faturalandırma dönemi",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Veri saklama",
     "unlimited": "Sınırsız",
     "retentionDays": "{count} gün",

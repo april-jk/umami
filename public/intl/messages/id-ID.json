@@ -553,6 +553,7 @@
     "approachingDescription": "Pertimbangkan peningkatan lebih awal agar layanan tidak terganggu.",
     "upgrade": "Tingkatkan",
     "currentBillingPeriod": "Periode tagihan saat ini",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Masa penyimpanan data",
     "unlimited": "Tanpa batas",
     "retentionDays": "{count} hari",

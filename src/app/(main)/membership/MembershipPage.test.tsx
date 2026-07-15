@@ -99,6 +99,7 @@ describe('MembershipPage', () => {
       data: {
         plan: 'pro',
         month: '2026-07',
+        membershipEndsAt: '2026-08-01T00:00:00.000Z',
         events: { used: 500_000, limit: 1_000_000 },
         websites: { used: 10, limit: 25 },
         members: { used: 3, limit: 5 },
@@ -110,6 +111,8 @@ describe('MembershipPage', () => {
 
     expect(screen.getAllByText('Pro').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Pro Plan')).toBeInTheDocument();
+    expect(screen.getByText('Membership ends at')).toBeInTheDocument();
+    expect(screen.getByText('Aug 1, 2026')).toBeInTheDocument();
     expect(screen.getByText('730 days')).toBeInTheDocument();
   });
 

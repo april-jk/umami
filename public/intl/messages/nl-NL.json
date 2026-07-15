@@ -553,6 +553,7 @@
     "approachingDescription": "Je nadert een limiet van je abonnement. Upgrade voor meer capaciteit.",
     "upgrade": "Upgraden",
     "currentBillingPeriod": "Huidige factureringsperiode",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Gegevensbewaring",
     "unlimited": "Onbeperkt",
     "retentionDays": "{count} dagen",

@@ -542,6 +542,7 @@
     "approachingDescription": "தடங்கலைத் தவிர்க்க முன்கூட்டியே மேம்படுத்தவும்.",
     "upgrade": "மேம்படுத்து",
     "currentBillingPeriod": "தற்போதைய கட்டணக் காலம்",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "தரவு சேமிப்புக் காலம்",
     "unlimited": "வரம்பற்றது",
     "retentionDays": "{count} நாட்கள்",

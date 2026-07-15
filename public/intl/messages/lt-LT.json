@@ -553,6 +553,7 @@
     "approachingDescription": "Artėjate prie vienos ar daugiau naudojimo ribų. Apsvarstykite galimybę atnaujinti planą, kad išvengtumėte sutrikimų.",
     "upgrade": "Atnaujinti",
     "currentBillingPeriod": "Dabartinis atsiskaitymo laikotarpis",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Duomenų saugojimas",
     "unlimited": "Neribota",
     "retentionDays": "{count} d.",

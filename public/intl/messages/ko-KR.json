@@ -542,6 +542,7 @@
     "approachingDescription": "중단을 피하려면 미리 업그레이드하세요.",
     "upgrade": "업그레이드",
     "currentBillingPeriod": "현재 결제 기간",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "데이터 보존 기간",
     "unlimited": "무제한",
     "retentionDays": "{count}일",

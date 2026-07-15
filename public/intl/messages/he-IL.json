@@ -542,6 +542,7 @@
     "approachingDescription": "אתם מתקרבים למגבלת שימוש אחת או יותר. שקלו לשדרג כדי למנוע הפרעות.",
     "upgrade": "שדרוג",
     "currentBillingPeriod": "תקופת החיוב הנוכחית",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "שמירת נתונים",
     "unlimited": "ללא הגבלה",
     "retentionDays": "{count} ימים",

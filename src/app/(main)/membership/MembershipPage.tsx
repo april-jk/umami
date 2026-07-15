@@ -47,6 +47,11 @@ export function MembershipPage() {
   const plan = usage?.plan || user?.plan || 'free';
   const planName = t(`membership.plans.${plan}.name`);
   const limits = usage?.defaults ?? getTenantPlanLimits(plan);
+  const membershipEndsAt = usage?.membershipEndsAt
+    ? new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(
+        new Date(usage.membershipEndsAt),
+      )
+    : null;
 
   const eventPct = getUsagePercentage(
     usage?.events?.used || 0,
@@ -133,6 +138,15 @@ export function MembershipPage() {
                 </Text>
                 <Text weight="bold">{usage?.month || new Date().toISOString().slice(0, 7)}</Text>
               </Column>
+
+              {membershipEndsAt && (
+                <Column gap="1">
+                  <Text size="sm" color="muted">
+                    {t('membership.membershipEndsAt')}
+                  </Text>
+                  <Text weight="bold">{membershipEndsAt}</Text>
+                </Column>
+              )}
 
               <Column gap="1">
                 <Text size="sm" color="muted">

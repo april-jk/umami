@@ -553,6 +553,7 @@
     "approachingDescription": "Te apropii de una sau mai multe limite de utilizare. Ia în considerare un upgrade pentru a evita întreruperile.",
     "upgrade": "Treci la un plan superior",
     "currentBillingPeriod": "Perioada de facturare actuală",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Păstrarea datelor",
     "unlimited": "Nelimitat",
     "retentionDays": "{count} zile",

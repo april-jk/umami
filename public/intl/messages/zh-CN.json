@@ -542,6 +542,7 @@
     "approachingDescription": "您即将达到一项或多项用量限制。建议升级以避免服务中断。",
     "upgrade": "升级",
     "currentBillingPeriod": "当前计费周期",
+    "membershipEndsAt": "会员到期时间",
     "dataRetention": "数据保留",
     "unlimited": "无限制",
     "retentionDays": "{count} 天",

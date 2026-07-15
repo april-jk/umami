@@ -553,6 +553,7 @@
     "approachingDescription": "Du närmar dig en gräns i din plan. Uppgradera för att få mer kapacitet.",
     "upgrade": "Uppgradera",
     "currentBillingPeriod": "Nuvarande faktureringsperiod",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Datalagring",
     "unlimited": "Obegränsad",
     "retentionDays": "{count} dagar",

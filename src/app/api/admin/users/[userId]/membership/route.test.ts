@@ -51,6 +51,7 @@ function mockMembershipData(metadata: unknown = { source: 'existing' }) {
   getTenantUsageMock.mockResolvedValue({
     plan: 'starter',
     month: '2026-07',
+    membershipEndsAt: null,
     events: { used: 25, limit: 500_000 },
     websites: { used: 2, limit: 10 },
     members: { used: 1, limit: 1 },

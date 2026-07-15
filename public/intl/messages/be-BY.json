@@ -457,6 +457,7 @@
     "approachingDescription": "Вы набліжаецеся да ліміту {type} (засталося {count}). Разгледзьце абнаўленне падпіскі.",
     "upgrade": "Абнавіць",
     "currentBillingPeriod": "Бягучы разліковы перыяд",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Захоўванне дадзеных",
     "unlimited": "Безлімітна",
     "retentionDays": "{count} дзён захоўвання",

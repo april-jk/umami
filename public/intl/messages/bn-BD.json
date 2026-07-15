@@ -542,6 +542,7 @@
     "approachingDescription": "বিঘ্ন এড়াতে আগেই আপগ্রেড করুন।",
     "upgrade": "আপগ্রেড",
     "currentBillingPeriod": "বর্তমান বিলের সময়কাল",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "ডেটা সংরক্ষণের মেয়াদ",
     "unlimited": "সীমাহীন",
     "retentionDays": "{count} দিন",

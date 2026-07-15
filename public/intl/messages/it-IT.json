@@ -553,6 +553,7 @@
     "approachingDescription": "Ti stai avvicinando a un limite del piano. Esegui l’upgrade per ottenere più capacità.",
     "upgrade": "Passa al piano superiore",
     "currentBillingPeriod": "Periodo di fatturazione attuale",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Conservazione dei dati",
     "unlimited": "Illimitato",
     "retentionDays": "{count} giorni",

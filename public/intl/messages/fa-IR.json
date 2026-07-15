@@ -542,6 +542,7 @@
     "approachingDescription": "به یک یا چند محدودیت مصرف نزدیک می‌شوید. برای جلوگیری از وقفه، ارتقا را در نظر بگیرید.",
     "upgrade": "ارتقا",
     "currentBillingPeriod": "دوره صورتحساب فعلی",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "نگه‌داری داده",
     "unlimited": "نامحدود",
     "retentionDays": "{count} روز",

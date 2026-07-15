@@ -555,6 +555,7 @@
     "approachingDescription": "Te estás acercando a un límite del plan. Mejora el plan para disponer de más capacidad.",
     "upgrade": "Mejorar",
     "currentBillingPeriod": "Periodo de facturación actual",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Conservación de datos",
     "unlimited": "Ilimitado",
     "retentionDays": "{count} días",

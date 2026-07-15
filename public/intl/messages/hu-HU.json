@@ -553,6 +553,7 @@
     "approachingDescription": "Egy vagy több használati korlátot hamarosan elér. A megszakítások elkerülése érdekében fontolja meg a magasabb csomagra váltást.",
     "upgrade": "Bővítés",
     "currentBillingPeriod": "Jelenlegi számlázási időszak",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Adatmegőrzés",
     "unlimited": "Korlátlan",
     "retentionDays": "{count} nap",

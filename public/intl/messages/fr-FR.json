@@ -553,6 +553,7 @@
     "approachingDescription": "Vous approchez d’une limite de votre offre. Passez à une offre supérieure pour obtenir plus de capacité.",
     "upgrade": "Améliorer",
     "currentBillingPeriod": "Période de facturation actuelle",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Conservation des données",
     "unlimited": "Illimité",
     "retentionDays": "{count} jours",

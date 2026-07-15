@@ -562,6 +562,7 @@
     "approachingDescription": "You are approaching one or more usage limits. Consider upgrading to avoid interruptions.",
     "upgrade": "Upgrade",
     "currentBillingPeriod": "Current billing period",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Data retention",
     "unlimited": "Unlimited",
     "retentionDays": "{count} days",

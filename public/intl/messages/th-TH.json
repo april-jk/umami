@@ -542,6 +542,7 @@
     "approachingDescription": "โปรดพิจารณาอัปเกรดล่วงหน้าเพื่อหลีกเลี่ยงการหยุดชะงัก",
     "upgrade": "อัปเกรด",
     "currentBillingPeriod": "รอบเรียกเก็บเงินปัจจุบัน",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "ระยะเวลาเก็บข้อมูล",
     "unlimited": "ไม่จำกัด",
     "retentionDays": "{count} วัน",

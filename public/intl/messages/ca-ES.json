@@ -553,6 +553,7 @@
     "approachingDescription": "T’estàs acostant a un límit del pla. Millora’l per obtenir més capacitat.",
     "upgrade": "Millora",
     "currentBillingPeriod": "Període de facturació actual",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Conservació de dades",
     "unlimited": "Il·limitat",
     "retentionDays": "{count} dies",

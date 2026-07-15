@@ -468,6 +468,7 @@
     "approachingDescription": "Blížíte se k jednomu nebo více limitům využití. Zvažte upgrade, abyste předešli přerušení služby.",
     "upgrade": "Upgradovat",
     "currentBillingPeriod": "Aktuální fakturační období",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Uchovávání dat",
     "unlimited": "Neomezeně",
     "retentionDays": "{count} dní",

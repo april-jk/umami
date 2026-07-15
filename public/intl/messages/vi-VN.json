@@ -548,6 +548,7 @@
     "approachingDescription": "Hãy cân nhắc nâng cấp sớm để tránh gián đoạn.",
     "upgrade": "Nâng cấp",
     "currentBillingPeriod": "Kỳ thanh toán hiện tại",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Thời gian lưu dữ liệu",
     "unlimited": "Không giới hạn",
     "retentionDays": "{count} ngày",

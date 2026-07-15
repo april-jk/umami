@@ -542,6 +542,7 @@
     "approachingDescription": "Πλησιάζετε ένα ή περισσότερα όρια χρήσης. Εξετάστε το ενδεχόμενο αναβάθμισης για να αποφύγετε διακοπές.",
     "upgrade": "Αναβάθμιση",
     "currentBillingPeriod": "Τρέχουσα περίοδος χρέωσης",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Διατήρηση δεδομένων",
     "unlimited": "Απεριόριστα",
     "retentionDays": "{count} ημέρες",

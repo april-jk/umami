@@ -542,6 +542,7 @@
     "approachingDescription": "ပြတ်တောက်မှုမဖြစ်စေရန် ကြိုတင်အဆင့်မြှင့်ပါ။",
     "upgrade": "အဆင့်မြှင့်ရန်",
     "currentBillingPeriod": "လက်ရှိငွေတောင်းခံကာလ",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "ဒေတာထိန်းသိမ်းကာလ",
     "unlimited": "အကန့်အသတ်မဲ့",
     "retentionDays": "{count} ရက်",

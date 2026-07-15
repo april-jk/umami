@@ -468,6 +468,7 @@
     "approachingDescription": "Zbliżasz się do limitu {type} (pozostało {count}). Rozważ ulepszenie subskrypcji.",
     "upgrade": "Ulepsz",
     "currentBillingPeriod": "Bieżący okres rozliczeniowy",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Przechowywanie danych",
     "unlimited": "Bez limitu",
     "retentionDays": "{count} dni przechowywania",

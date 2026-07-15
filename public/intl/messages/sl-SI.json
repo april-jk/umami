@@ -557,6 +557,7 @@
     "approachingDescription": "Približujete se omejitvi paketa. Nadgradite ga za dodatno zmogljivost.",
     "upgrade": "Nadgradi",
     "currentBillingPeriod": "Trenutno obračunsko obdobje",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Hramba podatkov",
     "unlimited": "Neomejeno",
     "retentionDays": "{count} dni",

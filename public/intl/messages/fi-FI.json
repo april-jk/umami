@@ -553,6 +553,7 @@
     "approachingDescription": "Olet lähestymässä tilauksesi rajaa. Päivitä tilaus saadaksesi lisää kapasiteettia.",
     "upgrade": "Päivitä",
     "currentBillingPeriod": "Nykyinen laskutuskausi",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Tietojen säilytys",
     "unlimited": "Rajaton",
     "retentionDays": "{count} päivää",

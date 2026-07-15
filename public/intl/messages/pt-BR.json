@@ -553,6 +553,7 @@
     "approachingDescription": "Você está próximo de um limite do plano. Faça upgrade para obter mais capacidade.",
     "upgrade": "Fazer upgrade",
     "currentBillingPeriod": "Período de cobrança atual",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Retenção de dados",
     "unlimited": "Ilimitado",
     "retentionDays": "{count} dias",

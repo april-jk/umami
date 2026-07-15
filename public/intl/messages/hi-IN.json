@@ -542,6 +542,7 @@
     "approachingDescription": "रुकावट से बचने के लिए पहले अपग्रेड करें।",
     "upgrade": "अपग्रेड",
     "currentBillingPeriod": "वर्तमान बिलिंग अवधि",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "डेटा अवधारण अवधि",
     "unlimited": "असीमित",
     "retentionDays": "{count} दिन",

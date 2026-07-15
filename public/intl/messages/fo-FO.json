@@ -553,6 +553,7 @@
     "approachingDescription": "Tú nærkast einum marki í ætlanini. Dagfør fyri at fáa meiri orku.",
     "upgrade": "Dagfør",
     "currentBillingPeriod": "Núverandi gjaldstíðarskeið",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Dátugoymsla",
     "unlimited": "Óavmarkað",
     "retentionDays": "{count} dagar",

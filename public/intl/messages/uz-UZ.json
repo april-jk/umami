@@ -559,6 +559,7 @@
     "approachingDescription": "Uzilishning oldini olish uchun oldindan yangilang.",
     "upgrade": "Yangilash",
     "currentBillingPeriod": "Joriy hisob-kitob davri",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Maʼlumot saqlash muddati",
     "unlimited": "Cheksiz",
     "retentionDays": "{count} kun",

@@ -553,6 +553,7 @@
     "approachingDescription": "Približavate se ograničenju plana. Nadogradite ga za dodatni kapacitet.",
     "upgrade": "Nadogradi",
     "currentBillingPeriod": "Trenutačno obračunsko razdoblje",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Čuvanje podataka",
     "unlimited": "Neograničeno",
     "retentionDays": "{count} dana",

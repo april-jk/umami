@@ -457,6 +457,7 @@
     "approachingDescription": "Приближавате се към лимита за {type} (остават {count}). Обмислете надграждане на абонамента.",
     "upgrade": "Надстройте",
     "currentBillingPeriod": "Текущ период за фактуриране",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "Запазване на данни",
     "unlimited": "Неограничено",
     "retentionDays": "{count} дни запазване",

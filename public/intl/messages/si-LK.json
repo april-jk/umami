@@ -542,6 +542,7 @@
     "approachingDescription": "බාධා වළක්වා ගැනීමට කලින් උසස් කරන්න.",
     "upgrade": "උසස් කරන්න",
     "currentBillingPeriod": "වත්මන් බිල්පත් කාලය",
+    "membershipEndsAt": "Membership ends at",
     "dataRetention": "දත්ත රඳවා තබන කාලය",
     "unlimited": "අසීමිත",
     "retentionDays": "දින {count}",

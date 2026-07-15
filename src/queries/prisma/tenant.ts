@@ -305,6 +305,7 @@ export async function reserveWebsiteEvent(websiteId: string, now = new Date()) {
 export type TenantUsage = {
   plan: string;
   month: string;
+  membershipEndsAt: string | null;
   defaults?: ReturnType<typeof getTenantPlanLimits>;
   quotaOverrides?: TenantQuotaOverrides;
   events: { used: number; limit: number | null };
@@ -313,7 +314,11 @@ export type TenantUsage = {
 };
 
 export async function getTenantUsage(tenantId: string, now = new Date()): Promise<TenantUsage> {
-  const [tenant, config] = await Promise.all([getTenantPlan(tenantId), getMembershipConfig()]);
+  const [tenant, config, subscription] = await Promise.all([
+    getTenantPlan(tenantId),
+    getMembershipConfig(),
+    getTenantSubscription(tenantId),
+  ]);
   const defaults = getTenantPlanLimits(tenant?.plan, config);
   const quotaOverrides = getTenantQuotaOverrides(tenant?.metadata);
   const limits = getTenantEffectiveLimits(tenant?.plan, tenant?.metadata, config);
@@ -331,6 +336,7 @@ export async function getTenantUsage(tenantId: string, now = new Date()): Promis
   return {
     plan: tenant?.plan ?? 'free',
     month: month.toISOString().slice(0, 7),
+    membershipEndsAt: subscription?.currentPeriodEnd?.toISOString() ?? null,
     defaults,
     quotaOverrides,
     events: { used: eventUsed, limit: limits.eventLimit },
