@@ -565,7 +565,8 @@
         "redemption-limit": "啟用碼使用次數已達上限。",
         "already-redeemed": "您或目前工作區已使用過此啟用碼。",
         "tenant-not-found": "找不到目前工作區。",
-        "active-subscription": "請先取消目前有效訂閱，再使用啟用碼。"
+        "active-subscription": "請先取消目前有效訂閱，再使用啟用碼。",
+        "plan-downgrade": "此啟用碼不能降低您目前有效的會員等級。"
       }
     }
   },

@@ -565,7 +565,8 @@
         "redemption-limit": "激活码使用次数已达上限。",
         "already-redeemed": "您或当前工作区已经使用过此激活码。",
         "tenant-not-found": "找不到当前工作区。",
-        "active-subscription": "请先取消当前有效订阅，再使用激活码。"
+        "active-subscription": "请先取消当前有效订阅，再使用激活码。",
+        "plan-downgrade": "此激活码不能降低您当前有效的会员等级。"
       }
     }
   },

@@ -27,7 +27,7 @@ export function ActivationCodeRedeemButton({ tenantId }: { tenantId?: string }) 
   const mutation = useMutation<
     { plan: string; durationDays: number; membershipEndsAt: string },
     ApiError,
-    { code: string }
+    { code: string; tenantId: string }
   >({
     mutationFn: data => post('/membership/activation-code/redeem', data),
   });
@@ -53,7 +53,8 @@ export function ActivationCodeRedeemButton({ tenantId }: { tenantId?: string }) 
             <Form
               error={getError()}
               onSubmit={async ({ code }: { code: string }) => {
-                const result = await mutation.mutateAsync({ code });
+                if (!tenantId) return;
+                const result = await mutation.mutateAsync({ code, tenantId });
                 touch(`tenant:${tenantId}`);
                 touch(`tenant-usage:${tenantId}`);
                 toast(

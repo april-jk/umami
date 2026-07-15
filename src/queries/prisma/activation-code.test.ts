@@ -8,10 +8,8 @@ import {
   hashActivationCode,
   normalizeActivationCode,
   redeemActivationCode,
-  redeemActivationCodeForUser,
   updateActivationCode,
 } from './activation-code';
-import { getDefaultTenantIdForUser } from './tenant';
 
 const { prismaMock, txMock, retentionMock } = vi.hoisted(() => {
   const activationCode = {
@@ -44,10 +42,6 @@ const { prismaMock, txMock, retentionMock } = vi.hoisted(() => {
 
 vi.mock('@/lib/prisma', () => ({ default: prismaMock }));
 vi.mock('@/jobs/apply-retention', () => ({ updateRetentionCutoffForTenant: retentionMock }));
-vi.mock('./tenant', () => ({ getDefaultTenantIdForUser: vi.fn() }));
-
-const getDefaultTenantIdMock = vi.mocked(getDefaultTenantIdForUser);
-
 const now = new Date('2026-07-15T00:00:00.000Z');
 const baseCode = {
   id: 'code-1',
@@ -86,15 +80,18 @@ describe('activation code primitives', () => {
   test('creates custom and generated codes without persisting raw values', async () => {
     prismaMock.client.activationCode.create.mockResolvedValue(baseCode);
     const custom = await createActivationCode({
-      code: 'AMAMI-TEST-1234',
+      code: ' amami-test 1234 ',
       plan: 'pro',
       durationDays: 30,
       maxRedemptions: 2,
       createdBy: 'admin-1',
     });
-    expect(custom.code).toBe('AMAMI-TEST-1234');
+    expect(custom.code).toBe('amami-test 1234');
     expect(prismaMock.client.activationCode.create.mock.calls[0][0].data.codeHash).toBe(
       hashActivationCode('AMAMI-TEST-1234'),
+    );
+    expect(prismaMock.client.activationCode.create.mock.calls[0][0].data.codePrefix).toBe(
+      'AMAMITEST123',
     );
     expect(prismaMock.client.activationCode.create.mock.calls[0][0].data.codeHash).not.toContain(
       'TEST',
@@ -178,12 +175,50 @@ describe('activation code administration queries', () => {
       startsAt: new Date('2026-07-01'),
       expiresAt: null,
     });
-    prismaMock.client.activationCode.update.mockResolvedValue(baseCode);
+    prismaMock.client.activationCode.updateMany.mockResolvedValue({ count: 1 });
+    prismaMock.client.activationCode.findFirst
+      .mockResolvedValueOnce({
+        redemptionCount: 0,
+        startsAt: new Date('2026-07-01'),
+        expiresAt: null,
+      })
+      .mockResolvedValueOnce(baseCode);
     expect(await updateActivationCode('code-1', { status: 'disabled' })).toMatchObject({
       id: 'code-1',
     });
+    expect(prismaMock.client.activationCode.updateMany).toHaveBeenCalledWith({
+      where: { id: 'code-1', deletedAt: null },
+      data: { status: 'disabled' },
+    });
     prismaMock.client.activationCode.findFirst.mockResolvedValue(null);
     expect(await updateActivationCode('missing', { status: 'disabled' })).toBeNull();
+  });
+
+  test('atomically rejects a redemption limit crossed by a concurrent redemption', async () => {
+    prismaMock.client.activationCode.findFirst
+      .mockResolvedValueOnce({
+        redemptionCount: 1,
+        startsAt: new Date('2026-07-01'),
+        expiresAt: null,
+      })
+      .mockResolvedValueOnce({
+        redemptionCount: 2,
+        startsAt: new Date('2026-07-01'),
+        expiresAt: null,
+      });
+    prismaMock.client.activationCode.updateMany.mockResolvedValue({ count: 0 });
+
+    await expect(updateActivationCode('code-1', { maxRedemptions: 1 })).rejects.toMatchObject({
+      code: 'redemption-limit-too-low',
+    });
+    expect(prismaMock.client.activationCode.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: 'code-1',
+        deletedAt: null,
+        redemptionCount: { lte: 1 },
+      },
+      data: { maxRedemptions: 1 },
+    });
   });
 
   test('soft-deletes only active records', async () => {
@@ -253,6 +288,21 @@ describe('activation code redemption', () => {
       code: 'active-subscription',
     });
     configureCode();
+    txMock.tenant.findFirst.mockResolvedValue({
+      id: 'tenant-1',
+      plan: 'pro',
+      status: 'active',
+      subscription: {
+        billingProvider: 'paypal',
+        plan: 'pro',
+        status: 'active',
+        currentPeriodEnd: null,
+      },
+    });
+    await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).rejects.toMatchObject({
+      code: 'active-subscription',
+    });
+    configureCode();
     txMock.activationCodeRedemption.findFirst.mockResolvedValue({ id: 'existing' });
     await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).rejects.toMatchObject({
       code: 'already-redeemed',
@@ -290,14 +340,22 @@ describe('activation code redemption', () => {
     });
     expect(txMock.tenantSubscription.upsert).toHaveBeenCalled();
     expect(txMock.activationCodeRedemption.create).toHaveBeenCalled();
+    expect(txMock.activationCode.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          id: 'code-1',
+          maxRedemptions: 2,
+          redemptionCount: { lt: 2 },
+        }),
+      }),
+    );
     expect(retentionMock).toHaveBeenCalledWith('tenant-1', 'pro');
   });
 
-  test('extends an existing activation-code membership and resolves a default tenant', async () => {
+  test('preserves remaining time when a higher-tier code is redeemed', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(now);
-    getDefaultTenantIdMock.mockResolvedValue('tenant-1');
-    configureCode();
+    configureCode({ plan: 'team' });
     txMock.tenant.findFirst.mockResolvedValue({
       id: 'tenant-1',
       plan: 'pro',
@@ -308,8 +366,32 @@ describe('activation code redemption', () => {
         currentPeriodEnd: new Date('2026-07-20'),
       },
     });
-    await redeemActivationCodeForUser('user-1', 'AMAMI-1234');
+    await redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234');
     const createData = txMock.activationCodeRedemption.create.mock.calls[0][0].data;
     expect(createData.membershipEndsAt).toEqual(new Date('2026-08-19'));
+    expect(txMock.tenant.update).toHaveBeenCalledWith({
+      where: { id: 'tenant-1' },
+      data: { plan: 'team', status: 'active' },
+    });
+  });
+
+  test('does not allow a code to downgrade an active membership', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(now);
+    configureCode({ plan: 'starter' });
+    txMock.tenant.findFirst.mockResolvedValue({
+      id: 'tenant-1',
+      plan: 'pro',
+      status: 'active',
+      subscription: {
+        billingProvider: 'activation_code',
+        plan: 'pro',
+        currentPeriodEnd: new Date('2026-07-20'),
+      },
+    });
+
+    await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).rejects.toMatchObject({
+      code: 'plan-downgrade',
+    });
   });
 });

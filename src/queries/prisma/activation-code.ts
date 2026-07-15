@@ -6,7 +6,6 @@ import { hash, secret, uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
-import { getDefaultTenantIdForUser } from './tenant';
 
 export const ACTIVATION_CODE_STATUS = {
   active: 'active',
@@ -15,6 +14,14 @@ export const ACTIVATION_CODE_STATUS = {
 
 export const ACTIVATION_CODE_PLANS = ['starter', 'pro', 'team', 'enterprise'] as const;
 export type ActivationCodePlan = (typeof ACTIVATION_CODE_PLANS)[number];
+
+const PLAN_RANK: Record<string, number> = {
+  free: 0,
+  starter: 1,
+  pro: 2,
+  team: 3,
+  enterprise: 4,
+};
 
 const ACTIVATION_CODE_SORT_FIELDS = [
   'codePrefix',
@@ -50,7 +57,7 @@ function formatGeneratedCode() {
 }
 
 function codePrefix(value: string) {
-  return value.replace(/-/g, '').slice(0, 12);
+  return normalizeActivationCode(value).slice(0, 12);
 }
 
 function toPublicCode(code: any) {
@@ -224,13 +231,36 @@ export async function updateActivationCode(
     );
   }
 
-  return prisma.client.activationCode
-    .update({
-      where: { id },
-      data,
-      select: publicCodeSelect,
-    })
-    .then(toPublicCode);
+  const updated = await prisma.client.activationCode.updateMany({
+    where: {
+      id,
+      deletedAt: null,
+      ...(data.maxRedemptions === undefined
+        ? {}
+        : { redemptionCount: { lte: data.maxRedemptions } }),
+    },
+    data,
+  });
+
+  if (updated.count === 0) {
+    const latest = await prisma.client.activationCode.findFirst({
+      where: { id, deletedAt: null },
+      select: { redemptionCount: true, startsAt: true, expiresAt: true },
+    });
+    if (latest && data.maxRedemptions !== undefined) {
+      throw new ActivationCodeError(
+        'redemption-limit-too-low',
+        'Maximum redemptions cannot be lower than the current redemption count.',
+      );
+    }
+    return null;
+  }
+
+  const code = await prisma.client.activationCode.findFirst({
+    where: { id, deletedAt: null },
+    select: publicCodeSelect,
+  });
+  return code ? toPublicCode(code) : null;
 }
 
 export async function deleteActivationCode(id: string) {
@@ -289,12 +319,25 @@ export async function redeemActivationCode(userId: string, tenantId: string, val
       const existingSubscription = tenant.subscription;
       if (
         existingSubscription?.billingProvider === 'paypal' &&
-        existingSubscription.currentPeriodEnd &&
-        existingSubscription.currentPeriodEnd > now
+        (!existingSubscription.currentPeriodEnd || existingSubscription.currentPeriodEnd > now)
       ) {
         throw new ActivationCodeError(
           'active-subscription',
           'Cancel your active subscription before redeeming an activation code.',
+        );
+      }
+
+      const activeActivationCodeEnd =
+        existingSubscription?.billingProvider === 'activation_code' &&
+        existingSubscription.currentPeriodEnd &&
+        existingSubscription.currentPeriodEnd > now
+          ? existingSubscription.currentPeriodEnd
+          : null;
+      const currentPlan = existingSubscription?.plan || tenant.plan;
+      if (activeActivationCodeEnd && (PLAN_RANK[currentPlan] ?? 0) > PLAN_RANK[code.plan]) {
+        throw new ActivationCodeError(
+          'plan-downgrade',
+          'This activation code cannot downgrade your active membership.',
         );
       }
 
@@ -312,6 +355,7 @@ export async function redeemActivationCode(userId: string, tenantId: string, val
         where: {
           id: code.id,
           status: ACTIVATION_CODE_STATUS.active,
+          maxRedemptions: code.maxRedemptions,
           redemptionCount: { lt: code.maxRedemptions },
           startsAt: { lte: now },
           OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
@@ -325,13 +369,7 @@ export async function redeemActivationCode(userId: string, tenantId: string, val
         );
       }
 
-      const currentEnd =
-        existingSubscription?.billingProvider === 'activation_code' &&
-        existingSubscription.currentPeriodEnd &&
-        existingSubscription.currentPeriodEnd > now &&
-        existingSubscription.plan === code.plan
-          ? existingSubscription.currentPeriodEnd
-          : now;
+      const currentEnd = activeActivationCodeEnd ?? now;
       const membershipEndsAt = addDays(currentEnd, code.durationDays);
 
       await tx.tenant.update({
@@ -390,11 +428,4 @@ export async function redeemActivationCode(userId: string, tenantId: string, val
 
   await updateRetentionCutoffForTenant(tenantId, result.plan);
   return result;
-}
-
-export async function redeemActivationCodeForUser(userId: string, value: string) {
-  const tenantId = await getDefaultTenantIdForUser(userId);
-  if (!tenantId)
-    throw new ActivationCodeError('tenant-not-found', 'Your workspace could not be found.');
-  return redeemActivationCode(userId, tenantId, value);
 }

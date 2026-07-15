@@ -17,7 +17,7 @@
 | 5 | 当前分支 | 定价 v2.1、配额和多语言对齐 | [iter-5-pricing-v21-uncovered.md](iter-5-pricing-v21-uncovered.md) | ⬜ 待补充 |
 | 6 | 当前分支 | 管理员会员、配额和权益管理 | [iter-6-admin-membership-uncovered.md](iter-6-admin-membership-uncovered.md) | ✅ 已完成 |
 | 7 | 当前分支 | 动态会员配置、升级页和后端限额联动 | [iter-7-dynamic-membership-config-uncovered.md](iter-7-dynamic-membership-config-uncovered.md) | ✅ 已完成 |
-| 8 | 当前分支 | 激活码会员权益及管理 | [iter-8-activation-codes-uncovered.md](iter-8-activation-codes-uncovered.md) | ⬜ 待补充 |
+| 8 | 当前分支 | 激活码会员权益及管理 | [iter-8-activation-codes-uncovered.md](iter-8-activation-codes-uncovered.md) | ✅ 单元测试完成 |
 
 ---
 

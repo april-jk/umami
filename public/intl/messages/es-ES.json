@@ -578,7 +578,8 @@
         "redemption-limit": "This activation code has reached its usage limit.",
         "already-redeemed": "This activation code has already been used by you or this workspace.",
         "tenant-not-found": "Your workspace could not be found.",
-        "active-subscription": "Cancel your active subscription before redeeming an activation code."
+        "active-subscription": "Cancel your active subscription before redeeming an activation code.",
+        "plan-downgrade": "This activation code cannot downgrade your active membership."
       }
     }
   },
