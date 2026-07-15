@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { AdminMembershipPage } from './AdminMembershipPage';
 
-export function MembershipAdminRoute() {
+function MembershipAdminRoute() {
   return <AdminMembershipPage />;
 }
 

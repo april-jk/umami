@@ -181,6 +181,23 @@ export async function getTenantPlan(
   });
 
   if (
+    subscription?.billingProvider === 'activation_code' &&
+    subscription.currentPeriodEnd &&
+    subscription.currentPeriodEnd <= new Date() &&
+    subscription.plan !== TENANT_PLANS.free
+  ) {
+    await prisma.transaction(async tx => {
+      await tx.tenant.update({ where: { id: tenantId }, data: { plan: TENANT_PLANS.free } });
+      await tx.tenantSubscription.update({
+        where: { tenantId },
+        data: { plan: TENANT_PLANS.free, status: 'expired', updatedAt: new Date() },
+      });
+    });
+    await updateRetentionCutoffForTenant(tenantId, TENANT_PLANS.free);
+    return { plan: TENANT_PLANS.free, metadata: tenant?.metadata ?? null };
+  }
+
+  if (
     subscription?.billingProvider === 'paypal' &&
     subscription.cancelAtPeriodEnd &&
     subscription.currentPeriodEnd &&

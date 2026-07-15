@@ -371,7 +371,8 @@
     "websites": "网站",
     "window": "窗口",
     "yesterday": "昨天",
-    "membership": "会员"
+    "membership": "会员",
+    "activation-codes": "激活码管理"
   },
   "message": {
     "action-confirmation": "请在下方输入框中输入 {confirmation} 以确认操作。",
@@ -548,6 +549,65 @@
     "events": "事件",
     "websites": "网站",
     "members": "成员",
-    "planLabel": "{plan} 套餐"
+    "planLabel": "{plan} 套餐",
+    "activationCode": {
+      "use": "使用激活码",
+      "title": "兑换激活码",
+      "code": "激活码",
+      "help": "激活码不区分大小写，每位用户只能兑换一次。",
+      "redeem": "立即兑换",
+      "redeeming": "兑换中...",
+      "redeemed": "{plan} 会员已激活，有效期至 {date}。",
+      "errors": {
+        "invalid-code": "激活码无效。",
+        "not-started": "激活码尚未生效。",
+        "expired-code": "激活码已过期。",
+        "redemption-limit": "激活码使用次数已达上限。",
+        "already-redeemed": "您或当前工作区已经使用过此激活码。",
+        "tenant-not-found": "找不到当前工作区。",
+        "active-subscription": "请先取消当前有效订阅，再使用激活码。"
+      }
+    }
+  },
+  "activationCodes": {
+    "title": "激活码管理",
+    "description": "创建并管理有时限的会员权益。",
+    "create": "新建激活码",
+    "code": "激活码",
+    "codeHelp": "留空将自动生成安全激活码。",
+    "plan": "会员等级",
+    "duration": "会员时长",
+    "durationDays": "会员时长（天）",
+    "days": "{count} 天",
+    "maxRedemptions": "最大使用次数",
+    "startsAt": "启用时间",
+    "expiresAt": "激活码失效时间",
+    "noExpiry": "永不过期",
+    "validity": "有效期",
+    "usage": "使用情况",
+    "statusLabel": "状态",
+    "note": "内部备注",
+    "saving": "保存中...",
+    "createdTitle": "激活码已创建",
+    "createdHelp": "请立即复制激活码。出于安全考虑，之后不会再次完整显示。",
+    "copy": "复制激活码",
+    "done": "完成",
+    "editTitle": "编辑激活码",
+    "deleteTitle": "删除激活码",
+    "deleteConfirm": "确定删除 {code} 吗？已生效的会员权益不受影响，但该激活码将无法再次使用。",
+    "detailsTitle": "激活码详情",
+    "redemptionHistory": "兑换记录",
+    "noRedemptions": "该激活码尚未被使用。",
+    "user": "用户",
+    "workspace": "工作区",
+    "redeemedAt": "兑换时间",
+    "membershipEndsAt": "会员到期时间",
+    "status": {
+      "active": "有效",
+      "disabled": "已停用",
+      "scheduled": "待生效",
+      "expired": "已过期",
+      "exhausted": "已用完"
+    }
   }
 }

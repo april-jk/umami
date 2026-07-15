@@ -386,7 +386,8 @@
     "revenue-property": "Daromad xususiyati",
     "urls": "URL'lar",
     "user-property": "Foydalanuvchi xususiyati",
-    "membership": "A'zolik"
+    "membership": "A'zolik",
+    "activation-codes": "Activation codes"
   },
   "message": {
     "action-confirmation": "Tasdiqlash uchun pastdagi qutiga **{confirmation}** yozing.",
@@ -565,6 +566,65 @@
     "events": "Hodisalar",
     "websites": "Veb-saytlar",
     "members": "Aʼzolar",
-    "planLabel": "{plan} tarifi"
+    "planLabel": "{plan} tarifi",
+    "activationCode": {
+      "use": "Use activation code",
+      "title": "Redeem activation code",
+      "code": "Activation code",
+      "help": "Codes are not case-sensitive. Each code can only be used once per user and workspace.",
+      "redeem": "Redeem",
+      "redeeming": "Redeeming...",
+      "redeemed": "{plan} membership activated until {date}.",
+      "errors": {
+        "invalid-code": "This activation code is not valid.",
+        "not-started": "This activation code is not active yet.",
+        "expired-code": "This activation code has expired.",
+        "redemption-limit": "This activation code has reached its usage limit.",
+        "already-redeemed": "This activation code has already been used by you or this workspace.",
+        "tenant-not-found": "Your workspace could not be found.",
+        "active-subscription": "Cancel your active subscription before redeeming an activation code."
+      }
+    }
+  },
+  "activationCodes": {
+    "title": "Activation codes",
+    "description": "Create and control time-limited membership grants.",
+    "create": "Create activation code",
+    "code": "Code",
+    "codeHelp": "Leave blank to generate a secure code automatically.",
+    "plan": "Membership plan",
+    "duration": "Duration",
+    "durationDays": "Membership duration (days)",
+    "days": "{count} days",
+    "maxRedemptions": "Maximum redemptions",
+    "startsAt": "Starts at",
+    "expiresAt": "Code expires at",
+    "noExpiry": "No expiry",
+    "validity": "Validity",
+    "usage": "Usage",
+    "statusLabel": "Status",
+    "note": "Internal note",
+    "saving": "Saving...",
+    "createdTitle": "Activation code created",
+    "createdHelp": "Copy this code now. For security, it will not be shown again.",
+    "copy": "Copy activation code",
+    "done": "Done",
+    "editTitle": "Edit activation code",
+    "deleteTitle": "Delete activation code",
+    "deleteConfirm": "Delete {code}? Existing memberships will remain active, but the code cannot be used again.",
+    "detailsTitle": "Activation code details",
+    "redemptionHistory": "Redemption history",
+    "noRedemptions": "This code has not been redeemed yet.",
+    "user": "User",
+    "workspace": "Workspace",
+    "redeemedAt": "Redeemed at",
+    "membershipEndsAt": "Membership ends at",
+    "status": {
+      "active": "Active",
+      "disabled": "Disabled",
+      "scheduled": "Scheduled",
+      "expired": "Expired",
+      "exhausted": "Used up"
+    }
   }
 }

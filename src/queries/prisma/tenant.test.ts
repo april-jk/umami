@@ -222,6 +222,31 @@ describe('getTenantPlan', () => {
       }),
     );
   });
+
+  test('downgrades an expired activation-code membership to free', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({
+      plan: 'team',
+      metadata: { source: 'test' },
+    });
+    prismaMock.client.tenantSubscription.findUnique.mockResolvedValue({
+      billingProvider: 'activation_code',
+      cancelAtPeriodEnd: false,
+      currentPeriodEnd: new Date('2020-01-01T00:00:00.000Z'),
+      plan: 'team',
+    });
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
+
+    const result = await getTenantPlan('tenant-1');
+
+    expect(result).toEqual({ plan: TENANT_PLANS.free, metadata: { source: 'test' } });
+    expect(prismaMock.client.tenantSubscription.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { tenantId: 'tenant-1' },
+        data: expect.objectContaining({ plan: TENANT_PLANS.free, status: 'expired' }),
+      }),
+    );
+    expect(updateRetentionCutoffForTenant).toHaveBeenCalledWith('tenant-1', TENANT_PLANS.free);
+  });
 });
 
 describe('getTenantWebsiteCount', () => {

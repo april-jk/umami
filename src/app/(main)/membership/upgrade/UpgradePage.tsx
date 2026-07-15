@@ -22,6 +22,7 @@ import {
 } from '@/lib/membership-config';
 import type { TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
+import { ActivationCodeRedeemButton } from './ActivationCodeRedeemButton';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 
@@ -198,6 +199,7 @@ export function UpgradePage() {
           >
             {t('membership.monthly')}
           </Button>
+          <ActivationCodeRedeemButton tenantId={tenantId} />
         </Row>
 
         {selectedPlan &&

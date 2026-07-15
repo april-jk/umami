@@ -1,4 +1,5 @@
 export * from './apiKey';
+export * from './activation-code';
 export * from './board';
 export * from './link';
 export * from './pixel';

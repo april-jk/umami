@@ -31,6 +31,8 @@ model User {
   tenants   TenantUser[]
   reports   Report[]
   boards    Board[]      @relation("user")
+  activationCodesCreated ActivationCode[] @relation("activationCodeCreator")
+  activationRedemptions ActivationCodeRedemption[]
 
   @@index([tenantId])
   @@map("user")
@@ -130,6 +132,7 @@ model Tenant {
   boards       Board[]
   subscription TenantSubscription?
   usage        TenantUsageMonthly[]
+  activationRedemptions ActivationCodeRedemption[]
 
   @@index([slug])
   @@index([type])
@@ -232,6 +235,57 @@ model MembershipConfig {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@map("membership_config")
+}
+
+model ActivationCode {
+  id              String    @id() @map("activation_code_id") @db.Uuid
+  codeHash        String    @unique @map("code_hash") @db.VarChar(128)
+  codePrefix      String    @map("code_prefix") @db.VarChar(32)
+  name            String?   @db.VarChar(120)
+  note            String?   @db.VarChar(500)
+  plan            String    @db.VarChar(50)
+  durationDays    Int       @map("duration_days")
+  startsAt        DateTime  @default(now()) @map("starts_at") @db.Timestamptz(6)
+  expiresAt       DateTime? @map("expires_at") @db.Timestamptz(6)
+  maxRedemptions  Int       @map("max_redemptions")
+  redemptionCount Int       @default(0) @map("redemption_count")
+  status          String    @default("active") @db.VarChar(20)
+  createdBy       String    @map("created_by") @db.Uuid
+  createdAt       DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  creator     User                     @relation("activationCodeCreator", fields: [createdBy], references: [id])
+  redemptions ActivationCodeRedemption[]
+
+  @@index([status])
+  @@index([startsAt])
+  @@index([expiresAt])
+  @@index([createdAt])
+  @@index([createdBy])
+  @@map("activation_code")
+}
+
+model ActivationCodeRedemption {
+  id                  String   @id() @map("activation_code_redemption_id") @db.Uuid
+  activationCodeId    String   @map("activation_code_id") @db.Uuid
+  userId              String   @map("user_id") @db.Uuid
+  tenantId            String   @map("tenant_id") @db.Uuid
+  plan                String   @db.VarChar(50)
+  durationDays        Int      @map("duration_days")
+  redeemedAt          DateTime @default(now()) @map("redeemed_at") @db.Timestamptz(6)
+  membershipStartsAt  DateTime @map("membership_starts_at") @db.Timestamptz(6)
+  membershipEndsAt    DateTime @map("membership_ends_at") @db.Timestamptz(6)
+
+  activationCode ActivationCode @relation(fields: [activationCodeId], references: [id])
+  user           User           @relation(fields: [userId], references: [id])
+  tenant         Tenant         @relation(fields: [tenantId], references: [id])
+
+  @@unique([activationCodeId, userId])
+  @@index([userId])
+  @@index([tenantId])
+  @@index([redeemedAt])
+  @@map("activation_code_redemption")
 }
 
 model WebsiteEvent {

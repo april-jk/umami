@@ -3,7 +3,7 @@ import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { ArrowLeft, BadgeDollarSign, Globe, User, Users } from '@/components/icons';
+import { ArrowLeft, BadgeDollarSign, Globe, Ticket, User, Users } from '@/components/icons';
 
 export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
   const { t, labels } = useMessages();
@@ -36,6 +36,12 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
           label: t(labels.membership),
           path: '/admin/membership',
           icon: <BadgeDollarSign />,
+        },
+        {
+          id: 'activation-codes',
+          label: t(labels.activationCodes),
+          path: '/admin/activation-codes',
+          icon: <Ticket />,
         },
       ],
     },

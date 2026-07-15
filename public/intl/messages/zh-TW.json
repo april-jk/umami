@@ -371,7 +371,8 @@
     "websites": "網站",
     "window": "視窗",
     "yesterday": "昨天",
-    "membership": "會員"
+    "membership": "會員",
+    "activation-codes": "啟用碼管理"
   },
   "message": {
     "action-confirmation": "請在下方欄位輸入 {confirmation} 以確認。",
@@ -548,6 +549,65 @@
     "events": "事件",
     "websites": "網站",
     "members": "成員",
-    "planLabel": "{plan} 方案"
+    "planLabel": "{plan} 方案",
+    "activationCode": {
+      "use": "使用啟用碼",
+      "title": "兌換啟用碼",
+      "code": "啟用碼",
+      "help": "啟用碼不分大小寫，每位使用者只能兌換一次。",
+      "redeem": "立即兌換",
+      "redeeming": "兌換中...",
+      "redeemed": "{plan} 會員已啟用，有效期至 {date}。",
+      "errors": {
+        "invalid-code": "啟用碼無效。",
+        "not-started": "啟用碼尚未生效。",
+        "expired-code": "啟用碼已過期。",
+        "redemption-limit": "啟用碼使用次數已達上限。",
+        "already-redeemed": "您或目前工作區已使用過此啟用碼。",
+        "tenant-not-found": "找不到目前工作區。",
+        "active-subscription": "請先取消目前有效訂閱，再使用啟用碼。"
+      }
+    }
+  },
+  "activationCodes": {
+    "title": "Activation codes",
+    "description": "Create and control time-limited membership grants.",
+    "create": "Create activation code",
+    "code": "Code",
+    "codeHelp": "Leave blank to generate a secure code automatically.",
+    "plan": "Membership plan",
+    "duration": "Duration",
+    "durationDays": "Membership duration (days)",
+    "days": "{count} days",
+    "maxRedemptions": "Maximum redemptions",
+    "startsAt": "Starts at",
+    "expiresAt": "Code expires at",
+    "noExpiry": "No expiry",
+    "validity": "Validity",
+    "usage": "Usage",
+    "statusLabel": "Status",
+    "note": "Internal note",
+    "saving": "Saving...",
+    "createdTitle": "Activation code created",
+    "createdHelp": "Copy this code now. For security, it will not be shown again.",
+    "copy": "Copy activation code",
+    "done": "Done",
+    "editTitle": "Edit activation code",
+    "deleteTitle": "Delete activation code",
+    "deleteConfirm": "Delete {code}? Existing memberships will remain active, but the code cannot be used again.",
+    "detailsTitle": "Activation code details",
+    "redemptionHistory": "Redemption history",
+    "noRedemptions": "This code has not been redeemed yet.",
+    "user": "User",
+    "workspace": "Workspace",
+    "redeemedAt": "Redeemed at",
+    "membershipEndsAt": "Membership ends at",
+    "status": {
+      "active": "Active",
+      "disabled": "Disabled",
+      "scheduled": "Scheduled",
+      "expired": "Expired",
+      "exhausted": "Used up"
+    }
   }
 }

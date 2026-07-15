@@ -88,6 +88,8 @@ describe('UpgradePage', () => {
 
     render(<UpgradePage />);
 
+    expect(screen.getByRole('button', { name: '使用激活码' })).toBeInTheDocument();
+
     for (const [plan, name] of [
       ['free', '免费版'],
       ['starter', '入门版'],
@@ -116,6 +118,7 @@ describe('UpgradePage', () => {
     rerender(<UpgradePage />);
 
     expect(screen.getByText('升级会员')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '使用激活码' })).toBeInTheDocument();
     expect(screen.getByText('事件: 100K')).toBeInTheDocument();
     expect(screen.getByText('每天 MCP 调用次数: 50')).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: '订阅' })).toHaveLength(3);

@@ -95,7 +95,7 @@ describe('useTenantUsageQuery', () => {
     renderHook(() => useTenantUsageQuery('tenant-1'));
 
     expect(useQueryMock).toHaveBeenCalledWith({
-      queryKey: ['tenant-usage', 'tenant-1'],
+      queryKey: ['tenant-usage', 'tenant-1', { modified: 123 }],
       queryFn: expect.any(Function),
       enabled: true,
     });

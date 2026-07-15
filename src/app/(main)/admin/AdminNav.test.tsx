@@ -29,6 +29,7 @@ test('adds membership management to the admin navigation and selects it by path'
       websites: 'Websites',
       teams: 'Teams',
       membership: 'Membership',
+      activationCodes: 'Activation codes',
       back: 'Back',
     },
   } as any);
@@ -40,6 +41,7 @@ test('adds membership management to the admin navigation and selects it by path'
   render(<AdminNav />);
 
   expect(screen.getByText('Membership')).toBeInTheDocument();
+  expect(screen.getByText('Activation codes')).toBeInTheDocument();
   expect(screen.getByText('membership')).toBeInTheDocument();
   expect(navMenuMock).toHaveBeenCalledWith(
     expect.objectContaining({ selectedKey: 'membership', allowMinimize: false }),
