@@ -590,7 +590,7 @@
     "note": "Internal note",
     "saving": "Saving...",
     "createdTitle": "Activation code created",
-    "createdHelp": "Copy this code now. For security, it will not be shown again.",
+    "createdHelp": "You can copy this code now or retrieve it later from the activation code list.",
     "copy": "Copy activation code",
     "done": "Done",
     "editTitle": "Edit activation code",
@@ -609,6 +609,7 @@
       "scheduled": "Scheduled",
       "expired": "Expired",
       "exhausted": "Used up"
-    }
+    },
+    "codeUnavailable": "The full code is unavailable for this legacy record."
   }
 }

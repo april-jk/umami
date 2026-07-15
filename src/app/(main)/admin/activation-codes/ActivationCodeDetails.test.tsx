@@ -29,6 +29,9 @@ vi.mock('@/components/common/LoadingPanel', () => ({
     return <div>{children}</div>;
   },
 }));
+vi.mock('@/components/common/CopyButton', () => ({
+  CopyButton: ({ label, value }: any) => <button aria-label={label}>copy:{value}</button>,
+}));
 vi.mock('@/components/hooks', () => ({
   useActivationCodeQuery: vi.fn(),
   useMessages: vi.fn(),
@@ -64,6 +67,8 @@ test('renders plan, usage, and all redemption fields with username fallback', ()
   vi.mocked(useActivationCodeQuery).mockReturnValue({
     data: {
       id: 'code-1',
+      code: 'AMAMI-DETAIL-1234',
+      codePrefix: 'AMAMIDETAIL1',
       plan: 'team',
       redemptionCount: 2,
       maxRedemptions: 10,
@@ -92,10 +97,36 @@ test('renders plan, usage, and all redemption fields with username fallback', ()
   render(<ActivationCodeDetails activationCodeId="code-1" />);
 
   expect(screen.getByText('membership.plans.team.name')).toBeInTheDocument();
+  expect(screen.getByText('AMAMI-DETAIL-1234')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'activationCodes.copy' })).toHaveTextContent(
+    'copy:AMAMI-DETAIL-1234',
+  );
   expect(screen.getByText('2 / 10')).toBeInTheDocument();
   expect(screen.getByText(/activationCodes\.user:Ada/)).toBeInTheDocument();
   expect(screen.getByText(/activationCodes\.user:fallback@example\.com/)).toBeInTheDocument();
   expect(screen.getByText(/activationCodes\.workspace:Acme/)).toBeInTheDocument();
   expect(screen.getAllByText(/activationCodes\.redeemedAt:/)).toHaveLength(2);
   expect(screen.getAllByText(/activationCodes\.membershipEndsAt:/)).toHaveLength(2);
+});
+
+test('explains when a legacy code cannot be displayed again', () => {
+  vi.mocked(useActivationCodeQuery).mockReturnValue({
+    data: {
+      id: 'legacy-code',
+      code: null,
+      codePrefix: 'AMAMILEGACY',
+      plan: 'pro',
+      redemptionCount: 0,
+      maxRedemptions: 1,
+      redemptions: [],
+    },
+    isLoading: false,
+    isFetching: false,
+    error: null,
+  } as any);
+
+  render(<ActivationCodeDetails activationCodeId="legacy-code" />);
+
+  expect(screen.getByText('activationCodes.codeUnavailable')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'activationCodes.copy' })).not.toBeInTheDocument();
 });

@@ -76,6 +76,7 @@ integration('activation code admin API with PostgreSQL', () => {
       redemptionCount: 0,
     });
     expect(stored?.codeHash).not.toContain(created.code.replaceAll('-', ''));
+    expect(stored?.codeCiphertext).not.toContain(created.code);
     if (!stored) throw new Error('The created activation code was not persisted.');
 
     const listResponse = await collectionRoute.GET(
@@ -84,13 +85,24 @@ integration('activation code admin API with PostgreSQL', () => {
     expect(listResponse.status).toBe(200);
     const list = await listResponse.json();
     expect(list.data).toEqual(
-      expect.arrayContaining([expect.objectContaining({ id: activationCodeId })]),
+      expect.arrayContaining([
+        expect.objectContaining({ id: activationCodeId, code: created.code }),
+      ]),
     );
 
     const params = Promise.resolve({ activationCodeId });
     const detailResponse = await detailRoute.GET(request('GET', ''), { params });
     expect(detailResponse.status).toBe(200);
-    expect(await detailResponse.json()).toMatchObject({ id: activationCodeId, redemptions: [] });
+    expect(await detailResponse.json()).toMatchObject({
+      id: activationCodeId,
+      code: created.code,
+      redemptions: [],
+    });
+    const repeatedDetailResponse = await detailRoute.GET(request('GET', ''), { params });
+    expect(await repeatedDetailResponse.json()).toMatchObject({
+      id: activationCodeId,
+      code: created.code,
+    });
 
     const updateResponse = await detailRoute.PUT(
       request('PUT', '', { name: 'Integration test', note: null, maxRedemptions: 3 }),

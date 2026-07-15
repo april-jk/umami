@@ -22,6 +22,7 @@ function translate(key: string, values?: Record<string, string | number>) {
 const code = (overrides: Record<string, any> = {}) =>
   ({
     id: 'code-1',
+    code: 'AMAMI-TEST-1234',
     codePrefix: 'AMAMI123456',
     name: 'Launch',
     note: null,
@@ -63,7 +64,8 @@ test('renders code metadata and all operational status states', () => {
     />,
   );
 
-  expect(screen.getAllByText('AMAMI123456...')).toHaveLength(5);
+  expect(screen.getAllByText('AMAMI-TEST-1234')).toHaveLength(5);
+  expect(screen.getAllByRole('button', { name: 'Copy activation code' })).toHaveLength(5);
   expect(screen.getAllByText('Launch')).toHaveLength(5);
   expect(screen.getAllByText('1 / 10')).toHaveLength(4);
   expect(screen.getByText('Active')).toBeInTheDocument();
@@ -71,4 +73,11 @@ test('renders code metadata and all operational status states', () => {
   expect(screen.getByText('Expired')).toBeInTheDocument();
   expect(screen.getByText('Used up')).toBeInTheDocument();
   expect(screen.getByText('Disabled')).toBeInTheDocument();
+});
+
+test('falls back to the prefix when a legacy code cannot be recovered', () => {
+  render(<ActivationCodesTable data={[code({ code: null })]} />);
+
+  expect(screen.getByText('AMAMI123456...')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Copy activation code' })).not.toBeInTheDocument();
 });

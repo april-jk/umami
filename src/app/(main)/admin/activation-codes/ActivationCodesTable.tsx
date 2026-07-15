@@ -11,6 +11,7 @@ import {
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { Badge } from '@/components/common/Badge';
+import { CopyButton } from '@/components/common/CopyButton';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import type { ActivationCodeRecord } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
@@ -48,12 +49,24 @@ export function ActivationCodesTable({ data = [], ...props }: { data: Activation
         <DataColumn
           id="codePrefix"
           label={<SortableLabel label={t('activationCodes.code')} sortKey="codePrefix" />}
-          width="1.5fr"
+          width="2fr"
         >
           {(row: ActivationCodeRecord) => (
-            <Text weight="bold" style={{ fontFamily: 'monospace' }}>
-              {row.codePrefix}...
-            </Text>
+            <Row alignItems="center" gap="1" style={{ minWidth: 0 }}>
+              <Text
+                weight="bold"
+                title={row.code ?? undefined}
+                style={{
+                  fontFamily: 'monospace',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {row.code ?? `${row.codePrefix}...`}
+              </Text>
+              {row.code && <CopyButton value={row.code} label={t('activationCodes.copy')} />}
+            </Row>
           )}
         </DataColumn>
         <DataColumn id="name" label={t(labels.name)} width="1.5fr">

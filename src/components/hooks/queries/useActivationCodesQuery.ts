@@ -5,6 +5,7 @@ import { usePagedQuery } from '../usePagedQuery';
 
 export type ActivationCodeRecord = {
   id: string;
+  code: string | null;
   codePrefix: string;
   name: string | null;
   note: string | null;

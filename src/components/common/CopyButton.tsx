@@ -19,7 +19,11 @@ export function CopyButton({ value, label = 'Copy' }: { value: string; label?: s
       return;
     }
 
-    await navigator.clipboard.writeText(value);
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      return;
+    }
     setCopied(true);
 
     if (timeoutRef.current) {

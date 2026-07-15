@@ -44,6 +44,9 @@ vi.mock('@umami/react-zen', () => ({
 vi.mock('@/components/common/Badge', () => ({
   Badge: ({ children }: any) => <span>{children}</span>,
 }));
+vi.mock('@/components/common/CopyButton', () => ({
+  CopyButton: ({ label, value }: any) => <button aria-label={label}>copy:{value}</button>,
+}));
 vi.mock('@/components/common/SortableLabel', () => ({
   SortableLabel: ({ label }: any) => <span>{label}</span>,
 }));
@@ -82,6 +85,7 @@ vi.mock('./ActivationCodeDeleteForm', () => ({
 
 const record = {
   id: 'code-1',
+  code: 'AMAMI-TEST-1234',
   codePrefix: 'AMAMI123',
   name: null,
   note: null,
@@ -105,6 +109,10 @@ test('opens and closes detail, edit, and delete operations', () => {
 
   render(<ActivationCodesTable data={[record]} />);
 
+  expect(screen.getByText('AMAMI-TEST-1234')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'activationCodes.copy' })).toHaveTextContent(
+    'copy:AMAMI-TEST-1234',
+  );
   expect(screen.getByText('-')).toBeInTheDocument();
   expect(screen.getByText(/2099/)).toBeInTheDocument();
 

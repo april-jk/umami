@@ -590,7 +590,7 @@
     "note": "Internal note",
     "saving": "Saving...",
     "createdTitle": "Activation code created",
-    "createdHelp": "Copy this code now. For security, it will not be shown again.",
+    "createdHelp": "您可以立即複製，也可以之後在啟用碼清單或詳情中再次查看。",
     "copy": "Copy activation code",
     "done": "Done",
     "editTitle": "Edit activation code",
@@ -609,6 +609,7 @@
       "scheduled": "Scheduled",
       "expired": "Expired",
       "exhausted": "Used up"
-    }
+    },
+    "codeUnavailable": "此歷史記錄無法還原完整啟用碼。"
   }
 }

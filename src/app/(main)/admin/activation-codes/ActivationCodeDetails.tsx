@@ -1,4 +1,5 @@
 import { Column, DataColumn, DataTable, Heading, Row, Text } from '@umami/react-zen';
+import { CopyButton } from '@/components/common/CopyButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useActivationCodeQuery, useMessages } from '@/components/hooks';
 
@@ -16,6 +17,21 @@ export function ActivationCodeDetails({ activationCodeId }: { activationCodeId: 
     >
       <Column gap="5">
         <Row gap="6" wrap="wrap">
+          <Column gap="1" style={{ minWidth: 240 }}>
+            <Text size="sm" color="muted">
+              {t('activationCodes.code')}
+            </Text>
+            {query.data?.code ? (
+              <Row alignItems="center" gap="1">
+                <Text weight="bold" style={{ fontFamily: 'monospace' }}>
+                  {query.data.code}
+                </Text>
+                <CopyButton value={query.data.code} label={t('activationCodes.copy')} />
+              </Row>
+            ) : (
+              <Text color="muted">{t('activationCodes.codeUnavailable')}</Text>
+            )}
+          </Column>
           <Column gap="1">
             <Text size="sm" color="muted">
               {t('activationCodes.plan')}

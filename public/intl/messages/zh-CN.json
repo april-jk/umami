@@ -590,7 +590,7 @@
     "note": "内部备注",
     "saving": "保存中...",
     "createdTitle": "激活码已创建",
-    "createdHelp": "请立即复制激活码。出于安全考虑，之后不会再次完整显示。",
+    "createdHelp": "您可以立即复制，也可以之后在激活码列表或详情中再次查看。",
     "copy": "复制激活码",
     "done": "完成",
     "editTitle": "编辑激活码",
@@ -609,6 +609,7 @@
       "scheduled": "待生效",
       "expired": "已过期",
       "exhausted": "已用完"
-    }
+    },
+    "codeUnavailable": "此历史记录无法恢复完整激活码。"
   }
 }
