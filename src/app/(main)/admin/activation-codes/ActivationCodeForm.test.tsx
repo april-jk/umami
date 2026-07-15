@@ -191,3 +191,41 @@ test('shows mutation errors and disables actions while saving', () => {
   expect(screen.getAllByRole('button').every(button => button.hasAttribute('disabled'))).toBe(true);
   expect(screen.getByRole('button', { name: 'activationCodes.saving' })).toBeInTheDocument();
 });
+
+test('keeps the form open and contains rejected save requests', async () => {
+  const failure = new Error('Bad request');
+  const post = vi.fn().mockRejectedValue(failure);
+  const touch = vi.fn();
+  const onSave = vi.fn();
+  const onClose = vi.fn();
+  useApiMock.mockReturnValue({
+    post,
+    put: vi.fn(),
+    useMutation: vi.fn(({ mutationFn }) => ({
+      mutateAsync: mutationFn,
+      error: { message: failure.message },
+      isPending: false,
+    })),
+  } as any);
+  useModifiedMock.mockReturnValue({ touch } as any);
+
+  render(<ActivationCodeForm onSave={onSave} onClose={onClose} />);
+
+  await expect(
+    formProps.onSubmit({
+      code: '',
+      name: '',
+      note: '',
+      plan: 'pro',
+      durationDays: 30,
+      maxRedemptions: 1,
+      startsAt: '2026-08-01T10:00',
+      expiresAt: '',
+      status: 'active',
+    }),
+  ).resolves.toBeUndefined();
+  expect(formProps.error).toBe('Bad request');
+  expect(touch).not.toHaveBeenCalled();
+  expect(onSave).not.toHaveBeenCalled();
+  expect(onClose).not.toHaveBeenCalled();
+});

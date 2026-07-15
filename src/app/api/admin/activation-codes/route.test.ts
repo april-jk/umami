@@ -6,6 +6,7 @@ import {
   getActivationCodes,
 } from '@/queries/prisma/activation-code';
 import { GET, POST } from './route';
+import { activationCodeSchema } from './schema';
 
 vi.mock('@/lib/request', () => ({ parseRequest: vi.fn() }));
 vi.mock('@/queries/prisma/activation-code', () => ({
@@ -27,6 +28,21 @@ const parseRequestMock = vi.mocked(parseRequest);
 beforeEach(() => vi.clearAllMocks());
 
 describe('admin activation code collection API', () => {
+  test('accepts the blank optional fields submitted by the create form', () => {
+    const result = activationCodeSchema.safeParse({
+      name: null,
+      note: null,
+      plan: 'pro',
+      durationDays: 30,
+      startsAt: '2026-07-15T12:00:00.000Z',
+      expiresAt: null,
+      maxRedemptions: 1,
+      status: 'active',
+    });
+
+    expect(result.success).toBe(true);
+  });
+
   test('rejects parser errors before authorization', async () => {
     const response = new Response(null, { status: 400 });
     parseRequestMock.mockResolvedValue({ error: () => response } as any);

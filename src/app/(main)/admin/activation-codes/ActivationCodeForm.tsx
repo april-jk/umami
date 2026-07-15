@@ -66,20 +66,24 @@ export function ActivationCodeForm({
       defaultValues={defaults}
       error={mutation.error?.message}
       onSubmit={async (values: Record<string, any>) => {
-        const result = await mutation.mutateAsync({
-          ...values,
-          code: values.code || undefined,
-          name: values.name || null,
-          note: values.note || null,
-          durationDays: Number(values.durationDays),
-          maxRedemptions: Number(values.maxRedemptions),
-          startsAt: new Date(values.startsAt).toISOString(),
-          expiresAt: values.expiresAt ? new Date(values.expiresAt).toISOString() : null,
-        });
-        touch('activation-codes');
-        touch(`activation-code:${activationCode?.id ?? result.id}`);
-        onSave?.(result);
-        onClose?.();
+        try {
+          const result = await mutation.mutateAsync({
+            ...values,
+            code: values.code || undefined,
+            name: values.name || null,
+            note: values.note || null,
+            durationDays: Number(values.durationDays),
+            maxRedemptions: Number(values.maxRedemptions),
+            startsAt: new Date(values.startsAt).toISOString(),
+            expiresAt: values.expiresAt ? new Date(values.expiresAt).toISOString() : null,
+          });
+          touch('activation-codes');
+          touch(`activation-code:${activationCode?.id ?? result.id}`);
+          onSave?.(result);
+          onClose?.();
+        } catch {
+          return;
+        }
       }}
     >
       {!activationCode && (

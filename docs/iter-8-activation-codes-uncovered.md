@@ -1,5 +1,16 @@
 # Iteration 8: Activation codes
 
+## 已覆盖的真实业务链路
+
+- `route.integration.test.ts` 使用真实 `parseRequest`、管理 API Route、Prisma 和 PostgreSQL，覆盖创建、列表、详情、更新、软删除及测试数据清理；仅模拟登录认证边界。
+- 创建请求包含浏览器表单实际发送的 `name: null`、`note: null`、ISO 时间和空失效时间语义，避免单元测试 mock 掩盖前后端契约不一致。
+- 集成测试默认跳过，防止普通单元测试误连开发数据库。显式运行命令：
+
+```bash
+RUN_DATABASE_INTEGRATION_TESTS=1 pnpm exec dotenv -- vitest run \
+  src/app/api/admin/activation-codes/route.integration.test.ts
+```
+
 ## 未覆盖场景
 
 - React Aria 的创建、编辑、删除和详情弹窗在真实浏览器中的焦点管理、键盘操作和移动端布局。
@@ -41,6 +52,9 @@
 - [x] 多租户兑换显式绑定页面当前工作区。
 - [x] 有效会员不会被低等级激活码降级，升级时保留剩余时长。
 - [x] 管理端降低次数上限与兑换预占使用一致的原子条件。
+- [x] 管理端创建、读取、更新、删除通过真实 PostgreSQL 业务链路验证。
+- [x] 空名称和空备注与浏览器创建 payload 的 `null` 语义一致。
+- [x] 保存失败由表单错误状态处理，不产生未处理 Promise。
 - [x] 所有激活码相关新源码语句覆盖率不低于 95%。
 - [x] 服务端单元测试和 API 测试通过。
 - [ ] 真实 PostgreSQL 并发和浏览器 E2E 验证。

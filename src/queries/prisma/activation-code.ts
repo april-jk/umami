@@ -144,8 +144,8 @@ export async function getActivationCode(id: string) {
 
 export async function createActivationCode(data: {
   code?: string;
-  name?: string;
-  note?: string;
+  name?: string | null;
+  note?: string | null;
   plan: ActivationCodePlan;
   durationDays: number;
   startsAt?: Date;
