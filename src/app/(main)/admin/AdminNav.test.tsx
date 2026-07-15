@@ -16,11 +16,12 @@ const navMenuMock = vi.fn(({ items, selectedKey }: any) => (
 
 vi.mock('@/components/common/NavMenu', () => ({ NavMenu: (props: any) => navMenuMock(props) }));
 vi.mock('@/components/common/Link', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => <a href="/websites">{children}</a>,
 }));
 vi.mock('@/components/hooks', () => ({ useMessages: vi.fn(), useNavigation: vi.fn() }));
 
 test('adds membership management to the admin navigation and selects it by path', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
   vi.mocked(useMessages).mockReturnValue({
     t: (value: string) => value,
     labels: {
@@ -38,12 +39,21 @@ test('adds membership management to the admin navigation and selects it by path'
     renderUrl: (value: string) => value,
   } as any);
 
-  render(<AdminNav />);
+  try {
+    render(<AdminNav />);
 
-  expect(screen.getByText('Membership')).toBeInTheDocument();
-  expect(screen.getByText('Activation codes')).toBeInTheDocument();
-  expect(screen.getByText('membership')).toBeInTheDocument();
-  expect(navMenuMock).toHaveBeenCalledWith(
-    expect.objectContaining({ selectedKey: 'membership', allowMinimize: false }),
-  );
+    expect(screen.getByText('Membership')).toBeInTheDocument();
+    expect(screen.getByText('Activation codes')).toBeInTheDocument();
+    expect(screen.getByText('membership')).toBeInTheDocument();
+    expect(navMenuMock).toHaveBeenCalledWith(
+      expect.objectContaining({ selectedKey: 'membership', allowMinimize: false }),
+    );
+    expect(
+      warn.mock.calls.some(call =>
+        call.some(value => String(value).includes('child must have an interactive ARIA role')),
+      ),
+    ).toBe(false);
+  } finally {
+    warn.mockRestore();
+  }
 });
