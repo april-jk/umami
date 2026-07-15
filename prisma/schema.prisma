@@ -240,7 +240,7 @@ model MembershipConfig {
 model ActivationCode {
   id              String    @id() @map("activation_code_id") @db.Uuid
   codeHash        String    @unique @map("code_hash") @db.VarChar(128)
-  codeCiphertext  String?   @map("code_ciphertext") @db.VarChar(512)
+  codeValue       String?   @map("code_value") @db.VarChar(512)
   codePrefix      String    @map("code_prefix") @db.VarChar(32)
   name            String?   @db.VarChar(120)
   note            String?   @db.VarChar(500)

@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { decrypt, encrypt, secret } from '@/lib/crypto';
 import {
   ActivationCodeError,
   createActivationCode,
@@ -47,7 +46,7 @@ const now = new Date('2026-07-15T00:00:00.000Z');
 const baseCode = {
   id: 'code-1',
   codeHash: 'hash',
-  codeCiphertext: encrypt('AMAMI-TEST-1234', secret()),
+  codeValue: 'AMAMI-TEST-1234',
   codePrefix: 'AMAMI123456',
   name: 'Launch',
   note: null,
@@ -98,12 +97,9 @@ describe('activation code primitives', () => {
     expect(prismaMock.client.activationCode.create.mock.calls[0][0].data.codeHash).not.toContain(
       'TEST',
     );
-    expect(
-      decrypt(
-        prismaMock.client.activationCode.create.mock.calls[0][0].data.codeCiphertext,
-        secret(),
-      ),
-    ).toBe('amami-test 1234');
+    expect(prismaMock.client.activationCode.create.mock.calls[0][0].data.codeValue).toBe(
+      'amami-test 1234',
+    );
 
     const generated = await createActivationCode({
       plan: 'starter',
@@ -152,7 +148,7 @@ describe('activation code administration queries', () => {
       code: 'AMAMI-TEST-1234',
       isActive: true,
     });
-    expect(result.data[0]).not.toHaveProperty('codeCiphertext');
+    expect(result.data[0]).not.toHaveProperty('codeValue');
     expect(prismaMock.pagedQuery).toHaveBeenCalledWith(
       'activationCode',
       expect.objectContaining({
@@ -173,24 +169,18 @@ describe('activation code administration queries', () => {
     expect(await getActivationCode('missing')).toBeNull();
   });
 
-  test('keeps legacy and unreadable stored codes from breaking the admin list', async () => {
+  test('keeps legacy stored codes from breaking the admin list', async () => {
     prismaMock.pagedQuery.mockResolvedValue({
-      data: [
-        { ...baseCode, id: 'legacy', codeCiphertext: null },
-        { ...baseCode, id: 'corrupt', codeCiphertext: 'not-valid-ciphertext' },
-      ],
-      count: 2,
+      data: [{ ...baseCode, id: 'legacy', codeValue: null }],
+      count: 1,
       page: 1,
       pageSize: 20,
     });
 
     const result = await getActivationCodes();
 
-    expect(result.data).toEqual([
-      expect.objectContaining({ id: 'legacy', code: null }),
-      expect.objectContaining({ id: 'corrupt', code: null }),
-    ]);
-    expect(result.data.every(code => !('codeCiphertext' in code))).toBe(true);
+    expect(result.data).toEqual([expect.objectContaining({ id: 'legacy', code: null })]);
+    expect(result.data.every(code => !('codeValue' in code))).toBe(true);
   });
 
   test('updates only active records and validates windows and limits', async () => {

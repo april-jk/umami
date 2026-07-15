@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import type { Prisma } from '@/generated/prisma/client';
 import { updateRetentionCutoffForTenant } from '@/jobs/apply-retention';
 import { TENANT_STATUS } from '@/lib/constants';
-import { decrypt, encrypt, hash, secret, uuid } from '@/lib/crypto';
+import { hash, secret, uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
@@ -63,21 +63,12 @@ function codePrefix(value: string) {
 function toPublicCode(code: any) {
   const now = new Date();
   const publicCode = { ...code };
-  delete publicCode.codeCiphertext;
+  delete publicCode.codeValue;
   delete publicCode.codeHash;
-
-  let plainCode: string | null = null;
-  if (code.codeCiphertext) {
-    try {
-      plainCode = decrypt(code.codeCiphertext, secret());
-    } catch {
-      plainCode = null;
-    }
-  }
 
   return {
     ...publicCode,
-    code: plainCode,
+    code: code.codeValue ?? null,
     isActive:
       code.status === ACTIVATION_CODE_STATUS.active &&
       code.startsAt <= now &&
@@ -88,7 +79,7 @@ function toPublicCode(code: any) {
 
 const publicCodeSelect = {
   id: true,
-  codeCiphertext: true,
+  codeValue: true,
   codePrefix: true,
   name: true,
   note: true,
@@ -190,7 +181,7 @@ export async function createActivationCode(data: {
       data: {
         id: uuid(),
         codeHash: hashActivationCode(normalized),
-        codeCiphertext: encrypt(plainCode, secret()),
+        codeValue: plainCode,
         codePrefix: codePrefix(plainCode),
         name: data.name || null,
         note: data.note || null,

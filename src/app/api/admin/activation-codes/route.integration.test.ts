@@ -76,7 +76,7 @@ integration('activation code admin API with PostgreSQL', () => {
       redemptionCount: 0,
     });
     expect(stored?.codeHash).not.toContain(created.code.replaceAll('-', ''));
-    expect(stored?.codeCiphertext).not.toContain(created.code);
+    expect(stored?.codeValue).toBe(created.code);
     if (!stored) throw new Error('The created activation code was not persisted.');
 
     const listResponse = await collectionRoute.GET(
