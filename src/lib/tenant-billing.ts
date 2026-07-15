@@ -1,6 +1,7 @@
 import { updateRetentionCutoffForTenant } from '@/jobs/apply-retention';
 import { uuid } from '@/lib/crypto';
 import type { BillablePlan } from '@/lib/paypal';
+import { getHigherTenantPlan } from '@/lib/tenant-plan';
 import prisma from '@/lib/prisma';
 
 export async function activatePaypalSubscription(
@@ -15,8 +16,17 @@ export async function activatePaypalSubscription(
     ? new Date(subscription.billing_info.next_billing_time)
     : null;
 
+  let effectivePlan: string = plan;
   await prisma.transaction(async tx => {
-    await tx.tenant.update({ where: { id: tenantId }, data: { plan, status: 'active' } });
+    const activationRedemptions = await tx.activationCodeRedemption.findMany({
+      where: { tenantId, membershipEndsAt: { gt: new Date() } },
+      select: { plan: true },
+    });
+    effectivePlan = getHigherTenantPlan(plan, ...activationRedemptions.map(({ plan }) => plan));
+    await tx.tenant.update({
+      where: { id: tenantId },
+      data: { plan: effectivePlan, status: 'active' },
+    });
     await tx.tenantSubscription.upsert({
       where: { tenantId },
       create: {
@@ -43,7 +53,7 @@ export async function activatePaypalSubscription(
     });
   });
 
-  await updateRetentionCutoffForTenant(tenantId, plan);
+  await updateRetentionCutoffForTenant(tenantId, effectivePlan);
 }
 
 export async function markPaypalCancellation(tenantId: string) {

@@ -38,6 +38,7 @@ export type EffectiveTenantPlanLimits = {
 const TENANT_QUOTA_KEYS: TenantQuotaKey[] = ['eventLimit', 'websiteLimit', 'memberLimit'];
 
 const DEFAULT_PLAN: TenantPlanId = 'free';
+const TENANT_PLAN_ORDER: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 
 export function isTenantPlanEnforcementEnabled(): boolean {
   const membershipEnabled = process.env.MEMBERSHIP_ENABLED?.trim().toLowerCase();
@@ -49,6 +50,15 @@ export function isTenantPlanEnforcementEnabled(): boolean {
 
 export function getTenantPlanId(plan?: string | null): TenantPlanId {
   return plan in TENANT_PLAN_LIMITS ? (plan as TenantPlanId) : DEFAULT_PLAN;
+}
+
+export function getHigherTenantPlan(...plans: (string | null | undefined)[]): TenantPlanId {
+  return plans.reduce<TenantPlanId>((highest, plan) => {
+    const candidate = getTenantPlanId(plan);
+    return TENANT_PLAN_ORDER.indexOf(candidate) > TENANT_PLAN_ORDER.indexOf(highest)
+      ? candidate
+      : highest;
+  }, DEFAULT_PLAN);
 }
 
 export function getTenantPlanLimits(

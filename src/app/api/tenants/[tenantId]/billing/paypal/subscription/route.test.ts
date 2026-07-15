@@ -58,6 +58,27 @@ describe('POST /api/tenants/[tenantId]/billing/paypal/subscription', () => {
     );
   });
 
+  test('does not create a second active PayPal subscription', async () => {
+    parseRequestMock.mockResolvedValue({
+      auth: { user: { id: 'user-1', isAdmin: false } },
+      body: { plan: 'pro', interval: 'year' },
+    } as any);
+    canManageTenantBillingMock.mockResolvedValue(true);
+    getTenantMock.mockResolvedValue({
+      id: 'tenant-1',
+      subscription: {
+        billingProvider: 'paypal',
+        billingSubscriptionId: 'existing-subscription',
+        currentPeriodEnd: new Date('2099-01-01'),
+      },
+    } as any);
+
+    const response = await POST(request, context);
+
+    expect(response.status).toBe(400);
+    expect(createPaypalSubscriptionMock).not.toHaveBeenCalled();
+  });
+
   test('forbids users without billing permission', async () => {
     parseRequestMock.mockResolvedValue({
       auth: { user: { id: 'user-2', isAdmin: false } },

@@ -67,6 +67,9 @@ const { transactionMock, prismaMock } = vi.hoisted(() => ({
         update: vi.fn(),
         upsert: vi.fn(),
       },
+      activationCodeRedemption: {
+        findMany: vi.fn(),
+      },
     },
     getSearchParameters: vi.fn(),
     pagedQuery: vi.fn(),
@@ -90,6 +93,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
   prismaMock.client.tenantSubscription.findUnique.mockResolvedValue(null);
+  prismaMock.client.activationCodeRedemption.findMany.mockResolvedValue([]);
 });
 
 describe('tenant queries', () => {
@@ -210,7 +214,7 @@ describe('getTenantPlan', () => {
 
     const result = await getTenantPlan('tenant-1');
 
-    expect(result).toEqual({ plan: TENANT_PLANS.free, metadata: null });
+    expect(result).toEqual({ plan: TENANT_PLANS.free });
     expect(prismaMock.client.tenant.update).toHaveBeenCalledWith({
       where: { id: 'tenant-1' },
       data: { plan: TENANT_PLANS.free },
@@ -218,7 +222,7 @@ describe('getTenantPlan', () => {
     expect(prismaMock.client.tenantSubscription.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { tenantId: 'tenant-1' },
-        data: expect.objectContaining({ plan: TENANT_PLANS.free, status: 'cancelled' }),
+        data: expect.objectContaining({ status: 'cancelled' }),
       }),
     );
   });
@@ -242,10 +246,30 @@ describe('getTenantPlan', () => {
     expect(prismaMock.client.tenantSubscription.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { tenantId: 'tenant-1' },
-        data: expect.objectContaining({ plan: TENANT_PLANS.free, status: 'expired' }),
+        data: expect.objectContaining({ status: 'expired' }),
       }),
     );
     expect(updateRetentionCutoffForTenant).toHaveBeenCalledWith('tenant-1', TENANT_PLANS.free);
+  });
+
+  test('keeps the highest active activation-code tier over a PayPal base plan', async () => {
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'starter' });
+    prismaMock.client.tenantSubscription.findUnique.mockResolvedValue({
+      billingProvider: 'paypal',
+      cancelAtPeriodEnd: false,
+      currentPeriodEnd: new Date('2099-01-01'),
+      plan: 'starter',
+    });
+    prismaMock.client.activationCodeRedemption.findMany.mockResolvedValue([{ plan: 'team' }]);
+    transactionMock.mockImplementation(async fn => fn(prismaMock.client));
+
+    const result = await getTenantPlan('tenant-1');
+
+    expect(result).toEqual({ plan: 'team' });
+    expect(prismaMock.client.tenant.update).toHaveBeenCalledWith({
+      where: { id: 'tenant-1' },
+      data: { plan: 'team' },
+    });
   });
 });
 

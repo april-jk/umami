@@ -6,6 +6,7 @@ import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
 import {
   getTenantEffectiveLimits,
+  getHigherTenantPlan,
   getTenantPlanLimits,
   getTenantQuotaOverrides,
   isWithinLimit,
@@ -165,57 +166,64 @@ export async function getTenantIdForTeam(teamId: string) {
 export async function getTenantPlan(
   tenantId: string,
 ): Promise<{ plan: string; metadata?: Prisma.JsonValue } | null> {
+  const now = new Date();
   const tenant = await prisma.client.tenant.findUnique({
     where: { id: tenantId, deletedAt: null },
     select: { plan: true, metadata: true },
   });
 
-  const subscription = await prisma.client.tenantSubscription.findUnique({
-    where: { tenantId },
-    select: {
-      billingProvider: true,
-      cancelAtPeriodEnd: true,
-      currentPeriodEnd: true,
-      plan: true,
-    },
-  });
+  if (!tenant) return null;
 
-  if (
-    subscription?.billingProvider === 'activation_code' &&
-    subscription.currentPeriodEnd &&
-    subscription.currentPeriodEnd <= new Date() &&
-    subscription.plan !== TENANT_PLANS.free
-  ) {
+  const [subscription, activationRedemptions] = await Promise.all([
+    prisma.client.tenantSubscription.findUnique({
+      where: { tenantId },
+      select: {
+        billingProvider: true,
+        cancelAtPeriodEnd: true,
+        currentPeriodEnd: true,
+        plan: true,
+      },
+    }),
+    prisma.client.activationCodeRedemption.findMany({
+      where: { tenantId, membershipEndsAt: { gt: now } },
+      select: { plan: true },
+    }),
+  ]);
+
+  const subscriptionExpired =
+    subscription?.currentPeriodEnd &&
+    subscription.currentPeriodEnd <= now &&
+    (subscription.billingProvider === 'activation_code' ||
+      (subscription.billingProvider === 'paypal' && subscription.cancelAtPeriodEnd));
+  const basePlan = subscriptionExpired
+    ? TENANT_PLANS.free
+    : subscription?.billingProvider === 'activation_code'
+      ? TENANT_PLANS.free
+      : subscription?.plan || tenant.plan;
+  const effectivePlan = getHigherTenantPlan(basePlan, ...activationRedemptions.map(({ plan }) => plan));
+
+  if (subscriptionExpired || tenant.plan !== effectivePlan) {
     await prisma.transaction(async tx => {
-      await tx.tenant.update({ where: { id: tenantId }, data: { plan: TENANT_PLANS.free } });
-      await tx.tenantSubscription.update({
-        where: { tenantId },
-        data: { plan: TENANT_PLANS.free, status: 'expired', updatedAt: new Date() },
-      });
+      if (subscriptionExpired) {
+        await tx.tenantSubscription.update({
+          where: { tenantId },
+          data: {
+            status: subscription?.billingProvider === 'paypal' ? 'cancelled' : 'expired',
+            updatedAt: now,
+          },
+        });
+      }
+      if (tenant.plan !== effectivePlan) {
+        await tx.tenant.update({ where: { id: tenantId }, data: { plan: effectivePlan } });
+      }
     });
-    await updateRetentionCutoffForTenant(tenantId, TENANT_PLANS.free);
-    return { plan: TENANT_PLANS.free, metadata: tenant?.metadata ?? null };
+    if (tenant.plan !== effectivePlan) await updateRetentionCutoffForTenant(tenantId, effectivePlan);
   }
 
-  if (
-    subscription?.billingProvider === 'paypal' &&
-    subscription.cancelAtPeriodEnd &&
-    subscription.currentPeriodEnd &&
-    subscription.currentPeriodEnd <= new Date() &&
-    subscription.plan !== TENANT_PLANS.free
-  ) {
-    await prisma.transaction(async tx => {
-      await tx.tenant.update({ where: { id: tenantId }, data: { plan: TENANT_PLANS.free } });
-      await tx.tenantSubscription.update({
-        where: { tenantId },
-        data: { plan: TENANT_PLANS.free, status: 'cancelled', updatedAt: new Date() },
-      });
-    });
-    await updateRetentionCutoffForTenant(tenantId, TENANT_PLANS.free);
-    return { plan: TENANT_PLANS.free, metadata: tenant?.metadata ?? null };
-  }
-
-  return tenant;
+  return {
+    plan: effectivePlan,
+    ...(tenant.metadata !== undefined && { metadata: tenant.metadata }),
+  };
 }
 
 export async function getTenantWebsiteCount(tenantId: string) {

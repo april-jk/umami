@@ -5,6 +5,7 @@ import { TENANT_STATUS } from '@/lib/constants';
 import { hash, secret, uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
+import { getHigherTenantPlan } from '@/lib/tenant-plan';
 import type { QueryFilters } from '@/lib/types';
 
 export const ACTIVATION_CODE_STATUS = {
@@ -14,14 +15,6 @@ export const ACTIVATION_CODE_STATUS = {
 
 export const ACTIVATION_CODE_PLANS = ['starter', 'pro', 'team', 'enterprise'] as const;
 export type ActivationCodePlan = (typeof ACTIVATION_CODE_PLANS)[number];
-
-const PLAN_RANK: Record<string, number> = {
-  free: 0,
-  starter: 1,
-  pro: 2,
-  team: 3,
-  enterprise: 4,
-};
 
 const ACTIVATION_CODE_SORT_FIELDS = [
   'codePrefix',
@@ -324,29 +317,11 @@ export async function redeemActivationCode(userId: string, tenantId: string, val
         throw new ActivationCodeError('tenant-not-found', 'Your workspace could not be found.');
 
       const existingSubscription = tenant.subscription;
-      if (
-        existingSubscription?.billingProvider === 'paypal' &&
-        (!existingSubscription.currentPeriodEnd || existingSubscription.currentPeriodEnd > now)
-      ) {
-        throw new ActivationCodeError(
-          'active-subscription',
-          'Cancel your active subscription before redeeming an activation code.',
-        );
-      }
-
-      const activeActivationCodeEnd =
-        existingSubscription?.billingProvider === 'activation_code' &&
-        existingSubscription.currentPeriodEnd &&
-        existingSubscription.currentPeriodEnd > now
-          ? existingSubscription.currentPeriodEnd
-          : null;
-      const currentPlan = existingSubscription?.plan || tenant.plan;
-      if (activeActivationCodeEnd && (PLAN_RANK[currentPlan] ?? 0) > PLAN_RANK[code.plan]) {
-        throw new ActivationCodeError(
-          'plan-downgrade',
-          'This activation code cannot downgrade your active membership.',
-        );
-      }
+      const activeActivationCode = await tx.activationCodeRedemption.findFirst({
+        where: { tenantId, membershipEndsAt: { gt: now } },
+        orderBy: { membershipEndsAt: 'desc' },
+        select: { membershipEndsAt: true },
+      });
 
       const duplicate = await tx.activationCodeRedemption.findFirst({
         where: { activationCodeId: code.id, userId },
@@ -376,35 +351,38 @@ export async function redeemActivationCode(userId: string, tenantId: string, val
         );
       }
 
-      const currentEnd = activeActivationCodeEnd ?? now;
+      const currentEnd = activeActivationCode?.membershipEndsAt ?? now;
       const membershipEndsAt = addDays(currentEnd, code.durationDays);
+      const effectivePlan = getHigherTenantPlan(tenant.plan, code.plan);
 
       await tx.tenant.update({
         where: { id: tenantId },
-        data: { plan: code.plan, status: TENANT_STATUS.active },
+        data: { plan: effectivePlan, status: TENANT_STATUS.active },
       });
-      await tx.tenantSubscription.upsert({
-        where: { tenantId },
-        create: {
-          id: uuid(),
-          tenantId,
-          plan: code.plan,
-          status: TENANT_STATUS.active,
-          billingProvider: 'activation_code',
-          currentPeriodStart: now,
-          currentPeriodEnd: membershipEndsAt,
-        },
-        update: {
-          plan: code.plan,
-          status: TENANT_STATUS.active,
-          billingProvider: 'activation_code',
-          billingCustomerId: null,
-          billingSubscriptionId: null,
-          currentPeriodStart: now,
-          currentPeriodEnd: membershipEndsAt,
-          cancelAtPeriodEnd: false,
-        },
-      });
+      if (!existingSubscription || existingSubscription.billingProvider === 'activation_code') {
+        await tx.tenantSubscription.upsert({
+          where: { tenantId },
+          create: {
+            id: uuid(),
+            tenantId,
+            plan: code.plan,
+            status: TENANT_STATUS.active,
+            billingProvider: 'activation_code',
+            currentPeriodStart: now,
+            currentPeriodEnd: membershipEndsAt,
+          },
+          update: {
+            plan: code.plan,
+            status: TENANT_STATUS.active,
+            billingProvider: 'activation_code',
+            billingCustomerId: null,
+            billingSubscriptionId: null,
+            currentPeriodStart: now,
+            currentPeriodEnd: membershipEndsAt,
+            cancelAtPeriodEnd: false,
+          },
+        });
+      }
 
       const redemption = await tx.activationCodeRedemption.create({
         data: {
@@ -421,7 +399,7 @@ export async function redeemActivationCode(userId: string, tenantId: string, val
         select: { id: true, plan: true, durationDays: true, membershipEndsAt: true },
       });
 
-      return { plan: code.plan, durationDays: code.durationDays, membershipEndsAt, redemption };
+      return { plan: effectivePlan, durationDays: code.durationDays, membershipEndsAt, redemption };
     })) as unknown as typeof result;
   } catch (error) {
     if ((error as { code?: string }).code === 'P2002') {

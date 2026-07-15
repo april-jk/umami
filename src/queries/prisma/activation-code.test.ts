@@ -298,36 +298,11 @@ describe('activation code redemption', () => {
     });
   });
 
-  test('rejects missing workspaces, active billing, and duplicate users', async () => {
+  test('rejects missing workspaces and duplicate users', async () => {
     configureCode();
     txMock.tenant.findFirst.mockResolvedValue(null);
     await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).rejects.toMatchObject({
       code: 'tenant-not-found',
-    });
-    configureCode();
-    txMock.tenant.findFirst.mockResolvedValue({
-      id: 'tenant-1',
-      plan: 'pro',
-      status: 'active',
-      subscription: { billingProvider: 'paypal', currentPeriodEnd: new Date('2099-01-01') },
-    });
-    await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).rejects.toMatchObject({
-      code: 'active-subscription',
-    });
-    configureCode();
-    txMock.tenant.findFirst.mockResolvedValue({
-      id: 'tenant-1',
-      plan: 'pro',
-      status: 'active',
-      subscription: {
-        billingProvider: 'paypal',
-        plan: 'pro',
-        status: 'active',
-        currentPeriodEnd: null,
-      },
-    });
-    await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).rejects.toMatchObject({
-      code: 'active-subscription',
     });
     configureCode();
     txMock.activationCodeRedemption.findFirst.mockResolvedValue({ id: 'existing' });
@@ -393,6 +368,9 @@ describe('activation code redemption', () => {
         currentPeriodEnd: new Date('2026-07-20'),
       },
     });
+    txMock.activationCodeRedemption.findFirst
+      .mockResolvedValueOnce({ membershipEndsAt: new Date('2026-07-20') })
+      .mockResolvedValueOnce(null);
     await redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234');
     const createData = txMock.activationCodeRedemption.create.mock.calls[0][0].data;
     expect(createData.membershipEndsAt).toEqual(new Date('2026-08-19'));
@@ -402,7 +380,7 @@ describe('activation code redemption', () => {
     });
   });
 
-  test('does not allow a code to downgrade an active membership', async () => {
+  test('keeps the higher active plan when a lower activation code is redeemed', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(now);
     configureCode({ plan: 'starter' });
@@ -417,8 +395,35 @@ describe('activation code redemption', () => {
       },
     });
 
-    await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).rejects.toMatchObject({
-      code: 'plan-downgrade',
+    await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).resolves.toMatchObject({
+      plan: 'pro',
+    });
+    expect(txMock.tenant.update).toHaveBeenCalledWith({
+      where: { id: 'tenant-1' },
+      data: { plan: 'pro', status: 'active' },
+    });
+  });
+
+  test('keeps a PayPal subscription while adding an activation-code entitlement', async () => {
+    configureCode({ plan: 'team' });
+    txMock.tenant.findFirst.mockResolvedValue({
+      id: 'tenant-1',
+      plan: 'starter',
+      status: 'active',
+      subscription: {
+        billingProvider: 'paypal',
+        billingSubscriptionId: 'paypal-1',
+        currentPeriodEnd: new Date('2026-08-15'),
+      },
+    });
+
+    await expect(redeemActivationCode('user-1', 'tenant-1', 'AMAMI-1234')).resolves.toMatchObject({
+      plan: 'team',
+    });
+    expect(txMock.tenantSubscription.upsert).not.toHaveBeenCalled();
+    expect(txMock.tenant.update).toHaveBeenCalledWith({
+      where: { id: 'tenant-1' },
+      data: { plan: 'team', status: 'active' },
     });
   });
 });

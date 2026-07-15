@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { createDefaultMembershipConfig } from './membership-config';
 import {
   getLimitErrorPayload,
+  getHigherTenantPlan,
   getNextPlanId,
   getPlanUpgradeMessage,
   getRecommendedPlanId,
@@ -32,6 +33,11 @@ describe('tenant plan limits', () => {
     expect(getTenantPlanId('pro')).toBe('pro');
     expect(getTenantPlanId('legacy-plan')).toBe('free');
     expect(getTenantPlanId()).toBe('free');
+  });
+
+  test('selects the highest entitlement plan', () => {
+    expect(getHigherTenantPlan('starter', 'team', 'pro')).toBe('team');
+    expect(getHigherTenantPlan('unknown', null)).toBe('free');
   });
 
   test('treats null limits as unlimited and supports bigint counters', () => {

@@ -20,7 +20,17 @@ export async function POST(
   if (!(await canManageTenantBilling(auth, tenantId))) {
     return forbidden({ message: 'You do not have permission to manage this tenant billing.' });
   }
-  if (!(await getTenant(tenantId))) return notFound();
+  const tenant = (await getTenant(tenantId, { includeSubscription: true })) as any;
+  if (!tenant) return notFound();
+  const existingSubscription = tenant.subscription;
+  if (
+    existingSubscription?.billingProvider === 'paypal' &&
+    (!existingSubscription.currentPeriodEnd || existingSubscription.currentPeriodEnd > new Date())
+  ) {
+    return badRequest({
+      message: 'Cancel your active PayPal subscription before selecting a different plan.',
+    });
+  }
 
   const config = await getMembershipConfig();
   if (!config.plans[body.plan].available) {
