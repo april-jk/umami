@@ -47,7 +47,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
       path: '/api/auth/oauth',
     });
     return response;
-  } catch {
+  } catch (error) {
+    // Keep provider responses out of the browser while retaining actionable server-side diagnostics.
+    console.error('OAuth callback failed', {
+      provider: value,
+      message: error instanceof Error ? error.message : 'Unknown error',
+    });
     return redirectToLogin();
   }
 }
