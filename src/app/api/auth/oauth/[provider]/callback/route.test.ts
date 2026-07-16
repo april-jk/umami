@@ -1,6 +1,6 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { createAuthToken } from '@/lib/auth';
 import {
+  createOAuthLoginCode,
   getOAuthBaseUrl,
   getOAuthIdentity,
   isOAuthProvider,
@@ -9,8 +9,8 @@ import {
 import { getOrCreateOAuthUser } from '@/queries/prisma';
 import { GET } from './route';
 
-vi.mock('@/lib/auth', () => ({ createAuthToken: vi.fn() }));
 vi.mock('@/lib/oauth', () => ({
+  createOAuthLoginCode: vi.fn(),
   getOAuthBaseUrl: vi.fn(),
   getOAuthIdentity: vi.fn(),
   isOAuthProvider: vi.fn(),
@@ -18,7 +18,7 @@ vi.mock('@/lib/oauth', () => ({
 }));
 vi.mock('@/queries/prisma', () => ({ getOrCreateOAuthUser: vi.fn() }));
 
-const createAuthTokenMock = vi.mocked(createAuthToken);
+const createOAuthLoginCodeMock = vi.mocked(createOAuthLoginCode);
 const getOAuthBaseUrlMock = vi.mocked(getOAuthBaseUrl);
 const getOAuthIdentityMock = vi.mocked(getOAuthIdentity);
 const getOrCreateOAuthUserMock = vi.mocked(getOrCreateOAuthUser);
@@ -26,7 +26,7 @@ const isOAuthProviderMock = vi.mocked(isOAuthProvider);
 const validateOAuthStateMock = vi.mocked(validateOAuthState);
 
 beforeEach(() => {
-  createAuthTokenMock.mockReset();
+  createOAuthLoginCodeMock.mockReset();
   getOAuthBaseUrlMock.mockReset();
   getOAuthIdentityMock.mockReset();
   getOrCreateOAuthUserMock.mockReset();
@@ -37,7 +37,7 @@ beforeEach(() => {
   validateOAuthStateMock.mockReturnValue(true);
 });
 
-test('GET exchanges a valid callback for an existing local auth session', async () => {
+test('GET redirects a valid callback with an opaque one-time code in the URL fragment', async () => {
   getOAuthIdentityMock.mockResolvedValue({
     providerAccountId: 'google-user',
     email: 'user@example.com',
@@ -47,7 +47,7 @@ test('GET exchanges a valid callback for an existing local auth session', async 
     role: 'user',
     password: 'hash',
   } as any);
-  createAuthTokenMock.mockResolvedValue('session-token');
+  createOAuthLoginCodeMock.mockResolvedValue('one-time-code');
 
   const response = await GET(
     new Request('http://localhost/api/auth/oauth/google/callback?code=code&state=state', {
@@ -66,11 +66,10 @@ test('GET exchanges a valid callback for an existing local auth session', async 
     providerAccountId: 'google-user',
     email: 'user@example.com',
   });
-  expect(location.pathname).toBe('/sso');
-  expect(Object.fromEntries(location.searchParams)).toMatchObject({
-    url: '/dashboard',
-    token: 'session-token',
-  });
+  expect(createOAuthLoginCodeMock).toHaveBeenCalledWith('user-id');
+  expect(location.pathname).toBe('/oauth/complete');
+  expect(location.hash).toBe('#code=one-time-code');
+  expect(location.search).toBe('');
   expect(response.headers.get('set-cookie')).toContain('amami-oauth-state-google=');
 });
 

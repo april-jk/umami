@@ -1,10 +1,13 @@
 import crypto from 'node:crypto';
 import { createToken, parseToken } from '@/lib/jwt';
+import redis from '@/lib/redis';
 
 export const OAUTH_PROVIDERS = ['google', 'github'] as const;
 export type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 
 const STATE_TTL_SECONDS = 10 * 60;
+const LOGIN_CODE_TTL_SECONDS = 60;
+const LOGIN_CODE_PREFIX = 'oauth-login:';
 
 type OAuthConfig = {
   clientId: string;
@@ -17,6 +20,10 @@ type OAuthConfig = {
 export type OAuthIdentity = {
   providerAccountId: string;
   email: string;
+};
+
+type OAuthLoginCode = {
+  userId: string;
 };
 
 function getEnv(provider: OAuthProvider, name: 'ID' | 'SECRET') {
@@ -88,6 +95,27 @@ export function validateOAuthState(
 
   const payload = parseToken(value, process.env.APP_SECRET);
   return payload?.provider === provider && typeof payload.nonce === 'string';
+}
+
+export async function createOAuthLoginCode(userId: string) {
+  if (!redis.enabled) {
+    throw new Error('OAuth login requires Redis');
+  }
+
+  const code = crypto.randomBytes(32).toString('base64url');
+  await redis.client.set(`${LOGIN_CODE_PREFIX}${code}`, { userId }, LOGIN_CODE_TTL_SECONDS);
+
+  return code;
+}
+
+export async function consumeOAuthLoginCode(code: string): Promise<OAuthLoginCode | null> {
+  if (!redis.enabled) {
+    return null;
+  }
+
+  const payload = await redis.client.take(`${LOGIN_CODE_PREFIX}${code}`);
+
+  return typeof payload?.userId === 'string' ? { userId: payload.userId } : null;
 }
 
 async function fetchJson(url: string, init: RequestInit) {

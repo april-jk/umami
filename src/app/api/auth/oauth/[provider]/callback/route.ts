@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createAuthToken } from '@/lib/auth';
 import {
+  createOAuthLoginCode,
   getOAuthBaseUrl,
   getOAuthIdentity,
   isOAuthProvider,
@@ -35,10 +35,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
   try {
     const identity = await getOAuthIdentity(value, code);
     const user = await getOrCreateOAuthUser({ provider: value, ...identity });
-    const token = await createAuthToken(user);
-    const redirect = new URL('/sso', getOAuthBaseUrl());
-    redirect.searchParams.set('url', '/dashboard');
-    redirect.searchParams.set('token', token);
+    const loginCode = await createOAuthLoginCode(user.id);
+    const redirect = new URL('/oauth/complete', getOAuthBaseUrl());
+    redirect.hash = new URLSearchParams({ code: loginCode }).toString();
 
     const response = NextResponse.redirect(redirect);
     response.cookies.set({

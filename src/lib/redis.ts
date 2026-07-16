@@ -57,6 +57,18 @@ class UmamiRedisClient {
     return this.client.del(key);
   }
 
+  async take(key: string) {
+    await this.connect();
+
+    const data = await this.client.getDel(key);
+
+    try {
+      return JSON.parse(data as string);
+    } catch {
+      return null;
+    }
+  }
+
   async incr(key: string) {
     await this.connect();
 

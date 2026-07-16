@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import {
+  consumeOAuthLoginCode,
+  createOAuthLoginCode,
   createOAuthState,
   getOAuthCallbackUrl,
   getOAuthConfig,
@@ -7,11 +9,32 @@ import {
   isOAuthProvider,
   validateOAuthState,
 } from './oauth';
+import redis from './redis';
+
+vi.mock('./redis', () => ({
+  default: {
+    enabled: true,
+    client: {
+      set: vi.fn(),
+      take: vi.fn(),
+    },
+  },
+}));
 
 const originalEnv = { ...process.env };
+const redisMock = redis as unknown as {
+  enabled: boolean;
+  client: {
+    set: ReturnType<typeof vi.fn>;
+    take: ReturnType<typeof vi.fn>;
+  };
+};
 
 afterEach(() => {
   process.env = { ...originalEnv };
+  redisMock.enabled = true;
+  redisMock.client.set.mockReset();
+  redisMock.client.take.mockReset();
   vi.unstubAllGlobals();
 });
 
@@ -51,6 +74,28 @@ describe('OAuth configuration and state', () => {
     expect(validateOAuthState(state, state, 'github')).toBe(true);
     expect(validateOAuthState(state, state, 'google')).toBe(false);
     expect(validateOAuthState(state, `${state}changed`, 'github')).toBe(false);
+  });
+
+  test('stores a short-lived opaque login code and consumes it once', async () => {
+    redisMock.client.take.mockResolvedValue({ userId: 'user-id' });
+
+    const code = await createOAuthLoginCode('user-id');
+
+    expect(code).toMatch(/^[A-Za-z0-9_-]+$/);
+    expect(redisMock.client.set).toHaveBeenCalledWith(
+      `oauth-login:${code}`,
+      { userId: 'user-id' },
+      60,
+    );
+    await expect(consumeOAuthLoginCode(code)).resolves.toEqual({ userId: 'user-id' });
+    expect(redisMock.client.take).toHaveBeenCalledWith(`oauth-login:${code}`);
+  });
+
+  test('does not issue or accept login codes when Redis is unavailable', async () => {
+    redisMock.enabled = false;
+
+    await expect(createOAuthLoginCode('user-id')).rejects.toThrow('OAuth login requires Redis');
+    await expect(consumeOAuthLoginCode('code')).resolves.toBeNull();
   });
 
   test('builds the GitHub configuration and requires an explicit callback base URL', () => {
