@@ -69,6 +69,7 @@ const { transactionMock, prismaMock } = vi.hoisted(() => ({
       },
       activationCodeRedemption: {
         findMany: vi.fn(),
+        findFirst: vi.fn(),
       },
     },
     getSearchParameters: vi.fn(),
@@ -679,6 +680,27 @@ describe('getTenantUsage', () => {
     expect(result.websites).toEqual({ used: 0, limit: 5 });
     expect(result.members).toEqual({ used: 0, limit: 1 });
     expect(result.membershipEndsAt).toBeNull();
+  });
+
+  test('uses an active activation-code expiry when a legacy subscription has no period end', async () => {
+    const now = new Date('2026-07-11T00:00:00.000Z');
+    prismaMock.client.tenant.findUnique.mockResolvedValue({ plan: 'pro' });
+    prismaMock.client.tenantSubscription.findUnique.mockResolvedValue({ currentPeriodEnd: null });
+    prismaMock.client.activationCodeRedemption.findFirst.mockResolvedValue({
+      membershipEndsAt: new Date('2026-08-01T00:00:00.000Z'),
+    });
+    prismaMock.client.tenantUsageMonthly.findUnique.mockResolvedValue(null);
+    prismaMock.client.website.count.mockResolvedValue(0);
+    prismaMock.client.team.findMany.mockResolvedValue([]);
+
+    const result = await getTenantUsage('tenant-1', now);
+
+    expect(result.membershipEndsAt).toBe('2026-08-01T00:00:00.000Z');
+    expect(prismaMock.client.activationCodeRedemption.findFirst).toHaveBeenCalledWith({
+      where: { tenantId: 'tenant-1', membershipEndsAt: { gt: now } },
+      orderBy: { membershipEndsAt: 'desc' },
+      select: { membershipEndsAt: true },
+    });
   });
 
   test('returns high limits for team plan (finite but large)', async () => {

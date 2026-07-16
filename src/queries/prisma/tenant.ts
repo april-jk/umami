@@ -322,10 +322,15 @@ export type TenantUsage = {
 };
 
 export async function getTenantUsage(tenantId: string, now = new Date()): Promise<TenantUsage> {
-  const [tenant, config, subscription] = await Promise.all([
+  const [tenant, config, subscription, activeActivationCode] = await Promise.all([
     getTenantPlan(tenantId),
     getMembershipConfig(),
     getTenantSubscription(tenantId),
+    prisma.client.activationCodeRedemption.findFirst({
+      where: { tenantId, membershipEndsAt: { gt: now } },
+      orderBy: { membershipEndsAt: 'desc' },
+      select: { membershipEndsAt: true },
+    }),
   ]);
   const defaults = getTenantPlanLimits(tenant?.plan, config);
   const quotaOverrides = getTenantQuotaOverrides(tenant?.metadata);
@@ -344,7 +349,10 @@ export async function getTenantUsage(tenantId: string, now = new Date()): Promis
   return {
     plan: tenant?.plan ?? 'free',
     month: month.toISOString().slice(0, 7),
-    membershipEndsAt: subscription?.currentPeriodEnd?.toISOString() ?? null,
+    membershipEndsAt:
+      activeActivationCode?.membershipEndsAt.toISOString() ??
+      subscription?.currentPeriodEnd?.toISOString() ??
+      null,
     defaults,
     quotaOverrides,
     events: { used: eventUsed, limit: limits.eventLimit },
