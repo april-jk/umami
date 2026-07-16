@@ -616,5 +616,28 @@
       "exhausted": "Used up"
     },
     "codeUnavailable": "此歷史記錄無法還原完整啟用碼。"
+  },
+  "auth": {
+    "accountAccess": "帳戶存取",
+    "eyebrow": "MCP 驅動的網站分析",
+    "headline": "讓 AI Agent 讀懂每一次訪客造訪。",
+    "brandNote": "透過 MCP 連接 Amami，在工作流程中把訪客訊號轉化為可執行的答案。",
+    "welcomeBack": "歡迎回來",
+    "newToAmami": "開始使用 Amami",
+    "signIn": "登入 Amami",
+    "createWorkspace": "建立你的工作區",
+    "username": "帳號",
+    "password": "密碼",
+    "required": "此欄位為必填。",
+    "usernameMinLength": "至少輸入 3 個字元。",
+    "passwordMinLength": "密碼至少須有 8 個字元。",
+    "login": "登入",
+    "createAccount": "建立帳號",
+    "useExistingAccount": "使用既有帳號",
+    "createNewAccount": "建立新帳號",
+    "socialSignIn": "第三方登入選項",
+    "continueWith": "或繼續使用",
+    "continueWithGoogle": "使用 Google 繼續",
+    "continueWithGitHub": "使用 GitHub 繼續"
   }
 }

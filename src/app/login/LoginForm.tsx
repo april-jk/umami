@@ -6,18 +6,18 @@ import {
   FormField,
   FormSubmitButton,
   Heading,
-  Icon,
   PasswordField,
   TextField,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
-import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
+import styles from './LoginPage.module.css';
+import { OAuthProviderButtons } from './OAuthProviderButtons';
 
 export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
-  const { t, labels, messages, getErrorMessage } = useMessages();
+  const { t, getErrorMessage } = useMessages();
   const router = useRouter();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const { mutateAsync, error, isPending } = useUpdateQuery(
@@ -35,20 +35,24 @@ export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
   };
 
   return (
-    <Column justifyContent="center" alignItems="center" gap="6">
-      <Icon size="lg">
-        <Logo />
-      </Icon>
-      <Heading>Amami</Heading>
-      <Form onSubmit={handleSubmit} error={getErrorMessage(error)} style={{ minWidth: 300 }}>
+    <Column className={styles.formContent} gap="8">
+      <header className={styles.formHeader}>
+        <p className={styles.formKicker}>
+          {isRegister ? t('auth.newToAmami') : t('auth.welcomeBack')}
+        </p>
+        <Heading as="h2" size="lg">
+          {isRegister ? t('auth.createWorkspace') : t('auth.signIn')}
+        </Heading>
+      </header>
+      <Form onSubmit={handleSubmit} error={getErrorMessage(error)} className={styles.authForm}>
         <FormField
-          label={t(labels.username)}
+          label={t('auth.username')}
           data-test="input-username"
           name="username"
           rules={{
-            required: t(labels.required),
+            required: t('auth.required'),
             ...(isRegister
-              ? { minLength: { value: 3, message: 'Use at least 3 characters.' } }
+              ? { minLength: { value: 3, message: t('auth.usernameMinLength') } }
               : {}),
           }}
         >
@@ -56,13 +60,13 @@ export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
         </FormField>
 
         <FormField
-          label={t(labels.password)}
+          label={t('auth.password')}
           data-test="input-password"
           name="password"
           rules={{
-            required: t(labels.required),
+            required: t('auth.required'),
             ...(isRegister
-              ? { minLength: { value: 8, message: t(messages.minPasswordLength, { n: '8' }) } }
+              ? { minLength: { value: 8, message: t('auth.passwordMinLength') } }
               : {}),
           }}
         >
@@ -72,20 +76,21 @@ export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
           <FormSubmitButton
             data-test="button-submit"
             variant="primary"
-            style={{ flex: 1 }}
+            style={{ flex: 1, minHeight: 44 }}
             isDisabled={isPending}
           >
-            {isRegister ? 'Create account' : t(labels.login)}
+            {isRegister ? t('auth.createAccount') : t('auth.login')}
           </FormSubmitButton>
         </FormButtons>
         <Button
           type="button"
           variant="quiet"
           onPress={() => setMode(isRegister ? 'login' : 'register')}
-          style={{ width: '100%' }}
+          style={{ width: '100%', minHeight: 44 }}
         >
-          {isRegister ? 'Use an existing account' : 'Create a new account'}
+          {isRegister ? t('auth.useExistingAccount') : t('auth.createNewAccount')}
         </Button>
+        <OAuthProviderButtons />
       </Form>
     </Column>
   );

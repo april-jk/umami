@@ -616,5 +616,28 @@
       "exhausted": "已用完"
     },
     "codeUnavailable": "此历史记录无法恢复完整激活码。"
+  },
+  "auth": {
+    "accountAccess": "账户访问",
+    "eyebrow": "MCP 驱动的网站分析",
+    "headline": "让 AI Agent 读懂每一次访客访问。",
+    "brandNote": "通过 MCP 连接 Amami，在工作流中把访客信号转化为可执行的答案。",
+    "welcomeBack": "欢迎回来",
+    "newToAmami": "开始使用 Amami",
+    "signIn": "登录 Amami",
+    "createWorkspace": "创建你的工作区",
+    "username": "账号",
+    "password": "密码",
+    "required": "此项为必填。",
+    "usernameMinLength": "至少输入 3 个字符。",
+    "passwordMinLength": "密码至少 8 个字符。",
+    "login": "登录",
+    "createAccount": "创建账号",
+    "useExistingAccount": "使用已有账号",
+    "createNewAccount": "创建新账号",
+    "socialSignIn": "第三方登录选项",
+    "continueWith": "或继续使用",
+    "continueWithGoogle": "使用 Google 继续",
+    "continueWithGitHub": "使用 GitHub 继续"
   }
 }

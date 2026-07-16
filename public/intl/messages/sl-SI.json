@@ -631,5 +631,28 @@
       "exhausted": "Used up"
     },
     "codeUnavailable": "The full code is unavailable for this legacy record."
+  },
+  "auth": {
+    "accountAccess": "Account access",
+    "eyebrow": "MCP-READY ANALYTICS",
+    "headline": "Give your agent the context behind every visit.",
+    "brandNote": "Connect Amami through MCP, then turn visitor signals into answers without leaving your workflow.",
+    "welcomeBack": "Welcome back",
+    "newToAmami": "New to Amami",
+    "signIn": "Sign in to Amami",
+    "createWorkspace": "Create your workspace",
+    "username": "Username",
+    "password": "Password",
+    "required": "This field is required.",
+    "usernameMinLength": "Use at least 3 characters.",
+    "passwordMinLength": "Use at least 8 characters.",
+    "login": "Sign in",
+    "createAccount": "Create account",
+    "useExistingAccount": "Use an existing account",
+    "createNewAccount": "Create a new account",
+    "socialSignIn": "Social sign-in options",
+    "continueWith": "or continue with",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGitHub": "Continue with GitHub"
   }
 }

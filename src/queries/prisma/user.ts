@@ -2,10 +2,12 @@ import { Prisma } from '@/generated/prisma/client';
 import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { getRandomChars } from '@/lib/generate';
+import { hashPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters, Role } from '@/lib/types';
+import { createOAuthAccount, getOAuthAccountUser } from './oauthAccount';
 
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
@@ -161,6 +163,42 @@ export async function createRegisteredUser(data: {
   ]);
 
   return user;
+}
+
+export async function getOrCreateOAuthUser(data: {
+  provider: string;
+  providerAccountId: string;
+  email: string;
+}) {
+  const existingAccount = await getOAuthAccountUser(data.provider, data.providerAccountId);
+
+  if (existingAccount) {
+    return existingAccount;
+  }
+
+  let user = await getUserByUsername(data.email, { includePassword: true });
+
+  if (!user) {
+    user = await createRegisteredUser({
+      username: data.email,
+      // OAuth-only accounts cannot use password login unless a password-reset flow is added.
+      password: hashPassword(uuid()),
+    });
+  }
+
+  try {
+    const account = await createOAuthAccount({ ...data, userId: user.id });
+    return account.user;
+  } catch (error) {
+    if ((error as any)?.code === 'P2002') {
+      const concurrentAccount = await getOAuthAccountUser(data.provider, data.providerAccountId);
+      if (concurrentAccount) {
+        return concurrentAccount;
+      }
+    }
+
+    throw error;
+  }
 }
 
 export async function updateUser(userId: string, data: Prisma.UserUpdateInput) {

@@ -2,6 +2,7 @@ export * from './apiKey';
 export * from './activation-code';
 export * from './board';
 export * from './link';
+export * from './oauthAccount';
 export * from './pixel';
 export * from './report';
 export * from './segment';

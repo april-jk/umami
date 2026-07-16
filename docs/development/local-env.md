@@ -14,6 +14,13 @@ Optional:
 
 ```bash
 REDIS_URL=redis://127.0.0.1:6379
+
+# OAuth callbacks must exactly match these URLs in Google Cloud and GitHub OAuth Apps.
+OAUTH_BASE_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
 ```
 
 Notes:
@@ -21,6 +28,9 @@ Notes:
 - `DATABASE_URL` is the only hard requirement for the open-source dev server.
 - `APP_SECRET` should be stable for a local database so auth cookies remain valid between restarts.
 - `REDIS_URL` enables Umami's Redis client when Redis is available. It is not required unless a feature explicitly depends on cache or rate-limit storage.
+- Google callback: `http://localhost:3000/api/auth/oauth/google/callback`.
+- GitHub callback: `http://localhost:3000/api/auth/oauth/github/callback`.
+- OAuth links require verified provider email addresses. Existing password accounts with that email are linked automatically.
 - `CLOUD_URL` should stay unset for local open-source development. If `CLOUD_URL` is set, Umami also requires `CLICKHOUSE_URL` and `REDIS_URL`.
 
 Bootstrap:

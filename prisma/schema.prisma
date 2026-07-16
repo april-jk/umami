@@ -33,9 +33,26 @@ model User {
   boards    Board[]      @relation("user")
   activationCodesCreated ActivationCode[] @relation("activationCodeCreator")
   activationRedemptions ActivationCodeRedemption[]
+  oauthAccounts OAuthAccount[]
 
   @@index([tenantId])
   @@map("user")
+}
+
+model OAuthAccount {
+  id                String    @id() @map("oauth_account_id") @db.Uuid
+  userId            String    @map("user_id") @db.Uuid
+  provider          String    @db.VarChar(32)
+  providerAccountId String    @map("provider_account_id") @db.VarChar(255)
+  email             String    @db.VarChar(255)
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("oauth_account")
 }
 
 model Session {
