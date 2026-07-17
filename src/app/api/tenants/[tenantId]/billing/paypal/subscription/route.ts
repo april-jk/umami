@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PAYPAL_CURRENCIES } from '@/lib/paypal-currency';
 import { createPaypalSubscription } from '@/lib/paypal';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, notFound } from '@/lib/response';
@@ -12,7 +13,11 @@ export async function POST(
 ) {
   const { auth, body, error } = await parseRequest(
     request,
-    z.object({ plan: z.enum(['starter', 'pro', 'team']), interval: z.enum(['month', 'year']) }),
+    z.object({
+      plan: z.enum(['starter', 'pro', 'team']),
+      interval: z.enum(['month', 'year']),
+      currency: z.enum(PAYPAL_CURRENCIES).default('USD'),
+    }),
   );
   if (error) return error();
 
@@ -43,6 +48,7 @@ export async function POST(
     tenantId,
     plan: body.plan,
     interval: body.interval,
+    currency: body.currency,
     returnUrl: `${origin}/membership/upgrade?${query}`,
     cancelUrl: `${origin}/membership/upgrade?paypal=cancelled`,
   });

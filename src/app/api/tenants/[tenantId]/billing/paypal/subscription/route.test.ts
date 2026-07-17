@@ -41,7 +41,7 @@ describe('POST /api/tenants/[tenantId]/billing/paypal/subscription', () => {
   test('creates a subscription for a tenant billing member', async () => {
     parseRequestMock.mockResolvedValue({
       auth: { user: { id: 'user-1', isAdmin: false } },
-      body: { plan: 'starter', interval: 'year' },
+      body: { plan: 'starter', interval: 'year', currency: 'USD' },
     } as any);
     canManageTenantBillingMock.mockResolvedValue(true);
     getTenantMock.mockResolvedValue({ id: 'tenant-1' } as any);
@@ -54,7 +54,31 @@ describe('POST /api/tenants/[tenantId]/billing/paypal/subscription', () => {
 
     expect(response.status).toBe(200);
     expect(createPaypalSubscriptionMock).toHaveBeenCalledWith(
-      expect.objectContaining({ tenantId: 'tenant-1', plan: 'starter', interval: 'year' }),
+      expect.objectContaining({
+        tenantId: 'tenant-1',
+        plan: 'starter',
+        interval: 'year',
+        currency: 'USD',
+      }),
+    );
+  });
+
+  test('passes the selected EUR currency to PayPal', async () => {
+    parseRequestMock.mockResolvedValue({
+      auth: { user: { id: 'user-1', isAdmin: false } },
+      body: { plan: 'starter', interval: 'month', currency: 'EUR' },
+    } as any);
+    canManageTenantBillingMock.mockResolvedValue(true);
+    getTenantMock.mockResolvedValue({ id: 'tenant-1' } as any);
+    createPaypalSubscriptionMock.mockResolvedValue({
+      id: 'sub-eur',
+      approveUrl: 'https://paypal.test/approve',
+    });
+
+    await POST(request, context);
+
+    expect(createPaypalSubscriptionMock).toHaveBeenCalledWith(
+      expect.objectContaining({ currency: 'EUR', plan: 'starter', interval: 'month' }),
     );
   });
 

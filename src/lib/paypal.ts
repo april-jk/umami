@@ -1,4 +1,7 @@
 import type { TENANT_PLANS } from '@/lib/constants';
+import { PAYPAL_CURRENCIES, type PaypalCurrency } from './paypal-currency';
+
+export type { PaypalCurrency } from './paypal-currency';
 
 export type PaypalMode = 'sandbox' | 'live';
 export type BillingInterval = 'month' | 'year';
@@ -33,12 +36,18 @@ function getConfig() {
   return { mode, baseUrl: endpoints[mode], clientId, clientSecret, prefix };
 }
 
-export function getPaypalPlanId(plan: BillablePlan, interval: BillingInterval) {
+export function getPaypalPlanId(
+  plan: BillablePlan,
+  interval: BillingInterval,
+  currency: PaypalCurrency = 'USD',
+) {
   const { prefix } = getConfig();
-  const value = process.env[`${prefix}_PLAN_${plan.toUpperCase()}_${interval.toUpperCase()}`];
+  const currencySuffix = currency === 'USD' ? '' : `_${currency}`;
+  const value =
+    process.env[`${prefix}_PLAN_${plan.toUpperCase()}_${interval.toUpperCase()}${currencySuffix}`];
 
   if (!value) {
-    throw new Error(`Missing PayPal plan configuration for ${plan} ${interval}.`);
+    throw new Error(`Missing PayPal plan configuration for ${plan} ${interval} ${currency}.`);
   }
 
   return value;
@@ -46,11 +55,22 @@ export function getPaypalPlanId(plan: BillablePlan, interval: BillingInterval) {
 
 export function findConfiguredPlan(
   planId: string,
-): { plan: BillablePlan; interval: BillingInterval } | null {
+): { plan: BillablePlan; interval: BillingInterval; currency: PaypalCurrency } | null {
   for (const plan of ['starter', 'pro', 'team'] as BillablePlan[]) {
     for (const interval of ['month', 'year'] as BillingInterval[]) {
-      if (getPaypalPlanId(plan, interval) === planId) {
-        return { plan, interval };
+      for (const currency of PAYPAL_CURRENCIES) {
+        try {
+          if (getPaypalPlanId(plan, interval, currency) === planId) {
+            return { plan, interval, currency };
+          }
+        } catch (error) {
+          if (
+            !(error instanceof Error) ||
+            !error.message.startsWith('Missing PayPal plan configuration')
+          ) {
+            throw error;
+          }
+        }
       }
     }
   }
@@ -100,16 +120,18 @@ export async function createPaypalSubscription({
   tenantId,
   plan,
   interval,
+  currency,
   returnUrl,
   cancelUrl,
 }: {
   tenantId: string;
   plan: BillablePlan;
   interval: BillingInterval;
+  currency: PaypalCurrency;
   returnUrl: string;
   cancelUrl: string;
 }) {
-  const planId = getPaypalPlanId(plan, interval);
+  const planId = getPaypalPlanId(plan, interval, currency);
   const subscription = await paypalRequest('/v1/billing/subscriptions', {
     method: 'POST',
     body: JSON.stringify({

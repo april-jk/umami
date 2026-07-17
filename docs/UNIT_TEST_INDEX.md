@@ -21,6 +21,7 @@
 | 9 | 当前分支 | 会员到期时间展示 | [iter-9-membership-expiration-uncovered.md](iter-9-membership-expiration-uncovered.md) | ⬜ 待补充浏览器验证 |
 | 10 | 当前分支 | 复合会员权益与到期回退 | [iter-10-composite-membership-uncovered.md](iter-10-composite-membership-uncovered.md) | ⬜ 待补充支付沙箱验证 |
 | 11 | 当前分支 | Google 与 GitHub 一键登录 | [iter-11-oauth-sign-in-uncovered.md](iter-11-oauth-sign-in-uncovered.md) | ⬜ 待补充真实 OAuth 浏览器验证 |
+| 12 | 当前分支 | PayPal EUR 订阅结账 | [iter-12-paypal-eur-checkout-uncovered.md](iter-12-paypal-eur-checkout-uncovered.md) | ⬜ 待补充 PayPal Sandbox 验证 |
 
 ---
 
@@ -102,7 +103,8 @@ pnpm vitest run \
 - **2026-07-16**: 收录迭代 9（会员到期时间展示）未覆盖场景
 - **2026-07-16**: 收录迭代 10（复合会员权益与到期回退）未覆盖场景
 - **2026-07-16**: 收录迭代 11（Google 与 GitHub 一键登录）未覆盖场景
+- **2026-07-17**: 收录迭代 12（PayPal EUR 订阅结账）未覆盖场景
 
 ---
 
-*最后更新: 2026-07-16*
+*最后更新: 2026-07-17*

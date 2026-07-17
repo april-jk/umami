@@ -37,7 +37,7 @@ beforeEach(() => {
     plan_id: 'plan-1',
     custom_id: 'tenant-1:pro:year',
   } as any);
-  findConfiguredPlanMock.mockReturnValue({ plan: 'pro', interval: 'year' });
+  findConfiguredPlanMock.mockReturnValue({ plan: 'pro', interval: 'year', currency: 'USD' });
 });
 
 describe('POST /api/tenants/[tenantId]/billing/paypal/confirm', () => {

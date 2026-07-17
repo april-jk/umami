@@ -23,6 +23,7 @@ import {
 import type { TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
 import { ActivationCodeRedeemButton } from './ActivationCodeRedeemButton';
+import { PAYPAL_EUR_PLAN_PRICES, type PaypalCurrency } from '@/lib/paypal-currency';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 
@@ -34,20 +35,56 @@ function getRecommendedPlan(currentPlan: TenantPlanId, config: MembershipConfig)
 function getDisplayedPrice(
   plan: TenantPlanId,
   interval: 'month' | 'year',
+  currency: PaypalCurrency,
   translate: (key: string, values?: Record<string, string | number>) => string,
   config: MembershipConfig,
 ) {
   if (plan === 'free') return translate('membership.freePrice');
 
-  const price = config.plans[plan].prices;
+  const price = getDisplayedPlanPrices(plan, currency, config);
   if (price.monthly === null || price.annual === null) {
     return translate('membership.customPrice');
   }
 
   const monthlyPrice = interval === 'year' ? price.annual / 12 : price.monthly;
-  return translate('membership.pricePerMonth', {
-    price: monthlyPrice.toFixed(interval === 'year' ? 2 : 0),
-  });
+  return formatPriceTranslation(
+    'membership.pricePerMonth',
+    monthlyPrice,
+    currency,
+    interval === 'year' ? 2 : 0,
+    translate,
+  );
+}
+
+function getDisplayedPlanPrices(
+  plan: TenantPlanId,
+  currency: PaypalCurrency,
+  config: MembershipConfig,
+) {
+  if (currency === 'EUR' && plan in PAYPAL_EUR_PLAN_PRICES) {
+    return PAYPAL_EUR_PLAN_PRICES[plan as keyof typeof PAYPAL_EUR_PLAN_PRICES];
+  }
+
+  return config.plans[plan].prices;
+}
+
+function formatPriceTranslation(
+  key: string,
+  amount: number,
+  currency: PaypalCurrency,
+  fractionDigits: number,
+  translate: (key: string, values?: Record<string, string | number>) => string,
+) {
+  const placeholder = '__AMAMI_PRICE__';
+  const formatted = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+    useGrouping: false,
+  }).format(amount);
+
+  return translate(key, { price: placeholder }).replace(`$${placeholder}`, formatted);
 }
 
 function formatFeatureValue(value: number | null, unlimited: string) {
@@ -120,15 +157,18 @@ export function UpgradePage() {
   const searchParams = useSearchParams();
   const [selectedPlan, setSelectedPlan] = useState<TenantPlanId | null>(null);
   const [billingInterval, setBillingInterval] = useState<'month' | 'year'>('year');
+  const [currency, setCurrency] = useState<PaypalCurrency>('USD');
   const [error, setError] = useState<'confirmationError' | 'checkoutError' | null>(null);
   const paypalSubscription = useMutation({
     mutationFn: ({
       plan,
       interval,
+      currency,
     }: {
       plan: Exclude<TenantPlanId, 'free' | 'enterprise'>;
       interval: 'month' | 'year';
-    }) => post(`/tenants/${tenantId}/billing/paypal/subscription`, { plan, interval }),
+      currency: PaypalCurrency;
+    }) => post(`/tenants/${tenantId}/billing/paypal/subscription`, { plan, interval, currency }),
   });
   const paypalConfirmation = useMutation({
     mutationFn: (subscriptionId: string) =>
@@ -155,6 +195,7 @@ export function UpgradePage() {
       const { approveUrl } = await paypalSubscription.mutateAsync({
         plan,
         interval: billingInterval,
+        currency,
       });
       window.location.assign(approveUrl);
     } catch {
@@ -202,6 +243,18 @@ export function UpgradePage() {
           <ActivationCodeRedeemButton tenantId={tenantId} />
         </Row>
 
+        <Row gap="2" alignItems="center" aria-label="Currency">
+          {(['USD', 'EUR'] as const).map(value => (
+            <Button
+              key={value}
+              variant={currency === value ? 'primary' : 'quiet'}
+              onPress={() => setCurrency(value)}
+            >
+              {value}
+            </Button>
+          ))}
+        </Row>
+
         {selectedPlan &&
           selectedPlan !== currentPlan &&
           planOrder.indexOf(selectedPlan) < currentIndex && (
@@ -240,7 +293,7 @@ export function UpgradePage() {
               const description = t(`${planKey}.description`);
               const planConfig = membershipConfig.plans[plan];
               const features = getDynamicFeatures(planConfig, t, labels);
-              const pricing = planConfig.prices;
+              const pricing = getDisplayedPlanPrices(plan, currency, membershipConfig);
 
               const cardStyle = isCurrent
                 ? { border: '2px solid #8b5cf6', backgroundColor: '#faf5ff' }
@@ -258,15 +311,27 @@ export function UpgradePage() {
                     <Column gap="2" alignItems="center">
                       <PlanBadge plan={plan} label={planName} />
                       <Text weight="bold" size="lg">
-                        {getDisplayedPrice(plan, billingInterval, t, membershipConfig)}
+                        {getDisplayedPrice(plan, billingInterval, currency, t, membershipConfig)}
                       </Text>
                       {pricing.annual !== null &&
                         pricing.monthly !== null &&
                         pricing.monthly > 0 && (
                           <Text size="sm" color="muted">
                             {billingInterval === 'year'
-                              ? t('membership.billedYear', { price: pricing.annual })
-                              : t('membership.yearAvailable', { price: pricing.annual })}
+                              ? formatPriceTranslation(
+                                  'membership.billedYear',
+                                  pricing.annual,
+                                  currency,
+                                  0,
+                                  t,
+                                )
+                              : formatPriceTranslation(
+                                  'membership.yearAvailable',
+                                  pricing.annual,
+                                  currency,
+                                  0,
+                                  t,
+                                )}
                           </Text>
                         )}
                       {isCurrent && (

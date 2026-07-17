@@ -406,10 +406,36 @@ describe('UpgradePage', () => {
         expect(mutateAsyncMock).toHaveBeenCalledWith({
           plan: expect.any(String),
           interval: 'year',
+          currency: 'USD',
         });
       });
       expect(screen.getByText('Unable to start checkout. Please try again.')).toBeInTheDocument();
     }
+  });
+
+  test('shows EUR prices and starts an EUR checkout when selected', async () => {
+    const mutateAsyncMock = vi.fn().mockRejectedValue(new Error('PayPal unavailable'));
+    useApiMock.mockReturnValue({
+      post: postMock,
+      useMutation: () => ({ mutate: vi.fn(), mutateAsync: mutateAsyncMock, isPending: false }),
+    } as any);
+    useLoginQueryMock.mockReturnValue({ user: { tenantId: 'tenant-1', plan: 'free' } } as any);
+    useTenantQueryMock.mockReturnValue({ data: { plan: 'free' } } as any);
+
+    render(<UpgradePage />);
+    fireEvent.click(screen.getByRole('button', { name: 'EUR' }));
+
+    expect(screen.getByText('€7.50/mo')).toBeInTheDocument();
+    expect(screen.getByText('Billed €90/year (save 2 months)')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByRole('button', { name: 'Subscribe' })[0]);
+    await waitFor(() => {
+      expect(mutateAsyncMock).toHaveBeenCalledWith({
+        plan: 'starter',
+        interval: 'year',
+        currency: 'EUR',
+      });
+    });
   });
 
   test('redirects to the approval URL after checkout starts', async () => {
