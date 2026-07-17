@@ -425,8 +425,8 @@ describe('UpgradePage', () => {
     render(<UpgradePage />);
     fireEvent.click(screen.getByRole('button', { name: 'EUR' }));
 
-    expect(screen.getByText('€7.50/mo')).toBeInTheDocument();
-    expect(screen.getByText('Billed €90/year (save 2 months)')).toBeInTheDocument();
+    expect(screen.getByText('€6.56/mo')).toBeInTheDocument();
+    expect(screen.getByText('Billed €78.71/year (save 2 months)')).toBeInTheDocument();
 
     fireEvent.click(screen.getAllByRole('button', { name: 'Subscribe' })[0]);
     await waitFor(() => {

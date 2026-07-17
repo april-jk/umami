@@ -25,6 +25,6 @@ PAYPAL_<MODE>_PLAN_TEAM_YEAR_EUR=
 
 Set `PAYPAL_WEBHOOKS_ENABLED=true` only after registering `/api/webhooks/paypal` with PayPal and setting `PAYPAL_<MODE>_WEBHOOK_ID`. Until then, the endpoint returns 404 and post-approval confirmation queries PayPal directly.
 
-USD and EUR are available at checkout. USD uses the unsuffixed plan variables; EUR uses the `_EUR` variables. The deployed prices are Starter `9/90`, Pro `29/290`, and Team `79/790` for monthly/annual billing in each currency. PayPal plans are immutable by currency, so each currency requires a separate Live Plan ID.
+USD and EUR are available at checkout. USD uses the unsuffixed plan variables; EUR uses the `_EUR` variables. EUR prices are converted from the USD plans using the ECB reference rate snapshot of `1 EUR = 1.1435 USD` on 2026-07-17, rounded to cents: Starter `7.87/78.71`, Pro `25.36/253.61`, and Team `69.09/690.86` for monthly/annual billing. PayPal plans are immutable by currency and price, so a future exchange-rate refresh requires new Live Plan IDs rather than editing an existing plan.
 
 Billing access uses tenant scope: tenant owners and members with `tenant:billing:manage` can manage their own tenant subscription. A global admin can manage any tenant subscription from the administrator surface. The API enforces this server-side; the upgrade page does not rely on a client-side global-admin check.

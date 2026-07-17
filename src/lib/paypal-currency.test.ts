@@ -5,9 +5,9 @@ describe('PayPal currency configuration', () => {
   test('offers USD and EUR with prices matching the configured EUR plans', () => {
     expect(PAYPAL_CURRENCIES).toEqual(['USD', 'EUR']);
     expect(PAYPAL_EUR_PLAN_PRICES).toEqual({
-      starter: { monthly: 9, annual: 90 },
-      pro: { monthly: 29, annual: 290 },
-      team: { monthly: 79, annual: 790 },
+      starter: { monthly: 7.87, annual: 78.71 },
+      pro: { monthly: 25.36, annual: 253.61 },
+      team: { monthly: 69.09, annual: 690.86 },
     });
   });
 });

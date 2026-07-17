@@ -322,14 +322,14 @@ export function UpgradePage() {
                                   'membership.billedYear',
                                   pricing.annual,
                                   currency,
-                                  0,
+                                  Number.isInteger(pricing.annual) ? 0 : 2,
                                   t,
                                 )
                               : formatPriceTranslation(
                                   'membership.yearAvailable',
                                   pricing.annual,
                                   currency,
-                                  0,
+                                  Number.isInteger(pricing.annual) ? 0 : 2,
                                   t,
                                 )}
                           </Text>
