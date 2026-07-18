@@ -23,11 +23,11 @@ export function LoginForm({
   showOAuthProviders = true,
 }: {
   returnTo?: string;
-  onAuthenticated?: (token: string) => Promise<void>;
+  onAuthenticated?: (token: string, password: string) => Promise<void>;
   allowRegistration?: boolean;
   showOAuthProviders?: boolean;
 }) {
-  const { t, getErrorMessage } = useMessages();
+  const { t, labels, getErrorMessage } = useMessages();
   const router = useRouter();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const { mutateAsync, error, isPending } = useUpdateQuery(
@@ -39,7 +39,7 @@ export function LoginForm({
     const { token } = await mutateAsync(data);
 
     if (onAuthenticated) {
-      await onAuthenticated(token);
+      await onAuthenticated(token, data.password);
     } else {
       setClientAuthToken(token);
       router.replace(returnTo);
@@ -70,6 +70,17 @@ export function LoginForm({
         >
           <TextField autoComplete={isRegister ? 'username' : 'username'} />
         </FormField>
+
+        {isRegister && (
+          <FormField
+            label={t(labels.email)}
+            data-test="input-email"
+            name="email"
+            rules={{ required: t('auth.required') }}
+          >
+            <TextField autoComplete="email" inputMode="email" />
+          </FormField>
+        )}
 
         <FormField
           label={t('auth.password')}

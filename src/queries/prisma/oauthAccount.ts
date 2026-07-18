@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 const USER_SELECT = {
   id: true,
   username: true,
+  email: true,
   password: true,
   role: true,
   createdAt: true,

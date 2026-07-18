@@ -37,7 +37,12 @@ vi.mock('@umami/react-zen', () => ({
     </form>
   ),
   FormButtons: ({ children }: any) => <div>{children}</div>,
-  FormField: ({ children }: any) => <label>{children}</label>,
+  FormField: ({ label, children }: any) => (
+    <label>
+      {label}
+      {children}
+    </label>
+  ),
   FormSubmitButton: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Heading: ({ children }: any) => <h2>{children}</h2>,
   PasswordField: () => <input type="password" />,
@@ -54,7 +59,11 @@ beforeEach(() => {
   oauthProviderButtonsMock.mockReset();
   setClientAuthTokenMock.mockReset();
   mutateAsyncMock.mockReset();
-  useMessagesMock.mockReturnValue({ t: (key: string) => key, getErrorMessage: vi.fn() } as any);
+  useMessagesMock.mockReturnValue({
+    t: (key: string) => key,
+    labels: { email: 'label.email' },
+    getErrorMessage: vi.fn(),
+  } as any);
   useUpdateQueryMock.mockReturnValue({
     mutateAsync: mutateAsyncMock,
     error: null,
@@ -77,6 +86,7 @@ test('logs in normally and allows switching to registration', async () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'auth.createNewAccount' }));
   expect(screen.getByRole('button', { name: 'auth.createAccount' })).toBeTruthy();
+  expect(screen.getByText('label.email')).toBeTruthy();
   expect(useUpdateQueryMock).toHaveBeenLastCalledWith('/auth/register');
 });
 
@@ -97,7 +107,7 @@ test('uses the supplied identity-confirmation callback without exposing other lo
   if (!form) throw new Error('Login form not found');
   fireEvent.submit(form);
 
-  await waitFor(() => expect(onAuthenticated).toHaveBeenCalledWith('password-token'));
+  await waitFor(() => expect(onAuthenticated).toHaveBeenCalledWith('password-token', 'password'));
   expect(setClientAuthTokenMock).not.toHaveBeenCalled();
   expect(replaceMock).not.toHaveBeenCalled();
 });

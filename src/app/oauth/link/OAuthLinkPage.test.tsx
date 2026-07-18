@@ -48,7 +48,7 @@ test('links with the password-login token before saving it locally', async () =>
   await waitFor(() => expect(loginFormMock).toHaveBeenCalled());
 
   await act(async () => {
-    await loginFormMock.mock.lastCall?.[0].onAuthenticated('password-login-token');
+    await loginFormMock.mock.lastCall?.[0].onAuthenticated('password-login-token', 'password123');
   });
 
   expect(fetch).toHaveBeenCalledWith('/api/auth/oauth/link', {
@@ -57,7 +57,7 @@ test('links with the password-login token before saving it locally', async () =>
       authorization: 'Bearer password-login-token',
       'content-type': 'application/json',
     },
-    body: JSON.stringify({ code: 'link-code' }),
+    body: JSON.stringify({ code: 'link-code', password: 'password123' }),
   });
   expect(setClientAuthTokenMock).toHaveBeenCalledWith('password-login-token');
   expect(replaceMock).toHaveBeenCalledWith('/dashboard');
@@ -76,7 +76,7 @@ test('does not save a token when linking is rejected', async () => {
   await waitFor(() => expect(loginFormMock).toHaveBeenCalled());
 
   await expect(
-    loginFormMock.mock.lastCall?.[0].onAuthenticated('password-login-token'),
+    loginFormMock.mock.lastCall?.[0].onAuthenticated('password-login-token', 'password123'),
   ).rejects.toThrow('Wrong user');
 
   expect(setClientAuthTokenMock).not.toHaveBeenCalled();

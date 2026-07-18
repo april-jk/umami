@@ -37,14 +37,14 @@ export function OAuthLinkPage() {
     return <Loading placement="absolute" />;
   }
 
-  const handleAuthenticated = async (token: string) => {
+  const handleAuthenticated = async (token: string, password: string) => {
     const response = await fetch('/api/auth/oauth/link', {
       method: 'POST',
       headers: {
         authorization: `Bearer ${token}`,
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ code }),
+      body: JSON.stringify({ code, password }),
     });
     const payload = await response.json();
 

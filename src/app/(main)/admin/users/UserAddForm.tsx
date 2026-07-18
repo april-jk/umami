@@ -34,6 +34,9 @@ export function UserAddForm({ onSave, onClose }) {
       >
         <TextField autoComplete="new-username" data-test="input-username" />
       </FormField>
+      <FormField label={t(labels.email)} name="email" rules={{ required: t(labels.required) }}>
+        <TextField autoComplete="email" data-test="input-email" inputMode="email" />
+      </FormField>
       <FormField
         label={t(labels.password)}
         name="password"

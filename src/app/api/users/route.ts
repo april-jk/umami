@@ -6,12 +6,13 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { userRoleParam } from '@/lib/schema';
 import { canCreateUser } from '@/permissions';
-import { createUser, getUserByUsername } from '@/queries/prisma';
+import { createUser, getUserByEmail, getUserByUsername } from '@/queries/prisma';
 
 export async function POST(request: Request) {
   const schema = z.object({
     id: z.uuid().optional(),
     username: z.string().max(255),
+    email: z.string().trim().email().max(255),
     password: z.string().min(8).max(255),
     role: userRoleParam,
   });
@@ -26,17 +27,25 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const { id, username, password, role } = body;
+  const { id, username, email, password, role } = body;
 
-  const existingUser = await getUserByUsername(username, { showDeleted: true });
+  const [existingUser, existingEmail] = await Promise.all([
+    getUserByUsername(username, { showDeleted: true }),
+    getUserByEmail(email, { showDeleted: true }),
+  ]);
 
   if (existingUser) {
     return badRequest({ message: 'User already exists' });
   }
 
+  if (existingEmail) {
+    return badRequest({ message: 'Email already exists' });
+  }
+
   const user = await createUser({
     id: id || uuid(),
     username: username.toLowerCase(),
+    email: email.toLowerCase(),
     password: hashPassword(password),
     role: role ?? ROLES.user,
   });

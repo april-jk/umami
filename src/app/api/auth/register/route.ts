@@ -4,7 +4,12 @@ import { ROLES } from '@/lib/constants';
 import { hashPassword } from '@/lib/password';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json } from '@/lib/response';
-import { createRegisteredUser, getAllUserTeams, getUserByUsername } from '@/queries/prisma';
+import {
+  createRegisteredUser,
+  getAllUserTeams,
+  getUserByEmail,
+  getUserByUsername,
+} from '@/queries/prisma';
 
 export async function POST(request: Request) {
   const schema = z.object({
@@ -14,6 +19,7 @@ export async function POST(request: Request) {
       .min(3)
       .max(255)
       .regex(/^[a-zA-Z0-9._@-]+$/),
+    email: z.string().trim().email().max(255),
     password: z.string().min(8).max(255),
   });
 
@@ -24,15 +30,24 @@ export async function POST(request: Request) {
   }
 
   const username = body.username.toLowerCase();
-  const existingUser = await getUserByUsername(username, { showDeleted: true });
+  const email = body.email.toLowerCase();
+  const [existingUser, existingEmail] = await Promise.all([
+    getUserByUsername(username, { showDeleted: true }),
+    getUserByEmail(email, { showDeleted: true }),
+  ]);
 
   if (existingUser) {
     return badRequest({ message: 'User already exists', code: 'user-exists' });
   }
 
+  if (existingEmail) {
+    return badRequest({ message: 'Email already exists', code: 'email-exists' });
+  }
+
   try {
     const user = await createRegisteredUser({
       username,
+      email,
       password: hashPassword(body.password),
     });
     const token = await createAuthToken(user);
@@ -43,6 +58,7 @@ export async function POST(request: Request) {
       user: {
         id: user.id,
         username: user.username,
+        email: user.email,
         role: user.role,
         createdAt: user.createdAt,
         isAdmin: user.role === ROLES.admin,

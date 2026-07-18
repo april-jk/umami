@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { createOAuthAccount, getOAuthAccountUser } from './oauthAccount';
+import { getOAuthAccountUser } from './oauthAccount';
 import { getOrCreateOAuthUser } from './user';
 
 const {
@@ -9,6 +9,7 @@ const {
   tenantUserCreateMock,
   subscriptionCreateMock,
   userFindUniqueMock,
+  oauthAccountCreateMock,
 } = vi.hoisted(() => ({
   transactionMock: vi.fn(),
   tenantCreateMock: vi.fn(),
@@ -16,6 +17,7 @@ const {
   tenantUserCreateMock: vi.fn(),
   subscriptionCreateMock: vi.fn(),
   userFindUniqueMock: vi.fn(),
+  oauthAccountCreateMock: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
@@ -24,6 +26,7 @@ vi.mock('@/lib/prisma', () => ({
     client: {
       tenant: { create: tenantCreateMock },
       user: { create: userCreateMock, findUnique: userFindUniqueMock },
+      oAuthAccount: { create: oauthAccountCreateMock },
       tenantUser: { create: tenantUserCreateMock },
       tenantSubscription: { create: subscriptionCreateMock },
     },
@@ -31,15 +34,12 @@ vi.mock('@/lib/prisma', () => ({
 }));
 
 vi.mock('./oauthAccount', () => ({
-  createOAuthAccount: vi.fn(),
   getOAuthAccountUser: vi.fn(),
 }));
 
-const createOAuthAccountMock = vi.mocked(createOAuthAccount);
 const getOAuthAccountUserMock = vi.mocked(getOAuthAccountUser);
 
 beforeEach(() => {
-  createOAuthAccountMock.mockReset();
   getOAuthAccountUserMock.mockReset();
   transactionMock.mockReset();
   tenantCreateMock.mockReset();
@@ -47,6 +47,7 @@ beforeEach(() => {
   tenantUserCreateMock.mockReset();
   subscriptionCreateMock.mockReset();
   userFindUniqueMock.mockReset();
+  oauthAccountCreateMock.mockReset();
 });
 
 test('returns an existing provider account without creating another user', async () => {
@@ -62,17 +63,17 @@ test('returns an existing provider account without creating another user', async
   ).resolves.toEqual({ status: 'signed-in', user: existingUser });
 
   expect(transactionMock).not.toHaveBeenCalled();
-  expect(createOAuthAccountMock).not.toHaveBeenCalled();
+  expect(oauthAccountCreateMock).not.toHaveBeenCalled();
 });
 
-test('creates an OAuth account with its verified email when no local account matches', async () => {
+test('creates an OAuth account with a separate verified email when no local account matches', async () => {
   userFindUniqueMock.mockResolvedValue(null);
   tenantCreateMock.mockReturnValue({ kind: 'tenant' });
   userCreateMock.mockReturnValue({ kind: 'user' });
   tenantUserCreateMock.mockReturnValue({ kind: 'tenant-user' });
   subscriptionCreateMock.mockReturnValue({ kind: 'subscription' });
   transactionMock.mockResolvedValue([{ id: 'tenant-id' }, { id: 'oauth-user' }]);
-  createOAuthAccountMock.mockResolvedValue({ user: { id: 'oauth-user' } } as any);
+  oauthAccountCreateMock.mockReturnValue({ kind: 'oauth-account' });
 
   await expect(
     getOrCreateOAuthUser({
@@ -84,20 +85,29 @@ test('creates an OAuth account with its verified email when no local account mat
 
   expect(userCreateMock).toHaveBeenCalledWith(
     expect.objectContaining({
-      data: expect.objectContaining({ username: 'existing-local@example.com' }),
+      data: expect.objectContaining({
+        email: 'existing-local@example.com',
+        username: expect.stringMatching(/^oauth-[\da-f-]{36}$/),
+      }),
     }),
   );
-  expect(createOAuthAccountMock).toHaveBeenCalledWith(
+  expect(oauthAccountCreateMock).toHaveBeenCalledWith(
     expect.objectContaining({
-      userId: 'oauth-user',
-      email: 'existing-local@example.com',
-      provider: 'github',
+      data: expect.objectContaining({
+        email: 'existing-local@example.com',
+        provider: 'github',
+        providerAccountId: 'github-1',
+      }),
     }),
   );
 });
 
 test('requires a password-confirmed link for an existing email account', async () => {
-  userFindUniqueMock.mockResolvedValue({ id: 'local-user', username: 'user@example.com' });
+  userFindUniqueMock.mockResolvedValue({
+    id: 'local-user',
+    username: 'local-user',
+    email: 'user@example.com',
+  });
 
   await expect(
     getOrCreateOAuthUser({
@@ -108,7 +118,7 @@ test('requires a password-confirmed link for an existing email account', async (
   ).resolves.toEqual({ status: 'link-required', email: 'user@example.com' });
 
   expect(transactionMock).not.toHaveBeenCalled();
-  expect(createOAuthAccountMock).not.toHaveBeenCalled();
+  expect(oauthAccountCreateMock).not.toHaveBeenCalled();
 });
 
 test('returns the provider account created concurrently by another request', async () => {
@@ -118,7 +128,8 @@ test('returns the provider account created concurrently by another request', asy
   tenantUserCreateMock.mockReturnValue({ kind: 'tenant-user' });
   subscriptionCreateMock.mockReturnValue({ kind: 'subscription' });
   transactionMock.mockResolvedValue([{ id: 'tenant-id' }, { id: 'discarded-user' }]);
-  createOAuthAccountMock.mockRejectedValue({ code: 'P2002' });
+  oauthAccountCreateMock.mockReturnValue({ kind: 'oauth-account' });
+  transactionMock.mockRejectedValue({ code: 'P2002' });
   getOAuthAccountUserMock
     .mockResolvedValueOnce(null)
     .mockResolvedValueOnce({ id: 'concurrent-user' } as any);
@@ -139,7 +150,8 @@ test('requires a link when another request creates the same email account first'
   tenantUserCreateMock.mockReturnValue({ kind: 'tenant-user' });
   subscriptionCreateMock.mockReturnValue({ kind: 'subscription' });
   transactionMock.mockResolvedValue([{ id: 'tenant-id' }, { id: 'discarded-user' }]);
-  createOAuthAccountMock.mockRejectedValue({ code: 'P2002' });
+  oauthAccountCreateMock.mockReturnValue({ kind: 'oauth-account' });
+  transactionMock.mockRejectedValue({ code: 'P2002' });
   getOAuthAccountUserMock.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
 
   await expect(
@@ -149,4 +161,24 @@ test('requires a link when another request creates the same email account first'
       email: 'user@example.com',
     }),
   ).resolves.toEqual({ status: 'link-required', email: 'user@example.com' });
+});
+
+test('rolls back user provisioning when the provider binding cannot be created', async () => {
+  userFindUniqueMock.mockResolvedValue(null);
+  tenantCreateMock.mockReturnValue({ kind: 'tenant' });
+  userCreateMock.mockReturnValue({ kind: 'user' });
+  tenantUserCreateMock.mockReturnValue({ kind: 'tenant-user' });
+  subscriptionCreateMock.mockReturnValue({ kind: 'subscription' });
+  oauthAccountCreateMock.mockReturnValue({ kind: 'oauth-account' });
+  transactionMock.mockRejectedValue(new Error('database unavailable'));
+
+  await expect(
+    getOrCreateOAuthUser({
+      provider: 'google',
+      providerAccountId: 'google-1',
+      email: 'user@example.com',
+    }),
+  ).rejects.toThrow('database unavailable');
+
+  expect(transactionMock).toHaveBeenCalledTimes(1);
 });

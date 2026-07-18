@@ -7,7 +7,7 @@ import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters, Role } from '@/lib/types';
-import { createOAuthAccount, getOAuthAccountUser } from './oauthAccount';
+import { getOAuthAccountUser } from './oauthAccount';
 
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
@@ -30,6 +30,7 @@ async function findUser(criteria: Prisma.UserFindUniqueArgs, options: GetUserOpt
     select: {
       id: true,
       username: true,
+      email: true,
       password: includePassword,
       role: true,
       createdAt: true,
@@ -51,6 +52,10 @@ export async function getUser(userId: string, options: GetUserOptions = {}) {
 
 export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
   return findUser({ where: { username: username.toLowerCase() } }, options);
+}
+
+export async function getUserByEmail(email: string, options: GetUserOptions = {}) {
+  return findUser({ where: { email: email.toLowerCase() } }, options);
 }
 
 export async function getUsers(criteria: UserFindManyArgs, filters: QueryFilters = {}) {
@@ -81,12 +86,14 @@ export async function createUser(data: {
   username: string;
   password: string;
   role: Role;
+  email?: string;
 }) {
   return prisma.client.user.create({
     data,
     select: {
       id: true,
       username: true,
+      email: true,
       role: true,
     },
   });
@@ -105,10 +112,16 @@ function getTenantSlug(username: string) {
 export async function createRegisteredUser(data: {
   id?: string;
   username: string;
+  email: string;
   password: string;
+  oauthAccount?: {
+    provider: string;
+    providerAccountId: string;
+  };
 }) {
   const userId = data.id ?? uuid();
   const username = data.username.toLowerCase();
+  const email = data.email.toLowerCase();
   const tenantId = uuid();
 
   const [_, user] = await prisma.transaction([
@@ -131,12 +144,14 @@ export async function createRegisteredUser(data: {
         id: userId,
         tenantId,
         username,
+        email,
         password: data.password,
         role: ROLES.user,
       },
       select: {
         id: true,
         username: true,
+        email: true,
         password: true,
         role: true,
         createdAt: true,
@@ -160,6 +175,20 @@ export async function createRegisteredUser(data: {
         status: TENANT_STATUS.active,
       },
     }),
+
+    ...(data.oauthAccount
+      ? [
+          prisma.client.oAuthAccount.create({
+            data: {
+              id: uuid(),
+              userId,
+              provider: data.oauthAccount.provider,
+              providerAccountId: data.oauthAccount.providerAccountId,
+              email,
+            },
+          }),
+        ]
+      : []),
   ]);
 
   return user;
@@ -177,7 +206,7 @@ export async function getOrCreateOAuthUser(data: {
   }
 
   const email = data.email.toLowerCase();
-  const existingUser = await getUserByUsername(email);
+  const existingUser = await getUserByEmail(email);
 
   // A matching local username is not evidence that the OAuth identity owns that
   // account. The caller must require a password login before creating this binding.
@@ -187,12 +216,18 @@ export async function getOrCreateOAuthUser(data: {
 
   try {
     const user = await createRegisteredUser({
-      username: email,
+      // Preserve the existing OAuth-only account name convention. The verified
+      // identity email is stored separately and is never used as a username.
+      username: `oauth-${uuid()}`,
+      email,
       // OAuth-only accounts cannot use password login unless a password-reset flow is added.
       password: hashPassword(uuid()),
+      oauthAccount: {
+        provider: data.provider,
+        providerAccountId: data.providerAccountId,
+      },
     });
-    const account = await createOAuthAccount({ ...data, email, userId: user.id });
-    return { status: 'signed-in' as const, user: account.user };
+    return { status: 'signed-in' as const, user };
   } catch (error) {
     if ((error as any)?.code === 'P2002') {
       const concurrentAccount = await getOAuthAccountUser(data.provider, data.providerAccountId);
@@ -200,7 +235,7 @@ export async function getOrCreateOAuthUser(data: {
         return { status: 'signed-in' as const, user: concurrentAccount };
       }
 
-      const concurrentUser = await getUserByUsername(email);
+      const concurrentUser = await getUserByEmail(email);
       if (concurrentUser) {
         return { status: 'link-required' as const, email };
       }
