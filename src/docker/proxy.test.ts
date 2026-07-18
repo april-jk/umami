@@ -22,8 +22,8 @@ vi.mock('@/lib/match-configured-path', () => ({ matchesConfiguredPath: vi.fn() }
 
 const matchesConfiguredPathMock = vi.mocked(matchesConfiguredPath);
 
-function request(hostname: string, path: string, forwardedHost?: string) {
-  const url = new URL(`https://${hostname}${path}`);
+function request(hostname: string, path: string, forwardedHost?: string, port?: string) {
+  const url = new URL(`https://${hostname}${port ? `:${port}` : ''}${path}`);
   return {
     headers: new Headers(forwardedHost ? { 'x-forwarded-host': forwardedHost } : undefined),
     nextUrl: Object.assign(url, { clone: () => new URL(url.toString()) }),
@@ -80,6 +80,19 @@ describe('legacy dashboard redirects', () => {
         request('amami-web-production.up.railway.app', '/dashboard', 'dashboard.amami.dev'),
       ),
     ).toEqual({ type: 'redirect', url: 'https://analytics.amami.dev/dashboard' });
+  });
+
+  test('removes the internal port from the public redirect', () => {
+    redirectMock.mockImplementation(url => ({ type: 'redirect', url: url.toString() }));
+
+    expect(
+      middleware(
+        request('amami-web-production.up.railway.app', '/login', 'dashboard.amami.dev', '8080'),
+      ),
+    ).toEqual({
+      type: 'redirect',
+      url: 'https://analytics.amami.dev/login',
+    });
   });
 });
 
