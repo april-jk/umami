@@ -22,6 +22,7 @@
 | 10 | 当前分支 | 复合会员权益与到期回退 | [iter-10-composite-membership-uncovered.md](iter-10-composite-membership-uncovered.md) | ⬜ 待补充支付沙箱验证 |
 | 11 | 当前分支 | Google 与 GitHub 一键登录 | [iter-11-oauth-sign-in-uncovered.md](iter-11-oauth-sign-in-uncovered.md) | ⬜ 待补充真实 OAuth 浏览器验证 |
 | 12 | 当前分支 | PayPal EUR 订阅结账 | [iter-12-paypal-eur-checkout-uncovered.md](iter-12-paypal-eur-checkout-uncovered.md) | ⬜ 待补充 PayPal Sandbox 验证 |
+| 13 | 当前分支 | MCP 安装识别、访问记录和客户端策略 | [iter-13-mcp-access-control-uncovered.md](iter-13-mcp-access-control-uncovered.md) | ⬜ 待补充预生产迁移与真实 MCP 链路验证 |
 
 ---
 
@@ -104,7 +105,8 @@ pnpm vitest run \
 - **2026-07-16**: 收录迭代 10（复合会员权益与到期回退）未覆盖场景
 - **2026-07-16**: 收录迭代 11（Google 与 GitHub 一键登录）未覆盖场景
 - **2026-07-17**: 收录迭代 12（PayPal EUR 订阅结账）未覆盖场景
+- **2026-07-18**: 收录迭代 13（MCP 安装识别、访问记录和客户端策略）未覆盖场景
 
 ---
 
-*最后更新: 2026-07-17*
+*最后更新: 2026-07-18*

@@ -5,6 +5,7 @@ import {
   getApiKeyAuth,
   getUserApiKeys,
   hashApiKey,
+  touchApiKey,
 } from './apiKey';
 import { getDefaultTenantIdForUser } from './tenant';
 
@@ -84,6 +85,21 @@ test('createApiKey stores only a hash and returns the raw key once', async () =>
   expect(result.key).toMatch(/^amami_live_/);
 });
 
+test('createApiKey persists the caller-supplied client type for MCP installation keys', async () => {
+  getDefaultTenantIdForUserMock.mockResolvedValue('tenant-1');
+  apiKeyMock.create.mockResolvedValue({
+    id: 'key-2',
+    name: 'Amami MCP',
+    keyPrefix: 'amami_live_abc',
+  });
+
+  await createApiKey('user-1', 'Amami MCP', 'mcp');
+
+  expect(apiKeyMock.create).toHaveBeenCalledWith(
+    expect.objectContaining({ data: expect.objectContaining({ clientType: 'mcp' }) }),
+  );
+});
+
 test('getApiKeyAuth looks up only active keys by hash and active users', async () => {
   apiKeyMock.findFirst.mockResolvedValue(null);
 
@@ -100,6 +116,17 @@ test('getApiKeyAuth looks up only active keys by hash and active users', async (
     include: {
       user: true,
     },
+  });
+});
+
+test('touchApiKey records the time an API key was last used', async () => {
+  apiKeyMock.update.mockResolvedValue({ id: 'key-1' });
+
+  await touchApiKey('key-1');
+
+  expect(apiKeyMock.update).toHaveBeenCalledWith({
+    where: { id: 'key-1' },
+    data: { lastUsedAt: expect.any(Date) },
   });
 });
 

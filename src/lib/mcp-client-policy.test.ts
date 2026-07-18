@@ -33,3 +33,24 @@ test('rejects a minimum version that exceeds the latest version', () => {
 
   expect(() => getMcpClientPolicy()).toThrow('must not be greater');
 });
+
+test('rejects invalid configured versions and returns configured update details', () => {
+  process.env.AMAMI_MCP_LATEST_VERSION = 'not-semver';
+  expect(() => getMcpClientPolicy()).toThrow(
+    'AMAMI_MCP_LATEST_VERSION must be a valid SemVer version',
+  );
+
+  process.env.AMAMI_MCP_LATEST_VERSION = 'v0.1.4';
+  process.env.AMAMI_MCP_MINIMUM_VERSION = '0.1.3';
+  process.env.AMAMI_MCP_PROTOCOL_VERSION = '2026-08-01';
+  process.env.AMAMI_MCP_UPDATE_MESSAGE = 'Upgrade now';
+  process.env.AMAMI_MCP_UPDATE_DOCS_URL = 'https://docs.example.com/update';
+
+  expect(getMcpClientPolicy()).toEqual({
+    latestVersion: '0.1.4',
+    minimumSupportedVersion: '0.1.3',
+    protocolVersion: '2026-08-01',
+    message: 'Upgrade now',
+    docsUrl: 'https://docs.example.com/update',
+  });
+});

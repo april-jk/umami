@@ -48,3 +48,15 @@ test('rejects a browser session or generic API key request', async () => {
   expect(body.error.code).toBe('mcp-client-required');
   expect(getMcpClientPolicyMock).not.toHaveBeenCalled();
 });
+
+test('returns the authentication error before evaluating the MCP policy', async () => {
+  const expected = new Response(JSON.stringify({ error: { code: 'unauthorized' } }), {
+    status: 401,
+  });
+  parseRequestMock.mockResolvedValue({ error: () => expected });
+
+  const response = await GET(new Request('https://dashboard.amami.dev/api/mcp/client-policy'));
+
+  expect(response).toBe(expected);
+  expect(getMcpClientPolicyMock).not.toHaveBeenCalled();
+});

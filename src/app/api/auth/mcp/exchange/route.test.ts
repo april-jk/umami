@@ -100,3 +100,34 @@ test('POST rejects an invalid PKCE verifier', async () => {
   expect(body.error.code).toBe('invalid-code-verifier');
   expect(createApiKeyMock).not.toHaveBeenCalled();
 });
+
+test('POST returns the parse error without consuming an authorization code', async () => {
+  const parseError = vi.fn(
+    () => new Response(JSON.stringify({ error: 'invalid' }), { status: 400 }),
+  );
+  parseRequestMock.mockResolvedValue({ body: null as any, error: parseError });
+
+  const response = await POST(
+    new Request('http://localhost/api/auth/mcp/exchange', { method: 'POST' }),
+  );
+
+  expect(response.status).toBe(400);
+  expect(consumeMcpAuthorizationCodeMock).not.toHaveBeenCalled();
+});
+
+test('POST rejects an expired or already consumed authorization code', async () => {
+  parseRequestMock.mockResolvedValue({
+    body: { code: 'expired-code', codeVerifier: 'verifier-12345678901234567890123456789012' },
+    error: undefined,
+  });
+  consumeMcpAuthorizationCodeMock.mockResolvedValue(null);
+
+  const response = await POST(
+    new Request('http://localhost/api/auth/mcp/exchange', { method: 'POST' }),
+  );
+  const body = await response.json();
+
+  expect(response.status).toBe(401);
+  expect(body.error.code).toBe('invalid-code');
+  expect(verifyCodeVerifierMock).not.toHaveBeenCalled();
+});
