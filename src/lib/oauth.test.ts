@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import {
   consumeOAuthLoginCode,
+  consumeOAuthLinkCode,
+  createOAuthLinkCode,
   createOAuthLoginCode,
   createOAuthState,
   getOAuthCallbackUrl,
@@ -73,6 +75,7 @@ describe('OAuth configuration and state', () => {
 
     expect(validateOAuthState(state, state, 'github')).toBe(true);
     expect(validateOAuthState(state, state, 'google')).toBe(false);
+    expect(validateOAuthState(state, `${state.slice(0, -1)}x`, 'github')).toBe(false);
     expect(validateOAuthState(state, `${state}changed`, 'github')).toBe(false);
   });
 
@@ -96,6 +99,46 @@ describe('OAuth configuration and state', () => {
 
     await expect(createOAuthLoginCode('user-id')).rejects.toThrow('OAuth login requires Redis');
     await expect(consumeOAuthLoginCode('code')).resolves.toBeNull();
+  });
+
+  test('stores a provider identity in a short-lived code that can only be consumed once', async () => {
+    redisMock.client.take.mockResolvedValue({
+      provider: 'google',
+      providerAccountId: 'google-user',
+      email: 'USER@EXAMPLE.COM',
+    });
+
+    const code = await createOAuthLinkCode({
+      provider: 'google',
+      providerAccountId: 'google-user',
+      email: 'user@example.com',
+    });
+
+    expect(redisMock.client.set).toHaveBeenCalledWith(
+      `oauth-link:${code}`,
+      {
+        provider: 'google',
+        providerAccountId: 'google-user',
+        email: 'user@example.com',
+      },
+      600,
+    );
+    await expect(consumeOAuthLinkCode(code)).resolves.toEqual({
+      provider: 'google',
+      providerAccountId: 'google-user',
+      email: 'user@example.com',
+    });
+  });
+
+  test('rejects malformed, expired, and unavailable OAuth link codes', async () => {
+    redisMock.client.take.mockResolvedValue({ provider: 'not-supported' });
+    await expect(consumeOAuthLinkCode('bad-code')).resolves.toBeNull();
+
+    redisMock.enabled = false;
+    await expect(
+      createOAuthLinkCode({ provider: 'github', providerAccountId: '1', email: 'user@example.com' }),
+    ).rejects.toThrow('OAuth account linking requires Redis');
+    await expect(consumeOAuthLinkCode('code')).resolves.toBeNull();
   });
 
   test('builds the GitHub configuration and requires an explicit callback base URL', () => {
@@ -169,6 +212,21 @@ describe('getOAuthIdentity', () => {
     );
   });
 
+  test('rejects missing provider configuration and failed provider requests', async () => {
+    delete process.env.GOOGLE_CLIENT_ID;
+    delete process.env.GOOGLE_CLIENT_SECRET;
+    await expect(getOAuthIdentity('google', 'code')).rejects.toThrow('google OAuth is not configured');
+
+    process.env.GOOGLE_CLIENT_ID = 'google-id';
+    process.env.GOOGLE_CLIENT_SECRET = 'google-secret';
+    process.env.OAUTH_BASE_URL = 'http://localhost:3000';
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(null, { status: 503 })));
+
+    await expect(getOAuthIdentity('google', 'code')).rejects.toThrow(
+      'OAuth provider request failed with status 503',
+    );
+  });
+
   test('rejects an unverified Google email address', async () => {
     process.env.GOOGLE_CLIENT_ID = 'google-id';
     process.env.GOOGLE_CLIENT_SECRET = 'google-secret';
@@ -191,6 +249,24 @@ describe('getOAuthIdentity', () => {
 
     await expect(getOAuthIdentity('google', 'code')).rejects.toThrow(
       'Google account does not provide a verified email address',
+    );
+  });
+
+  test('rejects GitHub identities without a verified email address', async () => {
+    process.env.GITHUB_CLIENT_ID = 'github-id';
+    process.env.GITHUB_CLIENT_SECRET = 'github-secret';
+    process.env.OAUTH_BASE_URL = 'http://localhost:3000';
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(new Response(JSON.stringify({ access_token: 'access-token' })))
+        .mockResolvedValueOnce(new Response(JSON.stringify({ id: 42 })))
+        .mockResolvedValueOnce(new Response(JSON.stringify([]))),
+    );
+
+    await expect(getOAuthIdentity('github', 'code')).rejects.toThrow(
+      'GitHub account does not provide a verified email address',
     );
   });
 });

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import {
+  createOAuthLinkCode,
   createOAuthLoginCode,
   getOAuthBaseUrl,
   getOAuthIdentity,
@@ -34,10 +35,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
 
   try {
     const identity = await getOAuthIdentity(value, code);
-    const user = await getOrCreateOAuthUser({ provider: value, ...identity });
-    const loginCode = await createOAuthLoginCode(user.id);
-    const redirect = new URL('/oauth/complete', getOAuthBaseUrl());
-    redirect.hash = new URLSearchParams({ code: loginCode }).toString();
+    const result = await getOrCreateOAuthUser({ provider: value, ...identity });
+    const redirect = new URL(
+      result.status === 'signed-in' ? '/oauth/complete' : '/oauth/link',
+      getOAuthBaseUrl(),
+    );
+    const callbackCode =
+      result.status === 'signed-in'
+        ? await createOAuthLoginCode(result.user.id)
+        : await createOAuthLinkCode({ provider: value, ...identity });
+    redirect.hash = new URLSearchParams({ code: callbackCode }).toString();
 
     const response = NextResponse.redirect(redirect);
     response.cookies.set({

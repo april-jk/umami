@@ -7,7 +7,9 @@ export type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 
 const STATE_TTL_SECONDS = 10 * 60;
 const LOGIN_CODE_TTL_SECONDS = 60;
+const LINK_CODE_TTL_SECONDS = 10 * 60;
 const LOGIN_CODE_PREFIX = 'oauth-login:';
+const LINK_CODE_PREFIX = 'oauth-link:';
 
 type OAuthConfig = {
   clientId: string;
@@ -24,6 +26,12 @@ export type OAuthIdentity = {
 
 type OAuthLoginCode = {
   userId: string;
+};
+
+export type OAuthLinkCode = {
+  provider: OAuthProvider;
+  providerAccountId: string;
+  email: string;
 };
 
 function getEnv(provider: OAuthProvider, name: 'ID' | 'SECRET') {
@@ -116,6 +124,39 @@ export async function consumeOAuthLoginCode(code: string): Promise<OAuthLoginCod
   const payload = await redis.client.take(`${LOGIN_CODE_PREFIX}${code}`);
 
   return typeof payload?.userId === 'string' ? { userId: payload.userId } : null;
+}
+
+export async function createOAuthLinkCode(identity: OAuthLinkCode) {
+  if (!redis.enabled) {
+    throw new Error('OAuth account linking requires Redis');
+  }
+
+  const code = crypto.randomBytes(32).toString('base64url');
+  await redis.client.set(`${LINK_CODE_PREFIX}${code}`, identity, LINK_CODE_TTL_SECONDS);
+
+  return code;
+}
+
+export async function consumeOAuthLinkCode(code: string): Promise<OAuthLinkCode | null> {
+  if (!redis.enabled) {
+    return null;
+  }
+
+  const payload = await redis.client.take(`${LINK_CODE_PREFIX}${code}`);
+
+  if (
+    !isOAuthProvider(payload?.provider) ||
+    typeof payload?.providerAccountId !== 'string' ||
+    typeof payload?.email !== 'string'
+  ) {
+    return null;
+  }
+
+  return {
+    provider: payload.provider,
+    providerAccountId: payload.providerAccountId,
+    email: payload.email.toLowerCase(),
+  };
 }
 
 async function fetchJson(url: string, init: RequestInit) {

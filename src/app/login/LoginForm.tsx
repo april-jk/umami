@@ -16,7 +16,17 @@ import { setClientAuthToken } from '@/lib/client';
 import styles from './LoginPage.module.css';
 import { OAuthProviderButtons } from './OAuthProviderButtons';
 
-export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
+export function LoginForm({
+  returnTo = '/dashboard',
+  onAuthenticated,
+  allowRegistration = true,
+  showOAuthProviders = true,
+}: {
+  returnTo?: string;
+  onAuthenticated?: (token: string) => Promise<void>;
+  allowRegistration?: boolean;
+  showOAuthProviders?: boolean;
+}) {
   const { t, getErrorMessage } = useMessages();
   const router = useRouter();
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -26,12 +36,14 @@ export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
   const isRegister = mode === 'register';
 
   const handleSubmit = async (data: any) => {
-    await mutateAsync(data, {
-      onSuccess: async ({ token }) => {
-        setClientAuthToken(token);
-        router.replace(returnTo);
-      },
-    });
+    const { token } = await mutateAsync(data);
+
+    if (onAuthenticated) {
+      await onAuthenticated(token);
+    } else {
+      setClientAuthToken(token);
+      router.replace(returnTo);
+    }
   };
 
   return (
@@ -82,15 +94,17 @@ export function LoginForm({ returnTo = '/dashboard' }: { returnTo?: string }) {
             {isRegister ? t('auth.createAccount') : t('auth.login')}
           </FormSubmitButton>
         </FormButtons>
-        <Button
-          type="button"
-          variant="quiet"
-          onPress={() => setMode(isRegister ? 'login' : 'register')}
-          style={{ width: '100%', minHeight: 44 }}
-        >
-          {isRegister ? t('auth.useExistingAccount') : t('auth.createNewAccount')}
-        </Button>
-        <OAuthProviderButtons />
+        {allowRegistration && (
+          <Button
+            type="button"
+            variant="quiet"
+            onPress={() => setMode(isRegister ? 'login' : 'register')}
+            style={{ width: '100%', minHeight: 44 }}
+          >
+            {isRegister ? t('auth.useExistingAccount') : t('auth.createNewAccount')}
+          </Button>
+        )}
+        {showOAuthProviders && <OAuthProviderButtons />}
       </Form>
     </Column>
   );

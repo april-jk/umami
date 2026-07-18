@@ -173,26 +173,36 @@ export async function getOrCreateOAuthUser(data: {
   const existingAccount = await getOAuthAccountUser(data.provider, data.providerAccountId);
 
   if (existingAccount) {
-    return existingAccount;
+    return { status: 'signed-in' as const, user: existingAccount };
   }
 
-  // Never infer account ownership from a matching username. Local registration does
-  // not prove control of an email-shaped username, so linking that account here
-  // would let a newly verified OAuth identity take over its password login.
-  // Existing users must link providers from an authenticated settings flow.
+  const email = data.email.toLowerCase();
+  const existingUser = await getUserByUsername(email);
+
+  // A matching local username is not evidence that the OAuth identity owns that
+  // account. The caller must require a password login before creating this binding.
+  if (existingUser) {
+    return { status: 'link-required' as const, email };
+  }
+
   try {
     const user = await createRegisteredUser({
-      username: `oauth-${uuid()}`,
+      username: email,
       // OAuth-only accounts cannot use password login unless a password-reset flow is added.
       password: hashPassword(uuid()),
     });
-    const account = await createOAuthAccount({ ...data, userId: user.id });
-    return account.user;
+    const account = await createOAuthAccount({ ...data, email, userId: user.id });
+    return { status: 'signed-in' as const, user: account.user };
   } catch (error) {
     if ((error as any)?.code === 'P2002') {
       const concurrentAccount = await getOAuthAccountUser(data.provider, data.providerAccountId);
       if (concurrentAccount) {
-        return concurrentAccount;
+        return { status: 'signed-in' as const, user: concurrentAccount };
+      }
+
+      const concurrentUser = await getUserByUsername(email);
+      if (concurrentUser) {
+        return { status: 'link-required' as const, email };
       }
     }
 

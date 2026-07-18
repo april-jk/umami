@@ -1,5 +1,6 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import {
+  createOAuthLinkCode,
   createOAuthLoginCode,
   getOAuthBaseUrl,
   getOAuthIdentity,
@@ -10,6 +11,7 @@ import { getOrCreateOAuthUser } from '@/queries/prisma';
 import { GET } from './route';
 
 vi.mock('@/lib/oauth', () => ({
+  createOAuthLinkCode: vi.fn(),
   createOAuthLoginCode: vi.fn(),
   getOAuthBaseUrl: vi.fn(),
   getOAuthIdentity: vi.fn(),
@@ -19,6 +21,7 @@ vi.mock('@/lib/oauth', () => ({
 vi.mock('@/queries/prisma', () => ({ getOrCreateOAuthUser: vi.fn() }));
 
 const createOAuthLoginCodeMock = vi.mocked(createOAuthLoginCode);
+const createOAuthLinkCodeMock = vi.mocked(createOAuthLinkCode);
 const getOAuthBaseUrlMock = vi.mocked(getOAuthBaseUrl);
 const getOAuthIdentityMock = vi.mocked(getOAuthIdentity);
 const getOrCreateOAuthUserMock = vi.mocked(getOrCreateOAuthUser);
@@ -27,6 +30,7 @@ const validateOAuthStateMock = vi.mocked(validateOAuthState);
 
 beforeEach(() => {
   createOAuthLoginCodeMock.mockReset();
+  createOAuthLinkCodeMock.mockReset();
   getOAuthBaseUrlMock.mockReset();
   getOAuthIdentityMock.mockReset();
   getOrCreateOAuthUserMock.mockReset();
@@ -43,9 +47,8 @@ test('GET redirects a valid callback with an opaque one-time code in the URL fra
     email: 'user@example.com',
   });
   getOrCreateOAuthUserMock.mockResolvedValue({
-    id: 'user-id',
-    role: 'user',
-    password: 'hash',
+    status: 'signed-in',
+    user: { id: 'user-id', role: 'user', password: 'hash' },
   } as any);
   createOAuthLoginCodeMock.mockResolvedValue('one-time-code');
 
@@ -71,6 +74,35 @@ test('GET redirects a valid callback with an opaque one-time code in the URL fra
   expect(location.hash).toBe('#code=one-time-code');
   expect(location.search).toBe('');
   expect(response.headers.get('set-cookie')).toContain('amami-oauth-state-google=');
+});
+
+test('GET sends an existing email account to the explicit linking flow', async () => {
+  getOAuthIdentityMock.mockResolvedValue({
+    providerAccountId: 'google-user',
+    email: 'user@example.com',
+  });
+  getOrCreateOAuthUserMock.mockResolvedValue({
+    status: 'link-required',
+    email: 'user@example.com',
+  } as any);
+  createOAuthLinkCodeMock.mockResolvedValue('link-code');
+
+  const response = await GET(
+    new Request('http://localhost/api/auth/oauth/google/callback?code=code&state=state', {
+      headers: { cookie: 'amami-oauth-state-google=state' },
+    }),
+    { params: Promise.resolve({ provider: 'google' }) },
+  );
+  const location = new URL(response.headers.get('location')!);
+
+  expect(location.pathname).toBe('/oauth/link');
+  expect(location.hash).toBe('#code=link-code');
+  expect(createOAuthLoginCodeMock).not.toHaveBeenCalled();
+  expect(createOAuthLinkCodeMock).toHaveBeenCalledWith({
+    provider: 'google',
+    providerAccountId: 'google-user',
+    email: 'user@example.com',
+  });
 });
 
 test('GET returns to login without contacting a provider when callback validation fails', async () => {
