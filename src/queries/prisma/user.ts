@@ -210,19 +210,24 @@ export async function getOrCreateOAuthUser(data: {
   }
 
   const email = data.email.toLowerCase();
-  const existingUser = await getUserByEmail(email);
+  const [existingUser, existingUsername] = await Promise.all([
+    getUserByEmail(email),
+    getUserByUsername(email),
+  ]);
 
-  // A matching local username is not evidence that the OAuth identity owns that
-  // account. The caller must require a password login before creating this binding.
+  // A matching local username is not evidence that the OAuth identity owns that account.
+  // Reject it rather than creating or binding an identity based on that coincidence.
   if (existingUser) {
     return { status: 'link-required' as const, email };
   }
 
+  if (existingUsername) {
+    return { status: 'username-conflict' as const };
+  }
+
   try {
     const user = await createRegisteredUser({
-      // Preserve the existing OAuth-only account name convention. The verified
-      // identity email is stored separately and is never used as a username.
-      username: `oauth-${uuid()}`,
+      username: email,
       email,
       // OAuth-only accounts cannot use password login unless a password-reset flow is added.
       password: hashPassword(uuid()),
@@ -239,9 +244,16 @@ export async function getOrCreateOAuthUser(data: {
         return { status: 'signed-in' as const, user: concurrentAccount };
       }
 
-      const concurrentUser = await getUserByEmail(email);
+      const [concurrentUser, concurrentUsername] = await Promise.all([
+        getUserByEmail(email),
+        getUserByUsername(email),
+      ]);
       if (concurrentUser) {
         return { status: 'link-required' as const, email };
+      }
+
+      if (concurrentUsername) {
+        return { status: 'username-conflict' as const };
       }
     }
 

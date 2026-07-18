@@ -128,6 +128,29 @@ test('GET rejects a new provider identity without a verified email without issui
   expect(response.headers.get('set-cookie')).toContain('amami-oauth-state-google=');
 });
 
+test('GET rejects an OAuth email that conflicts with another username without issuing a code', async () => {
+  getOAuthIdentityMock.mockResolvedValue({
+    providerAccountId: 'github-user',
+    email: 'user@example.com',
+  });
+  getOrCreateOAuthUserMock.mockResolvedValue({ status: 'username-conflict' } as any);
+
+  const response = await GET(
+    new Request('http://localhost/api/auth/oauth/github/callback?code=code&state=state', {
+      headers: { cookie: 'amami-oauth-state-github=state' },
+    }),
+    { params: Promise.resolve({ provider: 'github' }) },
+  );
+  const locationHeader = response.headers.get('location');
+  if (!locationHeader) throw new Error('Expected OAuth conflict redirect location');
+  const location = new URL(locationHeader);
+
+  expect(location.pathname).toBe('/login');
+  expect(location.searchParams.get('oauthError')).toBe('identity-conflict');
+  expect(createOAuthLoginCodeMock).not.toHaveBeenCalled();
+  expect(createOAuthLinkCodeMock).not.toHaveBeenCalled();
+});
+
 test('GET returns to login without contacting a provider when callback validation fails', async () => {
   validateOAuthStateMock.mockReturnValue(false);
 

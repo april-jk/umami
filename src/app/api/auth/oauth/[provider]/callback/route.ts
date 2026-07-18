@@ -48,8 +48,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
     const identity = await getOAuthIdentity(value, code);
     const result = await getOrCreateOAuthUser({ provider: value, ...identity });
 
-    if (result.status === 'email-required') {
-      return clearStateCookie(redirectToLogin('email-required'), value);
+    if (result.status === 'email-required' || result.status === 'username-conflict') {
+      return clearStateCookie(
+        redirectToLogin(
+          result.status === 'email-required' ? 'email-required' : 'identity-conflict',
+        ),
+        value,
+      );
     }
 
     const redirect = new URL(

@@ -89,7 +89,7 @@ test('rejects a new provider identity without a verified email before provisioni
   expect(transactionMock).not.toHaveBeenCalled();
 });
 
-test('creates an OAuth account with a separate verified email when no local account matches', async () => {
+test('uses the verified email as the OAuth username when no account matches', async () => {
   userFindUniqueMock.mockResolvedValue(null);
   tenantCreateMock.mockReturnValue({ kind: 'tenant' });
   userCreateMock.mockReturnValue({ kind: 'user' });
@@ -110,7 +110,7 @@ test('creates an OAuth account with a separate verified email when no local acco
     expect.objectContaining({
       data: expect.objectContaining({
         email: 'existing-local@example.com',
-        username: expect.stringMatching(/^oauth-[\da-f-]{36}$/),
+        username: 'existing-local@example.com',
       }),
     }),
   );
@@ -123,6 +123,20 @@ test('creates an OAuth account with a separate verified email when no local acco
       }),
     }),
   );
+});
+
+test('rejects a new OAuth identity when its email is already another username', async () => {
+  userFindUniqueMock.mockResolvedValueOnce(null).mockResolvedValueOnce({ id: 'other-user' });
+
+  await expect(
+    getOrCreateOAuthUser({
+      provider: 'github',
+      providerAccountId: 'github-1',
+      email: 'user@example.com',
+    }),
+  ).resolves.toEqual({ status: 'username-conflict' });
+
+  expect(transactionMock).not.toHaveBeenCalled();
 });
 
 test('requires a password-confirmed link for an existing email account', async () => {
@@ -167,7 +181,11 @@ test('returns the provider account created concurrently by another request', asy
 });
 
 test('requires a link when another request creates the same email account first', async () => {
-  userFindUniqueMock.mockResolvedValueOnce(null).mockResolvedValueOnce({ id: 'local-user' });
+  userFindUniqueMock
+    .mockResolvedValueOnce(null)
+    .mockResolvedValueOnce(null)
+    .mockResolvedValueOnce({ id: 'local-user' })
+    .mockResolvedValueOnce(null);
   tenantCreateMock.mockReturnValue({ kind: 'tenant' });
   userCreateMock.mockReturnValue({ kind: 'user' });
   tenantUserCreateMock.mockReturnValue({ kind: 'tenant-user' });
@@ -184,6 +202,28 @@ test('requires a link when another request creates the same email account first'
       email: 'user@example.com',
     }),
   ).resolves.toEqual({ status: 'link-required', email: 'user@example.com' });
+});
+
+test('rejects a username collision created concurrently with OAuth provisioning', async () => {
+  userFindUniqueMock
+    .mockResolvedValueOnce(null)
+    .mockResolvedValueOnce(null)
+    .mockResolvedValueOnce(null)
+    .mockResolvedValueOnce({ id: 'other-user' });
+  tenantCreateMock.mockReturnValue({ kind: 'tenant' });
+  userCreateMock.mockReturnValue({ kind: 'user' });
+  tenantUserCreateMock.mockReturnValue({ kind: 'tenant-user' });
+  subscriptionCreateMock.mockReturnValue({ kind: 'subscription' });
+  transactionMock.mockRejectedValue({ code: 'P2002' });
+  getOAuthAccountUserMock.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+
+  await expect(
+    getOrCreateOAuthUser({
+      provider: 'github',
+      providerAccountId: 'github-1',
+      email: 'user@example.com',
+    }),
+  ).resolves.toEqual({ status: 'username-conflict' });
 });
 
 test('rolls back user provisioning when the provider binding cannot be created', async () => {
