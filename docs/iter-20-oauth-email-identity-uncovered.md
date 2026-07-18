@@ -2,7 +2,7 @@
 
 ## 未覆盖场景
 
-- migration 30 的 PostgreSQL 回填、`LOWER(email)` 唯一索引、大小写冲突保留为 `NULL` 与应用回滚保留数据，须在预生产真实数据库演练。
+- 生产数据库已对一个指定历史 Google OAuth 用户直接完成 `email`、唯一索引与 migration 30 元数据登记；批量回填、大小写冲突保留为 `NULL` 与应用回滚保留数据，仍须在预生产演练。
 - Google/GitHub 的真实授权、Redis 一次性凭据和 PostgreSQL 并发事务不能由单元测试完全替代。
 - 本地注册尚无邮箱验证或恢复流程；预注册邮箱导致的可用性风险已记录，但不能在当前实现内自动恢复。
 - `src/queries/prisma/user.ts` 是既有大型模块，OAuth 新增路径有定向测试，完整历史文件覆盖率仍低于新增文件标准。
@@ -23,6 +23,7 @@
 - [x] 原密码在服务端复核，API Key 不能绑定 OAuth
 - [x] OAuth provisioning 在单一事务内完成
 - [x] 回滚脚本不删除身份数据
-- [ ] PostgreSQL migration 30 预生产演练
+- [x] 单一历史 OAuth 用户的生产数据库预检、事务回填、索引与 Prisma migration 元数据已验证；应用未部署
+- [ ] PostgreSQL migration 30 批量预生产演练
 - [ ] 真实 OAuth / Redis / 并发事务预生产验证
 - [ ] 邮箱验证与账户恢复产品决策
