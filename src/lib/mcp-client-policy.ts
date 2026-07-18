@@ -1,5 +1,11 @@
 import semver from 'semver';
 
+const MCP_PACKAGE_NAME = 'amami-analytics-mcp';
+const NPM_LATEST_URL = `https://registry.npmjs.org/${MCP_PACKAGE_NAME}/latest`;
+const NPM_LOOKUP_TIMEOUT_MS = 2_000;
+const NPM_VERSION_CACHE_MS = 15 * 60 * 1_000;
+const NPM_FAILURE_CACHE_MS = 60 * 1_000;
+
 export interface McpClientPolicy {
   latestVersion?: string;
   minimumSupportedVersion?: string;
@@ -8,6 +14,9 @@ export interface McpClientPolicy {
   docsUrl: string;
 }
 
+let cachedNpmVersion: { version?: string; expiresAt: number } | undefined;
+let npmVersionRequest: Promise<string | undefined> | undefined;
+
 function envSemver(value: string | undefined, name: string) {
   if (!value) return undefined;
   const version = semver.valid(value);
@@ -15,8 +24,41 @@ function envSemver(value: string | undefined, name: string) {
   return version;
 }
 
-export function getMcpClientPolicy(): McpClientPolicy {
-  const latestVersion = envSemver(process.env.AMAMI_MCP_LATEST_VERSION, 'AMAMI_MCP_LATEST_VERSION');
+async function getLatestNpmVersion(): Promise<string | undefined> {
+  const now = Date.now();
+  if (cachedNpmVersion && cachedNpmVersion.expiresAt > now) return cachedNpmVersion.version;
+
+  if (!npmVersionRequest) {
+    npmVersionRequest = fetch(NPM_LATEST_URL, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(NPM_LOOKUP_TIMEOUT_MS),
+    })
+      .then(async response => {
+        if (!response.ok) return undefined;
+        const data = (await response.json()) as { version?: unknown };
+        return typeof data.version === 'string'
+          ? semver.valid(data.version) || undefined
+          : undefined;
+      })
+      // Registry availability must not affect authentication or tool usage.
+      .catch(() => undefined)
+      .then(version => {
+        cachedNpmVersion = {
+          version,
+          expiresAt: Date.now() + (version ? NPM_VERSION_CACHE_MS : NPM_FAILURE_CACHE_MS),
+        };
+        return version;
+      })
+      .finally(() => {
+        npmVersionRequest = undefined;
+      });
+  }
+
+  return npmVersionRequest;
+}
+
+export async function getMcpClientPolicy(): Promise<McpClientPolicy> {
+  const latestVersion = await getLatestNpmVersion();
   const minimumSupportedVersion = envSemver(
     process.env.AMAMI_MCP_MINIMUM_VERSION,
     'AMAMI_MCP_MINIMUM_VERSION',
@@ -27,7 +69,7 @@ export function getMcpClientPolicy(): McpClientPolicy {
     minimumSupportedVersion &&
     semver.gt(minimumSupportedVersion, latestVersion)
   ) {
-    throw new Error('AMAMI_MCP_MINIMUM_VERSION must not be greater than AMAMI_MCP_LATEST_VERSION');
+    throw new Error('AMAMI_MCP_MINIMUM_VERSION must not be greater than the npm latest version');
   }
 
   return {
@@ -37,4 +79,9 @@ export function getMcpClientPolicy(): McpClientPolicy {
     message: process.env.AMAMI_MCP_UPDATE_MESSAGE || undefined,
     docsUrl: process.env.AMAMI_MCP_UPDATE_DOCS_URL || 'https://docs.amami.dev/docs/mcp-config/',
   };
+}
+
+export function resetMcpClientPolicyCacheForTests() {
+  cachedNpmVersion = undefined;
+  npmVersionRequest = undefined;
 }

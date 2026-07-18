@@ -1,56 +1,119 @@
-import { afterEach, expect, test } from 'vitest';
-import { getMcpClientPolicy } from './mcp-client-policy';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { getMcpClientPolicy, resetMcpClientPolicyCacheForTests } from './mcp-client-policy';
 
 const saved = {
-  latest: process.env.AMAMI_MCP_LATEST_VERSION,
   minimum: process.env.AMAMI_MCP_MINIMUM_VERSION,
   protocol: process.env.AMAMI_MCP_PROTOCOL_VERSION,
   message: process.env.AMAMI_MCP_UPDATE_MESSAGE,
   docs: process.env.AMAMI_MCP_UPDATE_DOCS_URL,
 };
 
-afterEach(() => {
-  process.env.AMAMI_MCP_LATEST_VERSION = saved.latest;
-  process.env.AMAMI_MCP_MINIMUM_VERSION = saved.minimum;
-  process.env.AMAMI_MCP_PROTOCOL_VERSION = saved.protocol;
-  process.env.AMAMI_MCP_UPDATE_MESSAGE = saved.message;
-  process.env.AMAMI_MCP_UPDATE_DOCS_URL = saved.docs;
+function restoreEnv(name: string, value: string | undefined) {
+  if (value === undefined) delete process.env[name];
+  else process.env[name] = value;
+}
+
+beforeEach(() => {
+  resetMcpClientPolicyCacheForTests();
 });
 
-test('returns an observation-mode policy when no version floor is configured', () => {
-  delete process.env.AMAMI_MCP_LATEST_VERSION;
-  delete process.env.AMAMI_MCP_MINIMUM_VERSION;
+afterEach(() => {
+  restoreEnv('AMAMI_MCP_MINIMUM_VERSION', saved.minimum);
+  restoreEnv('AMAMI_MCP_PROTOCOL_VERSION', saved.protocol);
+  restoreEnv('AMAMI_MCP_UPDATE_MESSAGE', saved.message);
+  restoreEnv('AMAMI_MCP_UPDATE_DOCS_URL', saved.docs);
+  vi.unstubAllGlobals();
+});
 
-  expect(getMcpClientPolicy()).toMatchObject({
+test('uses the npm latest dist-tag when no version floor is configured', async () => {
+  delete process.env.AMAMI_MCP_MINIMUM_VERSION;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.4' }))),
+  );
+
+  await expect(getMcpClientPolicy()).resolves.toMatchObject({
+    latestVersion: '0.1.4',
     protocolVersion: '2026-07-18',
     docsUrl: 'https://docs.amami.dev/docs/mcp-config/',
   });
 });
 
-test('rejects a minimum version that exceeds the latest version', () => {
-  process.env.AMAMI_MCP_LATEST_VERSION = '0.1.4';
+test('rejects a minimum version that exceeds the npm latest version', async () => {
   process.env.AMAMI_MCP_MINIMUM_VERSION = '0.1.5';
-
-  expect(() => getMcpClientPolicy()).toThrow('must not be greater');
-});
-
-test('rejects invalid configured versions and returns configured update details', () => {
-  process.env.AMAMI_MCP_LATEST_VERSION = 'not-semver';
-  expect(() => getMcpClientPolicy()).toThrow(
-    'AMAMI_MCP_LATEST_VERSION must be a valid SemVer version',
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.4' }))),
   );
 
-  process.env.AMAMI_MCP_LATEST_VERSION = 'v0.1.4';
+  await expect(getMcpClientPolicy()).rejects.toThrow('must not be greater');
+});
+
+test('rejects an invalid configured minimum version', async () => {
+  process.env.AMAMI_MCP_MINIMUM_VERSION = 'not-semver';
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.4' }))),
+  );
+
+  await expect(getMcpClientPolicy()).rejects.toThrow(
+    'AMAMI_MCP_MINIMUM_VERSION must be a valid SemVer version',
+  );
+});
+
+test('caches the npm result and returns configured compatibility details', async () => {
+  const fetchMock = vi.fn(async () => new Response(JSON.stringify({ version: 'v0.1.4' })));
+  vi.stubGlobal('fetch', fetchMock);
+
   process.env.AMAMI_MCP_MINIMUM_VERSION = '0.1.3';
   process.env.AMAMI_MCP_PROTOCOL_VERSION = '2026-08-01';
   process.env.AMAMI_MCP_UPDATE_MESSAGE = 'Upgrade now';
   process.env.AMAMI_MCP_UPDATE_DOCS_URL = 'https://docs.example.com/update';
 
-  expect(getMcpClientPolicy()).toEqual({
+  await expect(getMcpClientPolicy()).resolves.toEqual({
     latestVersion: '0.1.4',
     minimumSupportedVersion: '0.1.3',
     protocolVersion: '2026-08-01',
     message: 'Upgrade now',
     docsUrl: 'https://docs.example.com/update',
   });
+  await getMcpClientPolicy();
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+
+test('returns an observation-mode policy when npm is unavailable or returns an invalid version', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response(JSON.stringify({ version: 'not-semver' }))),
+  );
+
+  await expect(getMcpClientPolicy()).resolves.toMatchObject({ latestVersion: undefined });
+
+  resetMcpClientPolicyCacheForTests();
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => Promise.reject(new Error('registry unavailable'))),
+  );
+  await expect(getMcpClientPolicy()).resolves.toMatchObject({ latestVersion: undefined });
+});
+
+test('deduplicates concurrent npm registry lookups', async () => {
+  let resolveFetch: ((response: Response) => void) | undefined;
+  const fetchMock = vi.fn(
+    () =>
+      new Promise<Response>(resolve => {
+        resolveFetch = resolve;
+      }),
+  );
+  vi.stubGlobal('fetch', fetchMock);
+
+  const first = getMcpClientPolicy();
+  const second = getMcpClientPolicy();
+  resolveFetch?.(new Response(JSON.stringify({ version: '0.1.4' })));
+
+  await expect(Promise.all([first, second])).resolves.toEqual([
+    expect.objectContaining({ latestVersion: '0.1.4' }),
+    expect.objectContaining({ latestVersion: '0.1.4' }),
+  ]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
 });

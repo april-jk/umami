@@ -24,6 +24,7 @@
 | 12 | 当前分支 | PayPal EUR 订阅结账 | [iter-12-paypal-eur-checkout-uncovered.md](iter-12-paypal-eur-checkout-uncovered.md) | ⬜ 待补充 PayPal Sandbox 验证 |
 | 13 | 当前分支 | MCP 安装识别、访问记录和客户端策略 | [iter-13-mcp-access-control-uncovered.md](iter-13-mcp-access-control-uncovered.md) | ⬜ 待补充预生产迁移与真实 MCP 链路验证 |
 | 14 | 当前分支 | MCP 调用内更新提示 | [iter-14-mcp-inline-update-notice-uncovered.md](iter-14-mcp-inline-update-notice-uncovered.md) | ⬜ 待补充真实 MCP host 与网络超时验证 |
+| 15 | 当前分支 | MCP npm 最新版本发现 | [iter-15-mcp-npm-version-discovery-uncovered.md](iter-15-mcp-npm-version-discovery-uncovered.md) | ⬜ 待补充 npm 发布和 Railway 网络验证 |
 
 ---
 
@@ -108,6 +109,7 @@ pnpm vitest run \
 - **2026-07-17**: 收录迭代 12（PayPal EUR 订阅结账）未覆盖场景
 - **2026-07-18**: 收录迭代 13（MCP 安装识别、访问记录和客户端策略）未覆盖场景
 - **2026-07-18**: 收录迭代 14（MCP 调用内更新提示）未覆盖场景
+- **2026-07-18**: 收录迭代 15（MCP npm 最新版本发现）未覆盖场景
 
 ---
 

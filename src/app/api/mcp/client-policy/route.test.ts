@@ -19,7 +19,7 @@ test('returns a policy only for an MCP installation API key request', async () =
     auth: { apiKeyId: 'key-1', apiKeyClientType: 'mcp' },
     error: undefined,
   });
-  getMcpClientPolicyMock.mockReturnValue({
+  getMcpClientPolicyMock.mockResolvedValue({
     latestVersion: '0.1.4',
     protocolVersion: '2026-07-18',
     docsUrl: 'https://docs.amami.dev/docs/mcp-config/',
