@@ -70,15 +70,30 @@ test('caches the npm result and returns configured compatibility details', async
   process.env.AMAMI_MCP_UPDATE_MESSAGE = 'Upgrade now';
   process.env.AMAMI_MCP_UPDATE_DOCS_URL = 'https://docs.example.com/update';
 
-  await expect(getMcpClientPolicy()).resolves.toEqual({
+  await expect(getMcpClientPolicy('0.1.3')).resolves.toEqual({
     latestVersion: '0.1.4',
     minimumSupportedVersion: '0.1.3',
+    updateRequired: false,
     protocolVersion: '2026-08-01',
     message: 'Upgrade now',
     docsUrl: 'https://docs.example.com/update',
   });
   await getMcpClientPolicy();
   expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+
+test('marks an authenticated MCP version below the compatibility floor as required to update', async () => {
+  process.env.AMAMI_MCP_MINIMUM_VERSION = '0.1.4';
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.4' }))),
+  );
+
+  await expect(getMcpClientPolicy('0.1.3')).resolves.toMatchObject({
+    latestVersion: '0.1.4',
+    updateRequired: true,
+  });
+  await expect(getMcpClientPolicy('0.1.4')).resolves.toMatchObject({ updateRequired: false });
 });
 
 test('returns an observation-mode policy when npm is unavailable or returns an invalid version', async () => {

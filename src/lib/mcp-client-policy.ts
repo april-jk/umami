@@ -9,6 +9,8 @@ const NPM_FAILURE_CACHE_MS = 60 * 1_000;
 export interface McpClientPolicy {
   latestVersion?: string;
   minimumSupportedVersion?: string;
+  /** Server-authoritative compatibility decision for the authenticated MCP version. */
+  updateRequired: boolean;
   protocolVersion: string;
   message?: string;
   docsUrl: string;
@@ -57,7 +59,7 @@ async function getLatestNpmVersion(): Promise<string | undefined> {
   return npmVersionRequest;
 }
 
-export async function getMcpClientPolicy(): Promise<McpClientPolicy> {
+export async function getMcpClientPolicy(clientVersion?: string): Promise<McpClientPolicy> {
   const latestVersion = await getLatestNpmVersion();
   const minimumSupportedVersion = envSemver(
     process.env.AMAMI_MCP_MINIMUM_VERSION,
@@ -75,6 +77,9 @@ export async function getMcpClientPolicy(): Promise<McpClientPolicy> {
   return {
     latestVersion,
     minimumSupportedVersion,
+    updateRequired: Boolean(
+      minimumSupportedVersion && clientVersion && semver.lt(clientVersion, minimumSupportedVersion),
+    ),
     protocolVersion: process.env.AMAMI_MCP_PROTOCOL_VERSION || '2026-07-18',
     message: process.env.AMAMI_MCP_UPDATE_MESSAGE || undefined,
     docsUrl: process.env.AMAMI_MCP_UPDATE_DOCS_URL || 'https://docs.amami.dev/docs/mcp-config/',
