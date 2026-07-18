@@ -176,17 +176,16 @@ export async function getOrCreateOAuthUser(data: {
     return existingAccount;
   }
 
-  let user = await getUserByUsername(data.email, { includePassword: true });
-
-  if (!user) {
-    user = await createRegisteredUser({
-      username: data.email,
+  // Never infer account ownership from a matching username. Local registration does
+  // not prove control of an email-shaped username, so linking that account here
+  // would let a newly verified OAuth identity take over its password login.
+  // Existing users must link providers from an authenticated settings flow.
+  try {
+    const user = await createRegisteredUser({
+      username: `oauth-${uuid()}`,
       // OAuth-only accounts cannot use password login unless a password-reset flow is added.
       password: hashPassword(uuid()),
     });
-  }
-
-  try {
     const account = await createOAuthAccount({ ...data, userId: user.id });
     return account.user;
   } catch (error) {
