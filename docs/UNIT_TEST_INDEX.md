@@ -27,6 +27,7 @@
 | 15 | 当前分支 | MCP npm 最新版本发现 | [iter-15-mcp-npm-version-discovery-uncovered.md](iter-15-mcp-npm-version-discovery-uncovered.md) | ⬜ 待补充 npm 发布和 Railway 网络验证 |
 | 16 | 当前分支 | MCP 更新权威策略与 npm 本地回退 | [iter-16-mcp-update-authority-and-npm-fallback-uncovered.md](iter-16-mcp-update-authority-and-npm-fallback-uncovered.md) | ⬜ 待补充预生产版本与网络故障验证 |
 | 19 | 当前分支 | OAuth 显式账户绑定与真实邮箱 | [iter-19-oauth-explicit-linking-uncovered.md](iter-19-oauth-explicit-linking-uncovered.md) | ⬜ 待补充真实 OAuth、Redis 与 PostgreSQL 预生产验证 |
+| 20 | 当前分支 | OAuth 独立邮箱身份与唯一约束 | [iter-20-oauth-email-identity-uncovered.md](iter-20-oauth-email-identity-uncovered.md) | ⬜ 待补充 migration 30、真实 OAuth、Redis 与 PostgreSQL 预生产验证 |
 
 ---
 
@@ -116,6 +117,7 @@ pnpm vitest run \
 - **2026-07-18**: 收录迭代 17（OAuth 账户绑定安全修复）未覆盖场景
 - **2026-07-18**: 收录迭代 18（Dashboard 域名迁移）未覆盖场景
 - **2026-07-18**: 收录迭代 19（OAuth 显式账户绑定与真实邮箱）未覆盖场景
+- **2026-07-19**: 收录迭代 20（OAuth 独立邮箱身份与唯一约束）未覆盖场景
 
 ---
 
