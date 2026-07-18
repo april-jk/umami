@@ -66,6 +66,29 @@ test('returns an existing provider account without creating another user', async
   expect(oauthAccountCreateMock).not.toHaveBeenCalled();
 });
 
+test('signs in an existing provider account even when the provider no longer returns email', async () => {
+  const existingUser = { id: 'existing-user' } as any;
+  getOAuthAccountUserMock.mockResolvedValue(existingUser);
+
+  await expect(
+    getOrCreateOAuthUser({ provider: 'google', providerAccountId: 'google-1' }),
+  ).resolves.toEqual({ status: 'signed-in', user: existingUser });
+
+  expect(userFindUniqueMock).not.toHaveBeenCalled();
+  expect(transactionMock).not.toHaveBeenCalled();
+});
+
+test('rejects a new provider identity without a verified email before provisioning a user', async () => {
+  getOAuthAccountUserMock.mockResolvedValue(null);
+
+  await expect(
+    getOrCreateOAuthUser({ provider: 'github', providerAccountId: 'github-1' }),
+  ).resolves.toEqual({ status: 'email-required' });
+
+  expect(userFindUniqueMock).not.toHaveBeenCalled();
+  expect(transactionMock).not.toHaveBeenCalled();
+});
+
 test('creates an OAuth account with a separate verified email when no local account matches', async () => {
   userFindUniqueMock.mockResolvedValue(null);
   tenantCreateMock.mockReturnValue({ kind: 'tenant' });

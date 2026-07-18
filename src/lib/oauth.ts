@@ -21,12 +21,21 @@ type OAuthConfig = {
 
 export type OAuthIdentity = {
   providerAccountId: string;
-  email: string;
+  email?: string;
 };
 
 type OAuthLoginCode = {
   userId: string;
 };
+
+function getVerifiedEmail(value: unknown, isVerified: unknown) {
+  if (isVerified !== true || typeof value !== 'string') {
+    return undefined;
+  }
+
+  const email = value.trim().toLowerCase();
+  return email || undefined;
+}
 
 export type OAuthLinkCode = {
   provider: OAuthProvider;
@@ -199,15 +208,14 @@ export async function getOAuthIdentity(
       headers: { authorization: `Bearer ${token.access_token}` },
     });
 
-    if (
-      typeof profile.sub !== 'string' ||
-      typeof profile.email !== 'string' ||
-      !profile.email_verified
-    ) {
-      throw new Error('Google account does not provide a verified email address');
+    if (typeof profile.sub !== 'string' || !profile.sub) {
+      throw new Error('Google account does not provide a stable account identifier');
     }
 
-    return { providerAccountId: profile.sub, email: profile.email.toLowerCase() };
+    return {
+      providerAccountId: profile.sub,
+      email: getVerifiedEmail(profile.email, profile.email_verified),
+    };
   }
 
   const headers = {
@@ -218,13 +226,15 @@ export async function getOAuthIdentity(
   const profile = await fetchJson('https://api.github.com/user', { headers });
   const emails = await fetchJson('https://api.github.com/user/emails', { headers });
   const email = Array.isArray(emails)
-    ? (emails.find(item => item?.primary && item?.verified)?.email ??
-      emails.find(item => item?.verified)?.email)
+    ? (getVerifiedEmail(
+        emails.find(item => item?.primary === true && item?.verified === true)?.email,
+        true,
+      ) ?? getVerifiedEmail(emails.find(item => item?.verified === true)?.email, true))
     : undefined;
 
-  if (typeof profile.id !== 'number' || typeof email !== 'string') {
-    throw new Error('GitHub account does not provide a verified email address');
+  if (typeof profile.id !== 'number') {
+    throw new Error('GitHub account does not provide a stable account identifier');
   }
 
-  return { providerAccountId: String(profile.id), email: email.toLowerCase() };
+  return { providerAccountId: String(profile.id), email };
 }

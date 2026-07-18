@@ -197,12 +197,16 @@ export async function createRegisteredUser(data: {
 export async function getOrCreateOAuthUser(data: {
   provider: string;
   providerAccountId: string;
-  email: string;
+  email?: string;
 }) {
   const existingAccount = await getOAuthAccountUser(data.provider, data.providerAccountId);
 
   if (existingAccount) {
     return { status: 'signed-in' as const, user: existingAccount };
+  }
+
+  if (!data.email) {
+    return { status: 'email-required' as const };
   }
 
   const email = data.email.toLowerCase();

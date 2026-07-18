@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import {
-  consumeOAuthLoginCode,
   consumeOAuthLinkCode,
+  consumeOAuthLoginCode,
   createOAuthLinkCode,
   createOAuthLoginCode,
   createOAuthState,
@@ -136,7 +136,11 @@ describe('OAuth configuration and state', () => {
 
     redisMock.enabled = false;
     await expect(
-      createOAuthLinkCode({ provider: 'github', providerAccountId: '1', email: 'user@example.com' }),
+      createOAuthLinkCode({
+        provider: 'github',
+        providerAccountId: '1',
+        email: 'user@example.com',
+      }),
     ).rejects.toThrow('OAuth account linking requires Redis');
     await expect(consumeOAuthLinkCode('code')).resolves.toBeNull();
   });
@@ -156,7 +160,7 @@ describe('OAuth configuration and state', () => {
 });
 
 describe('getOAuthIdentity', () => {
-  test('gets a Google identity only when its email is verified', async () => {
+  test('gets a Google identity and includes its email only when verified', async () => {
     process.env.GOOGLE_CLIENT_ID = 'google-id';
     process.env.GOOGLE_CLIENT_SECRET = 'google-secret';
     process.env.OAUTH_BASE_URL = 'http://localhost:3000';
@@ -177,7 +181,7 @@ describe('getOAuthIdentity', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
-  test('uses GitHub primary verified email and rejects a missing verified email', async () => {
+  test('uses a GitHub primary verified email when available', async () => {
     process.env.GITHUB_CLIENT_ID = 'github-id';
     process.env.GITHUB_CLIENT_SECRET = 'github-secret';
     process.env.OAUTH_BASE_URL = 'http://localhost:3000';
@@ -215,7 +219,9 @@ describe('getOAuthIdentity', () => {
   test('rejects missing provider configuration and failed provider requests', async () => {
     delete process.env.GOOGLE_CLIENT_ID;
     delete process.env.GOOGLE_CLIENT_SECRET;
-    await expect(getOAuthIdentity('google', 'code')).rejects.toThrow('google OAuth is not configured');
+    await expect(getOAuthIdentity('google', 'code')).rejects.toThrow(
+      'google OAuth is not configured',
+    );
 
     process.env.GOOGLE_CLIENT_ID = 'google-id';
     process.env.GOOGLE_CLIENT_SECRET = 'google-secret';
@@ -227,7 +233,7 @@ describe('getOAuthIdentity', () => {
     );
   });
 
-  test('rejects an unverified Google email address', async () => {
+  test('keeps a stable Google identity when its email is absent or unverified', async () => {
     process.env.GOOGLE_CLIENT_ID = 'google-id';
     process.env.GOOGLE_CLIENT_SECRET = 'google-secret';
     process.env.OAUTH_BASE_URL = 'http://localhost:3000';
@@ -247,12 +253,13 @@ describe('getOAuthIdentity', () => {
         ),
     );
 
-    await expect(getOAuthIdentity('google', 'code')).rejects.toThrow(
-      'Google account does not provide a verified email address',
-    );
+    await expect(getOAuthIdentity('google', 'code')).resolves.toEqual({
+      providerAccountId: 'google-user',
+      email: undefined,
+    });
   });
 
-  test('rejects GitHub identities without a verified email address', async () => {
+  test('keeps a stable GitHub identity when it has no verified email', async () => {
     process.env.GITHUB_CLIENT_ID = 'github-id';
     process.env.GITHUB_CLIENT_SECRET = 'github-secret';
     process.env.OAUTH_BASE_URL = 'http://localhost:3000';
@@ -265,8 +272,35 @@ describe('getOAuthIdentity', () => {
         .mockResolvedValueOnce(new Response(JSON.stringify([]))),
     );
 
-    await expect(getOAuthIdentity('github', 'code')).rejects.toThrow(
-      'GitHub account does not provide a verified email address',
+    await expect(getOAuthIdentity('github', 'code')).resolves.toEqual({
+      providerAccountId: '42',
+      email: undefined,
+    });
+  });
+
+  test('does not trust malformed email verification flags', async () => {
+    process.env.GOOGLE_CLIENT_ID = 'google-id';
+    process.env.GOOGLE_CLIENT_SECRET = 'google-secret';
+    process.env.OAUTH_BASE_URL = 'http://localhost:3000';
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(new Response(JSON.stringify({ access_token: 'access-token' })))
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({
+              sub: 'google-user',
+              email: ' User@Example.com ',
+              email_verified: 'true',
+            }),
+          ),
+        ),
     );
+
+    await expect(getOAuthIdentity('google', 'code')).resolves.toEqual({
+      providerAccountId: 'google-user',
+      email: undefined,
+    });
   });
 });

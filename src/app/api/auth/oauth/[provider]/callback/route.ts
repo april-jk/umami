@@ -11,8 +11,19 @@ import { getOrCreateOAuthUser } from '@/queries/prisma';
 
 const STATE_COOKIE_PREFIX = 'amami-oauth-state-';
 
-function redirectToLogin() {
-  return NextResponse.redirect(new URL('/login?oauthError=failed', getOAuthBaseUrl()));
+function redirectToLogin(reason = 'failed') {
+  return NextResponse.redirect(new URL(`/login?oauthError=${reason}`, getOAuthBaseUrl()));
+}
+
+function clearStateCookie(response: NextResponse, provider: string) {
+  response.cookies.set({
+    name: `${STATE_COOKIE_PREFIX}${provider}`,
+    value: '',
+    maxAge: 0,
+    path: '/api/auth/oauth',
+  });
+
+  return response;
 }
 
 export async function GET(request: Request, { params }: { params: Promise<{ provider: string }> }) {
@@ -36,6 +47,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
   try {
     const identity = await getOAuthIdentity(value, code);
     const result = await getOrCreateOAuthUser({ provider: value, ...identity });
+
+    if (result.status === 'email-required') {
+      return clearStateCookie(redirectToLogin('email-required'), value);
+    }
+
     const redirect = new URL(
       result.status === 'signed-in' ? '/oauth/complete' : '/oauth/link',
       getOAuthBaseUrl(),
@@ -43,17 +59,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
     const callbackCode =
       result.status === 'signed-in'
         ? await createOAuthLoginCode(result.user.id)
-        : await createOAuthLinkCode({ provider: value, ...identity });
+        : await createOAuthLinkCode({
+            provider: value,
+            providerAccountId: identity.providerAccountId,
+            email: result.email,
+          });
     redirect.hash = new URLSearchParams({ code: callbackCode }).toString();
 
-    const response = NextResponse.redirect(redirect);
-    response.cookies.set({
-      name: `${STATE_COOKIE_PREFIX}${value}`,
-      value: '',
-      maxAge: 0,
-      path: '/api/auth/oauth',
-    });
-    return response;
+    return clearStateCookie(NextResponse.redirect(redirect), value);
   } catch (error) {
     // Keep provider responses out of the browser while retaining actionable server-side diagnostics.
     console.error('OAuth callback failed', {

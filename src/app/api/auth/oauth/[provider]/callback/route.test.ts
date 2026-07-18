@@ -93,7 +93,9 @@ test('GET sends an existing email account to the explicit linking flow', async (
     }),
     { params: Promise.resolve({ provider: 'google' }) },
   );
-  const location = new URL(response.headers.get('location')!);
+  const locationHeader = response.headers.get('location');
+  if (!locationHeader) throw new Error('Expected OAuth linking redirect location');
+  const location = new URL(locationHeader);
 
   expect(location.pathname).toBe('/oauth/link');
   expect(location.hash).toBe('#code=link-code');
@@ -103,6 +105,27 @@ test('GET sends an existing email account to the explicit linking flow', async (
     providerAccountId: 'google-user',
     email: 'user@example.com',
   });
+});
+
+test('GET rejects a new provider identity without a verified email without issuing a login code', async () => {
+  getOAuthIdentityMock.mockResolvedValue({ providerAccountId: 'google-user', email: undefined });
+  getOrCreateOAuthUserMock.mockResolvedValue({ status: 'email-required' } as any);
+
+  const response = await GET(
+    new Request('http://localhost/api/auth/oauth/google/callback?code=code&state=state', {
+      headers: { cookie: 'amami-oauth-state-google=state' },
+    }),
+    { params: Promise.resolve({ provider: 'google' }) },
+  );
+  const locationHeader = response.headers.get('location');
+  if (!locationHeader) throw new Error('Expected OAuth email error redirect location');
+  const location = new URL(locationHeader);
+
+  expect(location.pathname).toBe('/login');
+  expect(location.searchParams.get('oauthError')).toBe('email-required');
+  expect(createOAuthLoginCodeMock).not.toHaveBeenCalled();
+  expect(createOAuthLinkCodeMock).not.toHaveBeenCalled();
+  expect(response.headers.get('set-cookie')).toContain('amami-oauth-state-google=');
 });
 
 test('GET returns to login without contacting a provider when callback validation fails', async () => {
