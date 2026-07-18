@@ -9,6 +9,8 @@ const TRACKER_PATH = '/script.js';
 const COLLECT_PATH = '/api/send';
 const LOGIN_PATH = '/login';
 const BASE_PATH = process.env.BASE_PATH || '';
+const LEGACY_DASHBOARD_HOST = 'dashboard.amami.dev';
+const CANONICAL_ANALYTICS_HOST = 'analytics.amami.dev';
 
 const apiHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -66,8 +68,27 @@ function disableLogin(request: NextRequest) {
   }
 }
 
+function redirectLegacyDashboard(request: NextRequest) {
+  if (request.nextUrl.hostname !== LEGACY_DASHBOARD_HOST) return;
+
+  // Existing embeds load the tracker and post events back to their script host.
+  // Keeping these same-origin avoids CORS/preflight regressions during the migration.
+  if ([TRACKER_PATH, COLLECT_PATH, '/telemetry.js'].includes(request.nextUrl.pathname)) return;
+
+  const url = request.nextUrl.clone();
+  url.protocol = 'https:';
+  url.host = CANONICAL_ANALYTICS_HOST;
+  return NextResponse.redirect(url, 308);
+}
+
 export default function middleware(req: NextRequest) {
-  const fns = [customCollectEndpoint, customScriptName, customScriptUrl, disableLogin];
+  const fns = [
+    redirectLegacyDashboard,
+    customCollectEndpoint,
+    customScriptName,
+    customScriptUrl,
+    disableLogin,
+  ];
 
   for (const fn of fns) {
     const res = fn(req);

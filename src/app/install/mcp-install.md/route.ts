@@ -60,7 +60,7 @@ amami-analytics-mcp setup --write
 
 Expected behavior:
 
-- The command opens \`https://dashboard.amami.dev/mcp/connect\` in the browser.
+- The command opens \`https://analytics.amami.dev/mcp/connect\` in the browser.
 - The user personally logs in or registers.
 - The user clicks **Authorize MCP**.
 - The CLI receives a local callback and creates an API key.
@@ -179,7 +179,7 @@ Common first tasks after verification:
 - Add this tracking script to the target site's HTML head:
 
 \`\`\`html
-<script defer src="https://dashboard.amami.dev/script.js" data-website-id="WEBSITE_ID"></script>
+<script defer src="https://analytics.amami.dev/script.js" data-website-id="WEBSITE_ID"></script>
 \`\`\`
 
 - Send a test event with \`send_event\`.

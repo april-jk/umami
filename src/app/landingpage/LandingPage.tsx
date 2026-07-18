@@ -41,7 +41,7 @@ const examples = [
   },
 ];
 
-const installDocUrl = 'https://dashboard.amami.dev/install/mcp-install.md';
+const installDocUrl = 'https://analytics.amami.dev/install/mcp-install.md';
 
 const installCommands = [
   {
