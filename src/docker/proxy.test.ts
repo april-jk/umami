@@ -22,9 +22,10 @@ vi.mock('@/lib/match-configured-path', () => ({ matchesConfiguredPath: vi.fn() }
 
 const matchesConfiguredPathMock = vi.mocked(matchesConfiguredPath);
 
-function request(hostname: string, path: string) {
+function request(hostname: string, path: string, forwardedHost?: string) {
   const url = new URL(`https://${hostname}${path}`);
   return {
+    headers: new Headers(forwardedHost ? { 'x-forwarded-host': forwardedHost } : undefined),
     nextUrl: Object.assign(url, { clone: () => new URL(url.toString()) }),
   } as any;
 }
@@ -69,6 +70,16 @@ describe('legacy dashboard redirects', () => {
   test('does not redirect the canonical host', () => {
     expect(middleware(request('analytics.amami.dev', '/login'))).toEqual({ type: 'next' });
     expect(redirectMock).not.toHaveBeenCalled();
+  });
+
+  test('uses the forwarded public host when the proxy host is internal', () => {
+    redirectMock.mockImplementation(url => ({ type: 'redirect', url: url.toString() }));
+
+    expect(
+      middleware(
+        request('amami-web-production.up.railway.app', '/dashboard', 'dashboard.amami.dev'),
+      ),
+    ).toEqual({ type: 'redirect', url: 'https://analytics.amami.dev/dashboard' });
   });
 });
 

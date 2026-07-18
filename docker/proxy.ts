@@ -69,7 +69,14 @@ function disableLogin(request: NextRequest) {
 }
 
 function redirectLegacyDashboard(request: NextRequest) {
-  if (request.nextUrl.hostname !== LEGACY_DASHBOARD_HOST) return;
+  // Railway may replace nextUrl's host with its internal service address. Prefer
+  // the proxy-provided public host so redirects remain correct behind Cloudflare.
+  const forwardedHost = request.headers.get('x-forwarded-host')?.split(',')[0]?.trim();
+  const host = (forwardedHost || request.headers.get('host') || request.nextUrl.host)
+    .split(':')[0]
+    ?.toLowerCase();
+
+  if (host !== LEGACY_DASHBOARD_HOST) return;
 
   // Existing embeds load the tracker and post events back to their script host.
   // Keeping these same-origin avoids CORS/preflight regressions during the migration.
