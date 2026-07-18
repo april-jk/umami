@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     });
   }
 
-  const apiKey = await createApiKey(payload.userId, body.apiKeyName || 'Amami MCP');
+  const apiKey = await createApiKey(payload.userId, body.apiKeyName || 'Amami MCP', 'mcp');
 
   return json({
     apiKey: apiKey.key,

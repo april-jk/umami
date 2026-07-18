@@ -38,7 +38,7 @@ export async function getUserApiKeys(userId: string) {
   });
 }
 
-export async function createApiKey(userId: string, name: string) {
+export async function createApiKey(userId: string, name: string, clientType?: string) {
   const key = createApiKeyValue();
   const tenantId = await getDefaultTenantIdForUser(userId);
   const apiKey = await prisma.client.apiKey.create({
@@ -47,6 +47,7 @@ export async function createApiKey(userId: string, name: string) {
       userId,
       tenantId,
       name,
+      clientType,
       keyHash: hashApiKey(key),
       keyPrefix: key.slice(0, API_KEY_PREFIX_LENGTH),
     },

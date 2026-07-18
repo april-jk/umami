@@ -64,7 +64,7 @@ test('POST exchanges a valid MCP authorization code for a new API key', async ()
     'verifier-12345678901234567890123456789012',
     'challenge-1',
   );
-  expect(createApiKeyMock).toHaveBeenCalledWith('user-1', 'MCP test');
+  expect(createApiKeyMock).toHaveBeenCalledWith('user-1', 'MCP test', 'mcp');
   expect(body).toMatchObject({
     apiKey: 'amami_live_secret',
     keyPrefix: 'amami_live_prefix',

@@ -8,6 +8,11 @@ import {
 } from '@/lib/constants';
 import { createAuthKey, hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import {
+  getMcpClientMetadata,
+  isMcpInstallation,
+  recordMcpClientAccess,
+} from '@/lib/mcp-client-access';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyAuth, touchApiKey } from '@/queries/prisma/apiKey';
@@ -85,10 +90,20 @@ export async function checkAuth(request: Request) {
     user.isAdmin = user.role === ROLES.admin;
   }
 
+  if (apiKey && user && apiKey.id && isMcpInstallation(apiKey.clientType)) {
+    const metadata = getMcpClientMetadata(request);
+    recordMcpClientAccess(
+      request,
+      { apiKeyId: apiKey.id, userId: user.id, tenantId: apiKey.tenantId },
+      metadata,
+    ).catch(e => log('Failed to record MCP client access', e));
+  }
+
   return {
     token,
     authKey,
     apiKeyId: apiKey?.id,
+    apiKeyClientType: apiKey?.clientType,
     shareToken,
     user,
   };

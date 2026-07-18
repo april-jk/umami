@@ -27,6 +27,7 @@ model User {
   links     Link[]       @relation("user")
   pixels    Pixel[]      @relation("user")
   apiKeys   ApiKey[]
+  mcpClientAccesses McpClientAccess[]
   teams     TeamUser[]
   tenants   TenantUser[]
   reports   Report[]
@@ -164,6 +165,7 @@ model ApiKey {
   tenantId   String?   @map("tenant_id") @db.Uuid
   userId     String    @map("user_id") @db.Uuid
   name       String    @db.VarChar(100)
+  clientType String?   @map("client_type") @db.VarChar(32)
   keyHash    String    @unique @map("key_hash") @db.VarChar(128)
   keyPrefix  String    @map("key_prefix") @db.VarChar(32)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -173,6 +175,7 @@ model ApiKey {
 
   tenant Tenant? @relation(fields: [tenantId], references: [id])
   user   User    @relation(fields: [userId], references: [id])
+  mcpClientAccesses McpClientAccess[]
 
   @@index([tenantId])
   @@index([userId])
@@ -180,6 +183,31 @@ model ApiKey {
   @@index([createdAt])
   @@index([lastUsedAt])
   @@map("api_key")
+}
+
+model McpClientAccess {
+  id              String    @id() @map("mcp_client_access_id") @db.Uuid
+  apiKeyId        String    @map("api_key_id") @db.Uuid
+  userId          String    @map("user_id") @db.Uuid
+  tenantId        String?   @map("tenant_id") @db.Uuid
+  clientName      String?   @map("client_name") @db.VarChar(64)
+  clientVersion   String?   @map("client_version") @db.VarChar(64)
+  protocolVersion String?   @map("protocol_version") @db.VarChar(32)
+  userAgent       String?   @map("user_agent") @db.VarChar(200)
+  ipHashDay       String?   @map("ip_hash_day") @db.VarChar(128)
+  route           String    @db.VarChar(200)
+  method          String    @db.VarChar(10)
+  outcome         String    @db.VarChar(32)
+  createdAt       DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  apiKey ApiKey @relation(fields: [apiKeyId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([apiKeyId, createdAt])
+  @@index([userId, createdAt])
+  @@index([tenantId, createdAt])
+  @@index([createdAt])
+  @@map("mcp_client_access")
 }
 
 model TenantUser {
