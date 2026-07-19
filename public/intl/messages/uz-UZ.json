@@ -401,7 +401,7 @@
     "delete-team-warning": "Jamoani oʻchirish, shuningdek, barcha jamoa veb-saytlarini ham oʻchiradi.",
     "delete-website-warning": "Barcha veb-sayt ma'lumotlari oʻchiriladi.",
     "error": "Nimadir xato ketdi.",
-    "empty-dashboard": "Sizning boshqaruv panelingiz bo'sh. Birinchi komponentni qo'shish uchun Tahrirlash tugmasini bosing.",
+    "empty-dashboard": "Sizning boshqaruv panelingiz bo'sh. Birinchi komponentni qo'shish uchun Design tugmasini bosing.",
     "event-log": "**<a>{url}</a>** da **<b>{event}</b>** hodisasi",
     "forbidden": "Taqiqlangan",
     "go-to-settings": "Sozlamalarga oʻtish",

@@ -385,7 +385,7 @@
     "confirm-reset": "{target}을(를) 초기화하시겠습니까?",
     "delete-team-warning": "팀을 삭제하면 팀에 등록된 모든 웹사이트도 삭제됩니다.",
     "delete-website-warning": "관련된 모든 데이터가 삭제됩니다.",
-    "empty-dashboard": "대시보드가 비어 있습니다. 편집을 클릭하여 첫 번째 구성 요소를 추가하세요.",
+    "empty-dashboard": "대시보드가 비어 있습니다. Design을 클릭하여 첫 번째 구성 요소를 추가하세요.",
     "error": "문제가 발생했습니다.",
     "event-log": "<b>{event}</b> - <a>{url}</a>",
     "forbidden": "접근 금지",

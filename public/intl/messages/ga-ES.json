@@ -396,7 +396,7 @@
     "delete-team-warning": "Eliminar un equipo tamén eliminará tódolos sitios web do equipo.",
     "delete-website-warning": "Tamén serán borrados tódolos datos asociados.",
     "error": "Houbo un fallo.",
-    "empty-dashboard": "O teu panel está baleiro. Fai clic en Editar para engadir o teu primeiro compoñente.",
+    "empty-dashboard": "O teu panel está baleiro. Fai clic en Design para engadir o teu primeiro compoñente.",
     "event-log": "<b>{event}</b> en <a>{url}</a>",
     "forbidden": "Prohibido",
     "go-to-settings": "Ir aos axustes",

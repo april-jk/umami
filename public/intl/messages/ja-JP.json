@@ -385,7 +385,7 @@
     "confirm-reset": "{target}をリセットしてもよろしいですか？",
     "delete-team-warning": "チームを削除すると、そのチームが管理しているWebサイトもすべて削除されます。",
     "delete-website-warning": "Webサイトのデータがすべて削除されます。",
-    "empty-dashboard": "ダッシュボードは空です。編集をクリックして最初のコンポーネントを追加してください。",
+    "empty-dashboard": "ダッシュボードは空です。Design をクリックして最初のコンポーネントを追加してください。",
     "error": "未知のエラーが発生しました。",
     "event-log": "<a>{url}</a>の<b>{event}</b>",
     "forbidden": "アクセス禁止",

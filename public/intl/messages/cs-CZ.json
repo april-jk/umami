@@ -396,7 +396,7 @@
     "delete-team-warning": "Smazání týmu smaže také všechny weby týmu.",
     "delete-website-warning": "Všechna související data budou také smazána.",
     "error": "Něco se pokazilo.",
-    "empty-dashboard": "Váš řídicí panel je prázdný. Klikněte na Upravit a přidejte první komponentu.",
+    "empty-dashboard": "Váš řídicí panel je prázdný. Klikněte na Design a přidejte první komponentu.",
     "event-log": "<b>{event}</b> na <a>{url}</a>",
     "forbidden": "Zakázáno",
     "go-to-settings": "Jít do nastavení",

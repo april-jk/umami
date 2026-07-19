@@ -396,7 +396,7 @@
     "delete-team-warning": "Es Team lösche dued ebefalls alli team Websiite lösche.",
     "delete-website-warning": "Alli dezueghörige Date werded ebefalls glöscht.",
     "error": "Es isch en Fehler ufträte.",
-    "empty-dashboard": "Ihr Dashboard ist leer. Klicken Sie auf Bearbeiten, um Ihre erste Komponente hinzuzufügen.",
+    "empty-dashboard": "Ihr Dashboard ist leer. Klicken Sie auf Design, um Ihre erste Komponente hinzuzufügen.",
     "event-log": "<b>{event}</b> uf <a>{url}</a>",
     "forbidden": "Verboten",
     "go-to-settings": "Zu de Istellige",

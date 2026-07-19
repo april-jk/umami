@@ -396,7 +396,7 @@
     "delete-team-warning": "Eliminar uma equipa também elimina todos os websites da equipa.",
     "delete-website-warning": "Todos os dados associados também serão eliminados.",
     "error": "Ocorreu um erro.",
-    "empty-dashboard": "O seu painel está vazio. Clique em Editar para adicionar o seu primeiro componente.",
+    "empty-dashboard": "O seu painel está vazio. Clique em Design para adicionar o seu primeiro componente.",
     "event-log": "<b>{event}</b> em <a>{url}</a>",
     "forbidden": "Proibido",
     "go-to-settings": "Ir para as definições",

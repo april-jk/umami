@@ -396,7 +396,7 @@
     "delete-team-warning": "A csapat törlése az összes csapat weboldalt is törli.",
     "delete-website-warning": "Minden társított adat törlésre kerül.",
     "error": "Valami baj történt.",
-    "empty-dashboard": "Az irányítópult üres. Kattintson a Szerkesztés gombra az első komponens hozzáadásához.",
+    "empty-dashboard": "Az irányítópult üres. Kattintson a Design gombra az első komponens hozzáadásához.",
     "event-log": "<b>{event}</b> itt: <a>{url}</a>",
     "forbidden": "Tiltott",
     "go-to-settings": "Tovább a beállításokhoz",

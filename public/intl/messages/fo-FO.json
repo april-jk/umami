@@ -396,7 +396,7 @@
     "delete-team-warning": "At strika eitt lið strikar eisini allar heimasíður hjá liðnum.",
     "delete-website-warning": "Øll data ið er knýtt at verður eisini strika.",
     "error": "Okkurt bleiv gali.",
-    "empty-dashboard": "Stjórnarborðið títt er tómt. Trýst á Rætta fyri at leggja afturat fyrstu íhlut.",
+    "empty-dashboard": "Stjórnarborðið títt er tómt. Trýst á Design fyri at leggja afturat fyrstu íhlut.",
     "event-log": "<b>{event}</b> á <a>{url}</a>",
     "forbidden": "Forboðið",
     "go-to-settings": "Far til stillingar",

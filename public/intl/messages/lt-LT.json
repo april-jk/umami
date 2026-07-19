@@ -396,7 +396,7 @@
     "delete-team-warning": "Ištrinant komandą bus ištrintos ir visos komandos svetainės.",
     "delete-website-warning": "Visi susiję duomenys taip pat bus ištrinti.",
     "error": "Kažkas įvyko ne taip.",
-    "empty-dashboard": "Jūsų prietaisų skydelis tuščias. Spustelėkite Redaguoti, kad pridėtumėte pirmąjį komponentą.",
+    "empty-dashboard": "Jūsų prietaisų skydelis tuščias. Spustelėkite Design, kad pridėtumėte pirmąjį komponentą.",
     "event-log": "<b>{event}</b> puslapyje <a>{url}</a>",
     "forbidden": "Draudžiama",
     "go-to-settings": "Eiti į nustatymus",

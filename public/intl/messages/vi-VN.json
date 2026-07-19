@@ -390,7 +390,7 @@
     "confirm-reset": "Bạn có chắc chắn muốn đặt lại thống kê {target}?",
     "delete-team-warning": "Việc xóa một nhóm cũng sẽ xóa tất cả các website của nhóm.",
     "delete-website-warning": "Tất cả dữ liệu liên quan cũng sẽ bị xóa.",
-    "empty-dashboard": "Bảng điều khiển của bạn đang trống. Nhấp Chỉnh sửa để thêm thành phần đầu tiên.",
+    "empty-dashboard": "Bảng điều khiển của bạn đang trống. Nhấp Design để thêm thành phần đầu tiên.",
     "error": "Đã xảy ra lỗi.",
     "event-log": "<b>{event}</b> trên <a>{url}</a>",
     "forbidden": "Bị cấm",
