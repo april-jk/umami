@@ -56,7 +56,6 @@ test('renders the chart and its 30-minute range when activity exists', () => {
   render(<RealtimeChart data={createData([0, 2])} unit="minute" />);
 
   expect(screen.getByText(`2:2:${DEFAULT_ANIMATION_DURATION}`)).toBeInTheDocument();
-  expect(screen.getByText('Last 30 minutes')).toBeInTheDocument();
   expect(
     screen.queryByText('No trackable activity in the last 30 minutes.'),
   ).not.toBeInTheDocument();
@@ -67,7 +66,6 @@ test('renders a localized empty state when the 30-minute range has no views', ()
 
   expect(screen.queryByText('0:0')).not.toBeInTheDocument();
   expect(screen.getByText('No trackable activity in the last 30 minutes.')).toBeInTheDocument();
-  expect(screen.getByText('Last 30 minutes')).toBeInTheDocument();
 });
 
 test('renders the Chinese range and empty-state translations', () => {
@@ -77,7 +75,6 @@ test('renders the Chinese range and empty-state translations', () => {
   });
 
   expect(screen.getByText('最近 30 分钟内暂无可统计活动。')).toBeInTheDocument();
-  expect(screen.getByText('最近 30 分钟')).toBeInTheDocument();
 });
 
 test('does not animate unchanged data within the same minute', () => {

@@ -14,7 +14,7 @@ export interface RealtimeChartProps {
 
 export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   const { formatSeriesTimezone, fromUtc, timezone } = useTimezone();
-  const { t, labels, messages } = useMessages();
+  const { t, messages } = useMessages();
   const endDate = startOfMinute(new Date());
   const startDate = subMinutes(endDate, REALTIME_RANGE);
   const prevEndDate = useRef(endDate);
@@ -66,11 +66,6 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
           <Text>{t(messages.noRealtimeActivity, { x: REALTIME_RANGE })}</Text>
         </Row>
       )}
-      <Row justifyContent="center">
-        <Text size="sm" color="muted">
-          {t(labels.lastMinutes, { x: REALTIME_RANGE })}
-        </Text>
-      </Row>
     </>
   );
 }

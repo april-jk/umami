@@ -2,11 +2,11 @@
 
 ## Scope
 
-The realtime chart now states its fixed 30-minute range and replaces an all-zero chart with a localized status message.
+The realtime page now shows its fixed 30-minute range in a top-right control aligned with the Overview date filter and replaces an all-zero chart with a localized status message.
 
 ## Covered By Unit Tests
 
-- The range annotation renders alongside populated realtime data.
+- The fixed date-filter-style control renders in English and Chinese.
 - The chart is replaced by the localized empty state when every realtime total is zero in the window.
 
 ## Uncovered Scenarios
@@ -16,7 +16,7 @@ The realtime chart now states its fixed 30-minute range and replaces an all-zero
 
 ## Manual Test Steps
 
-1. Open a website realtime page with activity in the last 30 minutes and verify the chart, legend, and range annotation are visible.
+1. Open a website realtime page with activity in the last 30 minutes and verify the top-right fixed range control matches the Overview date filter layout.
 2. Open a website realtime page without activity in the last 30 minutes and verify the chart area says the localized equivalent of "No trackable activity in the last 30 minutes."
 3. Repeat in Chinese and an RTL locale at desktop and mobile widths.
 
