@@ -1,6 +1,7 @@
+import { Row, Text } from '@umami/react-zen';
 import { isBefore, startOfMinute, subMinutes } from 'date-fns';
 import { useMemo, useRef } from 'react';
-import { useTimezone } from '@/components/hooks';
+import { useMessages, useTimezone } from '@/components/hooks';
 import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from '@/lib/constants';
 import type { RealtimeData } from '@/lib/types';
 import { PageviewsChart } from './PageviewsChart';
@@ -13,6 +14,7 @@ export interface RealtimeChartProps {
 
 export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   const { formatSeriesTimezone, fromUtc, timezone } = useTimezone();
+  const { t, labels, messages } = useMessages();
   const endDate = startOfMinute(new Date());
   const startDate = subMinutes(endDate, REALTIME_RANGE);
   const prevEndDate = useRef(endDate);
@@ -46,14 +48,29 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
     return DEFAULT_ANIMATION_DURATION;
   }, [endDate, chartData]);
 
+  const hasActivity = Object.values(data?.totals || {}).some(value => Number(value) > 0);
+
   return (
-    <PageviewsChart
-      {...props}
-      minDate={fromUtc(startDate)}
-      maxDate={fromUtc(endDate)}
-      unit={unit}
-      data={chartData}
-      animationDuration={animationDuration}
-    />
+    <>
+      {hasActivity ? (
+        <PageviewsChart
+          {...props}
+          minDate={fromUtc(startDate)}
+          maxDate={fromUtc(endDate)}
+          unit={unit}
+          data={chartData}
+          animationDuration={animationDuration}
+        />
+      ) : (
+        <Row alignItems="center" justifyContent="center" height="400px" color="muted">
+          <Text>{t(messages.noRealtimeActivity, { x: REALTIME_RANGE })}</Text>
+        </Row>
+      )}
+      <Row justifyContent="center">
+        <Text size="sm" color="muted">
+          {t(labels.lastMinutes, { x: REALTIME_RANGE })}
+        </Text>
+      </Row>
+    </>
   );
 }
