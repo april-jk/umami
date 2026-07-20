@@ -1,6 +1,7 @@
 import semver from 'semver';
 
 const MCP_PACKAGE_NAME = 'amami-analytics-mcp';
+const RELEASED_MCP_VERSION = '0.1.5';
 const NPM_LATEST_URL = `https://registry.npmjs.org/${MCP_PACKAGE_NAME}/latest`;
 const NPM_LOOKUP_TIMEOUT_MS = 2_000;
 const NPM_VERSION_CACHE_MS = 15 * 60 * 1_000;
@@ -19,8 +20,7 @@ export interface McpClientPolicy {
 let cachedNpmVersion: { version?: string; expiresAt: number } | undefined;
 let npmVersionRequest: Promise<string | undefined> | undefined;
 
-function envSemver(value: string | undefined, name: string) {
-  if (!value) return undefined;
+function envSemver(value: string, name: string) {
   const version = semver.valid(value);
   if (!version) throw new Error(`${name} must be a valid SemVer version`);
   return version;
@@ -60,9 +60,9 @@ async function getLatestNpmVersion(): Promise<string | undefined> {
 }
 
 export async function getMcpClientPolicy(clientVersion?: string): Promise<McpClientPolicy> {
-  const latestVersion = await getLatestNpmVersion();
+  const latestVersion = (await getLatestNpmVersion()) || RELEASED_MCP_VERSION;
   const minimumSupportedVersion = envSemver(
-    process.env.AMAMI_MCP_MINIMUM_VERSION,
+    process.env.AMAMI_MCP_MINIMUM_VERSION || RELEASED_MCP_VERSION,
     'AMAMI_MCP_MINIMUM_VERSION',
   );
 

@@ -25,15 +25,17 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-test('uses the npm latest dist-tag when no version floor is configured', async () => {
+test('uses 0.1.5 as the released compatibility floor when no override is configured', async () => {
   delete process.env.AMAMI_MCP_MINIMUM_VERSION;
   vi.stubGlobal(
     'fetch',
-    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.4' }))),
+    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.5' }))),
   );
 
-  await expect(getMcpClientPolicy()).resolves.toMatchObject({
-    latestVersion: '0.1.4',
+  await expect(getMcpClientPolicy('0.1.4')).resolves.toMatchObject({
+    latestVersion: '0.1.5',
+    minimumSupportedVersion: '0.1.5',
+    updateRequired: true,
     protocolVersion: '2026-07-18',
     docsUrl: 'https://docs.amami.dev/docs/mcp-config/',
   });
@@ -62,7 +64,7 @@ test('rejects an invalid configured minimum version', async () => {
 });
 
 test('caches the npm result and returns configured compatibility details', async () => {
-  const fetchMock = vi.fn(async () => new Response(JSON.stringify({ version: 'v0.1.4' })));
+  const fetchMock = vi.fn(async () => new Response(JSON.stringify({ version: 'v0.1.5' })));
   vi.stubGlobal('fetch', fetchMock);
 
   process.env.AMAMI_MCP_MINIMUM_VERSION = '0.1.3';
@@ -71,7 +73,7 @@ test('caches the npm result and returns configured compatibility details', async
   process.env.AMAMI_MCP_UPDATE_DOCS_URL = 'https://docs.example.com/update';
 
   await expect(getMcpClientPolicy('0.1.3')).resolves.toEqual({
-    latestVersion: '0.1.4',
+    latestVersion: '0.1.5',
     minimumSupportedVersion: '0.1.3',
     updateRequired: false,
     protocolVersion: '2026-08-01',
@@ -83,33 +85,53 @@ test('caches the npm result and returns configured compatibility details', async
 });
 
 test('marks an authenticated MCP version below the compatibility floor as required to update', async () => {
-  process.env.AMAMI_MCP_MINIMUM_VERSION = '0.1.4';
+  delete process.env.AMAMI_MCP_MINIMUM_VERSION;
   vi.stubGlobal(
     'fetch',
-    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.4' }))),
+    vi.fn(async () => new Response(JSON.stringify({ version: '0.1.5' }))),
   );
 
-  await expect(getMcpClientPolicy('0.1.3')).resolves.toMatchObject({
-    latestVersion: '0.1.4',
+  await expect(getMcpClientPolicy('0.1.4')).resolves.toMatchObject({
+    latestVersion: '0.1.5',
+    minimumSupportedVersion: '0.1.5',
     updateRequired: true,
   });
-  await expect(getMcpClientPolicy('0.1.4')).resolves.toMatchObject({ updateRequired: false });
+  await expect(getMcpClientPolicy('0.1.5')).resolves.toMatchObject({ updateRequired: false });
 });
 
-test('returns an observation-mode policy when npm is unavailable or returns an invalid version', async () => {
+test('keeps the released 0.1.5 policy when npm is unavailable or returns an invalid version', async () => {
   vi.stubGlobal(
     'fetch',
     vi.fn(async () => new Response(JSON.stringify({ version: 'not-semver' }))),
   );
 
-  await expect(getMcpClientPolicy()).resolves.toMatchObject({ latestVersion: undefined });
+  await expect(getMcpClientPolicy('0.1.4')).resolves.toMatchObject({
+    latestVersion: '0.1.5',
+    minimumSupportedVersion: '0.1.5',
+    updateRequired: true,
+  });
+
+  resetMcpClientPolicyCacheForTests();
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response(JSON.stringify({ version: 15 }))),
+  );
+
+  await expect(getMcpClientPolicy('0.1.4')).resolves.toMatchObject({
+    latestVersion: '0.1.5',
+    updateRequired: true,
+  });
 
   resetMcpClientPolicyCacheForTests();
   vi.stubGlobal(
     'fetch',
     vi.fn(async () => Promise.reject(new Error('registry unavailable'))),
   );
-  await expect(getMcpClientPolicy()).resolves.toMatchObject({ latestVersion: undefined });
+  await expect(getMcpClientPolicy('0.1.4')).resolves.toMatchObject({
+    latestVersion: '0.1.5',
+    minimumSupportedVersion: '0.1.5',
+    updateRequired: true,
+  });
 });
 
 test('deduplicates concurrent npm registry lookups', async () => {
@@ -124,11 +146,11 @@ test('deduplicates concurrent npm registry lookups', async () => {
 
   const first = getMcpClientPolicy();
   const second = getMcpClientPolicy();
-  resolveFetch?.(new Response(JSON.stringify({ version: '0.1.4' })));
+  resolveFetch?.(new Response(JSON.stringify({ version: '0.1.5' })));
 
   await expect(Promise.all([first, second])).resolves.toEqual([
-    expect.objectContaining({ latestVersion: '0.1.4' }),
-    expect.objectContaining({ latestVersion: '0.1.4' }),
+    expect.objectContaining({ latestVersion: '0.1.5' }),
+    expect.objectContaining({ latestVersion: '0.1.5' }),
   ]);
   expect(fetchMock).toHaveBeenCalledTimes(1);
 });

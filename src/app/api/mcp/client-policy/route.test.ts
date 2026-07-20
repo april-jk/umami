@@ -24,8 +24,9 @@ test('returns a policy only for an MCP installation API key request', async () =
     error: undefined,
   });
   getMcpClientPolicyMock.mockResolvedValue({
-    latestVersion: '0.1.4',
-    updateRequired: false,
+    latestVersion: '0.1.5',
+    minimumSupportedVersion: '0.1.5',
+    updateRequired: true,
     protocolVersion: '2026-07-18',
     docsUrl: 'https://docs.amami.dev/docs/mcp-config/',
   });
@@ -38,7 +39,11 @@ test('returns a policy only for an MCP installation API key request', async () =
   );
 
   expect(response.status).toBe(200);
-  await expect(response.json()).resolves.toMatchObject({ latestVersion: '0.1.4' });
+  await expect(response.json()).resolves.toMatchObject({
+    latestVersion: '0.1.5',
+    minimumSupportedVersion: '0.1.5',
+    updateRequired: true,
+  });
   expect(getMcpClientPolicyMock).toHaveBeenCalledWith('0.1.3');
 });
 
