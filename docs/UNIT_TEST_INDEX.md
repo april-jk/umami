@@ -31,6 +31,7 @@
 | 21 | 当前分支 | OAuth 缺邮箱身份分流 | [iter-21-oauth-missing-email-uncovered.md](iter-21-oauth-missing-email-uncovered.md) | ⬜ 待补充真实 Google/GitHub 缺邮箱预生产验证 |
 | 23 | 当前分支 | Dashboard 空状态多语言文案 | [iter-23-dashboard-empty-state-localization-uncovered.md](iter-23-dashboard-empty-state-localization-uncovered.md) | ⬜ 待补充浏览器视觉与 RTL 验证 |
 | 24 | 当前分支 | 实时页 30 分钟范围标注与空状态 | [iter-24-realtime-range-clarity-uncovered.md](iter-24-realtime-range-clarity-uncovered.md) | ⬜ 待补充浏览器视觉与 RTL 验证 |
+| 25 | 当前分支 | 浏览器统一日期范围与 Last X 边界修复 | [iter-25-browser-owned-date-ranges-uncovered.md](iter-25-browser-owned-date-ranges-uncovered.md) | ⬜ 待补充真实浏览器网络、DST 与图表视觉验证 |
 
 ---
 
@@ -125,6 +126,7 @@ pnpm vitest run \
 - **2026-07-19**: 收录迭代 22（OAuth 邮箱用户名）未覆盖场景
 - **2026-07-19**: 收录迭代 23（Dashboard 空状态多语言文案）未覆盖场景
 - **2026-07-20**: 收录迭代 24（实时页 30 分钟范围标注与空状态）未覆盖场景
+- **2026-07-20**: 收录迭代 25（浏览器统一日期范围与 Last X 边界修复）未覆盖场景
 
 ---
 

@@ -38,7 +38,6 @@ import {
   subWeeks,
   subYears,
 } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 import { getDateLocale } from '@/lib/lang';
 import type { DateRange } from '@/lib/types';
 
@@ -141,12 +140,7 @@ export function parseDateValue(value: string) {
   return { num: +num, unit };
 }
 
-export function parseDateRange(
-  value: string,
-  unitValue?: string,
-  locale = 'en-US',
-  timezone?: string,
-): DateRange {
+export function parseDateRange(value: string, unitValue?: string, locale = 'en-US'): DateRange {
   if (typeof value !== 'string') {
     return null;
   }
@@ -167,15 +161,14 @@ export function parseDateRange(
     };
   }
 
-  const date = new Date();
-  const now = timezone ? toZonedTime(date, timezone) : date;
+  const now = new Date();
   const dateLocale = getDateLocale(locale);
   const { num = 1, unit } = parseDateValue(value);
 
   switch (unit) {
     case 'hour':
       return {
-        startDate: num ? subHours(startOfHour(now), num) : startOfHour(now),
+        startDate: num ? subHours(startOfHour(now), num - 1) : startOfHour(now),
         endDate: endOfHour(now),
         offset: 0,
         num: num || 1,
@@ -184,7 +177,7 @@ export function parseDateRange(
       };
     case 'day':
       return {
-        startDate: num ? subDays(startOfDay(now), num) : startOfDay(now),
+        startDate: num ? subDays(startOfDay(now), num - 1) : startOfDay(now),
         endDate: endOfDay(now),
         unit: unitValue ? unitValue : num ? 'day' : 'hour',
         offset: 0,
@@ -194,7 +187,7 @@ export function parseDateRange(
     case 'week':
       return {
         startDate: num
-          ? subWeeks(startOfWeek(now, { locale: dateLocale }), num)
+          ? subWeeks(startOfWeek(now, { locale: dateLocale }), num - 1)
           : startOfWeek(now, { locale: dateLocale }),
         endDate: endOfWeek(now, { locale: dateLocale }),
         unit: unitValue || 'day',
@@ -204,7 +197,7 @@ export function parseDateRange(
       };
     case 'month':
       return {
-        startDate: num ? subMonths(startOfMonth(now), num) : startOfMonth(now),
+        startDate: num ? subMonths(startOfMonth(now), num - 1) : startOfMonth(now),
         endDate: endOfMonth(now),
         unit: unitValue ? unitValue : num ? 'month' : 'day',
         offset: 0,
@@ -213,7 +206,7 @@ export function parseDateRange(
       };
     case 'year':
       return {
-        startDate: num ? subYears(startOfYear(now), num) : startOfYear(now),
+        startDate: num ? subYears(startOfYear(now), num - 1) : startOfYear(now),
         endDate: endOfYear(now),
         unit: unitValue || 'month',
         offset: 0,
@@ -319,9 +312,13 @@ export function getCompareDate(compare: string, startDate: Date, endDate: Date) 
   }
 
   if (compare === 'prev') {
-    const diff = differenceInMinutes(endDate, startDate);
+    const period = endDate.getTime() - startDate.getTime() + 1;
 
-    return { compare, startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+    return {
+      compare,
+      startDate: new Date(startDate.getTime() - period),
+      endDate: new Date(endDate.getTime() - period),
+    };
   }
 
   return {};
