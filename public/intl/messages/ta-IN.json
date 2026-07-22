@@ -394,7 +394,6 @@
     "incorrect-username-password": "தவறான பயனர்பெயர் / கடவுச்சொல்.",
     "invalid-domain": "தவறான கள முகவரி",
     "min-password-length": "குறைந்தபட்சம் {n} எழுத்துகள் தேவை",
-    "new-version-available": "Umami {version} புதிய பதிப்பு கிடைக்கிறது!",
     "no-data-available": "தரவு எதுவும் கிடைக்கவில்லை.",
     "no-realtime-activity": "கடந்த {x} நிமிடங்களில் கண்காணிக்கக்கூடிய செயல்பாடு இல்லை.",
     "no-event-data": "நிகழ்வுத் தரவு எதுவும் கிடைக்கவில்லை.",

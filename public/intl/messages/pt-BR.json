@@ -404,7 +404,6 @@
     "incorrect-username-password": "Nome de usuário ou senha incorretos.",
     "invalid-domain": "Domínio inválido",
     "min-password-length": "A senha deve ter no mínimo {n} caracteres",
-    "new-version-available": "Uma nova versão {version} do Umami está disponível!",
     "no-data-available": "Não há dados disponíveis.",
     "no-realtime-activity": "Nenhuma atividade rastreável nos últimos {x} minutos.",
     "no-event-data": "Não há eventos disponíveis.",

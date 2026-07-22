@@ -394,7 +394,6 @@
     "incorrect-username-password": "שם משתמש או סיסמה לא נכונים",
     "invalid-domain": "דומיין לא תקין",
     "min-password-length": "אורך מינימלי של {n} תווים",
-    "new-version-available": "גרסה חדשה של Umami {version} זמינה!",
     "no-data-available": "אין מידע זמין",
     "no-realtime-activity": "אין פעילות ניתנת למעקב ב-{x} הדקות האחרונות.",
     "no-event-data": "אין נתוני אירועים זמינים.",

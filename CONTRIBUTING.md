@@ -1,45 +1,39 @@
-# Contributing to Umami
+# Contributing to Amami
 
-Thanks for your interest in contributing to Umami! This document outlines the process for contributing code.
+Thank you for contributing to Amami. Keep each change focused and include tests for behavior that changes.
 
 ## Branching
 
-Umami uses the following long-lived branches:
+Create feature and fix branches from `master`. Pull requests should target `master` unless a maintainer names a release branch for the change.
 
-- `master` — stable, released code. **Do not open PRs against `master`.**
-- `dev` — active development. **All pull requests should target `dev`.**
+```bash
+git switch master
+git pull --ff-only origin master
+git switch -c my-feature
+```
 
-Feature branches and fixes are merged into `dev`, and `dev` is periodically merged into `master` for releases.
+## Pull requests
 
-## Submitting a Pull Request
+1. Keep the diff limited to one logical change.
+2. Add or update targeted tests.
+3. Run the relevant quality checks:
 
-1. Fork the repository and create your branch from `dev`:
    ```bash
-   git checkout dev
-   git pull origin dev
-   git checkout -b my-feature
-   ```
-2. Make your changes. Keep PRs focused — one logical change per PR.
-3. Ensure the project builds and lints cleanly:
-   ```bash
-   pnpm install
-   pnpm build
+   pnpm vitest run path/to/relevant.test.ts
    pnpm lint
+   pnpm exec tsc --noEmit
    ```
-4. Push your branch and open a pull request **against the `dev` branch**.
-5. Fill in the PR description with what changed and why. Link any related issues.
 
-PRs opened against `master` will be asked to retarget `dev`.
+4. Push the branch and open a pull request against `master`.
+5. Explain the user impact, verification evidence, migration needs, and remaining risk.
 
-## Reporting Issues
+## Issues
 
-- Search [existing issues](https://github.com/umami-software/umami/issues) before opening a new one.
-- For bugs, include reproduction steps, expected vs. actual behavior, and your environment (Umami version, database, browser).
-- For feature requests, describe the use case before the proposed solution.
+Search [existing issues](https://github.com/april-jk/umami/issues) before opening a new one. Bug reports should include reproduction steps, expected and actual behavior, Amami version, database, deployment method, and browser when relevant.
 
-## Development Setup
+## Development setup
 
-See the [README](./README.md) for instructions on installing dependencies, configuring the database, and running Umami locally.
+See [README.md](./README.md) for installation and local development instructions.
 
 ## License
 

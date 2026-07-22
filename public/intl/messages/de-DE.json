@@ -404,7 +404,6 @@
     "incorrect-username-password": "Falsches Passwort oder Benutzername.",
     "invalid-domain": "Ungültige Domain",
     "min-password-length": "Minimale Länge von {n} Zeichen",
-    "new-version-available": "Eine neue Version von Umami ist verfügbar: {version}",
     "no-data-available": "Keine Daten vorhanden.",
     "no-realtime-activity": "Keine nachverfolgbare Aktivität in den letzten {x} Minuten.",
     "no-event-data": "Es sind keine Ereignisdaten verfügbar.",

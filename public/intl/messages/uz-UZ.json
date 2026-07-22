@@ -409,7 +409,6 @@
     "incorrect-username-password": "Notoʻgʻri foydalanuvchi nomi va/yoki parol.",
     "invalid-domain": "Notoʻgʻri domen. http/https qoʻshmang.",
     "min-password-length": "Minimal uzunligi {n} belgidan",
-    "new-version-available": "Umami'ning yangi **{version}** versiyasi mavjud!",
     "no-data-available": "Ma'lumotlar mavjud emas.",
     "no-realtime-activity": "Oxirgi {x} daqiqada kuzatiladigan faoliyat yo‘q.",
     "no-event-data": "Hodisa ma'lumotlari mavjud emas.",

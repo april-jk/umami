@@ -404,7 +404,6 @@
     "incorrect-username-password": "Hatalı kullanıcı adı ya da parola.",
     "invalid-domain": "Geçersiz alan adı",
     "min-password-length": "Minimum {n} karakter uzunluğu",
-    "new-version-available": "Yeni versiyon Umami {version} mevcut!",
     "no-data-available": "Henüz hiç veri yok.",
     "no-realtime-activity": "Son {x} dakika içinde izlenebilir etkinlik yok.",
     "no-event-data": "Hiçbir olay verisi mevcut değil.",

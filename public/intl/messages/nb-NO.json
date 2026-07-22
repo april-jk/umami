@@ -404,7 +404,6 @@
     "incorrect-username-password": "Ugyldig brukernavn/passord.",
     "invalid-domain": "Ugyldig domene",
     "min-password-length": "Minimumslengde på {n} tegn",
-    "new-version-available": "En ny versjon av Umami {version} er tilgjengelig!",
     "no-data-available": "Ingen data tilgjengelig.",
     "no-realtime-activity": "Ingen sporbar aktivitet de siste {x} minuttene.",
     "no-event-data": "Ingen hendelsesdata er tilgjengelig.",

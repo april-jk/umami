@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import createNextIntlPlugin from 'next-intl/plugin';
 import pkg from './package.json' with { type: 'json' };
+import { assertIndependentServiceUrl } from './src/lib/upstream-url';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
@@ -22,6 +23,10 @@ const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
 const trackerScriptURL = process.env.TRACKER_SCRIPT_URL || '';
 const selfTrack = process.env.UMAMI_SELF_TRACK || '';
 const selfRecord = process.env.UMAMI_SELF_RECORD || '';
+
+assertIndependentServiceUrl('API_URL', apiUrl);
+assertIndependentServiceUrl('CLOUD_URL', cloudUrl);
+assertIndependentServiceUrl('TRACKER_SCRIPT_URL', trackerScriptURL);
 
 function getUrlOrigin(url: string) {
   try {
@@ -268,13 +273,6 @@ if (trackerScriptName) {
   }
 }
 
-if (isProd && cloudMode) {
-  rewrites.push({
-    source: '/script.js',
-    destination: 'https://cloud.umami.is/script.js',
-  });
-}
-
 /** @type {import('next').NextConfig} */
 export default withNextIntl({
   reactStrictMode: false,
@@ -302,10 +300,6 @@ export default withNextIntl({
   async rewrites() {
     return [
       ...rewrites,
-      {
-        source: '/telemetry.js',
-        destination: '/api/scripts/telemetry',
-      },
       {
         source: '/teams/:teamId/:path*',
         destination: '/:path*',

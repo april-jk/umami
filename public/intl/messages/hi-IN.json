@@ -394,7 +394,6 @@
     "incorrect-username-password": "ग़लत उपयोगकर्ता नाम / पासवर्ड।",
     "invalid-domain": "अमान्य डोमेन",
     "min-password-length": "न्यूनतम {n} वर्ण",
-    "new-version-available": "Umami {version} का नया संस्करण उपलब्ध है!",
     "no-data-available": "कोई डेटा उपलब्ध नहीं है।",
     "no-realtime-activity": "पिछले {x} मिनट में कोई ट्रैक करने योग्य गतिविधि नहीं है।",
     "no-event-data": "कोई ईवेंट डेटा उपलब्ध नहीं है।",

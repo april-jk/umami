@@ -404,7 +404,6 @@
     "incorrect-username-password": "Väärä käyttäjänimi/salasana.",
     "invalid-domain": "Virheellinen verkkotunnus",
     "min-password-length": "Vähimmäispituus {n} merkkiä",
-    "new-version-available": "Umamista on saatavilla uusi versio {version}!",
     "no-data-available": "Tietoja ei ole käytettävissä.",
     "no-realtime-activity": "Viimeisten {x} minuutin aikana ei ole seurattavaa toimintaa.",
     "no-event-data": "Tapahtumatietoja ei ole saatavilla.",

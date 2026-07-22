@@ -13,13 +13,13 @@ function createHeaders(entries: Record<string, string>) {
 test('prefers forwarded host and protocol', () => {
   const url = getBaseUrl(
     createHeaders({
-      'x-forwarded-host': 'umami.is',
+      'x-forwarded-host': 'analytics.amami.dev',
       'x-forwarded-proto': 'https',
       host: 'localhost:3000',
     }),
   );
 
-  expect(url.toString()).toBe('https://umami.is/');
+  expect(url.toString()).toBe('https://analytics.amami.dev/');
 });
 
 test('falls back to host header', () => {

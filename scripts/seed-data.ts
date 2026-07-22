@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 
 /**
- * Umami Sample Data Generator
+ * Amami Sample Data Generator
  *
  * Generates realistic analytics data for local development and testing.
  * Creates two demo websites:
@@ -58,7 +58,7 @@ function parseArgs(): SeedConfig {
 
 function printHelp(): void {
   console.log(`
-Umami Sample Data Generator
+Amami Sample Data Generator
 
 Generates realistic analytics data for local development and testing.
 

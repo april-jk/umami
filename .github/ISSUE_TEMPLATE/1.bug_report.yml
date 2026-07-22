@@ -1,5 +1,5 @@
 name: '🐛 Bug Report'
-description: Create a bug report for Umami.
+description: Create a bug report for Amami.
 body:
   - type: textarea
     attributes:
@@ -13,8 +13,6 @@ body:
       description: What database are you using?
       options:
         - PostgreSQL
-        - MySQL
-        - Umami Cloud
     validations:
       required: true
   - type: textarea
@@ -24,7 +22,7 @@ body:
       render: shell
   - type: input
     attributes:
-      label: Which Umami version are you using?
+      label: Which Amami version are you using?
       description: 'For example: 2.18.0, 2.15.1, 1.39.0, etc'
   - type: input
     attributes:

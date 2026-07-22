@@ -404,7 +404,6 @@
     "incorrect-username-password": "Nume utilizator / parolă incorecte.",
     "invalid-domain": "Domeniul nu este valid",
     "min-password-length": "Lungimea minimă este de {n} caractere",
-    "new-version-available": "O nouă versiune de Umami {version} este disponibilă!",
     "no-data-available": "Nicio informație disponibilă.",
     "no-realtime-activity": "Nu există activitate care poate fi urmărită în ultimele {x} minute.",
     "no-event-data": "Nu sunt disponibile date legate de eveniment.",

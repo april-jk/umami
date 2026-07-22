@@ -404,7 +404,6 @@
     "incorrect-username-password": "Nama pengguna/kata sandi salah.",
     "invalid-domain": "Domain tidak valid",
     "min-password-length": "Minimal {n} karakter",
-    "new-version-available": "Versi baru dari Umami {version} telah tersedia!",
     "no-data-available": "Tidak ada data.",
     "no-realtime-activity": "Tidak ada aktivitas yang dapat dilacak dalam {x} menit terakhir.",
     "no-event-data": "Tidak ada data peristiwa",

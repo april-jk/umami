@@ -437,7 +437,6 @@ export const messages: Record<string, string> = {
   eventLog: 'message.event-log',
   incorrectUsernamePassword: 'message.incorrect-username-password',
   noEventData: 'message.no-event-data',
-  newVersionAvailable: 'message.new-version-available',
   transferWebsite: 'message.transfer-website',
   transferTeamWebsiteToUser: 'message.transfer-team-website-to-user',
   transferUserWebsiteToTeam: 'message.transfer-user-website-to-team',

@@ -404,7 +404,6 @@
     "incorrect-username-password": "Nom d'usuari o contrasenya incorrectes.",
     "invalid-domain": "Domini invàlid",
     "min-password-length": "Longitud mínima de {n} caràcters",
-    "new-version-available": "Una nova versió d'Umami {version} està disponible!",
     "no-data-available": "No hi ha dades disponibles.",
     "no-realtime-activity": "No hi ha activitat rastrejable en els últims {x} minuts.",
     "no-event-data": "No hi ha dades d'esdeveniments disponibles.",

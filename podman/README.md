@@ -1,18 +1,18 @@
-# How to deploy umami on podman
+# How to deploy Amami on Podman
 
 
 ## How to use
 
 1. Rename `env.sample` to `.env`
 2. Edit `.env` file. At the minimum set the passwords.
-3. Start umami by running `podman-compose up -d`.
+3. Start Amami by running `podman-compose up --build -d`.
 
-If you need to stop umami, you can do so by running `podman-compose down`.
+If you need to stop Amami, you can do so by running `podman-compose down`.
 
 
 ### Install systemd service (optional)
 
-If you want to install a systemd service to run umami, you can use the provided
+If you want to install a systemd service to run Amami, you can use the provided
 systemd service.
 
 Edit `umami.service` and change these two variables:

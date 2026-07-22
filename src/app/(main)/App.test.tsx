@@ -13,7 +13,6 @@ let teamResult: any;
 vi.mock('@/app/(main)/MobileNav', () => ({ MobileNav: () => <div>Mobile navigation</div> }));
 vi.mock('@/app/(main)/SideNav', () => ({ SideNav: () => <div>Side navigation</div> }));
 vi.mock('@/app/(main)/TopNav', () => ({ TopNav: () => <div>Top navigation</div> }));
-vi.mock('./UpdateNotice', () => ({ UpdateNotice: () => <div>Update notice</div> }));
 vi.mock('@/components/common/PlanLimitDialog', () => ({
   PlanLimitDialog: () => <div>Plan limit dialog</div>,
 }));
@@ -89,7 +88,7 @@ describe('App', () => {
     expect(screen.queryByText('Content')).not.toBeInTheDocument();
   });
 
-  test('renders configured telemetry scripts', () => {
+  test('renders configured first-party tracking and recording scripts', () => {
     process.env.selfTrack = 'tracking-site';
     process.env.selfRecord = 'recording-site';
 

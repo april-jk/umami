@@ -80,7 +80,7 @@ function redirectLegacyDashboard(request: NextRequest) {
 
   // Existing embeds load the tracker and post events back to their script host.
   // Keeping these same-origin avoids CORS/preflight regressions during the migration.
-  if ([TRACKER_PATH, COLLECT_PATH, '/telemetry.js'].includes(request.nextUrl.pathname)) return;
+  if ([TRACKER_PATH, COLLECT_PATH].includes(request.nextUrl.pathname)) return;
 
   const url = request.nextUrl.clone();
   url.protocol = 'https:';

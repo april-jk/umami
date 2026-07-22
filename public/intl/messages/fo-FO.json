@@ -404,7 +404,6 @@
     "incorrect-username-password": "Skeivt brúkaranavn/loyniorð.",
     "invalid-domain": "Ógilt økisnavn",
     "min-password-length": "Minsta longd er {n} tekn",
-    "new-version-available": "Nýggj útgáva av Umami {version} er tøk!",
     "no-data-available": "Einki data tøk.",
     "no-realtime-activity": "Eingin sporfør virksemi seinastu {x} minuttir.",
     "no-event-data": "Eingin hendingardata tøk.",

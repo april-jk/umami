@@ -394,7 +394,6 @@
     "incorrect-username-password": "사용자 이름 또는 비밀번호를 잘못 입력했습니다.",
     "invalid-domain": "잘못된 도메인입니다. http/https를 포함하지 마세요.",
     "min-password-length": "최소 {n}자여야 합니다",
-    "new-version-available": "Umami의 새 버전 {version}을(를) 사용할 수 있습니다!",
     "no-data-available": "사용할 수 있는 데이터가 없습니다.",
     "no-realtime-activity": "최근 {x}분 동안 추적 가능한 활동이 없습니다.",
     "no-event-data": "사용할 수 있는 이벤트 데이터가 없습니다.",

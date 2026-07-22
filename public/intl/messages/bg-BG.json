@@ -394,7 +394,6 @@
     "incorrect-username-password": "Неправилно потребителско име и/или парола.",
     "invalid-domain": "Невалиден домейн. Не включвайте http/https.",
     "min-password-length": "Минимална дължина от {n} символа",
-    "new-version-available": "Има нова версия на Umami {version}!",
     "no-data-available": "Няма налични данни.",
     "no-realtime-activity": "Няма проследима активност през последните {x} минути.",
     "no-event-data": "Няма налични данни за събитие.",

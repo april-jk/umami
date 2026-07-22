@@ -394,7 +394,6 @@
     "incorrect-username-password": "Буруу хэрэглэгчийн нэр/нууц үг.",
     "invalid-domain": "Буруу домэйн",
     "min-password-length": "Хамгийн багадаа {n} тэмдэгт",
-    "new-version-available": "Umami-н шинэ хувилбар {version} гарсан байна!",
     "no-data-available": "Өгөгдөл алга.",
     "no-realtime-activity": "Сүүлийн {x} минутад хянах боломжтой үйл ажиллагаа алга.",
     "no-event-data": "Үйлдлийн өгөгдөл алга.",

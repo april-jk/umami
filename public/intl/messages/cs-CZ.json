@@ -404,7 +404,6 @@
     "incorrect-username-password": "Nesprávné jméno/heslo.",
     "invalid-domain": "Neplatná doména",
     "min-password-length": "Minimální délka {n} znaků",
-    "new-version-available": "Je k dispozici nová verze Umami {version}!",
     "no-data-available": "Žádná data.",
     "no-realtime-activity": "Za posledních {x} minut nebyla zaznamenána žádná sledovatelná aktivita.",
     "no-event-data": "Nejsou k dispozici žádná data o událostech.",

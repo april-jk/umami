@@ -394,7 +394,6 @@
     "incorrect-username-password": "Некарэктнае імя карыстальніка/пароль.",
     "invalid-domain": "Некарэктны дамен",
     "min-password-length": "Мінімальная даўжыня {n} знакаў",
-    "new-version-available": "Даступная новая версія Umami {version}!",
     "no-data-available": "Няма дадзеных.",
     "no-realtime-activity": "За апошнія {x} хвілін няма адсочваемай актыўнасці.",
     "no-event-data": "Дадзеныя падзеі недаступныя.",

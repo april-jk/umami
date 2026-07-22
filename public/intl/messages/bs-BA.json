@@ -404,7 +404,6 @@
     "incorrect-username-password": "Pogrešno korisničko ime i/ili šifra.",
     "invalid-domain": "Nevalidna domena. Ne uključujte http/https.",
     "min-password-length": "Minimalna dužina od {n} karaktera",
-    "new-version-available": "Nova verzija Umami {version} je dostupna!",
     "no-data-available": "Nema dostupnih podataka.",
     "no-realtime-activity": "Nema aktivnosti koja se može pratiti u posljednjih {x} minuta.",
     "no-event-data": "Nema dostupnih podataka o događajima.",

@@ -394,7 +394,6 @@
     "incorrect-username-password": "Εσφαλμένο όνομα χρήστη / κωδικός πρόσβασης.",
     "invalid-domain": "Μη έγκυρος τομέας",
     "min-password-length": "Ελάχιστο μήκος {n} χαρακτήρων",
-    "new-version-available": "Μια νέα έκδοση του Umami {version} είναι διαθέσιμη!",
     "no-data-available": "Δεν υπάρχουν διαθέσιμα δεδομένα.",
     "no-realtime-activity": "Δεν υπάρχει καταγεγραμμένη δραστηριότητα τα τελευταία {x} λεπτά.",
     "no-event-data": "Δεν υπάρχουν διαθέσιμα δεδομένα συμβάντων.",

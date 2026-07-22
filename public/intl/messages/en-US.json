@@ -413,7 +413,6 @@
     "incorrect-username-password": "Incorrect username and/or password.",
     "invalid-domain": "Invalid domain. Do not include http/https.",
     "min-password-length": "Minimum length of {n} characters",
-    "new-version-available": "A new version of Umami {version} is available!",
     "no-data-available": "No data available.",
     "no-realtime-activity": "No trackable activity in the last {x} minutes.",
     "no-event-data": "No event data is available.",

@@ -404,7 +404,6 @@
     "incorrect-username-password": "Pengguna/kata laluan tidak betul.",
     "invalid-domain": "Domain tidak sah",
     "min-password-length": "Panjang minimum {n} aksara",
-    "new-version-available": "Versi baharu Umami {version} tersedia!",
     "no-data-available": "Tiada data yang boleh didapati.",
     "no-realtime-activity": "Tiada aktiviti yang boleh dijejaki dalam {x} minit terakhir.",
     "no-event-data": "Tiada data peristiwa tersedia.",

@@ -394,7 +394,6 @@
     "incorrect-username-password": "වැරදි පරිශීලක නාමය/මුරපදය.",
     "invalid-domain": "වලංගු නොවන ඩොමේනයකි. http/https ඇතුළත් නොකරන්න.",
     "min-password-length": "අවම {n} අක්ෂර දිග",
-    "new-version-available": "Umami හි නව අනුවාදයක් {version} ලබා ගත හැකිය!",
     "no-data-available": "පෙන්වීමට දත්ත නොමැත.",
     "no-realtime-activity": "පසුගිය {x} මිනිත්තු තුළ නිරීක්ෂණය කළ හැකි ක්‍රියාකාරකමක් නොමැත.",
     "no-event-data": "සිදුවීම් දත්ත නොමැත.",

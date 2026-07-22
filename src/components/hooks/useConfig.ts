@@ -8,9 +8,7 @@ export type Config = {
   linksUrl?: string;
   pixelsUrl?: string;
   privateMode: boolean;
-  telemetryDisabled: boolean;
   trackerScriptName?: string;
-  updatesDisabled: boolean;
 };
 
 export function useConfig(): Config {

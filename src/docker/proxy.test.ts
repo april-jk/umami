@@ -61,7 +61,6 @@ describe('legacy dashboard redirects', () => {
   test.each([
     '/script.js',
     '/api/send',
-    '/telemetry.js',
   ])('keeps the legacy %s tracker endpoint same-origin', path => {
     expect(middleware(request('dashboard.amami.dev', path))).toEqual({ type: 'next' });
     expect(redirectMock).not.toHaveBeenCalled();

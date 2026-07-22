@@ -394,7 +394,6 @@
     "incorrect-username-password": "အသုံးပြုသူအမည် သို့မဟုတ် စကားဝှက် မှားနေသည်",
     "invalid-domain": "ဒိုမိန်း မမှန်ပါ http/https. မပါရပါ",
     "min-password-length": "အနည်းဆုံး {n} character ရှိရမည်",
-    "new-version-available": "အူမာမီ {version} အသစ်ထွက်နေပါပြီ",
     "no-data-available": "ဒေတာ မရှိပါ",
     "no-realtime-activity": "ပြီးခဲ့သော {x} မိနစ်အတွင်း ခြေရာခံနိုင်သော လုပ်ဆောင်မှု မရှိပါ။",
     "no-event-data": "အဖြစ်အပျက်ဒေတာ မရှိပါ",
