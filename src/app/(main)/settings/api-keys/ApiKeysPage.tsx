@@ -9,6 +9,7 @@ import { KeyRound, Plus } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { ApiKeyCreateForm } from './ApiKeyCreateForm';
 import { ApiKeysTable } from './ApiKeysTable';
+import { McpUsagePanel } from './McpUsagePanel';
 
 export function ApiKeysPage() {
   const query = useApiKeysQuery();
@@ -58,6 +59,7 @@ export function ApiKeysPage() {
             </LoadingPanel>
           </Column>
         </Panel>
+        <McpUsagePanel />
       </Column>
     </PageBody>
   );

@@ -27,6 +27,7 @@ export * from './queries/useLinkQuery';
 export * from './queries/useLinkSharesQuery';
 export * from './queries/useLinksQuery';
 export * from './queries/useLoginQuery';
+export * from './queries/useMcpUsageQuery';
 export * from './queries/useMembershipConfigQuery';
 export * from './queries/usePixelQuery';
 export * from './queries/usePixelSharesQuery';
