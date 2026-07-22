@@ -396,6 +396,11 @@ export const labels: Record<string, string> = {
   duration: 'label.duration',
   recorded: 'label.recorded',
   upgrade: 'label.upgrade',
+  mcpUsage: 'label.mcp-usage',
+  requestTime: 'label.request-time',
+  keyName: 'label.key-name',
+  operation: 'label.operation',
+  usageQuotas: 'label.usage-quotas',
 };
 
 export const messages: Record<string, string> = {
@@ -447,4 +452,6 @@ export const messages: Record<string, string> = {
   serverError: 'message.sever-error',
   upgradeRequired: 'message.upgrade-required',
   replayMinDurationDescription: 'message.replay-min-duration-description',
+  mcpUsageDescription: 'message.mcp-usage-description',
+  noMcpRequests: 'message.no-mcp-requests',
 };
