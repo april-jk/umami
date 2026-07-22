@@ -12,7 +12,7 @@ export function McpUsageTable(props: DataTableProps) {
   return (
     <DataTable {...props}>
       <DataColumn id="createdAt" label={t(labels.requestTime)} width="180px">
-        {({ createdAt }: any) => <DateDistance date={new Date(createdAt)} />}
+        {({ createdAt }: any) => <DateDistance date={new Date(createdAt)} absolute />}
       </DataColumn>
       <DataColumn id="apiKeyName" label={t(labels.keyName)} width="220px">
         {({ apiKeyName }: any) => apiKeyName}

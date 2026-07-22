@@ -3,7 +3,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { useLocale, useTimezone } from '@/components/hooks';
 import { isInvalidDate } from '@/lib/date';
 
-export function DateDistance({ date }: { date: Date }) {
+export function DateDistance({ date, absolute = false }: { date: Date; absolute?: boolean }) {
   const { formatTimezoneDate } = useTimezone();
   const { dateLocale } = useLocale();
 
@@ -11,9 +11,11 @@ export function DateDistance({ date }: { date: Date }) {
     return null;
   }
 
+  const title = formatTimezoneDate(date?.toISOString(), 'PPpp');
+
   return (
-    <Text title={formatTimezoneDate(date?.toISOString(), 'PPPpp')}>
-      {formatDistanceToNow(date, { addSuffix: true, locale: dateLocale })}
+    <Text title={title}>
+      {absolute ? title : formatDistanceToNow(date, { addSuffix: true, locale: dateLocale })}
     </Text>
   );
 }
