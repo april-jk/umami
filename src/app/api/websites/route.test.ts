@@ -211,6 +211,7 @@ test('POST creates personal websites inside the authenticated user tenant', asyn
   expect(createWebsiteMock).toHaveBeenCalledWith(
     expect.objectContaining({
       createdBy: 'user-1',
+      creationSource: 'web',
       userId: 'user-1',
       tenantId: 'tenant-1',
       name: 'Example',
@@ -219,6 +220,48 @@ test('POST creates personal websites inside the authenticated user tenant', asyn
   );
   expect(body.shareId).toBeNull();
   delete process.env.CLOUD_MODE;
+});
+
+test.each([
+  [{ apiKeyId: 'mcp-key', apiKeyClientType: 'mcp' }, 'mcp'],
+  [{ apiKeyId: 'api-key', apiKeyClientType: null }, 'api'],
+])('POST records the authenticated API creation source', async (authFields, creationSource) => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' }, ...authFields },
+    body: { name: 'API site', domain: 'api.example.com' },
+    error: undefined,
+  } as any);
+  getDefaultTenantIdForUserMock.mockResolvedValue(null);
+  canCreateWebsiteMock.mockResolvedValue(true);
+  createWebsiteMock.mockResolvedValue({ id: 'website-1', name: 'API site' } as any);
+
+  const response = await POST(new Request('http://localhost/api/websites', { method: 'POST' }));
+
+  expect(response.status).toBe(200);
+  expect(createWebsiteMock).toHaveBeenCalledWith(expect.objectContaining({ creationSource }));
+});
+
+test('POST recognizes an MCP client using a legacy API key', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' }, apiKeyId: 'legacy-key', apiKeyClientType: null },
+    body: { name: 'Legacy MCP site', domain: 'legacy-mcp.example.com' },
+    error: undefined,
+  } as any);
+  getDefaultTenantIdForUserMock.mockResolvedValue(null);
+  canCreateWebsiteMock.mockResolvedValue(true);
+  createWebsiteMock.mockResolvedValue({ id: 'website-1', name: 'Legacy MCP site' } as any);
+
+  const response = await POST(
+    new Request('http://localhost/api/websites', {
+      method: 'POST',
+      headers: { 'x-amami-mcp-client': 'amami-analytics-mcp/0.1.5' },
+    }),
+  );
+
+  expect(response.status).toBe(200);
+  expect(createWebsiteMock).toHaveBeenCalledWith(
+    expect.objectContaining({ creationSource: 'mcp' }),
+  );
 });
 
 test('POST blocks a website when the tenant plan limit is exhausted', async () => {

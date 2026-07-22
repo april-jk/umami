@@ -1,12 +1,19 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
+import { Badge } from '@/components/common/Badge';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash, Users } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
+
+const CREATION_SOURCE_LABELS: Record<string, string> = {
+  api: 'API',
+  mcp: 'MCP',
+  web: 'Web',
+};
 
 export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
   const { t, labels } = useMessages();
@@ -44,6 +51,14 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
                 <Link href={`/admin/users/${row?.user?.id}`}>{row?.user?.username}</Link>
               </Text>
             );
+          }}
+        </DataColumn>
+        <DataColumn id="creationSource" label={t(labels.source)} width="110px">
+          {(row: any) => {
+            const source = row.creationSource ?? 'unknown';
+            const label = CREATION_SOURCE_LABELS[source] ?? t(labels.unknown);
+
+            return <Badge variant={source === 'mcp' ? 'good' : 'gray'}>{label}</Badge>;
           }}
         </DataColumn>
         <DataColumn

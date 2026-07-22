@@ -94,6 +94,7 @@ model Website {
   tenantId           String?   @map("tenant_id") @db.Uuid
   name               String    @db.VarChar(100)
   domain             String?   @db.VarChar(500)
+  creationSource     String    @default("web") @map("creation_source") @db.VarChar(16)
   resetAt            DateTime? @map("reset_at") @db.Timestamptz(6)
   retentionCutoffAt  DateTime? @map("retention_cutoff_at") @db.Timestamptz(6)
   userId    String?   @map("user_id") @db.Uuid

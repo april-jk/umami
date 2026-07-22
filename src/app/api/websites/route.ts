@@ -97,9 +97,12 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
+  const isMcpRequest =
+    auth.apiKeyClientType === 'mcp' || (auth.apiKeyId && request.headers.has('x-amami-mcp-client'));
   const data: any = {
     id: id ?? uuid(),
     createdBy: auth.user.id,
+    creationSource: isMcpRequest ? 'mcp' : auth.apiKeyId ? 'api' : 'web',
     name,
     domain,
     teamId,
