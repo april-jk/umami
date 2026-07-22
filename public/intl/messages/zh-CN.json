@@ -448,7 +448,7 @@
         "website-export": "查询网站导出",
         "website-metrics": "查询网站指标",
         "website-pageviews": "查询网站浏览量",
-        "website-realtime-activity": "查看网站实时活动",
+        "website-realtime-activity": "查看实时活动",
         "website-session-replays": "查询网站会话回放",
         "website-revenue": "查询网站收入",
         "website-sessions": "查询网站会话",
@@ -510,7 +510,7 @@
     "viewed-page": "已浏览页面",
     "upgrade-required": "此功能需要订阅 {plan} 套餐。",
     "visitor-log": "来自 <b>{country}</b> 的访客在搭载 <b>{os}</b> 的 <b>{device}</b> 上使用 <b>{browser}</b> 浏览器进行访问。",
-    "mcp-usage-description": "由 Amami MCP 安装创建的 API 密钥发起的请求。",
+    "mcp-usage-description": "由 Amami MCP 安装生成的 API 密钥发起的请求。",
     "no-mcp-requests": "还没有 MCP 请求。"
   },
   "membership": {
