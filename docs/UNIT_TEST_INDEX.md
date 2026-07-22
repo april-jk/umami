@@ -33,6 +33,7 @@
 | 24 | 当前分支 | 实时页 30 分钟范围标注与空状态 | [iter-24-realtime-range-clarity-uncovered.md](iter-24-realtime-range-clarity-uncovered.md) | ⬜ 待补充浏览器视觉与 RTL 验证 |
 | 25 | 当前分支 | 浏览器统一日期范围与 Last X 边界修复 | [iter-25-browser-owned-date-ranges-uncovered.md](iter-25-browser-owned-date-ranges-uncovered.md) | ⬜ 待补充真实浏览器网络、DST 与图表视觉验证 |
 | 26 | 当前分支 | MCP 0.1.5 强制更新策略 | [iter-26-mcp-015-required-update-uncovered.md](iter-26-mcp-015-required-update-uncovered.md) | ⬜ 待补充生产旧版/新版客户端与 Railway 网络验证 |
+| 27 | `chore/detach-upstream-umami` | 原项目运行时、发布与仓库身份隔离 | [iter-27-upstream-isolation-uncovered.md](iter-27-upstream-isolation-uncovered.md) | ⬜ 待补充 Railway、容器与 UI 依赖迁移验证 |
 | 28 | 当前分支 | API Keys 页面 MCP 使用记录 | [iter-28-mcp-usage-history-uncovered.md](iter-28-mcp-usage-history-uncovered.md) | ⬜ 待补充认证浏览器、真实 PostgreSQL 与 MCP 全工具链路验证 |
 
 ---
@@ -130,6 +131,7 @@ pnpm vitest run \
 - **2026-07-20**: 收录迭代 24（实时页 30 分钟范围标注与空状态）未覆盖场景
 - **2026-07-20**: 收录迭代 25（浏览器统一日期范围与 Last X 边界修复）未覆盖场景
 - **2026-07-20**: 收录迭代 26（MCP 0.1.5 强制更新策略）未覆盖场景
+- **2026-07-22**: 收录迭代 27（原项目运行时、发布与仓库身份隔离）未覆盖场景
 - **2026-07-22**: 收录迭代 28（API Keys 页面 MCP 使用记录）未覆盖场景
 
 ---
