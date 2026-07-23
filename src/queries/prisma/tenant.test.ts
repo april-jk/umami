@@ -71,6 +71,9 @@ const { transactionMock, prismaMock } = vi.hoisted(() => ({
         findMany: vi.fn(),
         findFirst: vi.fn(),
       },
+      mcpUsageCounter: {
+        findUnique: vi.fn(),
+      },
     },
     getSearchParameters: vi.fn(),
     pagedQuery: vi.fn(),
@@ -95,6 +98,7 @@ beforeEach(() => {
   vi.mocked(getMembershipConfig).mockResolvedValue(createDefaultMembershipConfig());
   prismaMock.client.tenantSubscription.findUnique.mockResolvedValue(null);
   prismaMock.client.activationCodeRedemption.findMany.mockResolvedValue([]);
+  prismaMock.client.mcpUsageCounter.findUnique.mockResolvedValue(null);
 });
 
 describe('tenant queries', () => {

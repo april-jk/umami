@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP iškvietimai per dieną",
+      "mcpCalls": "MCP iškvietimai",
+      "mcpCallsPerMonth": "MCP iškvietimai per mėnesį",
       "apiRequestsPerMinute": "API užklausos per minutę",
       "aiAnalysesPerMonth": "AI analizės per mėnesį",
       "aiReportsPerMonth": "AI ataskaitos per mėnesį",

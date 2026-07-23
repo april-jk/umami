@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "일일 MCP 호출",
+      "mcpCalls": "MCP 호출",
+      "mcpCallsPerMonth": "월간 MCP 호출",
       "apiRequestsPerMinute": "분당 API 요청",
       "aiAnalysesPerMonth": "월간 AI 분석",
       "aiReportsPerMonth": "월간 AI 보고서",

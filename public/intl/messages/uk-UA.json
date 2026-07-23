@@ -625,6 +625,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP-виклики/день",
+      "mcpCalls": "MCP-виклики",
+      "mcpCallsPerMonth": "MCP-виклики/місяць",
       "apiRequestsPerMinute": "API-запити/хвилину",
       "aiAnalysesPerMonth": "AI-аналізи/місяць",
       "aiReportsPerMonth": "AI-звіти/місяць",

@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "ការហៅ MCP/ថ្ងៃ",
+      "mcpCalls": "ការហៅ MCP",
+      "mcpCallsPerMonth": "ការហៅ MCP/ខែ",
       "apiRequestsPerMinute": "សំណើ API/នាទី",
       "aiAnalysesPerMonth": "វិភាគ AI/ខែ",
       "aiReportsPerMonth": "របាយការណ៍ AI/ខែ",

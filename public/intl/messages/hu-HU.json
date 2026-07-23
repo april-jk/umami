@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP-hívások/nap",
+      "mcpCalls": "MCP-hívások",
+      "mcpCallsPerMonth": "MCP-hívások/hónap",
       "apiRequestsPerMinute": "API-kérések/perc",
       "aiAnalysesPerMonth": "AI-elemzések/hónap",
       "aiReportsPerMonth": "AI-jelentések/hónap",

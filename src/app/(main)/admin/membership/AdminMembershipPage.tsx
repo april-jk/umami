@@ -79,6 +79,7 @@ const rows: ConfigRow[] = [
       ['Session replays', 'replayLimit'],
       ['CSV rows', 'csvExport'],
       ['MCP calls / day', 'mcpCallsPerDay'],
+      ['MCP calls / month', 'mcpCallsPerMonth'],
       ['API requests / minute', 'apiRequestsPerMinute'],
       ['AI analyses / month', 'aiAnalysesPerMonth'],
       ['AI reports / month', 'aiReportLimit'],

@@ -4,7 +4,7 @@ import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
 import { fetchWebsite } from '@/lib/load';
 import { filtersArrayToObject } from '@/lib/params';
-import { badRequest, unauthorized } from '@/lib/response';
+import { badRequest, tooManyRequests, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
 
@@ -45,6 +45,20 @@ export async function parseRequest(
 
     if (!auth) {
       error = () => unauthorized();
+    } else if (auth.mcpUsageLimit) {
+      error = () =>
+        tooManyRequests({
+          type: 'plan-limit',
+          resource: 'mcp',
+          code: 'mcp-calls-limit-reached',
+          currentPlan: auth.mcpUsageLimit.plan,
+          period: auth.mcpUsageLimit.period,
+          current: auth.mcpUsageLimit.used,
+          limit: auth.mcpUsageLimit.limit,
+          remaining: 0,
+          message: 'MCP usage limit reached for the current membership period.',
+          upgradeUrl: '/membership/upgrade?reason=mcpCalls',
+        });
     }
   }
 

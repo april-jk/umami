@@ -636,6 +636,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Wywołania MCP/dzień",
+      "mcpCalls": "Wywołania MCP",
+      "mcpCallsPerMonth": "Wywołania MCP/miesiąc",
       "apiRequestsPerMinute": "Zapytania API/minutę",
       "aiAnalysesPerMonth": "Analizy AI/miesiąc",
       "aiReportsPerMonth": "Raporty AI/miesiąc",

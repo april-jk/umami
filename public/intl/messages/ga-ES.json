@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Glaonna MCP sa lá",
+      "mcpCalls": "Glaonna MCP",
+      "mcpCallsPerMonth": "Glaonna MCP sa mhí",
       "apiRequestsPerMinute": "Iarratais API sa nóiméad",
       "aiAnalysesPerMonth": "Anailísí AI sa mhí",
       "aiReportsPerMonth": "Tuairiscí AI sa mhí",

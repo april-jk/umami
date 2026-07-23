@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP-anrop/dag",
+      "mcpCalls": "MCP-anrop",
+      "mcpCallsPerMonth": "MCP-anrop/månad",
       "apiRequestsPerMinute": "API-förfrågningar/minut",
       "aiAnalysesPerMonth": "AI-analyser/månad",
       "aiReportsPerMonth": "AI-rapporter/månad",

@@ -1,9 +1,10 @@
 import type { MembershipConfig } from './membership-config';
-import { getNextPlanId, getTenantPlanId } from './tenant-plan';
+import { getNextPlanId, getTenantPlanId, getTenantQuotaOverrides } from './tenant-plan';
 
 export const TENANT_PLAN_ENTITLEMENTS = {
   free: {
     mcpCallsPerDay: 50,
+    mcpCallsPerMonth: null,
     apiRequestsPerMinute: 10,
     aiAnalysesPerMonth: 10,
     replayLimit: 50,
@@ -20,6 +21,7 @@ export const TENANT_PLAN_ENTITLEMENTS = {
   },
   starter: {
     mcpCallsPerDay: 500,
+    mcpCallsPerMonth: null,
     apiRequestsPerMinute: 60,
     aiAnalysesPerMonth: null,
     replayLimit: 500,
@@ -36,6 +38,7 @@ export const TENANT_PLAN_ENTITLEMENTS = {
   },
   pro: {
     mcpCallsPerDay: null,
+    mcpCallsPerMonth: 10_000,
     apiRequestsPerMinute: 300,
     aiAnalysesPerMonth: null,
     replayLimit: 5_000,
@@ -52,6 +55,7 @@ export const TENANT_PLAN_ENTITLEMENTS = {
   },
   team: {
     mcpCallsPerDay: null,
+    mcpCallsPerMonth: 50_000,
     apiRequestsPerMinute: 600,
     aiAnalysesPerMonth: null,
     replayLimit: 25_000,
@@ -68,6 +72,7 @@ export const TENANT_PLAN_ENTITLEMENTS = {
   },
   enterprise: {
     mcpCallsPerDay: null,
+    mcpCallsPerMonth: null,
     apiRequestsPerMinute: null,
     aiAnalysesPerMonth: null,
     replayLimit: null,
@@ -86,12 +91,15 @@ export const TENANT_PLAN_ENTITLEMENTS = {
 
 export type TenantEntitlement = keyof (typeof TENANT_PLAN_ENTITLEMENTS)['free'];
 export type TenantPlanEntitlements = Record<TenantEntitlement, boolean | number | null>;
+export type McpUsagePeriod = 'day' | 'month';
+export type McpUsageQuota = { limit: number | null; period: McpUsagePeriod | null };
 
 export const TENANT_ENTITLEMENT_STATUS: Record<
   TenantEntitlement,
   'enforced' | 'legacy' | 'planned'
 > = {
-  mcpCallsPerDay: 'planned',
+  mcpCallsPerDay: 'enforced',
+  mcpCallsPerMonth: 'enforced',
   apiRequestsPerMinute: 'planned',
   aiAnalysesPerMonth: 'planned',
   replayLimit: 'legacy',
@@ -120,6 +128,29 @@ export function hasTenantFeature(
 ) {
   const value = getTenantPlanEntitlements(plan, config)[feature];
   return value === true || (typeof value === 'number' && value > 0) || value === null;
+}
+
+export function getMcpUsageQuota(
+  plan?: string | null,
+  metadata?: unknown,
+  config?: MembershipConfig,
+): McpUsageQuota {
+  const overrides = getTenantQuotaOverrides(metadata);
+  if (Object.hasOwn(overrides, 'mcpCallsPerDay')) {
+    return { limit: overrides.mcpCallsPerDay ?? null, period: 'day' };
+  }
+  if (Object.hasOwn(overrides, 'mcpCallsPerMonth')) {
+    return { limit: overrides.mcpCallsPerMonth ?? null, period: 'month' };
+  }
+
+  const entitlements = getTenantPlanEntitlements(plan, config);
+  if (entitlements.mcpCallsPerDay !== null) {
+    return { limit: entitlements.mcpCallsPerDay as number, period: 'day' };
+  }
+  if (entitlements.mcpCallsPerMonth !== null) {
+    return { limit: entitlements.mcpCallsPerMonth as number, period: 'month' };
+  }
+  return { limit: null, period: null };
 }
 
 export function getEntitlementUpgradeMessage(

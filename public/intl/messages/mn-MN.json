@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Өдөр тутмын MCP дуудлага",
+      "mcpCalls": "MCP дуудлага",
+      "mcpCallsPerMonth": "Сарын MCP дуудлага",
       "apiRequestsPerMinute": "Минутын API хүсэлт",
       "aiAnalysesPerMonth": "Сарын AI шинжилгээ",
       "aiReportsPerMonth": "Сарын AI тайлан",

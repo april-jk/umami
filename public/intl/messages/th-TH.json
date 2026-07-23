@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "การเรียก MCP ต่อวัน",
+      "mcpCalls": "การเรียก MCP",
+      "mcpCallsPerMonth": "การเรียก MCP ต่อเดือน",
       "apiRequestsPerMinute": "คำขอ API ต่อนาที",
       "aiAnalysesPerMonth": "การวิเคราะห์ AI ต่อเดือน",
       "aiReportsPerMonth": "รายงาน AI ต่อเดือน",

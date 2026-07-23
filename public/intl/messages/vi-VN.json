@@ -613,6 +613,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Lượt gọi MCP/ngày",
+      "mcpCalls": "Lượt gọi MCP",
+      "mcpCallsPerMonth": "Lượt gọi MCP/tháng",
       "apiRequestsPerMinute": "Yêu cầu API/phút",
       "aiAnalysesPerMonth": "Lượt phân tích AI/tháng",
       "aiReportsPerMonth": "Báo cáo AI/tháng",

@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP pozivi/dan",
+      "mcpCalls": "MCP pozivi",
+      "mcpCallsPerMonth": "MCP pozivi/mjesec",
       "apiRequestsPerMinute": "API zahtjevi/minutu",
       "aiAnalysesPerMonth": "AI analize/mjesec",
       "aiReportsPerMonth": "AI izvješća/mjesec",

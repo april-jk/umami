@@ -65,14 +65,23 @@ export function MembershipPage() {
     usage?.members?.used || 0,
     usage?.members?.limit ?? limits.memberLimit,
   );
+  const mcpPct = usage?.mcp ? getUsagePercentage(usage.mcp.used, usage.mcp.limit) : null;
 
   const eventAlert = getUsageAlertLevel(eventPct);
   const websiteAlert = getUsageAlertLevel(websitePct);
   const memberAlert = getUsageAlertLevel(memberPct);
+  const mcpAlert = getUsageAlertLevel(mcpPct);
 
-  const hasAlert = eventAlert !== 'none' || websiteAlert !== 'none' || memberAlert !== 'none';
+  const hasAlert =
+    eventAlert !== 'none' ||
+    websiteAlert !== 'none' ||
+    memberAlert !== 'none' ||
+    mcpAlert !== 'none';
   const hasCritical =
-    eventAlert === 'exceeded' || websiteAlert === 'exceeded' || memberAlert === 'exceeded';
+    eventAlert === 'exceeded' ||
+    websiteAlert === 'exceeded' ||
+    memberAlert === 'exceeded' ||
+    mcpAlert === 'exceeded';
 
   const alertPanelStyle = hasCritical
     ? { backgroundColor: '#fef2f2', border: '1px solid #fecaca' }
@@ -187,6 +196,22 @@ export function MembershipPage() {
                 limit={usage?.members?.limit ?? limits.memberLimit}
                 alert={memberAlert}
               />
+              {usage?.mcp && (
+                <UsageBar
+                  label={
+                    usage.mcp.period === 'month'
+                      ? t('membership.featureLabels.mcpCallsPerMonth')
+                      : usage.mcp.period === 'day'
+                        ? t('membership.featureLabels.mcpCallsPerDay')
+                        : t('membership.featureLabels.mcpCalls')
+                  }
+                  locale={locale}
+                  unlimitedLabel={t('membership.unlimited')}
+                  used={usage.mcp.used}
+                  limit={usage.mcp.limit}
+                  alert={mcpAlert}
+                />
+              )}
             </Column>
           </Panel>
         </Grid>

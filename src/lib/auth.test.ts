@@ -8,6 +8,7 @@ import {
 } from '@/lib/mcp-client-access';
 import redis from '@/lib/redis';
 import { getApiKeyAuth, touchApiKey } from '@/queries/prisma/apiKey';
+import { reserveMcpCall } from '@/queries/prisma/mcp-usage';
 import { getUser } from '@/queries/prisma/user';
 import { checkAuth, createAuthToken, hasPermission, parseShareToken, saveAuth } from './auth';
 
@@ -32,6 +33,20 @@ vi.mock('@/lib/mcp-client-access', () => ({
   recordMcpClientAccess: vi.fn(() => Promise.resolve()),
 }));
 
+vi.mock('@/queries/prisma/mcp-usage', () => ({
+  reserveMcpCall: vi.fn(() =>
+    Promise.resolve({
+      allowed: true,
+      used: 1,
+      limit: 50,
+      remaining: 49,
+      period: 'day',
+      periodStart: '2026-07-23T00:00:00.000Z',
+      plan: 'free',
+    }),
+  ),
+}));
+
 vi.mock('@/lib/redis', () => ({
   default: {
     enabled: false,
@@ -51,6 +66,7 @@ const getUserMock = vi.mocked(getUser);
 const getMcpClientMetadataMock = vi.mocked(getMcpClientMetadata);
 const isMcpInstallationMock = vi.mocked(isMcpInstallation);
 const recordMcpClientAccessMock = vi.mocked(recordMcpClientAccess);
+const reserveMcpCallMock = vi.mocked(reserveMcpCall);
 const redisMock = redis as unknown as {
   enabled: boolean;
   client: {
@@ -87,8 +103,18 @@ beforeEach(() => {
   getMcpClientMetadataMock.mockReset();
   isMcpInstallationMock.mockReset();
   recordMcpClientAccessMock.mockReset();
+  reserveMcpCallMock.mockReset();
   getMcpClientMetadataMock.mockReturnValue({ invalid: false });
   recordMcpClientAccessMock.mockReturnValue(Promise.resolve({} as never));
+  reserveMcpCallMock.mockResolvedValue({
+    allowed: true,
+    used: 1,
+    limit: 50,
+    remaining: 49,
+    period: 'day',
+    periodStart: '2026-07-23T00:00:00.000Z',
+    plan: 'free',
+  });
   redisMock.enabled = false;
   redisMock.client.get.mockReset();
   redisMock.client.set.mockReset();
@@ -219,6 +245,40 @@ test('records an access attempt only for an API key issued to an MCP installatio
     { invalid: false },
   );
   expect(auth).toMatchObject({ apiKeyId: 'key-mcp', apiKeyClientType: 'mcp' });
+});
+
+test('marks an authenticated MCP request when the membership quota is exhausted', async () => {
+  parseSecureTokenMock.mockReturnValue(null);
+  parseTokenMock.mockReturnValue(null);
+  getApiKeyAuthMock.mockResolvedValue({
+    id: 'key-mcp',
+    tenantId: 'tenant-1',
+    clientType: 'mcp',
+    user: { id: 'user-1', username: 'user', role: 'user', password: 'secret' },
+  } as any);
+  isMcpInstallationMock.mockReturnValue(true);
+  reserveMcpCallMock.mockResolvedValue({
+    allowed: false,
+    used: 50,
+    limit: 50,
+    remaining: 0,
+    period: 'day',
+    periodStart: '2026-07-23T00:00:00.000Z',
+    plan: 'free',
+  });
+
+  const request = new Request('http://localhost/api/websites', {
+    headers: { authorization: 'Bearer amami_live_secret' },
+  });
+  const auth = await checkAuth(request);
+
+  expect(auth?.mcpUsageLimit).toMatchObject({ allowed: false, limit: 50, period: 'day' });
+  expect(recordMcpClientAccessMock).toHaveBeenCalledWith(
+    request,
+    { apiKeyId: 'key-mcp', userId: 'user-1', tenantId: 'tenant-1' },
+    { invalid: false },
+    'mcp_limit_reached',
+  );
 });
 
 test('does not create an MCP access record for a generic API key', async () => {

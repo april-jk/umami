@@ -4,9 +4,10 @@ import { ROLES, TENANT_PLANS, TENANT_STATUS, TENANT_TYPES } from '@/lib/constant
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
+import { getMcpUsageQuota } from '@/lib/tenant-entitlements';
 import {
-  getTenantEffectiveLimits,
   getHigherTenantPlan,
+  getTenantEffectiveLimits,
   getTenantPlanLimits,
   getTenantQuotaOverrides,
   isWithinLimit,
@@ -200,7 +201,10 @@ export async function getTenantPlan(
     : subscription?.billingProvider === 'activation_code'
       ? TENANT_PLANS.free
       : subscription?.plan || tenant.plan;
-  const effectivePlan = getHigherTenantPlan(basePlan, ...activationRedemptions.map(({ plan }) => plan));
+  const effectivePlan = getHigherTenantPlan(
+    basePlan,
+    ...activationRedemptions.map(({ plan }) => plan),
+  );
 
   if (subscriptionExpired || tenant.plan !== effectivePlan) {
     await prisma.transaction(async tx => {
@@ -217,7 +221,8 @@ export async function getTenantPlan(
         await tx.tenant.update({ where: { id: tenantId }, data: { plan: effectivePlan } });
       }
     });
-    if (tenant.plan !== effectivePlan) await updateRetentionCutoffForTenant(tenantId, effectivePlan);
+    if (tenant.plan !== effectivePlan)
+      await updateRetentionCutoffForTenant(tenantId, effectivePlan);
   }
 
   return {
@@ -319,6 +324,13 @@ export type TenantUsage = {
   events: { used: number; limit: number | null };
   websites: { used: number; limit: number | null };
   members: { used: number; limit: number | null };
+  mcp?: {
+    used: number;
+    limit: number | null;
+    remaining: number | null;
+    period: 'day' | 'month' | null;
+    periodStart: string | null;
+  };
 };
 
 export async function getTenantUsage(tenantId: string, now = new Date()): Promise<TenantUsage> {
@@ -345,6 +357,7 @@ export async function getTenantUsage(tenantId: string, now = new Date()): Promis
   const eventUsed = Number(usage?.eventCount ?? 0);
   const websiteUsed = await getTenantWebsiteCount(tenantId);
   const memberUsed = await getTotalTenantMemberCount(tenantId);
+  const mcp = await readTenantMcpUsage(tenantId, tenant, config, now);
 
   return {
     plan: tenant?.plan ?? 'free',
@@ -358,6 +371,54 @@ export async function getTenantUsage(tenantId: string, now = new Date()): Promis
     events: { used: eventUsed, limit: limits.eventLimit },
     websites: { used: websiteUsed, limit: limits.websiteLimit },
     members: { used: memberUsed, limit: limits.memberLimit },
+    mcp,
+  };
+}
+
+export async function getTenantMcpUsage(tenantId: string, now = new Date()) {
+  const [tenant, config] = await Promise.all([getTenantPlan(tenantId), getMembershipConfig()]);
+  return readTenantMcpUsage(tenantId, tenant, config, now);
+}
+
+async function readTenantMcpUsage(
+  tenantId: string,
+  tenant: { plan: string; metadata?: Prisma.JsonValue } | null,
+  config: Awaited<ReturnType<typeof getMembershipConfig>>,
+  now: Date,
+) {
+  const quota = getMcpUsageQuota(tenant?.plan, tenant?.metadata, config);
+  if (quota.limit === null || quota.period === null) {
+    return {
+      used: 0,
+      limit: null,
+      remaining: null,
+      period: quota.period,
+      periodStart: null,
+    };
+  }
+
+  const periodStart =
+    quota.period === 'day'
+      ? new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+      : new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const counter = await prisma.client.mcpUsageCounter.findUnique({
+    where: {
+      scopeKey_period_periodStart: {
+        scopeKey: `tenant:${tenantId}`,
+        period: quota.period,
+        periodStart,
+      },
+    },
+    select: { callCount: true },
+  });
+  const used = counter?.callCount ?? 0;
+
+  return {
+    used,
+    limit: quota.limit,
+    remaining: Math.max(0, quota.limit - used),
+    period: quota.period,
+    periodStart: periodStart.toISOString(),
   };
 }
 

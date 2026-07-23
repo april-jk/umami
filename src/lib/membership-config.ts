@@ -9,6 +9,7 @@ const price = z.number().nonnegative().nullable();
 
 export const membershipEntitlementsSchema = z.object({
   mcpCallsPerDay: nullableCount,
+  mcpCallsPerMonth: nullableCount.default(null),
   apiRequestsPerMinute: nullableCount,
   aiAnalysesPerMonth: nullableCount,
   replayLimit: nullableCount,
@@ -90,6 +91,29 @@ export function createDefaultMembershipConfig(): MembershipConfig {
 export const DEFAULT_MEMBERSHIP_CONFIG = createDefaultMembershipConfig();
 
 export function parseMembershipConfig(value: unknown): MembershipConfig | null {
-  const result = membershipConfigSchema.safeParse(value);
+  const normalized =
+    value && typeof value === 'object' && !Array.isArray(value)
+      ? {
+          ...(value as Record<string, unknown>),
+          plans: Object.fromEntries(
+            MEMBERSHIP_PLAN_IDS.map(plan => {
+              const rawPlan = (value as Record<string, any>).plans?.[plan];
+              const rawEntitlements = rawPlan?.entitlements;
+              const entitlements =
+                rawEntitlements && typeof rawEntitlements === 'object'
+                  ? Object.hasOwn(rawEntitlements, 'mcpCallsPerMonth')
+                    ? rawEntitlements
+                    : {
+                        ...rawEntitlements,
+                        mcpCallsPerMonth:
+                          DEFAULT_MEMBERSHIP_CONFIG.plans[plan].entitlements.mcpCallsPerMonth,
+                      }
+                  : rawEntitlements;
+              return [plan, rawPlan ? { ...rawPlan, entitlements } : rawPlan];
+            }),
+          ),
+        }
+      : value;
+  const result = membershipConfigSchema.safeParse(normalized);
   return result.success ? result.data : null;
 }

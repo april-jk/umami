@@ -66,6 +66,15 @@ test('edits each quota mode and custom value before saving', async () => {
   });
   fireEvent.change(screen.getByLabelText('Websites mode'), { target: { value: 'unlimited' } });
   fireEvent.change(screen.getByLabelText('Members mode'), { target: { value: 'inherit' } });
+  fireEvent.change(screen.getByLabelText('MCP calls / day mode'), {
+    target: { value: 'custom' },
+  });
+  fireEvent.change(screen.getByLabelText('MCP calls / day custom value'), {
+    target: { value: '75' },
+  });
+  fireEvent.change(screen.getByLabelText('MCP calls / month mode'), {
+    target: { value: 'unlimited' },
+  });
   fireEvent.click(screen.getByRole('button', { name: 'Save quota overrides' }));
 
   await waitFor(() =>
@@ -74,6 +83,8 @@ test('edits each quota mode and custom value before saving', async () => {
         eventLimit: 123_456,
         websiteLimit: null,
         memberLimit: 'inherit',
+        mcpCallsPerDay: 75,
+        mcpCallsPerMonth: null,
       },
     }),
   );

@@ -31,6 +31,19 @@ describe('membership configuration', () => {
     expect(parseMembershipConfig(config)).toEqual(config);
   });
 
+  test('backfills monthly MCP defaults for configurations saved before monthly quotas existed', () => {
+    const legacy = createDefaultMembershipConfig() as any;
+    for (const plan of MEMBERSHIP_PLAN_IDS) {
+      delete legacy.plans[plan].entitlements.mcpCallsPerMonth;
+    }
+
+    const parsed = parseMembershipConfig(legacy);
+
+    expect(parsed?.plans.free.entitlements.mcpCallsPerMonth).toBeNull();
+    expect(parsed?.plans.pro.entitlements.mcpCallsPerMonth).toBe(10_000);
+    expect(parsed?.plans.team.entitlements.mcpCallsPerMonth).toBe(50_000);
+  });
+
   test('rejects invalid prices and entitlement values', () => {
     const freePrice = createDefaultMembershipConfig();
     freePrice.plans.free.prices.monthly = 1;

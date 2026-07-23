@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Günlük MCP çağrıları",
+      "mcpCalls": "MCP çağrıları",
+      "mcpCallsPerMonth": "Aylık MCP çağrıları",
       "apiRequestsPerMinute": "Dakikalık API istekleri",
       "aiAnalysesPerMonth": "Aylık AI analizleri",
       "aiReportsPerMonth": "Aylık AI raporları",

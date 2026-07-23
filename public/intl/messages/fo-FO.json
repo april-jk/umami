@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP-kall/dag",
+      "mcpCalls": "MCP-kall",
+      "mcpCallsPerMonth": "MCP-kall/månad",
       "apiRequestsPerMinute": "API-fyrispurningar/minutt",
       "aiAnalysesPerMonth": "AI-greiningar/mánað",
       "aiReportsPerMonth": "AI-frágreiðingar/mánað",

@@ -636,6 +636,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Volania MCP/deň",
+      "mcpCalls": "Volania MCP",
+      "mcpCallsPerMonth": "Volania MCP/mesiac",
       "apiRequestsPerMinute": "Požiadavky API/minútu",
       "aiAnalysesPerMonth": "Analýzy AI/mesiac",
       "aiReportsPerMonth": "Reporty AI/mesiac",

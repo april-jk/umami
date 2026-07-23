@@ -624,6 +624,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Kunlik MCP chaqiruvlari",
+      "mcpCalls": "MCP chaqiruvlari",
+      "mcpCallsPerMonth": "Oylik MCP chaqiruvlari",
       "apiRequestsPerMinute": "Daqiqalik API soʻrovlari",
       "aiAnalysesPerMonth": "Oylik AI tahlillari",
       "aiReportsPerMonth": "Oylik AI hisobotlari",

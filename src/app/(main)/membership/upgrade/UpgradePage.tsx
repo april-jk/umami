@@ -20,10 +20,10 @@ import {
   type MembershipConfig,
   type MembershipPlanConfig,
 } from '@/lib/membership-config';
+import { PAYPAL_EUR_PLAN_PRICES, type PaypalCurrency } from '@/lib/paypal-currency';
 import type { TenantPlanId } from '@/lib/tenant-plan';
 import { PlanBadge } from '../PlanBadge';
 import { ActivationCodeRedeemButton } from './ActivationCodeRedeemButton';
-import { PAYPAL_EUR_PLAN_PRICES, type PaypalCurrency } from '@/lib/paypal-currency';
 
 const planOrder: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];
 
@@ -93,6 +93,25 @@ function formatFeatureValue(value: number | null, unlimited: string) {
     : Intl.NumberFormat('en-US', { notation: 'compact' }).format(value);
 }
 
+function getMcpFeature(
+  plan: MembershipPlanConfig,
+  translate: (key: string, values?: Record<string, string | number>) => string,
+) {
+  if (plan.entitlements.mcpCallsPerDay !== null) {
+    return [
+      translate('membership.featureLabels.mcpCallsPerDay'),
+      plan.entitlements.mcpCallsPerDay,
+    ] as [string, number | null];
+  }
+  if (plan.entitlements.mcpCallsPerMonth !== null) {
+    return [
+      translate('membership.featureLabels.mcpCallsPerMonth'),
+      plan.entitlements.mcpCallsPerMonth,
+    ] as [string, number | null];
+  }
+  return [translate('membership.featureLabels.mcpCalls'), null] as [string, number | null];
+}
+
 function getDynamicFeatures(
   plan: MembershipPlanConfig,
   translate: (key: string, values?: Record<string, string | number>) => string,
@@ -105,7 +124,7 @@ function getDynamicFeatures(
     [translate('membership.members'), plan.limits.memberLimit],
     [translate(labels.goals), plan.entitlements.goalLimit],
     [translate(labels.replays), plan.entitlements.replayLimit],
-    [translate('membership.featureLabels.mcpCallsPerDay'), plan.entitlements.mcpCallsPerDay],
+    getMcpFeature(plan, translate),
     [
       translate('membership.featureLabels.apiRequestsPerMinute'),
       plan.entitlements.apiRequestsPerMinute,

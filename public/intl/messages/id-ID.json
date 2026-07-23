@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Panggilan MCP/hari",
+      "mcpCalls": "Panggilan MCP",
+      "mcpCallsPerMonth": "Panggilan MCP/bulan",
       "apiRequestsPerMinute": "Permintaan API/menit",
       "aiAnalysesPerMonth": "Analisis AI/bulan",
       "aiReportsPerMonth": "Laporan AI/bulan",

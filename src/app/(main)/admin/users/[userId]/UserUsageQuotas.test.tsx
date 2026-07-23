@@ -75,6 +75,8 @@ describe('UserUsageQuotas', () => {
           eventLimit: 750_000,
           websiteLimit: null,
           memberLimit: 'inherit',
+          mcpCallsPerDay: 'inherit',
+          mcpCallsPerMonth: 'inherit',
         },
       }),
     );

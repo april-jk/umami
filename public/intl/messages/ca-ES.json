@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Crides MCP/dia",
+      "mcpCalls": "Crides MCP",
+      "mcpCallsPerMonth": "Crides MCP/mes",
       "apiRequestsPerMinute": "Sol·licituds API/minut",
       "aiAnalysesPerMonth": "Anàlisis d’IA/mes",
       "aiReportsPerMonth": "Informes d’IA/mes",

@@ -16,6 +16,7 @@ import {
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyAuth, touchApiKey } from '@/queries/prisma/apiKey';
+import { reserveMcpCall } from '@/queries/prisma/mcp-usage';
 import { getUser } from '@/queries/prisma/user';
 
 const log = debug('umami:auth');
@@ -90,13 +91,27 @@ export async function checkAuth(request: Request) {
     user.isAdmin = user.role === ROLES.admin;
   }
 
+  let mcpUsageLimit;
   if (apiKey && user && apiKey.id && isMcpInstallation(apiKey.clientType)) {
     const metadata = getMcpClientMetadata(request);
-    recordMcpClientAccess(
-      request,
-      { apiKeyId: apiKey.id, userId: user.id, tenantId: apiKey.tenantId },
-      metadata,
-    ).catch(e => log('Failed to record MCP client access', e));
+    const isPolicyRequest = new URL(request.url).pathname === '/api/mcp/client-policy';
+    const usage = isPolicyRequest ? null : await reserveMcpCall(user.id, apiKey.tenantId);
+
+    if (usage && !usage.allowed) {
+      mcpUsageLimit = usage;
+      await recordMcpClientAccess(
+        request,
+        { apiKeyId: apiKey.id, userId: user.id, tenantId: apiKey.tenantId },
+        metadata,
+        'mcp_limit_reached',
+      ).catch(e => log('Failed to record MCP client access', e));
+    } else {
+      recordMcpClientAccess(
+        request,
+        { apiKeyId: apiKey.id, userId: user.id, tenantId: apiKey.tenantId },
+        metadata,
+      ).catch(e => log('Failed to record MCP client access', e));
+    }
   }
 
   return {
@@ -104,6 +119,7 @@ export async function checkAuth(request: Request) {
     authKey,
     apiKeyId: apiKey?.id,
     apiKeyClientType: apiKey?.clientType,
+    mcpUsageLimit,
     shareToken,
     user,
   };

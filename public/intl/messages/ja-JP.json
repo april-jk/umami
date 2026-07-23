@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "1日あたりのMCP呼び出し",
+      "mcpCalls": "MCP呼び出し",
+      "mcpCallsPerMonth": "1か月あたりのMCP呼び出し",
       "apiRequestsPerMinute": "1分あたりのAPIリクエスト",
       "aiAnalysesPerMonth": "月あたりのAI分析",
       "aiReportsPerMonth": "月あたりのAIレポート",

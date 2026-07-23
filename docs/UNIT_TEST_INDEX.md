@@ -35,6 +35,7 @@
 | 26 | 当前分支 | MCP 0.1.5 强制更新策略 | [iter-26-mcp-015-required-update-uncovered.md](iter-26-mcp-015-required-update-uncovered.md) | ⬜ 待补充生产旧版/新版客户端与 Railway 网络验证 |
 | 27 | `chore/detach-upstream-umami` | 原项目运行时、发布与仓库身份隔离 | [iter-27-upstream-isolation-uncovered.md](iter-27-upstream-isolation-uncovered.md) | ⬜ 待补充 Railway、容器与 UI 依赖迁移验证 |
 | 28 | 当前分支 | API Keys 页面 MCP 使用记录 | [iter-28-mcp-usage-history-uncovered.md](iter-28-mcp-usage-history-uncovered.md) | ⬜ 待补充认证浏览器、真实 PostgreSQL 与 MCP 全工具链路验证 |
+| 29 | 当前分支 | 会员 MCP 日/月配额强制执行 | [iter-29-mcp-membership-quota-uncovered.md](iter-29-mcp-membership-quota-uncovered.md) | ⬜ 待补充 Railway migration、真实 MCP、并发与浏览器验证 |
 
 ---
 
@@ -133,7 +134,8 @@ pnpm vitest run \
 - **2026-07-20**: 收录迭代 26（MCP 0.1.5 强制更新策略）未覆盖场景
 - **2026-07-22**: 收录迭代 27（原项目运行时、发布与仓库身份隔离）未覆盖场景
 - **2026-07-22**: 收录迭代 28（API Keys 页面 MCP 使用记录）未覆盖场景
+- **2026-07-23**: 收录迭代 29（会员 MCP 日/月配额强制执行）未覆盖场景
 
 ---
 
-*最后更新: 2026-07-22*
+*最后更新: 2026-07-23*

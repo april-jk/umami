@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "Κλήσεις MCP/ημέρα",
+      "mcpCalls": "Κλήσεις MCP",
+      "mcpCallsPerMonth": "Κλήσεις MCP/μήνα",
       "apiRequestsPerMinute": "Αιτήματα API/λεπτό",
       "aiAnalysesPerMonth": "Αναλύσεις AI/μήνα",
       "aiReportsPerMonth": "Αναφορές AI/μήνα",

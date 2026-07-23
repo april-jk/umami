@@ -212,6 +212,20 @@ model McpClientAccess {
   @@map("mcp_client_access")
 }
 
+model McpUsageCounter {
+  id          String    @id() @map("mcp_usage_counter_id") @db.Uuid
+  scopeKey    String    @map("scope_key") @db.VarChar(100)
+  period      String    @db.VarChar(10)
+  periodStart DateTime  @map("period_start") @db.Date
+  callCount   Int       @default(0) @map("call_count")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([scopeKey, period, periodStart])
+  @@index([scopeKey, periodStart])
+  @@map("mcp_usage_counter")
+}
+
 model TenantUser {
   id        String    @id() @map("tenant_user_id") @db.Uuid
   tenantId  String    @map("tenant_id") @db.Uuid

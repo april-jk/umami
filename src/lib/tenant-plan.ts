@@ -26,7 +26,12 @@ export type TenantPlanLimits = {
   memberLimit: number | null;
   retentionDays: number | null;
 };
-export type TenantQuotaKey = 'eventLimit' | 'websiteLimit' | 'memberLimit';
+export type TenantQuotaKey =
+  | 'eventLimit'
+  | 'websiteLimit'
+  | 'memberLimit'
+  | 'mcpCallsPerDay'
+  | 'mcpCallsPerMonth';
 export type TenantQuotaOverrides = Partial<Record<TenantQuotaKey, number | null>>;
 export type EffectiveTenantPlanLimits = {
   eventLimit: number | null;
@@ -35,7 +40,13 @@ export type EffectiveTenantPlanLimits = {
   retentionDays: number | null;
 };
 
-const TENANT_QUOTA_KEYS: TenantQuotaKey[] = ['eventLimit', 'websiteLimit', 'memberLimit'];
+const TENANT_QUOTA_KEYS: TenantQuotaKey[] = [
+  'eventLimit',
+  'websiteLimit',
+  'memberLimit',
+  'mcpCallsPerDay',
+  'mcpCallsPerMonth',
+];
 
 const DEFAULT_PLAN: TenantPlanId = 'free';
 const TENANT_PLAN_ORDER: TenantPlanId[] = ['free', 'starter', 'pro', 'team', 'enterprise'];

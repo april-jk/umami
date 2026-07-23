@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "קריאות MCP ביום",
+      "mcpCalls": "קריאות MCP",
+      "mcpCallsPerMonth": "קריאות MCP בחודש",
       "apiRequestsPerMinute": "בקשות API בדקה",
       "aiAnalysesPerMonth": "ניתוחי AI בחודש",
       "aiReportsPerMonth": "דוחות AI בחודש",

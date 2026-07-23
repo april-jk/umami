@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP-kutsua/päivä",
+      "mcpCalls": "MCP-kutsut",
+      "mcpCallsPerMonth": "MCP-kutsua/kuukausi",
       "apiRequestsPerMinute": "API-pyyntöä/minuutti",
       "aiAnalysesPerMonth": "Tekoälyanalyysiä/kuukausi",
       "aiReportsPerMonth": "Tekoälyraporttia/kuukausi",

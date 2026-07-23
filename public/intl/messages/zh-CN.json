@@ -607,6 +607,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "每天 MCP 调用次数",
+      "mcpCalls": "MCP 调用次数",
+      "mcpCallsPerMonth": "每月 MCP 调用次数",
       "apiRequestsPerMinute": "每分钟 API 请求数",
       "aiAnalysesPerMonth": "每月 AI 分析次数",
       "aiReportsPerMonth": "每月 AI 报告数",

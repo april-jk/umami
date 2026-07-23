@@ -618,6 +618,8 @@
     },
     "featureLabels": {
       "mcpCallsPerDay": "MCP-Aufrufe/Tag",
+      "mcpCalls": "MCP-Aufrufe",
+      "mcpCallsPerMonth": "MCP-Aufrufe/Monat",
       "apiRequestsPerMinute": "API-Anfragen/Minute",
       "aiAnalysesPerMonth": "KI-Analysen/Monat",
       "aiReportsPerMonth": "KI-Berichte/Monat",

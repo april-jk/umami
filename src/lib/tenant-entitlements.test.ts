@@ -4,6 +4,7 @@ import {
   getEntitlementErrorPayload,
   getEntitlementRecommendedPlan,
   getEntitlementUpgradeMessage,
+  getMcpUsageQuota,
   getTenantPlanEntitlements,
   hasTenantFeature,
   TENANT_ENTITLEMENT_STATUS,
@@ -13,6 +14,7 @@ import {
 describe('tenant entitlements', () => {
   test('matches the published quota catalog', () => {
     expect(TENANT_PLAN_ENTITLEMENTS.free.mcpCallsPerDay).toBe(50);
+    expect(TENANT_PLAN_ENTITLEMENTS.pro.mcpCallsPerMonth).toBe(10_000);
     expect(TENANT_PLAN_ENTITLEMENTS.free.goalLimit).toBe(5);
     expect(TENANT_PLAN_ENTITLEMENTS.free.replayLimit).toBe(50);
     expect(TENANT_PLAN_ENTITLEMENTS.starter.replayLimit).toBe(500);
@@ -37,6 +39,21 @@ describe('tenant entitlements', () => {
     expect(hasTenantFeature('team', 'goalLimit')).toBe(true);
     expect(hasTenantFeature('free', 'csvExport')).toBe(false);
     expect(hasTenantFeature('free', 'goalLimit')).toBe(true);
+  });
+
+  test('selects the configured daily or monthly MCP quota', () => {
+    expect(getMcpUsageQuota('free')).toEqual({ limit: 50, period: 'day' });
+    expect(getMcpUsageQuota('pro')).toEqual({ limit: 10_000, period: 'month' });
+    expect(
+      getMcpUsageQuota('starter', {
+        quotaOverrides: { mcpCallsPerMonth: 1_200 },
+      }),
+    ).toEqual({ limit: 1_200, period: 'month' });
+    expect(
+      getMcpUsageQuota('pro', {
+        quotaOverrides: { mcpCallsPerDay: null },
+      }),
+    ).toEqual({ limit: null, period: 'day' });
   });
 
   test('finds the first plan that enables a feature', () => {

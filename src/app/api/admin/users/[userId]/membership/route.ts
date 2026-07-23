@@ -22,6 +22,8 @@ const updateSchema = z.object({
       eventLimit: quotaValue.optional(),
       websiteLimit: quotaValue.optional(),
       memberLimit: quotaValue.optional(),
+      mcpCallsPerDay: quotaValue.optional(),
+      mcpCallsPerMonth: quotaValue.optional(),
     })
     .optional(),
 });
