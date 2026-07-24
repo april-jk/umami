@@ -40,7 +40,7 @@ describe('LandingPage', () => {
     });
   });
 
-  test('presents the supported read-only Amami MCP scope', () => {
+  test('presents the supported Amami analytics and verification scope', () => {
     render(<LandingPage />);
 
     expect(
@@ -48,25 +48,29 @@ describe('LandingPage', () => {
         name: 'Ask your Umami analytics from your AI coding assistant.',
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Read-only MCP installation')).toBeInTheDocument();
+    expect(screen.getByText('Canonical MCP installation guide')).toBeInTheDocument();
     expect(screen.getByText('List websites')).toBeInTheDocument();
     expect(screen.getByText('Read traffic stats')).toBeInTheDocument();
     expect(screen.getByText('Inspect trends')).toBeInTheDocument();
     expect(screen.getByText('Find top pages')).toBeInTheDocument();
     expect(screen.getByText('Check active visitors')).toBeInTheDocument();
     expect(screen.getByText('Trace traffic sources')).toBeInTheDocument();
-    expect(screen.getByText('Read-only by design')).toBeInTheDocument();
+    expect(screen.getByText('Scoped verification')).toBeInTheDocument();
     expect(screen.getByText('Keep the dashboard')).toBeInTheDocument();
   });
 
-  test('does not advertise write or dashboard-replacement capabilities', () => {
+  test('uses the canonical MCP guide and GitHub Skills repository', () => {
     render(<LandingPage />);
 
-    expect(screen.queryByText('Create tracking')).not.toBeInTheDocument();
-    expect(screen.queryByText('Verify tracking')).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/automatic site discovery and tracking setup/i),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole('tabpanel')).toHaveTextContent(
+      'https://analytics.amami.dev/install/mcp-install.md',
+    );
+    fireEvent.click(screen.getByRole('tab', { name: 'Skill' }));
+    expect(screen.getByRole('tabpanel')).toHaveTextContent(
+      'https://github.com/april-jk/amami-skills',
+    );
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('amami-mcp-setup');
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('amami-analytics');
     expect(screen.getByRole('link', { name: 'Read docs' })).toHaveAttribute(
       'href',
       'https://docs.amami.dev',
@@ -113,13 +117,17 @@ describe('LandingPage', () => {
     expect(screen.getByRole('link', { name: 'MCP tools' })).toHaveAttribute('aria-current', 'page');
 
     fireEvent.click(screen.getByRole('tab', { name: 'Skill' }));
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('read-only access');
+    expect(screen.getByRole('tabpanel')).toHaveTextContent(
+      'https://github.com/april-jk/amami-skills',
+    );
     fireEvent.keyDown(screen.getByRole('tab', { name: 'Skill' }), { key: 'ArrowRight' });
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('Read-only MCP client configuration');
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('manual configuration');
     fireEvent.keyDown(screen.getByRole('tab', { name: 'Config' }), { key: 'ArrowRight' });
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('read-only Amami MCP server');
+    expect(screen.getByRole('tabpanel')).toHaveTextContent(
+      'canonical Amami MCP installation guide',
+    );
     fireEvent.keyDown(screen.getByRole('tab', { name: 'MCP' }), { key: 'ArrowLeft' });
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('Read-only MCP client configuration');
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('manual configuration');
     fireEvent.keyDown(screen.getByRole('tab', { name: 'Config' }), { key: 'Enter' });
 
     vi.mocked(navigator.clipboard.writeText).mockResolvedValueOnce(undefined);

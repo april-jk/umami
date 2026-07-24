@@ -17,7 +17,7 @@ const pageAnchors = [
   { id: 'demo', label: 'Questions' },
   { id: 'install', label: 'Install' },
   { id: 'tools', label: 'Tools' },
-  { id: 'security', label: 'Read-only' },
+  { id: 'security', label: 'Security' },
 ];
 
 const examples = [
@@ -47,50 +47,24 @@ const installCommands = [
   {
     id: 'mcp',
     label: 'MCP',
-    title: 'Ask your agent to install the read-only Amami MCP server',
+    title: 'Ask your agent to follow the canonical Amami MCP guide',
     command: `Copy this prompt and send it to your AI:
 
-Install the read-only Amami MCP server, then guide me through browser login and authorization for my Umami analytics.
-${installDocUrl}`,
+Read and follow the canonical Amami MCP installation guide at ${installDocUrl}. Use this guide as the only setup source. Do not use web search or another installation guide.`,
   },
   {
     id: 'skill',
     label: 'Skill',
     title: 'Ask Codex to install Amami analytics skills',
-    command: `Copy the instruction below and send it to Codex to install Amami Skills:
+    command: `Copy this instruction and send it to Codex:
 
-Install Amami Skills (amami-mcp-setup and amami-analytics), then help me query my Umami analytics with read-only access.
-${installDocUrl}#codex-skills`,
+Install Amami Skills from https://github.com/april-jk/amami-skills using the paths \`amami-mcp-setup\` and \`amami-analytics\`. Do not fetch a documentation URL or use web search first.`,
   },
   {
     id: 'config',
     label: 'Config',
-    title: 'MCP client config options',
-    command: `// Read-only MCP client configuration
-{
-  "mcpServers": {
-    "amami": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "amami-analytics-mcp@latest"
-      ]
-    }
-  }
-}
-
-// Manual API key configuration, if you already have a key
-{
-  "mcpServers": {
-    "amami": {
-      "command": "npx",
-      "args": ["-y", "amami-analytics-mcp@latest"],
-      "env": {
-        "AMAMI_API_KEY": "your_api_key_here"
-      }
-    }
-  }
-}`,
+    title: 'Read the canonical manual configuration guidance',
+    command: `Read and follow the canonical Amami MCP installation guide at ${installDocUrl}. Use this guide as the only setup source for manual configuration. Do not use web search or another installation guide.`,
   },
 ];
 
@@ -115,8 +89,8 @@ const trustPoints = [
     tone: 'primary',
   },
   {
-    title: 'Read-only by design',
-    body: 'The public MCP workflow uses focused, aggregate analytics reads. It does not create websites or change your Umami setup.',
+    title: 'Scoped verification',
+    body: 'Setup enables the approved client scope. Verification only checks your account, website list, and available tools without creating test data.',
     tone: 'secondary',
   },
   {
@@ -321,9 +295,9 @@ export default function LandingPage() {
             Ask your Umami analytics <span>from your AI coding assistant.</span>
           </h1>
           <p>
-            Amami is a read-only MCP server for Cursor, Claude Desktop, and other MCP clients. Ask
-            about traffic, top pages, active visitors, and referrers without leaving the place where
-            you build.
+            Amami connects Cursor, Claude Desktop, and other MCP clients to your Umami analytics.
+            Ask about traffic, top pages, active visitors, and referrers without leaving the place
+            where you build.
             <br />
             <br />
             &gt; Keep Umami. Add an AI-native read layer for the analytics questions you already
@@ -384,8 +358,8 @@ export default function LandingPage() {
 
       <section className={`${styles.section} ${styles.pageSection}`} id="install">
         <SectionHeader
-          title="A read-only analytics layer for your agent."
-          eyebrow="// Install the MCP server, authorize it in your browser, then ask a question."
+          title="One maintained setup guide for every MCP client."
+          eyebrow="// Authorize in your browser, register the active client, then verify without test data."
         />
         <div className={styles.installLayout}>
           <div className={styles.installWorkbench}>
@@ -431,15 +405,16 @@ export default function LandingPage() {
             </div>
           </div>
           <div className={styles.installCopy}>
-            <h3>Install, authorize, then ask.</h3>
+            <h3>Install, authorize, then verify.</h3>
             <p>
-              Amami gives your assistant a focused set of Umami analytics reads. Login,
+              The canonical guide checks Node.js, runs browser setup, registers your active MCP
+              client, and verifies access without creating websites or sending events. Login,
               registration, and authorization stay in your browser, under your control.
             </p>
             <ul>
               {[
-                'Read-only MCP installation',
-                'Your existing Umami websites',
+                'Canonical MCP installation guide',
+                'Client-specific registration',
                 'Browser-based user authorization',
               ].map(item => (
                 <li key={item}>
@@ -473,7 +448,7 @@ export default function LandingPage() {
         id="security"
       >
         <SectionHeader
-          title="Read-only, local, and scoped."
+          title="Local, authorized, and scoped."
           eyebrow="// Your agent can inspect analytics. You retain control of credentials and authorization."
         />
         <div className={styles.trustLayout}>
@@ -503,7 +478,7 @@ export default function LandingPage() {
 
       <footer className={styles.footer}>
         <span>Amami</span>
-        <p>© 2026 Amami. Read-only analytics for AI coding assistants.</p>
+        <p>© 2026 Amami. Analytics for AI coding assistants.</p>
         <div>
           <a href="https://docs.amami.dev">Docs</a>
           <a
